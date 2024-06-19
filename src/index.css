@@ -2,7 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-  background-color: #212121;
-  color: #fff;
-} */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@layer utilities {
+  .clippath-header {
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 70% 100%, 0 87%);
+  }
+}
