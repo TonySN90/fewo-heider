@@ -1,6 +1,7 @@
 import Description from "./Description";
 import HouseImages from "./HouseImages";
 import InsightLayout from "./InsightLayout";
+import InsightsCarousel from "./InsightsCarousel";
 import Title from "./Title";
 
 function Insights() {
@@ -10,6 +11,7 @@ function Insights() {
         <Title />
         <HouseImages />
         <Description />
+        <InsightsCarousel />
       </InsightLayout>
     </section>
   );
