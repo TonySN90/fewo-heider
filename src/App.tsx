@@ -6,7 +6,6 @@ import Insights from "./insights/Insights";
 export default function App() {
   return (
     <>
-      {/* <Background /> */}
       <Header />
       <NavbarDesktop />
       <Insights />

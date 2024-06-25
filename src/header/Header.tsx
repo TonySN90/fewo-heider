@@ -1,7 +1,11 @@
 import HeaderLayout from "./HeaderLayout";
 
 function Header() {
-  return <HeaderLayout />;
+  return (
+    <header className="mx-auto bg-white ">
+      <HeaderLayout />
+    </header>
+  );
 }
 
 export default Header;
