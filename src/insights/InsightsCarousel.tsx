@@ -37,7 +37,7 @@ function InsightsCarousel() {
   return (
     <div>
       <div className="text-center">
-        <h3 className="text-2xl font-semibold mb-2">Einblicke</h3>
+        <h3 className="text-2xl font-semibold mb-2 text-[2rem]">Einblicke</h3>
         <hr className="w-[3rem] h-[3px] bg-black m-auto mb-6" />
       </div>
       <div className="max-w-[70%] mx-auto">
