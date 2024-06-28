@@ -9,7 +9,12 @@ export default {
     flowbite.content(),
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        color_bg_lightgray: "#fefefe",
+        color_bg_darkgray: "#6B7280",
+      },
+    },
   },
   plugins: [flowbitePlugin],
 };

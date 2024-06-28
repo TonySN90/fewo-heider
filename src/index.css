@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-bg-darkgray: #6b7280;
+  --color-bg-lightgray: #fefefe;
+}
+
 html,
 body {
   margin: 0;
@@ -22,4 +27,75 @@ h2,
 h3,
 h4 {
   font-family: "Dancing Script", cursive;
+}
+
+td,
+th {
+  text-align: left;
+  padding: 0.2rem;
+  width: 25%;
+}
+
+@media screen and (min-width: 500px) {
+  td,
+  th {
+    padding-inline: 1rem;
+    padding-block: 0.6rem;
+  }
+}
+@media screen and (max-width: 350px) {
+  td,
+  th {
+    font-size: 11px;
+  }
+}
+
+.calendar__calendar-container {
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.calendar__month-container {
+  background-color: var(--color-bg-darkgray);
+  color: white;
+}
+
+.calendar__calendar-container:not([data-scrollable])
+  .calendar__month-content[data-some-year]
+  span:nth-child(2) {
+  color: white;
+}
+
+.calendar__calendar-container:not([data-scrollable])
+  .calendar__month-content[data-some-month]
+  span:first-child {
+  color: white;
+}
+
+.calendar__days-container {
+  background-color: var(--color-bg-lightgray);
+  padding: 1rem;
+}
+
+.calendar__week-container {
+  background-color: var(--color-bg-darkgray);
+  color: white;
+  padding-inline: 1rem;
+  padding-block: 0.15rem;
+}
+
+.calendar__week-content[data-weekend] {
+  color: #ff685d;
+}
+
+.calendar__day-today {
+  border: var(--color-bg-darkgray) 2px solid;
+}
+
+.calendar__day-content[data-reserved] {
+  color: white;
+}
+
+.calendar__day-reservation {
+  background-color: #ff685d;
 }
