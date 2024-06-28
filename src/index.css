@@ -40,7 +40,7 @@ th {
   td,
   th {
     padding-inline: 1rem;
-    padding-block: 0.6rem;
+    padding-block: 0.85rem;
   }
 }
 @media screen and (max-width: 350px) {
@@ -58,6 +58,7 @@ th {
 .calendar__month-container {
   background-color: var(--color-bg-darkgray);
   color: white;
+  padding: 0;
 }
 
 .calendar__calendar-container:not([data-scrollable])
@@ -81,7 +82,7 @@ th {
   background-color: var(--color-bg-darkgray);
   color: white;
   padding-inline: 1rem;
-  padding-block: 0.15rem;
+  /* padding-block: 0.15rem; */
 }
 
 .calendar__week-content[data-weekend] {
