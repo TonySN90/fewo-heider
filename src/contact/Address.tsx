@@ -1,4 +1,4 @@
-function Adress() {
+function Address() {
   return (
     <article className="font-bold">
       <p>Lolita Heider</p>
@@ -10,4 +10,4 @@ function Adress() {
   );
 }
 
-export default Adress;
+export default Address;

@@ -12,7 +12,8 @@ export default {
     extend: {
       colors: {
         color_bg_lightgray: "#fefefe",
-        color_bg_darkgray: "#6B7280",
+        color_bg_darkgray: "#494949",
+        color_red: "#FF685D",
       },
     },
   },

@@ -1,7 +1,7 @@
 import useScrollBackground from "../hooks/useScrollBackground";
 import Title from "../components/Title";
 import Map from "./Map";
-import Adress from "./Adress";
+import Address from "./Address";
 
 function Contact() {
   const { ref, sectionStyle } = useScrollBackground();
@@ -11,7 +11,7 @@ function Contact() {
       <Title title="Kontakt" />
       <div className="flex justify-center gap-6 w-[60%] max-w-[1250px] mx-auto py-10">
         <Map />
-        <Adress />
+        <Address />
       </div>
     </section>
   );
