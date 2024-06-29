@@ -2,7 +2,7 @@ function Prices() {
   return (
     <table className="w-[100%] sm:w-[60%] md:w-[50%] lg:w-[70%] text-white rounded-md overflow-hidden text-sm md:text-[15px]">
       <thead>
-        <tr className=" bg-gray-500">
+        <tr className=" bg-color_bg_darkgray">
           <th className="font-semibold">
             Zeitraum <br />
             Saison 2024
@@ -17,7 +17,7 @@ function Prices() {
           </th>
         </tr>
       </thead>
-      <tbody className="bg-color_bg_lightgray text-gray-600 font-semibold ">
+      <tbody className="bg-color_bg_lightgray text-color_bg_darkgray font-semibold ">
         <tr>
           <td>09.05.–30.06.</td>
           <td>90,00 €</td>

@@ -1,20 +1,20 @@
-// import Background from "./components/Background";
-import CalendarPrices from "./calendar/CalendarPrices";
 import NavbarDesktop from "./components/NavbarDesktop";
-import Contact from "./contact/Contact";
-import Footer from "./footer/Footer";
-import Header from "./header/Header";
-import Insights from "./insights/Insights";
+import { FewoProvider } from "./contexts/FewoContext";
+import CalendarPrices from "./features/calendar/CalendarPrices";
+import Contact from "./features/contact/Contact";
+import Footer from "./features/footer/Footer";
+import Header from "./features/header/Header";
+import Insights from "./features/insights/Insights";
 
 export default function App() {
   return (
-    <>
+    <FewoProvider>
       <Header />
       <NavbarDesktop />
       <Insights />
       <CalendarPrices />
       <Contact />
       <Footer />
-    </>
+    </FewoProvider>
   );
 }
