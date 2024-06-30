@@ -1,20 +1,22 @@
-import NavbarDesktop from "./components/NavbarDesktop";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Home from "./Pages/Home";
 import { FewoProvider } from "./contexts/FewoContext";
-import CalendarPrices from "./features/calendar/CalendarPrices";
-import Contact from "./features/contact/Contact";
-import Footer from "./features/footer/Footer";
-import Header from "./features/header/Header";
-import Insights from "./features/insights/Insights";
+import Impressum from "./Pages/Impressum";
+import Datenschutz from "./Pages/Datenschutz";
+import PageNotFound from "./Pages/PageNotFound";
 
 export default function App() {
   return (
-    <FewoProvider>
-      <Header />
-      <NavbarDesktop />
-      <Insights />
-      <CalendarPrices />
-      <Contact />
-      <Footer />
-    </FewoProvider>
+    <BrowserRouter>
+      <FewoProvider>
+        <Routes>
+          <Route index element={<Navigate replace to="/home" />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/impressum" element={<Impressum />} />
+          <Route path="/datenschutz" element={<Datenschutz />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </FewoProvider>
+    </BrowserRouter>
   );
 }
