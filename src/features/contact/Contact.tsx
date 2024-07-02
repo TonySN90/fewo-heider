@@ -9,9 +9,11 @@ function Contact() {
   return (
     <section ref={ref} style={sectionStyle} className=" py-10">
       <Title title="Kontakt" />
-      <div className="flex justify-center gap-6 w-[60%] max-w-[900px] mx-auto py-10">
-        <Map />
-        <Address />
+      <div className="w-full md:w-[95%] max-w-[1250px] py-10 mx-auto px-2">
+        <div className="w-full md:w-[70%] flex flex-col sm:flex-row justify-center gap-6 mx-auto">
+          <Map />
+          <Address />
+        </div>
       </div>
     </section>
   );

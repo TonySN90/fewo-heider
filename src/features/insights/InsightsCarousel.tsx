@@ -35,14 +35,14 @@ const theme = {
 
 function InsightsCarousel() {
   return (
-    <div>
+    <>
       <div className="text-center">
         <h3 className="text-2xl font-semibold mb-2 text-[2rem]">Einblicke</h3>
         <hr className="w-[3rem] h-[3px] bg-black m-auto mb-6" />
       </div>
       <div className="max-w-[70%] mx-auto">
         <Carousel
-          //   indicators={false}
+          // indicators={false}
           pauseOnHover
           slideInterval={7000}
           theme={theme}
@@ -56,7 +56,7 @@ function InsightsCarousel() {
           <img src="images/insights-slider/w2.webp" alt="..." />
         </Carousel>
       </div>
-    </div>
+    </>
   );
 }
 
