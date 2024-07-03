@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import MobileMenu from "./MobileMenu";
 
 function BurgerMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,22 +16,25 @@ function BurgerMenu() {
   }, [isOpen]);
 
   return (
-    <div
-      onClick={() => handleClick()}
-      className="fixed md:hidden top-3 right-4 bg-red-300 p-1 rounded-md z-[1000] cursor-pointer"
-    >
+    <>
       <div
-        className={`bar1 ${
-          isOpen ? "rotate-[-45deg] translate-y-[8px]" : ""
-        } ${barStyles}`}
-      ></div>
-      <div className={`bar2 ${isOpen ? "opacity-0" : ""} ${barStyles}`}></div>
-      <div
-        className={`bar3 ${
-          isOpen ? "rotate-[45deg] translate-y-[-8px]" : ""
-        } ${barStyles} ${barStyles}`}
-      ></div>
-    </div>
+        onClick={() => handleClick()}
+        className="fixed md:hidden top-3 right-4 bg-red-300 p-1 rounded-md z-[1000] cursor-pointer"
+      >
+        <div
+          className={`bar1 ${
+            isOpen ? "rotate-[-45deg] translate-y-[8px]" : ""
+          } ${barStyles}`}
+        ></div>
+        <div className={`bar2 ${isOpen ? "opacity-0" : ""} ${barStyles}`}></div>
+        <div
+          className={`bar3 ${
+            isOpen ? "rotate-[45deg] translate-y-[-8px]" : ""
+          } ${barStyles} ${barStyles}`}
+        ></div>
+      </div>
+      <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+    </>
   );
 }
 
