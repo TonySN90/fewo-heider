@@ -5,6 +5,7 @@
 :root {
   --color-bg-darkgray: #494949;
   --color-bg-lightgray: #fefefe;
+  --color-primary-red: #ff685d;
 }
 
 html,
@@ -50,106 +51,11 @@ th {
   }
 }
 
-.calendar__calendar-container {
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.calendar__month-container {
-  background-color: var(--color-bg-darkgray);
-  color: white;
-  padding: 0;
-}
-
-.calendar__calendar-container:not([data-scrollable])
-  .calendar__month-content[data-some-year]
-  span:nth-child(2) {
-  color: white;
-}
-
-.calendar__calendar-container:not([data-scrollable])
-  .calendar__month-content[data-some-month]
-  span:first-child {
-  color: white;
-}
-
-.calendar__days-container {
-  background-color: var(--color-bg-lightgray);
-  padding: 1rem;
-}
-
-.calendar__week-container {
-  background-color: var(--color-bg-darkgray);
-  color: white;
-  padding-inline: 1rem;
-}
-
-.calendar__week-content[data-weekend] {
-  color: #ff685d;
-}
-
-.calendar__day-today {
-  border: var(--color-bg-darkgray) 2px solid;
-}
-
-.calendar__day-content[data-reserved] {
-  color: white;
-}
-
-.calendar__day-reservation {
-  background-color: #ff685d;
-}
-
-/* .day {
-  position: relative;
-} */
-
-.half-start::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  /* background-color: #374151; */
-  /* background-color: rgb(255, 255, 255); */
-  /* clip-path: polygon(100% 0, 0 0, 0 100%); */
-}
-
-.half-end::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  /* background-color: rgba(255, 255, 255, 0.327); */
-  /* clip-path: polygon(100% 0, 100% 99%, 0 100%); */
-}
-
-.half-end {
-  /* border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px; */
-  /* margin-right: 2px; */
-  /* clip-path: polygon(0 0, 0% 100%, 100% 100%); */
-  /* background-color: white; */
-  /* color: #374151; */
-}
-
-.half-start {
-  /* border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px; */
-  /* margin-left: 2px; */
-  /* background-color: white; */
-  /* color: #374151; */
-}
-
 .start-date {
-  clip-path: polygon(51% 0, 100% 0, 100% 100%, 50% 100%, 0 50%);
+  /* clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%, 0 50%); */
+  clip-path: circle(63.1% at 63% 50%);
+  border: 1px solid var(--color-primary-red);
 }
 .end-date {
-  clip-path: polygon(0 0, 50% 0, 100% 50%, 50% 100%, 0 100%);
-}
-.date-both {
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  clip-path: circle(63.1% at 37% 50%);
 }

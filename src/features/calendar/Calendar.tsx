@@ -1,5 +1,3 @@
-import { Calendar } from "@demark-pro/react-booking-calendar";
-
 import "@demark-pro/react-booking-calendar/dist/react-booking-calendar.css";
 import { useFewoContext } from "../../contexts/FewoContext";
 import { useState } from "react";
@@ -12,55 +10,23 @@ import {
   isSameDay,
   addMonths,
   subMonths,
-  startOfWeek,
-  endOfWeek,
-  eachDayOfWeek,
-  addDays,
   getDay,
 } from "date-fns";
-import { IoChevronForwardSharp } from "react-icons/io5";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 function BookingCalendar() {
-  // const { bookings } = useFewoContext();
-
-  // console.log(bookings);
-
-  const bookings2 = [
-    {
-      startDate: new Date("2024-07-01T15:00:00.000Z"),
-      endDate: new Date("2024-07-06T10:00:00.000Z"), // Adjusted to include the end of the day
-    },
-    {
-      startDate: new Date("2024-07-07T15:00:00.000Z"), // Start of the next day
-      endDate: new Date("2024-07-10T10:00:00.000Z"),
-    },
-  ];
-
-  const bookings = [
-    { start: new Date(2024, 6, 19), end: new Date(2024, 6, 25) },
-    { start: new Date(2024, 6, 10), end: new Date(2024, 6, 16) },
-    { start: new Date(2024, 6, 8), end: new Date(2024, 6, 10) },
-    { start: new Date(2024, 6, 1), end: new Date(2024, 6, 7) },
-  ];
+  const { bookings } = useFewoContext();
 
   return (
     <div className="w-[100%] sm:w-[60%] md:w-[50%] lg:w-[30%]">
-      <Calendar
-        reserved={bookings2}
-        range={false}
-        protection={false}
-        options={{ locale: "de", weekStartsOn: 0, useAttributes: true }}
-      />
-
-      <Calendarr bookings={bookings} />
+      <Calendar bookings={bookings.sort((a, b) => b.startDate - a.startDate)} />
     </div>
   );
 }
 
 export default BookingCalendar;
 
-function Calendarr({ bookings }) {
+function Calendar({ bookings }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const start = startOfMonth(currentMonth);
@@ -75,122 +41,80 @@ function Calendarr({ bookings }) {
     setCurrentMonth(subMonths(currentMonth, 1));
   };
 
-  // const getBookingClass = (day) => {
-  //   for (let booking of bookings) {
-  //     if (isWithinInterval(day, { start: booking.start, end: booking.end })) {
-  //       if (isSameDay(day, booking.start)) {
-  //         return "bg-red-500 text-white half-start";
-  //       }
-  //       if (isSameDay(day, booking.end)) {
-  //         return "bg-red-500 text-white half-end";
-  //       }
-  //       return "bg-red-500 text-white";
-  //     }
-  //   }
-  //   return "";
-  // };
-
-  // function getBookingClass(day) {
-  //   for (const booking of bookings) {
-  //     if (day.getDate() == booking.start.getDate())
-  //       return "bg-red-500 text-white start-date";
-  //     if (day.getDate() == booking.end.getDate())
-  //       return "bg-red-500 text-white end-date";
-
-  //     // if (isWithinInterval(day, { start: booking.start, end: booking.end })) {
-  //     //   return "bg-red-500 text-white";
-  //     // }
-  //   }
-  // }
-
-  function getBookingClass(day) {
-    let classes = [];
-
+  function getBookingClass(day: Date) {
     for (const booking of bookings) {
-      if (booking.start.getDate() === day.getDate()) {
+      if (isSameDay(day, booking.startDate)) {
         for (const booking of bookings) {
-          if (booking.end.getDate() === day.getDate()) {
-            classes.push("bg-red-500 text-white date-both");
+          if (isSameDay(day, booking.endDate)) {
+            return "bg-color_red text-white";
           }
         }
-        // return "bg-red-500 text-white";
-        classes.push("bg-red-500 text-white end-date");
+        return "bg-color_red text-white start-date";
       }
-      if (booking.end.getDate() === day.getDate()) {
-        // console.log(day, "end");
-        // return "bg-red-500 text-white";
-        classes.push("bg-red-500 text-white start-date");
+      if (isSameDay(day, booking.endDate)) {
+        return "bg-color_red text-white end-date";
       }
 
-      // if (
-      //   booking.end.getDate() === day.getDate() &&
-      //   booking.start.getDate() === day.getDate()
-      // ) {
-      //   console.log("both");
-      // }
-      // if (day >= booking.start && day <= booking.end) {
-      //   classes.push("bg-red-500 text-white fuck");
-      // }
-
-      // if (
-      //   day.getFullYear() === booking.start.getFullYear() &&
-      //   day.getMonth() === booking.start.getMonth() &&
-      //   day.getDate() === booking.start.getDate()
-      // ) {
-      //   classes.push("bg-red-500 text-white start-date");
-      // }
-      // if (
-      //   day.getFullYear() === booking.end.getFullYear() &&
-      //   day.getMonth() === booking.end.getMonth() &&
-      //   day.getDate() === booking.end.getDate()
-      // ) {
-      //   classes.push("bg-red-500 text-white end-date");
-      // }
-
-      // if (day >= booking.start && day <= booking.end) {
-      //   classes.push("bg-red-500 text-white");
-      // }
+      if (
+        isWithinInterval(day, {
+          start: booking.startDate,
+          end: booking.endDate,
+        })
+      ) {
+        return "bg-color_red text-white";
+      }
     }
-
-    return classes.join(" ");
   }
 
-  const weekDays = Array.from({ length: 7 }, (_, i) =>
-    addDays(startOfWeek(start), i)
-  );
+  const dayStrings = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+
+  // const weekDays = Array.from({ length: 7 }, (_, i) =>
+  //   addDays(startOfWeek(start), i)
+  // );
+
   const startDayOfWeek = getDay(start);
 
+  function colorWeekend(index: number) {
+    if (index === 0 || index === 6) {
+      return "text-color_red";
+    }
+  }
+
   return (
-    <div className="bg-white p-4">
-      <div className="flex justify-between items-center">
-        <button onClick={handlePrevMonth} className="py-2 px-4 rounded">
-          <MdKeyboardArrowLeft className="text-slate-800 text-3xl" />
-        </button>
-        <h2 className="font-bold font-sans mb-4 text-center">
-          {format(currentMonth, "MMMM yyyy")}
-        </h2>
-        <button onClick={handleNextMonth} className="bg-blue-500py-2 px-4">
-          <MdKeyboardArrowRight className="text-slate-800 text-3xl" />
-        </button>
+    <div className="bg-white rounded-md overflow-hidden">
+      <div className="bg-color_bg_darkgray px-4 py-2 text-white">
+        <div className="flex justify-between items-center mb-1">
+          <button onClick={handlePrevMonth} className="py-2 px-4 rounded">
+            <MdKeyboardArrowLeft className="text-2xl" />
+          </button>
+          <h2 className=" font-sans text-center">
+            {format(currentMonth, "MMMM yyyy")}
+          </h2>
+          <button onClick={handleNextMonth} className="bg-blue-500py-2 px-4">
+            <MdKeyboardArrowRight className="text-2xl" />
+          </button>
+        </div>
+        <div className="grid grid-cols-7 gap-2 mb-2 text-sm">
+          {dayStrings.map((day, index) => (
+            <div
+              key={day}
+              className={`flex items-center justify-center ${colorWeekend(
+                index
+              )}`}
+            >
+              {day}
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="grid grid-cols-7 gap-2 mb-2">
-        {weekDays.map((day) => (
-          <div
-            key={day}
-            className="w-8 h-8 flex items-center justify-center font-semibold"
-          >
-            {format(day, "EEE")}
-          </div>
-        ))}
-      </div>
-      <div className="grid grid-cols-7">
+      <div className="grid grid-cols-7 p-4">
         {Array.from({ length: startDayOfWeek }).map((_, index) => (
-          <div key={index} className="w-8 h-8"></div>
+          <div key={index}></div>
         ))}
         {days.map((day) => (
           <div
             key={day}
-            className={`h-8 mb-2 flex items-center justify-center border-gray-300 relative ${getBookingClass(
+            className={`mb-2 flex items-center justify-center relative h-8 text-sm ${getBookingClass(
               day
             )}`}
           >
