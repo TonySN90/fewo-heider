@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MobileMenu from "./MobileMenu";
 
-function BurgerMenu() {
+function BurgerButton() {
   const [isOpen, setIsOpen] = useState(false);
 
   const barStyles =
@@ -19,7 +19,7 @@ function BurgerMenu() {
     <>
       <div
         onClick={() => handleClick()}
-        className="fixed md:hidden top-3 right-4 bg-red-300 p-1 rounded-md z-[1000] cursor-pointer"
+        className="fixed md:hidden top-3 right-4 bg-color_bg_lightgray p-1 rounded-md z-[1000] cursor-pointer"
       >
         <div
           className={`bar1 ${
@@ -38,4 +38,4 @@ function BurgerMenu() {
   );
 }
 
-export default BurgerMenu;
+export default BurgerButton;

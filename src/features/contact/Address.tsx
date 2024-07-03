@@ -1,6 +1,6 @@
 function Address() {
   return (
-    <article className="font-bold">
+    <article className="font-bold w-full md:w-1/4">
       <p>Lolita Heider</p>
       <p>Serams 8A</p>
       <p>18528 Zirkow/Serams</p>

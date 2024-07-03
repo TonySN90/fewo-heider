@@ -40,7 +40,7 @@ function InsightsCarousel() {
         <h3 className="text-2xl font-semibold mb-2 text-[2rem]">Einblicke</h3>
         <hr className="w-[3rem] h-[3px] bg-black m-auto mb-6" />
       </div>
-      <div className="max-w-[70%] mx-auto">
+      <div className="max-w-[95%] md:max-w-[70%] mx-auto">
         <Carousel
           // indicators={false}
           pauseOnHover

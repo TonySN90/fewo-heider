@@ -1,9 +1,7 @@
 function Description() {
   return (
-    <div className="space-y-4 max-w-[70%] mx-auto my-16 bg-white px-8 py-10 rounded-lg shadow-xl">
-      <h3 className="text-lg font-semibold text-center text-[1.7rem]">
-        Das Haus
-      </h3>
+    <div className="space-y-4 w-[95%] md:max-w-[70%] mx-auto my-16 bg-white px-8 py-10 rounded-lg shadow-xl">
+      <h3 className="font-semibold text-center text-[1.7rem]">Das Haus</h3>
       <p>
         Die Ferienwohnung befindet sich in einem Einfamilienhaus in ruhiger
         Umgebung in der Nähe vom Ostseebad Binz. Perfekt um schnell mit dem
@@ -11,7 +9,7 @@ function Description() {
         erwartet Sie mit: 60 km langen Sandstränden, weißer Kreideküste,
         wunderschöner Natur, die "Störtebeker Festspiele" und vieles mehr.
       </p>
-      <h3 className="text-lg font-semibold text-center text-[1.7rem]">
+      <h3 className="font-semibold text-center text-[1.7rem]">
         Details zum Wohnraum
       </h3>
       <p>
@@ -21,9 +19,7 @@ function Description() {
         gemütliche Sitzecke und lädt zu einem Glas Wein zum Ausklang des Tages
         ein.
       </p>
-      <h3 className="text-lg font-semibold text-center text-[1.7rem]">
-        Ausstattung
-      </h3>
+      <h3 className="font-semibold text-center text-[1.7rem]">Ausstattung</h3>
       <p>
         Kostenfreier Stellparkplatz direkt vor dem Haus, W-LAN, Radio mit
         CD-Player, Satelliten Fernsehen, Herd, Backofen, Kühlschrank mit

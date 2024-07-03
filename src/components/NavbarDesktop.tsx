@@ -3,7 +3,7 @@ function NavbarDesktop() {
     "top-0 cursor-pointer transition-all hover:translate-y-[-4px] hover:text-amber-500 ";
 
   return (
-    <nav className="h-[60px] sticky top-0 bg-white z-50">
+    <nav className="hidden md:block h-[60px] sticky top-0 bg-white z-50">
       <ul className="flex items-center justify-center h-full gap-10 uppercase shadow-lg shadow-stone-100">
         <li className={listElStyles}>
           <a href="#">Home</a>

@@ -1,9 +1,9 @@
 function Prices() {
   return (
-    <table className="w-[100%] sm:w-[60%] md:w-[50%] lg:w-[70%] text-white rounded-md overflow-hidden text-sm md:text-[15px]">
+    <table className="text-white rounded-md overflow-hidden text-sm lg:text-[15px] w-full lg:w-2/3">
       <thead>
-        <tr className=" bg-color_bg_darkgray">
-          <th className="font-semibold">
+        <tr className=" bg-color_bg_darkgray text-[14px]">
+          <th>
             Zeitraum <br />
             Saison 2024
           </th>
@@ -17,7 +17,7 @@ function Prices() {
           </th>
         </tr>
       </thead>
-      <tbody className="bg-color_bg_lightgray text-color_bg_darkgray font-semibold ">
+      <tbody className="bg-color_bg_lightgray text-color_bg_darkgray font-semibold h-[150px] sm:h-[200px]">
         <tr>
           <td>09.05.–30.06.</td>
           <td>90,00 €</td>

@@ -8,7 +8,7 @@ function HeaderBar() {
           <img className="w-[170px]" src="images/logo.png" alt="logo" />
         </Link>
       </div>
-      <div className="flex gap-10">
+      <div className="hidden md:visible md:flex gap-10">
         <div>Tel: 038393 31283</div>
         <div>E-Mail: fewo.heider@gmail.com</div>
       </div>

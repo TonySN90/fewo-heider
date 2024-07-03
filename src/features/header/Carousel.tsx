@@ -35,7 +35,7 @@ const theme = {
 
 export function HeaderCarousel() {
   return (
-    <div className="h-[500px]">
+    <div className="h-[250px]	sm:h-[400px] md:h-[500px]">
       <Carousel
         indicators={false}
         pauseOnHover

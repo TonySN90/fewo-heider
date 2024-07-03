@@ -18,7 +18,8 @@ function BookingCalendar() {
   const { bookings } = useFewoContext();
 
   return (
-    <div className="w-[100%] sm:w-[60%] md:w-[50%] lg:w-[30%]">
+    <div className="w-full lg:w-1/3">
+      {/* <div className="w-[100%] sm:w-[60%] md:w-[50%] lg:w-[30%]"> */}
       <Calendar bookings={bookings.sort((a, b) => b.startDate - a.startDate)} />
     </div>
   );
@@ -81,8 +82,8 @@ function Calendar({ bookings }) {
   }
 
   return (
-    <div className="bg-white rounded-md overflow-hidden">
-      <div className="bg-color_bg_darkgray px-4 py-2 text-white">
+    <div className="bg-color_bg_lightgray rounded-md overflow-hidden">
+      <div className="bg-color_bg_darkgray px-4 py-[2.5px] text-white">
         <div className="flex justify-between items-center mb-1">
           <button onClick={handlePrevMonth} className="py-2 px-4 rounded">
             <MdKeyboardArrowLeft className="text-2xl" />
