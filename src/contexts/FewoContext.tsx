@@ -25,7 +25,6 @@ function FewoProvider({ children }: { children: React.ReactNode }) {
           })) || [];
 
         setBookings(filteredDates);
-        console.log(fetchedBookings);
       } catch (error) {
         console.error(error);
       } finally {

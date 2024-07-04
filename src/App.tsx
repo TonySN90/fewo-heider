@@ -4,6 +4,7 @@ import { FewoProvider } from "./contexts/FewoContext";
 import Impressum from "./Pages/Impressum";
 import Datenschutz from "./Pages/Datenschutz";
 import PageNotFound from "./Pages/PageNotFound";
+import Cookiebot from "./components/Cookiebot";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/datenschutz" element={<Datenschutz />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
+        <Cookiebot />
       </FewoProvider>
     </BrowserRouter>
   );

@@ -6,9 +6,11 @@ function Impressum() {
     <>
       <HeaderBar />
       <section>
-        <div className="max-w-[1000px] m-auto px-4">
-          <h1 className="text-[3rem] font-bold font-sans mb-4">Impressum</h1>
-          <h2 className="text-[1.6rem] font-sans mb-2">
+        <div className="max-w-[1000px] m-auto p-4">
+          <h1 className="text-[1.6rem] md:text-[3rem] font-bold font-sans mb-4">
+            Impressum
+          </h1>
+          <h2 className="text-[1.2rem] md:text-[1.6rem] font-bold font-sans mb-2">
             Angaben gemäß § 5 DDG
           </h2>
           <div className="mb-4">
@@ -17,7 +19,9 @@ function Impressum() {
             <p>18528 Zirkow</p>
           </div>
 
-          <h2 className="text-[1.6rem] font-sans mb-2">Kontakt</h2>
+          <h2 className="text-[1.2rem] md:text-[1.6rem] font-bold font-sans mb-2">
+            Kontakt
+          </h2>
           <p className="mb-4">E-Mail: fewo.heider@gmail.com</p>
         </div>
       </section>

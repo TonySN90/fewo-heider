@@ -11,23 +11,47 @@ import {
   addMonths,
   subMonths,
   getDay,
+  subDays,
+  addDays,
 } from "date-fns";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { TBookings } from "../../types/fewoTypes";
 
 function BookingCalendar() {
   const { bookings } = useFewoContext();
+  const sortedBookings = bookings.sort(
+    (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+  );
 
   return (
     <div className="w-full lg:w-1/3">
-      {/* <div className="w-[100%] sm:w-[60%] md:w-[50%] lg:w-[30%]"> */}
-      <Calendar bookings={bookings.sort((a, b) => b.startDate - a.startDate)} />
+      <Calendar bookings={sortedBookings} />
     </div>
   );
 }
 
 export default BookingCalendar;
 
-function Calendar({ bookings }) {
+function getPreviousMonthDays(
+  startDayOfWeek: number,
+  startOfCurrentMonth: Date
+) {
+  const days = [];
+  for (let i = 0; i < startDayOfWeek; i++) {
+    days.unshift(subDays(startOfCurrentMonth, i + 1));
+  }
+  return days;
+}
+
+function getNextMonthDays(endDayOfWeek: number, endOfCurrentMonth: Date) {
+  const days = [];
+  for (let i = 0; i < 6 - endDayOfWeek; i++) {
+    days.push(addDays(endOfCurrentMonth, i + 1));
+  }
+  return days;
+}
+
+function Calendar({ bookings }: { bookings: TBookings }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const start = startOfMonth(currentMonth);
@@ -45,17 +69,11 @@ function Calendar({ bookings }) {
   function getBookingClass(day: Date) {
     for (const booking of bookings) {
       if (isSameDay(day, booking.startDate)) {
-        for (const booking of bookings) {
-          if (isSameDay(day, booking.endDate)) {
-            return "bg-color_red text-white";
-          }
-        }
-        return "bg-color_red text-white start-date";
+        return "text-white start-date";
       }
       if (isSameDay(day, booking.endDate)) {
-        return "bg-color_red text-white end-date";
+        return "text-white end-date";
       }
-
       if (
         isWithinInterval(day, {
           start: booking.startDate,
@@ -68,12 +86,11 @@ function Calendar({ bookings }) {
   }
 
   const dayStrings = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
-
-  // const weekDays = Array.from({ length: 7 }, (_, i) =>
-  //   addDays(startOfWeek(start), i)
-  // );
-
   const startDayOfWeek = getDay(start);
+  const endDayOfWeek = getDay(end);
+
+  const previousMonthDays = getPreviousMonthDays(startDayOfWeek, start);
+  const nextMonthDays = getNextMonthDays(endDayOfWeek, end);
 
   function colorWeekend(index: number) {
     if (index === 0 || index === 6) {
@@ -82,16 +99,16 @@ function Calendar({ bookings }) {
   }
 
   return (
-    <div className="bg-color_bg_lightgray rounded-md overflow-hidden">
-      <div className="bg-color_bg_darkgray px-4 py-[2.5px] text-white">
+    <div className="bg-color_bg_darkgray rounded-md overflow-hidden text-white">
+      <div className="bg-color_bg_darkgray px-4 py-[2.5px]">
         <div className="flex justify-between items-center mb-1">
-          <button onClick={handlePrevMonth} className="py-2 px-4 rounded">
+          <button onClick={handlePrevMonth} className="py-2 pr-4 rounded">
             <MdKeyboardArrowLeft className="text-2xl" />
           </button>
-          <h2 className=" font-sans text-center">
+          <h2 className="font-sans text-center">
             {format(currentMonth, "MMMM yyyy")}
           </h2>
-          <button onClick={handleNextMonth} className="bg-blue-500py-2 px-4">
+          <button onClick={handleNextMonth} className="py-2 pl-4">
             <MdKeyboardArrowRight className="text-2xl" />
           </button>
         </div>
@@ -109,13 +126,30 @@ function Calendar({ bookings }) {
         </div>
       </div>
       <div className="grid grid-cols-7 p-4">
-        {Array.from({ length: startDayOfWeek }).map((_, index) => (
-          <div key={index}></div>
+        {previousMonthDays.map((day, index) => (
+          <div
+            key={`prev-${index}`}
+            className={`mb-2 flex items-center justify-center relative h-8 text-sm text-gray-400 ${getBookingClass(
+              day
+            )}`}
+          >
+            {format(day, "d")}
+          </div>
         ))}
         {days.map((day) => (
           <div
-            key={day}
+            key={day.toISOString()}
             className={`mb-2 flex items-center justify-center relative h-8 text-sm ${getBookingClass(
+              day
+            )}`}
+          >
+            {format(day, "d")}
+          </div>
+        ))}
+        {nextMonthDays.map((day, index) => (
+          <div
+            key={`next-${index}`}
+            className={`mb-2 flex items-center justify-center relative h-8 text-sm text-gray-400 ${getBookingClass(
               day
             )}`}
           >

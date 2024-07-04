@@ -6,10 +6,10 @@ import "leaflet/dist/leaflet.css";
 function Map() {
   return (
     <MapContainer
-      className="w-full md:w-3/4 md:h-auto"
+      className="w-full md:w-3/4 h-[170px] sm:h-auto"
       center={[54.37735, 13.5902]}
       zoom={16}
-      scrollWheelZoom={false}
+      scrollWheelZoom={true}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -23,8 +23,3 @@ function Map() {
 }
 
 export default Map;
-
-// <iframe
-//   className="w-full md:w-3/4"
-//   src="https://www.openstreetmap.org/export/embed.html?bbox=13.588274717330934%2C54.37663002252498%2C13.592158555984499%2C54.37807977875707&amp;layer=mapnik&amp;marker=54.377354907040505%2C13.590216636657715"
-// ></iframe>

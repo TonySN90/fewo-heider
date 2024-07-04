@@ -14,7 +14,7 @@ function Footer() {
         </li>
       </ul>
       <p>
-        Made with <span className="text-color_red">🤍</span> by{" "}
+        Erstellt mit <span className="text-color_red">🤍</span> von{" "}
         <a
           className="text-color_red hover:text-yellow-400 transition-all"
           href="https://tonyheider.de"

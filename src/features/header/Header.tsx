@@ -3,7 +3,7 @@ import HeaderLayout from "./HeaderLayout";
 
 function Header() {
   return (
-    <header className="mx-auto bg-white ">
+    <header id="willkommen" className="mx-auto bg-white">
       <BurgerButton />
       <HeaderLayout />
     </header>
