@@ -1,0 +1,70 @@
+// ============================================================
+// LAYOUT
+// ============================================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.container {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $container-pad;
+
+  @include respond-to('sm') {
+    padding: 0 $space-4;
+  }
+}
+
+.section {
+  padding: $section-padding 0;
+
+  @include respond-to('md') {
+    padding: 3rem 0;
+  }
+
+  @include respond-to('sm') {
+    padding: 2.5rem 0;
+  }
+
+  &--alt {
+    background-color: $color-bg-alt;
+  }
+}
+
+// ============================================================
+// SCROLL-TO-TOP
+// ============================================================
+
+.scroll-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  background-color: $color-footer-top;
+  color: $color-white;
+  border-radius: 50%;
+  @include flex-center;
+  box-shadow: $shadow-md;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity $transition-normal, transform $transition-normal;
+  z-index: 100;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  &:hover {
+    background-color: #223d36;
+    transform: translateY(-2px);
+  }
+}

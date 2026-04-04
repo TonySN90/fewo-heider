@@ -1,0 +1,94 @@
+// ============================================================
+// ÜBER UNS / DIE WOHNUNG
+// ============================================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.about__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-16;
+  align-items: start;
+
+  @include respond-to('lg') {
+    gap: $space-10;
+  }
+
+  @include respond-to('md') {
+    grid-template-columns: 1fr;
+    gap: $space-10;
+  }
+}
+
+.about__text {
+  p {
+    font-size: $font-size-lg;
+    color: $color-text;
+    margin-bottom: $space-6;
+
+    @include respond-to('md') {
+      font-size: $font-size-base;
+    }
+  }
+
+  .about__intro {
+    font-size: $font-size-xl;
+    color: $color-dark;
+    font-style: italic;
+    border-left: 3px solid $color-primary;
+    padding-left: $space-6;
+    margin-bottom: $space-8;
+
+    @include respond-to('md') {
+      font-size: $font-size-lg;
+    }
+  }
+
+  .btn {
+    margin-top: $space-4;
+  }
+}
+
+.about__highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+
+  @include respond-to('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.highlight-card {
+  @include card;
+  padding: $space-6;
+  text-align: center;
+  transition: transform $transition-normal, box-shadow $transition-normal;
+  border: 1px solid $color-border;
+}
+
+.highlight-card__icon {
+  margin-bottom: $space-3;
+  line-height: 1;
+
+  .material-symbols-rounded {
+    font-size: 2.5rem;
+    color: $color-primary;
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 48;
+  }
+}
+
+.highlight-card h3 {
+  font-size: $font-size-base;
+  font-weight: 700;
+  margin-bottom: $space-2;
+  color: $color-dark;
+}
+
+.highlight-card p {
+  font-size: $font-size-sm;
+  color: $color-text-light;
+  margin: 0;
+  line-height: $line-height-normal;
+}

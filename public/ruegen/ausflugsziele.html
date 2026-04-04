@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ausflugsziele auf Rügen – von Binz und Sellin bis Kap Arkona und Sassnitz. Die schönsten Orte der Insel entdecken." />
+  <title>Ausflugsziele auf Rügen – Ferienwohnung Heider</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@300;400;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #3d7a6e; --primary-dark: #2e5f55; --secondary: #a8c5b5;
+      --dark: #263238; --text: #3d4f52; --text-light: #6b8088;
+      --bg: #f7faf8; --bg-alt: #edf3ef; --white: #ffffff; --border: #cfe0d8;
+      --footer-top: #2c4a42; --radius: 10px;
+      --shadow: 0 4px 16px rgba(0,0,0,0.10); --shadow-lg: 0 8px 32px rgba(0,0,0,0.13);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Open Sans', sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    p { margin-bottom: 0.75rem; } p:last-child { margin-bottom: 0; }
+
+    .site-nav { background: rgba(38,50,56,0.97); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 100; }
+    .site-nav__inner { max-width: 1290px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .site-nav__logo { font-family: 'Libre Baskerville', serif; color: var(--white); font-size: 1rem; }
+    .site-nav__logo span { color: var(--secondary); }
+    .site-nav__links { display: flex; gap: 1.5rem; }
+    .site-nav__links a { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.75); transition: color 0.2s; }
+    .site-nav__links a:hover { color: var(--secondary); }
+    @media (max-width: 600px) { .site-nav__links { display: none; } }
+
+    .page-hero { position: relative; height: 380px; overflow: hidden; }
+    .page-hero img { width: 100%; height: 100%; object-fit: cover; }
+    .page-hero__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(38,50,56,0.75) 0%, rgba(38,50,56,0.25) 60%); }
+    .page-hero__content { position: absolute; bottom: 2.5rem; left: 0; right: 0; padding: 0 1.5rem; max-width: 1290px; margin: 0 auto; }
+    .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: rgba(255,255,255,0.65); margin-bottom: 0.5rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.65); } .breadcrumb a:hover { color: var(--secondary); }
+    .page-hero h1 { font-family: 'Libre Baskerville', serif; font-size: 2.5rem; color: var(--white); }
+    .page-hero h1 em { color: var(--secondary); font-style: italic; }
+    @media (max-width: 600px) { .page-hero { height: 280px; } .page-hero h1 { font-size: 1.8rem; } }
+
+    .container { max-width: 1290px; margin: 0 auto; padding: 0 1.5rem; }
+    .content { padding: 3.5rem 0 5rem; }
+    .content__intro { max-width: 760px; margin: 0 auto 3rem; text-align: center; }
+    .content__intro h2 { font-family: 'Libre Baskerville', serif; font-size: 1.6rem; color: var(--dark); margin-bottom: 0.75rem; }
+    .content__intro p { color: var(--text-light); font-size: 1.05rem; }
+    .divider { width: 50px; height: 3px; background: var(--primary); border-radius: 2px; margin: 0 auto 1.5rem; }
+
+    .place-list { display: flex; flex-direction: column; gap: 2rem; }
+    .place { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .place:nth-child(even) { grid-template-columns: 1fr 320px; }
+    .place:nth-child(even) .place__img { order: 2; }
+    .place:nth-child(even) .place__body { order: 1; }
+    @media (max-width: 800px) { .place, .place:nth-child(even) { grid-template-columns: 1fr; } .place:nth-child(even) .place__img, .place:nth-child(even) .place__body { order: unset; } }
+    .place__img { overflow: hidden; min-height: 220px; }
+    .place__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .place:hover .place__img img { transform: scale(1.05); }
+    .place__body { padding: 1.75rem; display: flex; flex-direction: column; justify-content: center; }
+    .place__dist { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--primary); margin-bottom: 0.5rem; }
+    .place__title { font-family: 'Libre Baskerville', serif; font-size: 1.4rem; color: var(--dark); margin-bottom: 0.75rem; }
+    .place__text { font-size: 0.925rem; color: var(--text); line-height: 1.75; }
+    .place__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+    .tag { font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 20px; background: var(--bg-alt); color: var(--text-light); border: 1px solid var(--border); }
+
+    .cta-strip { background: var(--primary); padding: 3rem 1.5rem; text-align: center; margin-top: 5rem; }
+    .cta-strip h2 { font-family: 'Libre Baskerville', serif; font-size: 1.6rem; color: var(--white); margin-bottom: 0.5rem; }
+    .cta-strip p { color: rgba(255,255,255,0.8); margin-bottom: 1.25rem; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; border-radius: 50px; font-weight: 600; font-size: 0.9rem; transition: all 0.25s; }
+    .btn--white { background: var(--white); color: var(--primary); } .btn--white:hover { background: var(--bg-alt); transform: translateY(-1px); }
+    .btn--outline { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,0.5); margin-left: 0.75rem; } .btn--outline:hover { background: rgba(255,255,255,0.1); }
+
+    footer { background: var(--footer-top); padding: 2rem 1.5rem; text-align: center; }
+    footer p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+    footer a { color: rgba(255,255,255,0.6); transition: color 0.2s; } footer a:hover { color: var(--secondary); }
+    .footer__legal { display: flex; gap: 1.5rem; justify-content: center; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav__inner">
+    <a href="/" class="site-nav__logo">Ferienwohnung<span>Heider</span></a>
+    <div class="site-nav__links">
+      <a href="/">Startseite</a>
+      <a href="/ruegen-erleben.html">Rügen erleben</a>
+      <a href="/#kontakt">Anfragen</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <img src="/images/kap_arkona.jpg" alt="Ausflugsziele auf Rügen" />
+  <div class="page-hero__overlay"></div>
+  <div class="page-hero__content container">
+    <div class="breadcrumb">
+      <a href="/">Startseite</a> <span>/</span>
+      <a href="/ruegen-erleben.html">Rügen erleben</a> <span>/</span>
+      <span>Ausflugsziele</span>
+    </div>
+    <h1>Ausflugsziele auf <em>Rügen</em></h1>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container">
+    <div class="content__intro">
+      <h2>Die schönsten Orte der Insel</h2>
+      <div class="divider"></div>
+      <p>Rügen begeistert mit einer Vielfalt an Ausflugszielen – elegante Seebäder, wilde Küstenabschnitte und malerische Fischerdörfer liegen nah beieinander.</p>
+    </div>
+
+    <div class="place-list">
+
+      <div class="place">
+        <div class="place__img">
+          <img src="/images/binz.jpg" alt="Ostseebad Binz" loading="lazy" />
+        </div>
+        <div class="place__body">
+          <p class="place__dist"><span class="material-symbols-rounded" style="font-size:0.9rem;">location_on</span> ca. 3 km entfernt</p>
+          <h2 class="place__title">Ostseebad Binz</h2>
+          <p class="place__text">Binz ist das größte und bekannteste Seebad Rügens. Die 3,2 km lange, lindengesäumte Strandpromenade mit ihren weißen Bädervillen im Stil der Jahrhundertwende verbreitet ein unvergleichliches Flair. Die 370 m lange Seebrücke mit Restaurant und Tauchgondel lädt zum Bummeln und Staunen ein. Zahlreiche Restaurants, Cafés und Boutiquen machen Binz zum geselligen Mittelpunkt der Insel.</p>
+          <div class="place__tags">
+            <span class="tag">Strandpromenade</span>
+            <span class="tag">Seebrücke</span>
+            <span class="tag">Bäderarchitektur</span>
+            <span class="tag">Gastronomie</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="place">
+        <div class="place__img">
+          <img src="/images/sellin.jpg" alt="Ostseebad Sellin" loading="lazy" />
+        </div>
+        <div class="place__body">
+          <p class="place__dist"><span class="material-symbols-rounded" style="font-size:0.9rem;">location_on</span> ca. 15 km entfernt</p>
+          <h2 class="place__title">Ostseebad Sellin</h2>
+          <p class="place__text">Sellin besticht durch sein elegantes Ambiente und die 394 m lange Seebrücke – die längste auf Rügen. Mit Restaurant, Tauchgondel und Bootsanleger ist sie ein Erlebnis für sich. Die typische weiße Bäderarchitektur, hübsche Villen und der weitläufige Strand machen Sellin zu einem der schönsten Seebäder der Insel.</p>
+          <div class="place__tags">
+            <span class="tag">Längste Seebrücke Rügens</span>
+            <span class="tag">Bäderarchitektur</span>
+            <span class="tag">Strand</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="place">
+        <div class="place__img">
+          <img src="/images/kap_arkona.jpg" alt="Kap Arkona" loading="lazy" />
+        </div>
+        <div class="place__body">
+          <p class="place__dist"><span class="material-symbols-rounded" style="font-size:0.9rem;">location_on</span> ca. 45 km entfernt</p>
+          <h2 class="place__title">Kap Arkona</h2>
+          <p class="place__text">Die nördlichste Spitze Rügens ist ein dramatisches Naturspektakel: 45 m hohe Kreidefelsen fallen steil ins Meer. Drei historische Leuchttürme – darunter der von Schinkel entworfene Backsteinturm von 1827 – überragen die Landschaft. Die benachbarte slawische Tempelburg Jaromarsburg aus dem 6. Jahrhundert erzählt von der vorchristlichen Geschichte der Insel.</p>
+          <div class="place__tags">
+            <span class="tag">Leuchttürme</span>
+            <span class="tag">Kreidefelsen</span>
+            <span class="tag">Jaromarsburg</span>
+            <span class="tag">Nordspitze Rügens</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="place">
+        <div class="place__img">
+          <img src="/images/sassnitz_leuchtturm.jpg" alt="Sassnitz Hafen" loading="lazy" />
+        </div>
+        <div class="place__body">
+          <p class="place__dist"><span class="material-symbols-rounded" style="font-size:0.9rem;">location_on</span> ca. 25 km entfernt</p>
+          <h2 class="place__title">Sassnitz – Hafenstadt mit Flair</h2>
+          <p class="place__text">Sassnitz ist die nördlichste Stadt Rügens und bietet mit ihrem historischen Fischerhafen und dem Stadthafen echtes maritimes Flair. Eine 500 m lange Steinmole mit Leuchtturm lädt zum Spaziergang ein. Fähren in die skandinavischen Länder legen hier ab, und das U-Boot-Museum HMS Otus sorgt für ein besonderes Erlebnis.</p>
+          <div class="place__tags">
+            <span class="tag">Fischerhafen</span>
+            <span class="tag">U-Boot-Museum</span>
+            <span class="tag">Fähren nach Schweden</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="place">
+        <div class="place__img">
+          <img src="/images/putbus_see.png" alt="Putbus Circus" loading="lazy" />
+        </div>
+        <div class="place__body">
+          <p class="place__dist"><span class="material-symbols-rounded" style="font-size:0.9rem;">location_on</span> ca. 20 km entfernt</p>
+          <h2 class="place__title">Putbus – Die Weiße Stadt</h2>
+          <p class="place__text">Putbus wurde 1810 von Fürst Malte zu Putbus als klassizistische Residenzstadt geplant. Das Herzstück ist der einzigartige Circus – ein kreisrunder Platz mit weißen Häusern, von dem acht Alleen sternförmig abgehen. Ein 21 m hoher Obelisk mit Fürstenkrone krönt das Zentrum. Der weitläufige Schlosspark lädt zu Spaziergängen ein.</p>
+          <div class="place__tags">
+            <span class="tag">Klassizismus</span>
+            <span class="tag">Circus Platz</span>
+            <span class="tag">Schlosspark</span>
+            <span class="tag">Rasender Roland</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2>All das direkt vor der Haustür</h2>
+  <p>Unsere Ferienwohnung liegt zentral – perfekt für Tagesausflüge zu allen Ausflugszielen Rügens.</p>
+  <a href="/#kontakt" class="btn btn--white"><span class="material-symbols-rounded">mail</span> Jetzt anfragen</a>
+  <a href="/ruegen-erleben.html" class="btn btn--outline">Alle Kategorien</a>
+</div>
+
+<footer>
+  <p>© 2026 Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <nav class="footer__legal">
+    <a href="/impressum.html">Impressum</a>
+    <a href="/datenschutz.html">Datenschutz</a>
+  </nav>
+</footer>
+
+</body>
+</html>

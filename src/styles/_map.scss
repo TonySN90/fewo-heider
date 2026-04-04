@@ -1,0 +1,169 @@
+// ============================================================
+// ANREISE / KARTE
+// ============================================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.map-section__layout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: $space-12;
+  align-items: start;
+
+  @include respond-to('lg') {
+    grid-template-columns: 1fr;
+    gap: $space-8;
+  }
+}
+
+.map-section__address {
+  h3 {
+    font-size: $font-size-2xl;
+    color: $color-dark;
+    margin-bottom: $space-5;
+  }
+
+  address {
+    background: $color-white;
+    border: 1px solid $color-border;
+    border-radius: $border-radius;
+    padding: $space-6;
+    margin-bottom: $space-6;
+    box-shadow: $shadow-sm;
+
+    p {
+      margin-bottom: $space-2;
+      font-size: $font-size-base;
+      color: $color-text;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .address__name {
+      font-weight: 700;
+      font-size: $font-size-lg;
+      color: $color-dark;
+    }
+  }
+}
+
+.address__contact {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  margin-bottom: $space-6;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  font-size: $font-size-base;
+  color: $color-text;
+  padding: $space-3 $space-5;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  transition: all $transition-fast;
+  text-decoration: none;
+
+  &:hover {
+    border-color: $color-primary;
+    color: $color-primary;
+    box-shadow: $shadow-sm;
+    transform: translateX(3px);
+  }
+}
+
+.contact-link__icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  color: $color-primary;
+}
+
+.address__hints {
+  h4 {
+    font-size: $font-size-base;
+    color: $color-dark;
+    margin-bottom: $space-3;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: $space-2;
+      font-size: $font-size-sm;
+      color: $color-text;
+      line-height: $line-height-normal;
+
+      .material-symbols-rounded {
+        font-size: 1.1rem;
+        color: $color-primary;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+// Leaflet Karte
+.map-section__map {
+  border-radius: $border-radius;
+  overflow: hidden;
+  box-shadow: $shadow-lg;
+  border: 1px solid $color-border;
+}
+
+#map {
+  height: 480px;
+  width: 100%;
+
+  @include respond-to('md') {
+    height: 350px;
+  }
+
+  @include respond-to('sm') {
+    height: 280px;
+  }
+}
+
+// Leaflet Custom Popup
+.leaflet-popup-content-wrapper {
+  border-radius: $border-radius !important;
+  box-shadow: $shadow-lg !important;
+}
+
+.map-popup {
+  font-family: $font-body;
+  padding: $space-2;
+
+  h4 {
+    font-family: $font-heading;
+    font-size: $font-size-base;
+    color: $color-dark;
+    margin-bottom: $space-2;
+  }
+
+  p {
+    font-size: $font-size-sm;
+    color: $color-text;
+    margin-bottom: $space-1;
+    line-height: $line-height-normal;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  a {
+    color: $color-primary;
+    text-decoration: underline;
+  }
+}

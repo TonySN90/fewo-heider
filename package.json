@@ -1,0 +1,21 @@
+{
+  "name": "fewo-heider-2026",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ferienwohnung Heider – Rügen",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "fslightbox": "^3.7.5",
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.14",
+    "sass": "^1.77.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
+  }
+}

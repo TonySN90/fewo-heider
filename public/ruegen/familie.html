@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Rügen für die ganze Familie – Dinosaurierland, Rasender Roland, Karls Erlebnis-Dorf, Strände und mehr." />
+  <title>Rügen für die ganze Familie – Ferienwohnung Heider</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@300;400;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #3d7a6e; --primary-dark: #2e5f55; --secondary: #a8c5b5;
+      --dark: #263238; --text: #3d4f52; --text-light: #6b8088;
+      --bg: #f7faf8; --bg-alt: #edf3ef; --white: #ffffff; --border: #cfe0d8;
+      --footer-top: #2c4a42; --radius: 10px;
+      --shadow: 0 4px 16px rgba(0,0,0,0.10); --shadow-lg: 0 8px 32px rgba(0,0,0,0.13);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Open Sans', sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    p { margin-bottom: 0.75rem; } p:last-child { margin-bottom: 0; }
+
+    .site-nav { background: rgba(38,50,56,0.97); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 100; }
+    .site-nav__inner { max-width: 1290px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .site-nav__logo { font-family: 'Libre Baskerville', serif; color: var(--white); font-size: 1rem; }
+    .site-nav__logo span { color: var(--secondary); }
+    .site-nav__links { display: flex; gap: 1.5rem; }
+    .site-nav__links a { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.75); transition: color 0.2s; }
+    .site-nav__links a:hover { color: var(--secondary); }
+    @media (max-width: 600px) { .site-nav__links { display: none; } }
+
+    .page-hero { position: relative; height: 380px; overflow: hidden; }
+    .page-hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
+    .page-hero__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(38,50,56,0.75) 0%, rgba(38,50,56,0.2) 60%); }
+    .page-hero__content { position: absolute; bottom: 2.5rem; left: 0; right: 0; padding: 0 1.5rem; max-width: 1290px; margin: 0 auto; }
+    .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: rgba(255,255,255,0.65); margin-bottom: 0.5rem; }
+    .breadcrumb a { color: rgba(255,255,255,0.65); } .breadcrumb a:hover { color: var(--secondary); }
+    .page-hero h1 { font-family: 'Libre Baskerville', serif; font-size: 2.5rem; color: var(--white); line-height: 1.2; }
+    .page-hero h1 em { color: var(--secondary); font-style: italic; }
+    @media (max-width: 600px) { .page-hero { height: 280px; } .page-hero h1 { font-size: 1.8rem; } }
+
+    .container { max-width: 1290px; margin: 0 auto; padding: 0 1.5rem; }
+    .content { padding: 3.5rem 0 5rem; }
+    .section-intro { max-width: 760px; margin: 0 auto 3rem; text-align: center; }
+    .section-intro h2 { font-family: 'Libre Baskerville', serif; font-size: 1.6rem; color: var(--dark); margin-bottom: 0.75rem; }
+    .section-intro p { color: var(--text-light); font-size: 1.05rem; }
+    .divider { width: 50px; height: 3px; background: var(--primary); border-radius: 2px; margin: 0 auto 1.5rem; }
+
+    /* Big Feature Cards */
+    .features { display: flex; flex-direction: column; gap: 1.75rem; }
+    .feature { display: grid; grid-template-columns: 380px 1fr; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .feature--rev { grid-template-columns: 1fr 380px; }
+    .feature--rev .feature__img { order: 2; }
+    .feature--rev .feature__body { order: 1; }
+    @media (max-width: 800px) { .feature, .feature--rev { grid-template-columns: 1fr; } .feature--rev .feature__img, .feature--rev .feature__body { order: unset; } }
+    .feature__img { overflow: hidden; min-height: 240px; }
+    .feature__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .feature:hover .feature__img img { transform: scale(1.05); }
+    .feature__body { padding: 2rem 2.25rem; display: flex; flex-direction: column; justify-content: center; }
+    .feature__age { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--primary); margin-bottom: 0.5rem; }
+    .feature__title { font-family: 'Libre Baskerville', serif; font-size: 1.4rem; color: var(--dark); margin-bottom: 0.75rem; }
+    .feature__text { font-size: 0.925rem; color: var(--text); line-height: 1.75; }
+    .feature__highlights { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag { font-size: 0.7rem; font-weight: 600; padding: 0.25rem 0.65rem; border-radius: 20px; background: var(--bg-alt); color: var(--text-light); border: 1px solid var(--border); }
+    .feature__info { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .info-item { display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-light); }
+    .info-item .material-symbols-rounded { font-size: 0.95rem; color: var(--primary); }
+
+    /* Beach Section */
+    .beach-section { margin-top: 3.5rem; }
+    .beach-section h2 { font-family: 'Libre Baskerville', serif; font-size: 1.4rem; color: var(--dark); margin-bottom: 1.25rem; text-align: center; }
+    .beach-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+    @media (max-width: 600px) { .beach-grid { grid-template-columns: 1fr; } }
+    .beach-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: flex; }
+    .beach-card__icon { width: 60px; display: flex; align-items: center; justify-content: center; background: var(--bg-alt); flex-shrink: 0; }
+    .beach-card__icon .material-symbols-rounded { font-size: 1.75rem; color: var(--primary); font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .beach-card__body { padding: 1.1rem 1.25rem; }
+    .beach-card__title { font-weight: 700; font-size: 0.925rem; color: var(--dark); margin-bottom: 0.3rem; }
+    .beach-card__text { font-size: 0.825rem; color: var(--text-light); line-height: 1.55; }
+
+    /* Tip Box */
+    .tip-box { background: var(--bg-alt); border: 1px solid var(--border); border-left: 4px solid var(--primary); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-top: 2.5rem; }
+    .tip-box__title { font-weight: 700; color: var(--dark); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; }
+    .tip-box p { font-size: 0.9rem; color: var(--text); margin: 0; }
+
+    .cta-strip { background: var(--primary); padding: 3rem 1.5rem; text-align: center; margin-top: 5rem; }
+    .cta-strip h2 { font-family: 'Libre Baskerville', serif; font-size: 1.6rem; color: var(--white); margin-bottom: 0.5rem; }
+    .cta-strip p { color: rgba(255,255,255,0.8); margin-bottom: 1.25rem; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; border-radius: 50px; font-weight: 600; font-size: 0.9rem; transition: all 0.25s; }
+    .btn--white { background: var(--white); color: var(--primary); } .btn--white:hover { background: var(--bg-alt); }
+    .btn--outline { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,0.5); margin-left: 0.75rem; }
+
+    footer { background: var(--footer-top); padding: 2rem 1.5rem; text-align: center; }
+    footer p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+    footer a { color: rgba(255,255,255,0.6); transition: color 0.2s; } footer a:hover { color: var(--secondary); }
+    .footer__legal { display: flex; gap: 1.5rem; justify-content: center; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav__inner">
+    <a href="/" class="site-nav__logo">Ferienwohnung<span>Heider</span></a>
+    <div class="site-nav__links">
+      <a href="/">Startseite</a>
+      <a href="/ruegen-erleben.html">Rügen erleben</a>
+      <a href="/#kontakt">Anfragen</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <img src="https://images.unsplash.com/photo-1526958097901-5e6d742d3371?w=1200&q=80" alt="Rügen für die ganze Familie" />
+  <div class="page-hero__overlay"></div>
+  <div class="page-hero__content container">
+    <div class="breadcrumb">
+      <a href="/">Startseite</a> <span>/</span>
+      <a href="/ruegen-erleben.html">Rügen erleben</a> <span>/</span>
+      <span>Familie</span>
+    </div>
+    <h1>Rügen für die ganze <em>Familie</em></h1>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container">
+    <div class="section-intro">
+      <h2>Unvergessliche Erlebnisse für Klein und Groß</h2>
+      <div class="divider"></div>
+      <p>Rügen bietet Familien eine schier unerschöpfliche Auswahl an Aktivitäten – von Dino-Abenteuern und Dampflok-Fahrten bis zu endlosen Sandstränden mit flachem Wasser.</p>
+    </div>
+
+    <div class="features">
+
+      <div class="feature">
+        <div class="feature__img">
+          <img src="/images/dinosaurier.jpg" alt="Dinosaurierland Glowe" loading="lazy" />
+        </div>
+        <div class="feature__body">
+          <p class="feature__age"><span class="material-symbols-rounded" style="font-size:0.9rem;">child_care</span> Ab 3 Jahren</p>
+          <h2 class="feature__title">Dinosaurierland Glowe</h2>
+          <p class="feature__text">Auf einem 1,5 km langen Erlebnispfad begegnen Kinder über 120 lebensgroßen Dinosaurier-Modellen in natürlicher Umgebung. Ob riesiger T-Rex oder imposanter Brachiosaurus – die detailgetreuen Nachbauten begeistern Kinder und Erwachsene gleichermaßen. Eine interaktive Fossilien-Ausgrabungsstätte rundet das prähistorische Erlebnis ab.</p>
+          <div class="feature__highlights">
+            <span class="tag">120+ Dino-Modelle</span>
+            <span class="tag">1,5 km Erlebnispfad</span>
+            <span class="tag">Fossilien ausgraben</span>
+          </div>
+          <div class="feature__info">
+            <span class="info-item"><span class="material-symbols-rounded">schedule</span> Apr–Okt tägl. 10–17 Uhr</span>
+            <span class="info-item"><span class="material-symbols-rounded">location_on</span> Glowe, ca. 20 km</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature feature--rev">
+        <div class="feature__img">
+          <img src="/images/erdbeeren.png" alt="Karls Erlebnis-Dorf Zirkow" loading="lazy" />
+        </div>
+        <div class="feature__body">
+          <p class="feature__age"><span class="material-symbols-rounded" style="font-size:0.9rem;">family_restroom</span> Alle Altersgruppen</p>
+          <h2 class="feature__title">Karls Erlebnis-Dorf Zirkow</h2>
+          <p class="feature__text">Direkt in unserer Nachbarschaft befindet sich das beliebte Karls Erlebnis-Dorf! Mit über 40 Attraktionen – vom Riesentrampolin über Strohparcours und Kinderbauernhof bis hin zu Ponyreiten – ist hier für jeden etwas dabei. Das Tobeland bietet auch bei schlechtem Wetter viel Spaß. Das Erdbeerpflücken ist ein Highlight der Saison.</p>
+          <div class="feature__highlights">
+            <span class="tag">40+ Attraktionen</span>
+            <span class="tag">Freier Eintritt</span>
+            <span class="tag">Schlechtwetter geeignet</span>
+            <span class="tag">Direkt in Zirkow</span>
+          </div>
+          <div class="feature__info">
+            <span class="info-item"><span class="material-symbols-rounded">payments</span> Kostenloser Eintritt</span>
+            <span class="info-item"><span class="material-symbols-rounded">location_on</span> Zirkow – direkt nebenan</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature__img">
+          <img src="/images/rasender_roland.jpg" alt="Rasender Roland" loading="lazy" />
+        </div>
+        <div class="feature__body">
+          <p class="feature__age"><span class="material-symbols-rounded" style="font-size:0.9rem;">train</span> Für alle</p>
+          <h2 class="feature__title">Rasender Roland</h2>
+          <p class="feature__text">Die historische Schmalspurbahn „Rügensche Bäderbahn" fährt seit über 100 Jahren über die Insel. Auf 24,2 km zwischen Putbus und Göhren schnauft die Dampflok durch Wälder, Wiesen und Küstendörfer. Für Kinder ist die Fahrt im alten Waggon ein unvergessliches Abenteuer – für Erwachsene ein Stück lebendige Eisenbahngeschichte.</p>
+          <div class="feature__highlights">
+            <span class="tag">24 km Strecke</span>
+            <span class="tag">Historische Dampflok</span>
+            <span class="tag">ca. 1 Std. Fahrt</span>
+          </div>
+          <div class="feature__info">
+            <span class="info-item"><span class="material-symbols-rounded">location_on</span> Start: Putbus, ca. 20 km</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature feature--rev">
+        <div class="feature__img">
+          <img src="/images/u-boot.jpg" alt="U-Boot-Museum Sassnitz" loading="lazy" />
+        </div>
+        <div class="feature__body">
+          <p class="feature__age"><span class="material-symbols-rounded" style="font-size:0.9rem;">anchor</span> Ab 6 Jahren</p>
+          <h2 class="feature__title">U-Boot HMS Otus – Sassnitz</h2>
+          <p class="feature__text">Im Hafen von Sassnitz liegt ein echtes britisches U-Boot der Oberon-Klasse, das von Besuchern begehbar ist. Enge Gänge, authentische Ausstattung und originalgetreue Geräuschkulisse tauchen Groß und Klein in die Welt unter Wasser ein. Geführte Touren erklären spannend die Geschichte des Fahrzeugs aus dem Falklandkrieg.</p>
+          <div class="feature__highlights">
+            <span class="tag">Begehbares U-Boot</span>
+            <span class="tag">Geführte Touren</span>
+            <span class="tag">Ganzjährig geöffnet</span>
+          </div>
+          <div class="feature__info">
+            <span class="info-item"><span class="material-symbols-rounded">payments</span> 7 € Erw. / 3 € Kinder</span>
+            <span class="info-item"><span class="material-symbols-rounded">location_on</span> Sassnitz, ca. 25 km</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Familienstrände -->
+    <div class="beach-section">
+      <h2>Die besten Familienstrände</h2>
+      <div class="beach-grid">
+        <div class="beach-card">
+          <div class="beach-card__icon"><span class="material-symbols-rounded">beach_access</span></div>
+          <div class="beach-card__body">
+            <p class="beach-card__title">Strand Schaabe</p>
+            <p class="beach-card__text">12 km feinsandiger Strand mit flachem Wasser – ideal für Kleinkinder. Ruhig, naturbelassen und einer der längsten Strände Deutschlands.</p>
+          </div>
+        </div>
+        <div class="beach-card">
+          <div class="beach-card__icon"><span class="material-symbols-rounded">beach_access</span></div>
+          <div class="beach-card__body">
+            <p class="beach-card__title">Strand Binz</p>
+            <p class="beach-card__text">3,2 km Promenadenstrand mit allem Komfort: Strandkörbe, Restaurants, Spielplätze und die berühmte Seebrücke – 3 km von unserer Ferienwohnung.</p>
+          </div>
+        </div>
+        <div class="beach-card">
+          <div class="beach-card__icon"><span class="material-symbols-rounded">waves</span></div>
+          <div class="beach-card__body">
+            <p class="beach-card__title">Strand Sellin</p>
+            <p class="beach-card__text">Ruhigerer Strand mit flachem Einstieg und der beeindruckenden Seebrücke. Besonders schön für Abendausflüge mit Blick auf den Sonnenuntergang.</p>
+          </div>
+        </div>
+        <div class="beach-card">
+          <div class="beach-card__icon"><span class="material-symbols-rounded">sailing</span></div>
+          <div class="beach-card__body">
+            <p class="beach-card__title">Wassersport & Bootstouren</p>
+            <p class="beach-card__text">Kanu, Stand-Up-Paddling, Segelkurse und Bootsausflüge entlang der Kreideküste – für aktive Familien gibt es reichlich Angebote auf und im Wasser.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <p class="tip-box__title"><span class="material-symbols-rounded" style="color:var(--primary);font-size:1.1rem;">lightbulb</span> Tipp: Karls Erlebnis-Dorf liegt direkt in Zirkow</p>
+      <p>Als Gast unserer Ferienwohnung sind Sie nur wenige Gehminuten vom Karls Erlebnis-Dorf entfernt – kostenloser Eintritt und 40+ Attraktionen direkt vor der Haustür. Perfekt für Regentage oder einen spontanen Nachmittagsausflug.</p>
+    </div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2>Familienurlaub auf Rügen</h2>
+  <p>Buchen Sie Ihre Ferienwohnung – zentral gelegen für alle Familienattraktionen der Insel.</p>
+  <a href="/#kontakt" class="btn btn--white"><span class="material-symbols-rounded">mail</span> Jetzt anfragen</a>
+  <a href="/ruegen-erleben.html" class="btn btn--outline">Alle Kategorien</a>
+</div>
+
+<footer>
+  <p>© 2026 Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <nav class="footer__legal">
+    <a href="/impressum.html">Impressum</a>
+    <a href="/datenschutz.html">Datenschutz</a>
+  </nav>
+</footer>
+
+</body>
+</html>
