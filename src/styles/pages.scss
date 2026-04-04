@@ -1,0 +1,9 @@
+// ============================================================
+// PAGES.SCSS – Entry-Point für statische Unterseiten
+// Wird von Vite als eigenständige pages.css kompiliert.
+// ============================================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'reset';
+@use 'subpages';
