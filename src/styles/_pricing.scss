@@ -279,6 +279,14 @@
   font-weight: 500;
   position: relative;
 
+  &__num {
+    position: absolute;
+    inset: 0;
+    @include flex-center;
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
   &--empty {
     background: transparent;
   }
@@ -312,9 +320,20 @@
       rgba($color-footer-top, 0.1) 50%,
       $color-primary 50%
     );
-    color: $color-text;
 
     &::after { display: none; }
+
+    .cal-day__num--main {
+      // Weiß, nur auf dem grünen Dreieck (unten rechts) sichtbar
+      color: $color-white;
+      clip-path: polygon(100% 0%, 100% 100%, 0% 100%);
+    }
+
+    .cal-day__num--alt {
+      // Dunkel, nur auf dem grauen Dreieck (oben links) sichtbar
+      color: $color-text;
+      clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
+    }
   }
 
   &--check-out {
@@ -323,9 +342,20 @@
       $color-primary 50%,
       rgba($color-footer-top, 0.1) 50%
     );
-    color: $color-white;
 
     &::after { display: none; }
+
+    .cal-day__num--main {
+      // Weiß, nur auf dem grünen Dreieck (unten links) sichtbar
+      color: $color-white;
+      clip-path: polygon(0% 0%, 0% 100%, 100% 100%);
+    }
+
+    .cal-day__num--alt {
+      // Dunkel, nur auf dem grauen Dreieck (oben rechts) sichtbar
+      color: $color-text;
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+    }
   }
 
   &--today {

@@ -121,7 +121,26 @@ function renderMonth(year: number, month: number): HTMLElement {
     }
 
     dayEl.className = classes.join(' ');
-    dayEl.textContent = String(day);
+
+    const checkIn  = isCheckIn(date);
+    const checkOut = isCheckOut(date);
+
+    if ((checkIn || checkOut) && !(checkIn && checkOut) && !(date < today && !isSameDay(date, today))) {
+      // Hauptzahl (weiß auf grünem Bereich)
+      const numMain = document.createElement('span');
+      numMain.className = 'cal-day__num cal-day__num--main';
+      numMain.textContent = String(day);
+
+      // Zweite Zahl (dunkel auf grauem Bereich)
+      const numAlt = document.createElement('span');
+      numAlt.className = 'cal-day__num cal-day__num--alt';
+      numAlt.textContent = String(day);
+
+      dayEl.appendChild(numMain);
+      dayEl.appendChild(numAlt);
+    } else {
+      dayEl.textContent = String(day);
+    }
 
     if (isBooked(date)) {
       dayEl.setAttribute('title', 'Belegt');
