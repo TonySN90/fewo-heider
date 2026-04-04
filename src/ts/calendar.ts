@@ -8,14 +8,18 @@ interface BookedRange {
   to: Date;
 }
 
+// Hilfsfunktion: Monat 1-basiert (1=Jan, 12=Dez)
+const d = (year: number, month: number, day: number): Date =>
+  new Date(year, month - 1, day);
+
 // ── BELEGUNGEN HIER EINTRAGEN ──────────────────────────────
-// Format: new Date(Jahr, Monat (0=Jan), Tag)
+// Format: d(Jahr, Monat (1=Jan), Tag)
 const BOOKED_RANGES: BookedRange[] = [
-  { from: new Date(2026, 5, 14), to: new Date(2026, 5, 17) },
-  { from: new Date(2026, 6, 21), to: new Date(2026, 7, 3) },
-  { from: new Date(2026, 7, 11),  to: new Date(2026, 7, 15) },
-  { from: new Date(2026, 7, 22),  to: new Date(2026, 8, 10) },
-  { from: new Date(2026, 8, 15),  to: new Date(2026, 8, 25) },
+  { from: d(2026, 5, 14), to: d(2026, 5, 17) },
+  { from: d(2026, 6, 21), to: d(2026, 7,  3) },
+  { from: d(2026, 7, 11), to: d(2026, 7, 15) },
+  { from: d(2026, 7, 22), to: d(2026, 8, 10) },
+  { from: d(2026, 8, 15), to: d(2026, 8, 25) },
 ];
 // ──────────────────────────────────────────────────────────
 
@@ -36,6 +40,14 @@ function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear()
     && a.getMonth() === b.getMonth()
     && a.getDate() === b.getDate();
+}
+
+function isCheckIn(date: Date): boolean {
+  return BOOKED_RANGES.some(({ from }) => isSameDay(date, from));
+}
+
+function isCheckOut(date: Date): boolean {
+  return BOOKED_RANGES.some(({ to }) => isSameDay(date, to));
 }
 
 function renderMonth(year: number, month: number): HTMLElement {
@@ -90,10 +102,22 @@ function renderMonth(year: number, month: number): HTMLElement {
 
     if (date < today && !isSameDay(date, today)) {
       classes.push('cal-day--past');
-    } else if (isBooked(date)) {
-      classes.push('cal-day--booked');
     } else {
-      classes.push('cal-day--free');
+      const checkIn  = isCheckIn(date);
+      const checkOut = isCheckOut(date);
+
+      if (checkIn && checkOut) {
+        // Abreise einer Buchung + Anreise einer anderen → voll belegt
+        classes.push('cal-day--booked');
+      } else if (checkIn) {
+        classes.push('cal-day--booked', 'cal-day--check-in');
+      } else if (checkOut) {
+        classes.push('cal-day--booked', 'cal-day--check-out');
+      } else if (isBooked(date)) {
+        classes.push('cal-day--booked');
+      } else {
+        classes.push('cal-day--free');
+      }
     }
 
     dayEl.className = classes.join(' ');

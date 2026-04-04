@@ -306,6 +306,28 @@
     }
   }
 
+  &--check-in {
+    background: linear-gradient(
+      to bottom right,
+      rgba($color-footer-top, 0.1) 50%,
+      $color-primary 50%
+    );
+    color: $color-text;
+
+    &::after { display: none; }
+  }
+
+  &--check-out {
+    background: linear-gradient(
+      to top right,
+      $color-primary 50%,
+      rgba($color-footer-top, 0.1) 50%
+    );
+    color: $color-white;
+
+    &::after { display: none; }
+  }
+
   &--today {
     font-weight: 700;
     border: 2px solid $color-footer-top;
