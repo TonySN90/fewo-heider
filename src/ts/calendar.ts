@@ -11,12 +11,11 @@ interface BookedRange {
 // ── BELEGUNGEN HIER EINTRAGEN ──────────────────────────────
 // Format: new Date(Jahr, Monat (0=Jan), Tag)
 const BOOKED_RANGES: BookedRange[] = [
-  { from: new Date(2026, 3, 15), to: new Date(2026, 3, 22) },  // 15.–22. April
-  { from: new Date(2026, 4, 10), to: new Date(2026, 4, 17) },  // 10.–17. Mai
-  { from: new Date(2026, 5, 1),  to: new Date(2026, 5, 14) },  // 1.–14. Juni
-  { from: new Date(2026, 6, 5),  to: new Date(2026, 6, 19) },  // 5.–19. Juli
-  { from: new Date(2026, 7, 1),  to: new Date(2026, 7, 22) },  // 1.–22. August
-  { from: new Date(2026, 8, 5),  to: new Date(2026, 8, 12) },  // 5.–12. September
+  { from: new Date(2026, 5, 14), to: new Date(2026, 5, 17) },
+  { from: new Date(2026, 6, 21), to: new Date(2026, 7, 3) },
+  { from: new Date(2026, 7, 11),  to: new Date(2026, 7, 15) },
+  { from: new Date(2026, 7, 22),  to: new Date(2026, 8, 10) },
+  { from: new Date(2026, 8, 15),  to: new Date(2026, 8, 25) },
 ];
 // ──────────────────────────────────────────────────────────
 
