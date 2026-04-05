@@ -31,11 +31,11 @@
             <td>{{ $booking->booked_at?->format('d.m.Y') ?? '–' }}</td>
             <td>
               <div class="actions">
-                <button class="btn btn-edit" onclick="openModal('Buchung bearbeiten', 'edit-tpl-{{ $booking->id }}')">Bearbeiten</button>
+                <button class="btn btn-edit" onclick="openModal('Buchung bearbeiten', 'edit-tpl-{{ $booking->id }}')"><span class="material-symbols-rounded">edit</span></button>
                 <form method="POST" action="{{ route('admin.bookings.destroy', $booking) }}" onsubmit="return confirm('Buchung wirklich löschen?')">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="btn btn-delete">Löschen</button>
+                  <button type="submit" class="btn btn-delete"><span class="material-symbols-rounded">delete</span></button>
                 </form>
               </div>
             </td>

@@ -106,11 +106,11 @@ $icons = [
                   <button type="submit" class="btn btn-activate">Aktiv setzen</button>
                 </form>
               @endunless
-              <button class="btn btn-edit" onclick="openModal('Saison bearbeiten', 'edit-season-tpl-{{ $season->id }}')">Bearbeiten</button>
+              <button class="btn btn-edit" onclick="openModal('Saison bearbeiten', 'edit-season-tpl-{{ $season->id }}')"><span class="material-symbols-rounded">edit</span></button>
               <form method="POST" action="{{ route('admin.seasons.destroy', $season) }}" onsubmit="return confirm('Saison und alle zugehörigen Preise wirklich löschen?')">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-delete">Löschen</button>
+                <button type="submit" class="btn btn-delete"><span class="material-symbols-rounded">delete</span></button>
               </form>
             </div>
           </div>
@@ -148,11 +148,11 @@ $icons = [
                     </td>
                     <td>
                       <div class="actions">
-                        <button class="btn btn-edit" onclick="openModal('Preis bearbeiten', 'edit-price-tpl-{{ $price->id }}')">Bearbeiten</button>
+                        <button class="btn btn-edit" onclick="openModal('Preis bearbeiten', 'edit-price-tpl-{{ $price->id }}')"><span class="material-symbols-rounded">edit</span></button>
                         <form method="POST" action="{{ route('admin.season-prices.destroy', $price) }}" onsubmit="return confirm('Preis wirklich löschen?')">
                           @csrf
                           @method('DELETE')
-                          <button type="submit" class="btn btn-delete">Löschen</button>
+                          <button type="submit" class="btn btn-delete"><span class="material-symbols-rounded">delete</span></button>
                         </form>
                       </div>
                     </td>
@@ -313,11 +313,11 @@ $icons = [
             <td>{{ $note->text }}</td>
             <td>
               <div class="actions">
-                <button class="btn btn-edit" onclick="openModal('Hinweis bearbeiten', 'edit-note-tpl-{{ $note->id }}')">Bearbeiten</button>
+                <button class="btn btn-edit" onclick="openModal('Hinweis bearbeiten', 'edit-note-tpl-{{ $note->id }}')"><span class="material-symbols-rounded">edit</span></button>
                 <form method="POST" action="{{ route('admin.pricing-notes.destroy', $note) }}" onsubmit="return confirm('Hinweis wirklich löschen?')">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="btn btn-delete">Löschen</button>
+                  <button type="submit" class="btn btn-delete"><span class="material-symbols-rounded">delete</span></button>
                 </form>
               </div>
             </td>
