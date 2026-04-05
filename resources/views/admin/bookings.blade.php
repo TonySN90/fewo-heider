@@ -1,30 +1,9 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buchungen verwalten – Ferienwohnung Heider</title>
-  @vite(['resources/css/admin.scss'])
-</head>
-<body>
+@extends('layouts.admin')
 
-<div class="topbar">
-  <span class="topbar__brand">Ferienwohnung <span>Heider</span> – Admin</span>
-  <div class="topbar__actions">
-    <a href="{{ url('/') }}" target="_blank">Website ansehen ↗</a>
-    <form class="logout-form" method="POST" action="{{ route('admin.logout') }}">
-      @csrf
-      <button type="submit">Ausloggen</button>
-    </form>
-  </div>
-</div>
+@section('title', 'Buchungen')
 
-<div class="main">
+@section('content')
   <h1>Buchungen verwalten</h1>
-
-  @if (session('success'))
-    <div class="alert alert--success">{{ session('success') }}</div>
-  @endif
 
   <!-- Neue Buchung -->
   <div class="card">
@@ -67,7 +46,6 @@
       </thead>
       <tbody>
         @forelse ($bookings as $booking)
-          {{-- Anzeigezeile --}}
           <tr class="row-display" id="row-{{ $booking->id }}">
             <td>{{ $booking->from->format('d.m.Y') }}</td>
             <td>{{ $booking->to->format('d.m.Y') }}</td>
@@ -84,7 +62,6 @@
             </td>
           </tr>
 
-          {{-- Editierzeile --}}
           <tr class="row-edit" id="edit-{{ $booking->id }}">
             <td colspan="4">
               <form method="POST" action="{{ route('admin.bookings.update', $booking) }}">
@@ -121,8 +98,9 @@
       </tbody>
     </table>
   </div>
-</div>
+@endsection
 
+@push('scripts')
 <script>
   function openEdit(id) {
     document.querySelectorAll('.row-edit.active').forEach(el => {
@@ -136,6 +114,4 @@
     document.getElementById('edit-' + id).classList.remove('active');
   }
 </script>
-
-</body>
-</html>
+@endpush

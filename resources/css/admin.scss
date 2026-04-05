@@ -23,6 +23,11 @@ h1 {
   font-size: $font-size-2xl;
   font-weight: 700;
   margin-bottom: $space-6;
+
+  @media (max-width: 480px) {
+    font-size: $font-size-xl;
+    margin-bottom: $space-4;
+  }
 }
 
 label {
@@ -139,6 +144,7 @@ input[type='password'] {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: $space-4;
 }
 
 .login-card {
@@ -148,6 +154,11 @@ input[type='password'] {
   padding: $space-10 $space-8;
   width: 100%;
   max-width: 380px;
+
+  @media (max-width: 480px) {
+    padding: $space-8 $space-5;
+    border-radius: $border-radius-sm;
+  }
 
   &__logo {
     text-align: center;
@@ -222,13 +233,228 @@ input[type='password'] {
 }
 
 // ============================================================
+// LAYOUT SHELL
+// ============================================================
+
+$topbar-height: 56px;
+$sidebar-width: 220px;
+
+body.admin-layout {
+  overflow: hidden;
+}
+
+.admin-shell {
+  display: flex;
+  height: 100vh;
+  padding-top: $topbar-height;
+
+  @media (max-width: 768px) {
+    padding-top: $topbar-height;
+  }
+}
+
+// ============================================================
+// SIDEBAR
+// ============================================================
+
+.sidebar {
+  position: relative;
+  width: $sidebar-width;
+  flex-shrink: 0;
+  background: $color-dark;
+  height: 100%;
+  overflow-y: auto;
+  padding-top: $space-6;
+  transition: transform $transition-fast;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    top: $topbar-height;
+    left: 0;
+    bottom: 0;
+    z-index: 90;
+    transform: translateX(-100%);
+    padding-top: $space-4;
+
+    &.is-open {
+      transform: translateX(0);
+    }
+  }
+
+  &__nav {
+    list-style: none;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: 0.65rem $space-5;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: background $transition-fast, color $transition-fast, border-color $transition-fast;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: $color-white;
+    }
+
+    &--active {
+      background: rgba(61, 122, 110, 0.25);
+      color: $color-white;
+      border-left-color: $color-primary;
+    }
+  }
+
+  &__icon {
+    font-size: 1rem;
+    width: 1.2rem;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  &__footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: $space-4 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  &__logout {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    width: 100%;
+    padding: 0.65rem $space-5;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: left;
+    transition: background $transition-fast, color $transition-fast;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fca5a5;
+    }
+  }
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(0, 0, 0, 0.35);
+
+  &.is-open {
+    display: block;
+  }
+}
+
+// ============================================================
+// ADMIN MAIN CONTENT
+// ============================================================
+
+.admin-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: $space-8;
+
+  @media (max-width: 768px) {
+    padding: $space-5 $space-4;
+  }
+}
+
+// ============================================================
+// DASHBOARD KPI CARDS
+// ============================================================
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: $space-5;
+  margin-bottom: $space-8;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: $space-3;
+    margin-bottom: $space-5;
+  }
+}
+
+.stat-card {
+  background: $color-white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-sm;
+  padding: 1.5rem;
+
+  &__label {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: $space-2;
+  }
+
+  &__value {
+    font-size: $font-size-2xl;
+    font-weight: 700;
+    color: $color-dark;
+    line-height: 1.1;
+
+    &--lg {
+      font-size: $font-size-xl;
+    }
+
+    &--empty {
+      color: #bbb;
+    }
+  }
+
+  &__sub {
+    font-size: $font-size-xs;
+    color: #888;
+    margin-top: $space-1;
+  }
+
+  &__bar {
+    margin-top: $space-3;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  &__bar-fill {
+    height: 100%;
+    background: $color-primary;
+    border-radius: 99px;
+  }
+}
+
+// ============================================================
 // TOPBAR
 // ============================================================
 
 .topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $topbar-height;
+  z-index: 100;
   background: $color-white;
   border-bottom: 1px solid #e5e7eb;
-  padding: 0.9rem $space-8;
+  padding: 0 $space-8;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -256,31 +482,36 @@ input[type='password'] {
       &:hover {
         color: $color-dark;
       }
+
+      @media (max-width: 480px) {
+        display: none;
+      }
     }
   }
-}
 
-.logout-form button {
-  font-size: $font-size-sm;
-  color: #b91c1c;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
 
-  &:hover {
-    text-decoration: underline;
+    span {
+      display: block;
+      height: 2px;
+      background: $color-dark;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      display: flex;
+    }
   }
-}
-
-// ============================================================
-// HAUPTINHALT
-// ============================================================
-
-.main {
-  max-width: 960px;
-  margin: $space-8 auto;
-  padding: 0 $space-6;
 }
 
 // ============================================================
@@ -307,8 +538,16 @@ input[type='password'] {
   gap: 0.75rem;
   align-items: end;
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+
+    .btn-add {
+      width: 100%;
+    }
   }
 }
 
@@ -321,6 +560,10 @@ input[type='password'] {
   border-radius: $border-radius;
   box-shadow: $shadow-sm;
   overflow: hidden;
+
+  @media (max-width: 640px) {
+    overflow-x: auto;
+  }
 
   h2 {
     font-size: $font-size-lg * 0.93;
@@ -385,6 +628,14 @@ tr:last-child td {
   grid-template-columns: 1fr 1fr 1.5fr auto auto;
   gap: 0.6rem;
   align-items: end;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .actions {
