@@ -11,7 +11,7 @@ class SeasonController extends Controller
 {
     public function index()
     {
-        $seasons = Season::ordered()->get();
+        $seasons = Season::ordered()->with(['prices' => fn ($q) => $q->ordered()])->get();
         $notes   = PricingNote::ordered()->get();
 
         return view('admin.seasons', compact('seasons', 'notes'));
@@ -20,30 +20,21 @@ class SeasonController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'            => ['required', 'string', 'max:100'],
-            'from'            => ['required', 'date'],
-            'to'              => ['required', 'date', 'after_or_equal:from'],
-            'price_per_night' => ['required', 'integer', 'min:1'],
-            'min_nights'      => ['required', 'integer', 'min:1'],
-            'sort_order'      => ['required', 'integer', 'min:0'],
-            'badge_color'     => ['nullable', 'string', 'in:blue,green,orange,gold'],
+            'year'       => ['required', 'integer', 'min:2020', 'max:2099', 'unique:seasons,year'],
+            'name'       => ['required', 'string', 'max:100'],
+            'sort_order' => ['required', 'integer', 'min:0'],
         ]);
 
         Season::create($data);
 
-        return back()->with('success', 'Saison wurde gespeichert.');
+        return back()->with('success', 'Saison wurde angelegt.');
     }
 
     public function update(Request $request, Season $season)
     {
         $data = $request->validate([
-            'name'            => ['required', 'string', 'max:100'],
-            'from'            => ['required', 'date'],
-            'to'              => ['required', 'date', 'after_or_equal:from'],
-            'price_per_night' => ['required', 'integer', 'min:1'],
-            'min_nights'      => ['required', 'integer', 'min:1'],
-            'sort_order'      => ['required', 'integer', 'min:0'],
-            'badge_color'     => ['nullable', 'string', 'in:blue,green,orange,gold'],
+            'name'       => ['required', 'string', 'max:100'],
+            'sort_order' => ['required', 'integer', 'min:0'],
         ]);
 
         $season->update($data);
@@ -56,5 +47,12 @@ class SeasonController extends Controller
         $season->delete();
 
         return back()->with('success', 'Saison wurde gelöscht.');
+    }
+
+    public function activate(Season $season)
+    {
+        $season->activate();
+
+        return back()->with('success', "Saison \"{$season->name}\" ist jetzt aktiv.");
     }
 }

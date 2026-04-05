@@ -5,44 +5,11 @@
 @section('content')
   <h1>Buchungen verwalten</h1>
 
-  <!-- Neue Buchung -->
-  <div class="card">
-    <h2>Neue Buchung anlegen</h2>
-    <form method="POST" action="{{ route('admin.bookings.store') }}">
-      @csrf
-      <div class="form-grid">
-        <div>
-          <label for="from">Anreise</label>
-          <input type="date" id="from" name="from" value="{{ old('from') }}" required />
-          @error('from') <p class="field-error">{{ $message }}</p> @enderror
-        </div>
-        <div>
-          <label for="to">Abreise</label>
-          <input type="date" id="to" name="to" value="{{ old('to') }}" required />
-          @error('to') <p class="field-error">{{ $message }}</p> @enderror
-        </div>
-        <div>
-          <label for="guest_name">Gastname</label>
-          <input type="text" id="guest_name" name="guest_name" value="{{ old('guest_name') }}" placeholder="z.B. Familie Müller" maxlength="100" />
-        </div>
-        <div>
-          <label for="portal">Buchungsportal</label>
-          <input type="text" id="portal" name="portal" value="{{ old('portal') }}" placeholder="z.B. Airbnb" maxlength="100" />
-        </div>
-        <div>
-          <label for="booked_at">Buchungsdatum</label>
-          <input type="date" id="booked_at" name="booked_at" value="{{ old('booked_at') }}" />
-        </div>
-        <div>
-          <button type="submit" class="btn btn-add">Speichern</button>
-        </div>
-      </div>
-    </form>
-  </div>
-
-  <!-- Buchungsliste -->
   <div class="table-card">
-    <h2>Alle Buchungen ({{ $bookings->count() }})</h2>
+    <div class="table-card__header">
+      <h2>Alle Buchungen ({{ $bookings->count() }})</h2>
+      <button class="btn btn-add" onclick="openModal('Neue Buchung', 'add-booking-tpl')">Neue Buchung</button>
+    </div>
     <table>
       <thead>
         <tr>
@@ -74,7 +41,6 @@
             </td>
           </tr>
 
-          {{-- Edit-Template (versteckt, wird ins Modal kopiert) --}}
           <template id="edit-tpl-{{ $booking->id }}">
             <form method="POST" action="{{ route('admin.bookings.update', $booking) }}">
               @csrf
@@ -115,4 +81,36 @@
       </tbody>
     </table>
   </div>
+
+  <template id="add-booking-tpl">
+    <form method="POST" action="{{ route('admin.bookings.store') }}">
+      @csrf
+      <div class="modal-form-grid">
+        <div>
+          <label>Anreise</label>
+          <input type="date" name="from" required />
+        </div>
+        <div>
+          <label>Abreise</label>
+          <input type="date" name="to" required />
+        </div>
+        <div>
+          <label>Gastname</label>
+          <input type="text" name="guest_name" placeholder="optional" maxlength="100" />
+        </div>
+        <div>
+          <label>Buchungsportal</label>
+          <input type="text" name="portal" placeholder="optional" maxlength="100" />
+        </div>
+        <div>
+          <label>Buchungsdatum</label>
+          <input type="date" name="booked_at" />
+        </div>
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn-cancel" onclick="closeModal()">Abbrechen</button>
+        <button type="submit" class="btn btn-save">Speichern</button>
+      </div>
+    </form>
+  </template>
 @endsection

@@ -9,15 +9,19 @@ class SeasonController extends Controller
 {
     public function index()
     {
-        return Season::ordered()
-            ->get()
-            ->map(fn ($s) => [
-                'name'            => $s->name,
-                'from'            => $s->from->toDateString(),
-                'to'              => $s->to->toDateString(),
-                'price_per_night' => $s->price_per_night,
-                'min_nights'      => $s->min_nights,
-                'badge_color'     => $s->badge_color,
-            ]);
+        $season = Season::where('is_active', true)->first();
+
+        if (! $season) {
+            return response()->json([]);
+        }
+
+        return $season->prices()->ordered()->get()->map(fn ($p) => [
+            'name'            => $p->name,
+            'from'            => $p->from->toDateString(),
+            'to'              => $p->to->toDateString(),
+            'price_per_night' => $p->price_per_night,
+            'min_nights'      => $p->min_nights,
+            'badge_color'     => $p->badge_color,
+        ]);
     }
 }
