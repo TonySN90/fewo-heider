@@ -235,7 +235,7 @@
       <div class="pricing__layout">
         <!-- Preistabelle -->
         <div class="pricing__table-wrap">
-          <h3 class="pricing__subtitle">Preistabelle {{ now()->year }}</h3>
+          <h3 class="pricing__subtitle">Preistabelle <span id="pricing-year">{{ now()->year }}</span></h3>
           <div class="pricing__table-scroll">
           <table class="pricing__table">
             <thead>

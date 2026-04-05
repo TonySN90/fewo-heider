@@ -12,16 +12,19 @@ class SeasonController extends Controller
         $season = Season::where('is_active', true)->first();
 
         if (! $season) {
-            return response()->json([]);
+            return response()->json(['year' => null, 'prices' => []]);
         }
 
-        return $season->prices()->ordered()->get()->map(fn ($p) => [
-            'name'            => $p->name,
-            'from'            => $p->from->toDateString(),
-            'to'              => $p->to->toDateString(),
-            'price_per_night' => $p->price_per_night,
-            'min_nights'      => $p->min_nights,
-            'badge_color'     => $p->badge_color,
+        return response()->json([
+            'year'   => $season->year,
+            'prices' => $season->prices()->ordered()->get()->map(fn ($p) => [
+                'name'            => $p->name,
+                'from'            => $p->from->toDateString(),
+                'to'              => $p->to->toDateString(),
+                'price_per_night' => $p->price_per_night,
+                'min_nights'      => $p->min_nights,
+                'badge_color'     => $p->badge_color,
+            ]),
         ]);
     }
 }

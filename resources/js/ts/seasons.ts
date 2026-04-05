@@ -22,14 +22,17 @@ async function loadSeasons(): Promise<void> {
 
   try {
     const res = await fetch('/api/seasons');
-    const seasons: Season[] = await res.json();
+    const data: { year: number | null; prices: Season[] } = await res.json();
 
-    if (seasons.length === 0) {
+    const yearEl = document.getElementById('pricing-year');
+    if (yearEl && data.year) yearEl.textContent = String(data.year);
+
+    if (data.prices.length === 0) {
       tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#aaa;">Keine Preise hinterlegt.</td></tr>';
       return;
     }
 
-    tbody.innerHTML = seasons
+    tbody.innerHTML = data.prices
       .map((s) => {
         const badgeClass = s.badge_color ? `season-badge season-badge--${s.badge_color}` : 'season-badge';
         return `
