@@ -20,8 +20,8 @@ class TemplateController extends Controller
         'kontakt'     => 'Kontakt & Anfrage',
     ];
 
-    // Sektionen, für die eine Bearbeitungsseite existiert
-    private const EDITABLE_SECTIONS = ['hero'];
+    // Sections that have a dedicated edit page
+    private const EDITABLE_SECTIONS = ['hero', 'ueber-uns'];
 
     public function index(): View
     {

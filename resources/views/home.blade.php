@@ -74,51 +74,46 @@
 
   <!-- ===== ÜBER UNS / DIE WOHNUNG ===== -->
   @if (in_array('ueber-uns', $visibleSections))
+  @php $u = $aboutUsSection; @endphp
   <section id="ueber-uns" class="about section">
     <div class="container">
       <div class="section__header">
-        <p class="section__eyebrow">Willkommen</p>
-        <h2 class="section__title">Ferienwohnung Heider</h2>
+        <p class="section__eyebrow">{{ $u?->field('eyebrow', 'Willkommen') ?? 'Willkommen' }}</p>
+        <h2 class="section__title">{{ $u?->field('title', 'Ferienwohnung Heider') ?? 'Ferienwohnung Heider' }}</h2>
         <div class="section__divider"></div>
       </div>
 
       <div class="about__grid">
         <div class="about__text">
-          <p class="about__intro">
-            Die Ferienwohnung befindet sich in einem Einfamilienhaus in ruhiger Umgebung in der Nähe vom Ostseebad Binz. Perfekt, um schnell mit dem Fahrrad in das nur <strong>3 km entfernte Ostseebad</strong> zu radeln.
-          </p>
-          <p>
-            Die Insel Rügen erwartet Sie mit 60 km langen Sandstränden, weißer Kreideküste, wunderschöner Natur, den renommierten <em>Störtebeker Festspielen</em> und vielem mehr.
-          </p>
-          <p>
-            Die ca. <strong>30 m²</strong> große Wohnung verfügt über einen separaten Eingang und ist aufgeteilt in einem Wohn-/Schlafraum, kleinem Flur, separater Küche sowie einem Badezimmer. Vor dem Eingang befindet sich eine kleine gemütliche Sitzecke – ideal für ein Glas Wein zum Ausklang des Tages.
-          </p>
+          @if ($u?->field('text_1'))
+            <p class="about__intro">{{ $u->field('text_1') }}</p>
+          @endif
+          @if ($u?->field('text_2'))
+            <p>{{ $u->field('text_2') }}</p>
+          @endif
+          @if ($u?->field('text_3'))
+            <p>{{ $u->field('text_3') }}</p>
+          @endif
           @if (in_array('kontakt', $visibleSections))
             <a href="#kontakt" class="btn btn--primary">Jetzt anfragen</a>
           @endif
         </div>
 
         <div class="about__highlights">
-          <div class="highlight-card">
-            <div class="highlight-card__icon"><span class="material-symbols-rounded">beach_access</span></div>
-            <h3>Strand & Meer</h3>
-            <p>60 km Sandstrand – Binz nur 3 km entfernt</p>
-          </div>
-          <div class="highlight-card">
-            <div class="highlight-card__icon"><span class="material-symbols-rounded">park</span></div>
-            <h3>Natur pur</h3>
-            <p>Kreideküste, Nationalpark & Buchenwälder</p>
-          </div>
-          <div class="highlight-card">
-            <div class="highlight-card__icon"><span class="material-symbols-rounded">directions_bike</span></div>
-            <h3>Fahrradfreundlich</h3>
-            <p>Direkte Radweganbindung zum Ostseebad</p>
-          </div>
-          <div class="highlight-card">
-            <div class="highlight-card__icon"><span class="material-symbols-rounded">theater_comedy</span></div>
-            <h3>Kultur & Events</h3>
-            <p>Störtebeker Festspiele & lokale Veranstaltungen</p>
-          </div>
+          @for ($i = 1; $i <= 6; $i++)
+            @php
+              $icon    = $u?->field("card_{$i}_icon");
+              $heading = $u?->field("card_{$i}_heading");
+              $text    = $u?->field("card_{$i}_text");
+            @endphp
+            @if ($icon && $heading)
+              <div class="highlight-card">
+                <div class="highlight-card__icon"><span class="material-symbols-rounded">{{ $icon }}</span></div>
+                <h3>{{ $heading }}</h3>
+                @if ($text)<p>{{ $text }}</p>@endif
+              </div>
+            @endif
+          @endfor
         </div>
       </div>
     </div>

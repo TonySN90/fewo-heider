@@ -26,10 +26,37 @@ class TemplateSeeder extends Seeder
             ['name' => 'Fresh Green', 'is_active' => true]
         );
 
-        $heroDefaults = [
-            'eyebrow'  => 'Willkommen',
-            'title'    => 'Ihr Urlaub auf Rügen',
-            'subtitle' => 'Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.',
+        $defaults = [
+            'hero' => [
+                'eyebrow'  => 'Willkommen',
+                'title'    => 'Ihr Urlaub auf Rügen',
+                'subtitle' => 'Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.',
+            ],
+            'ueber-uns' => [
+                'eyebrow'   => 'Willkommen',
+                'title'     => 'Ferienwohnung Heider',
+                'text_1'    => 'Die Ferienwohnung befindet sich in einem Einfamilienhaus in ruhiger Umgebung in der Nähe vom Ostseebad Binz. Perfekt, um schnell mit dem Fahrrad in das nur 3 km entfernte Ostseebad zu radeln.',
+                'text_2'    => 'Die Insel Rügen erwartet Sie mit 60 km langen Sandstränden, weißer Kreideküste, wunderschöner Natur, den renommierten Störtebeker Festspielen und vielem mehr.',
+                'text_3'    => 'Die ca. 30 m² große Wohnung verfügt über einen separaten Eingang und ist aufgeteilt in einem Wohn-/Schlafraum, kleinem Flur, separater Küche sowie einem Badezimmer. Vor dem Eingang befindet sich eine kleine gemütliche Sitzecke – ideal für ein Glas Wein zum Ausklang des Tages.',
+                'card_1_icon'    => 'beach_access',
+                'card_1_heading' => 'Strand & Meer',
+                'card_1_text'    => '60 km Sandstrand – Binz nur 3 km entfernt',
+                'card_2_icon'    => 'park',
+                'card_2_heading' => 'Natur pur',
+                'card_2_text'    => 'Kreideküste, Nationalpark & Buchenwälder',
+                'card_3_icon'    => 'directions_bike',
+                'card_3_heading' => 'Fahrradfreundlich',
+                'card_3_text'    => 'Direkte Radweganbindung zum Ostseebad',
+                'card_4_icon'    => 'theater_comedy',
+                'card_4_heading' => 'Kultur & Events',
+                'card_4_text'    => 'Störtebeker Festspiele & lokale Veranstaltungen',
+                'card_5_icon'    => '',
+                'card_5_heading' => '',
+                'card_5_text'    => '',
+                'card_6_icon'    => '',
+                'card_6_heading' => '',
+                'card_6_text'    => '',
+            ],
         ];
 
         foreach (self::SECTIONS as $section) {
@@ -38,13 +65,11 @@ class TemplateSeeder extends Seeder
                 array_merge($section, ['template_id' => $template->id, 'is_visible' => true])
             );
 
-            if ($sec->section_key === 'hero') {
-                foreach ($heroDefaults as $key => $value) {
-                    TemplateSectionContent::firstOrCreate(
-                        ['template_section_id' => $sec->id, 'field_key' => $key],
-                        ['value' => $value]
-                    );
-                }
+            foreach ($defaults[$sec->section_key] ?? [] as $key => $value) {
+                TemplateSectionContent::firstOrCreate(
+                    ['template_section_id' => $sec->id, 'field_key' => $key],
+                    ['value' => $value]
+                );
             }
         }
     }
