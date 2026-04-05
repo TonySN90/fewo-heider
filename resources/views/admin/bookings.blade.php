@@ -56,7 +56,7 @@
       </thead>
       <tbody>
         @forelse ($bookings as $booking)
-          <tr class="row-display" id="row-{{ $booking->id }}">
+          <tr class="row-display">
             <td>{{ $booking->from->format('d.m.Y') }}</td>
             <td>{{ $booking->to->format('d.m.Y') }}</td>
             <td class="guest-name">{{ $booking->guest_name ?? '–' }}</td>
@@ -64,7 +64,7 @@
             <td>{{ $booking->booked_at?->format('d.m.Y') ?? '–' }}</td>
             <td>
               <div class="actions">
-                <button class="btn btn-edit" onclick="openEdit({{ $booking->id }})">Bearbeiten</button>
+                <button class="btn btn-edit" onclick="openModal('Buchung bearbeiten', 'edit-tpl-{{ $booking->id }}')">Bearbeiten</button>
                 <form method="POST" action="{{ route('admin.bookings.destroy', $booking) }}" onsubmit="return confirm('Buchung wirklich löschen?')">
                   @csrf
                   @method('DELETE')
@@ -74,42 +74,39 @@
             </td>
           </tr>
 
-          <tr class="row-edit" id="edit-{{ $booking->id }}">
-            <td colspan="6">
-              <form method="POST" action="{{ route('admin.bookings.update', $booking) }}">
-                @csrf
-                @method('PUT')
-                <div class="edit-grid">
-                  <div>
-                    <label>Anreise</label>
-                    <input type="date" name="from" value="{{ $booking->from->format('Y-m-d') }}" required />
-                  </div>
-                  <div>
-                    <label>Abreise</label>
-                    <input type="date" name="to" value="{{ $booking->to->format('Y-m-d') }}" required />
-                  </div>
-                  <div>
-                    <label>Gastname</label>
-                    <input type="text" name="guest_name" value="{{ $booking->guest_name }}" placeholder="optional" maxlength="100" />
-                  </div>
-                  <div>
-                    <label>Buchungsportal</label>
-                    <input type="text" name="portal" value="{{ $booking->portal }}" placeholder="optional" maxlength="100" />
-                  </div>
-                  <div>
-                    <label>Buchungsdatum</label>
-                    <input type="date" name="booked_at" value="{{ $booking->booked_at?->format('Y-m-d') }}" />
-                  </div>
-                  <div>
-                    <button type="submit" class="btn btn-save">Speichern</button>
-                  </div>
-                  <div>
-                    <button type="button" class="btn btn-cancel" onclick="closeEdit({{ $booking->id }})">Abbrechen</button>
-                  </div>
+          {{-- Edit-Template (versteckt, wird ins Modal kopiert) --}}
+          <template id="edit-tpl-{{ $booking->id }}">
+            <form method="POST" action="{{ route('admin.bookings.update', $booking) }}">
+              @csrf
+              @method('PUT')
+              <div class="modal-form-grid">
+                <div>
+                  <label>Anreise</label>
+                  <input type="date" name="from" value="{{ $booking->from->format('Y-m-d') }}" required />
                 </div>
-              </form>
-            </td>
-          </tr>
+                <div>
+                  <label>Abreise</label>
+                  <input type="date" name="to" value="{{ $booking->to->format('Y-m-d') }}" required />
+                </div>
+                <div>
+                  <label>Gastname</label>
+                  <input type="text" name="guest_name" value="{{ $booking->guest_name }}" placeholder="optional" maxlength="100" />
+                </div>
+                <div>
+                  <label>Buchungsportal</label>
+                  <input type="text" name="portal" value="{{ $booking->portal }}" placeholder="optional" maxlength="100" />
+                </div>
+                <div>
+                  <label>Buchungsdatum</label>
+                  <input type="date" name="booked_at" value="{{ $booking->booked_at?->format('Y-m-d') }}" />
+                </div>
+              </div>
+              <div class="modal__actions">
+                <button type="button" class="btn btn-cancel" onclick="closeModal()">Abbrechen</button>
+                <button type="submit" class="btn btn-save">Speichern</button>
+              </div>
+            </form>
+          </template>
         @empty
           <tr class="empty-row">
             <td colspan="6">Noch keine Buchungen vorhanden.</td>
@@ -119,19 +116,3 @@
     </table>
   </div>
 @endsection
-
-@push('scripts')
-<script>
-  function openEdit(id) {
-    document.querySelectorAll('.row-edit.active').forEach(el => {
-      if (el.id !== 'edit-' + id) el.classList.remove('active');
-    });
-    document.getElementById('edit-' + id).classList.add('active');
-    document.getElementById('edit-' + id).querySelector('input').focus();
-  }
-
-  function closeEdit(id) {
-    document.getElementById('edit-' + id).classList.remove('active');
-  }
-</script>
-@endpush

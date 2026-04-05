@@ -75,7 +75,7 @@
       </thead>
       <tbody>
         @forelse ($seasons as $season)
-          <tr class="row-display" id="row-{{ $season->id }}">
+          <tr class="row-display">
             <td>{{ $season->sort_order }}</td>
             <td>{{ $season->name }}</td>
             <td>{{ $season->from->format('d.m.Y') }}</td>
@@ -91,7 +91,7 @@
             </td>
             <td>
               <div class="actions">
-                <button class="btn btn-edit" onclick="openEdit({{ $season->id }})">Bearbeiten</button>
+                <button class="btn btn-edit" onclick="openModal('Saison bearbeiten', 'edit-tpl-{{ $season->id }}')">Bearbeiten</button>
                 <form method="POST" action="{{ route('admin.seasons.destroy', $season) }}" onsubmit="return confirm('Saison wirklich löschen?')">
                   @csrf
                   @method('DELETE')
@@ -101,56 +101,53 @@
             </td>
           </tr>
 
-          <tr class="row-edit" id="edit-{{ $season->id }}">
-            <td colspan="8">
-              <form method="POST" action="{{ route('admin.seasons.update', $season) }}">
-                @csrf
-                @method('PUT')
-                <div class="edit-grid">
-                  <div>
-                    <label>Saisonname</label>
-                    <input type="text" name="name" value="{{ $season->name }}" maxlength="100" required />
-                  </div>
-                  <div>
-                    <label>Von</label>
-                    <input type="date" name="from" value="{{ $season->from->format('Y-m-d') }}" required />
-                  </div>
-                  <div>
-                    <label>Bis</label>
-                    <input type="date" name="to" value="{{ $season->to->format('Y-m-d') }}" required />
-                  </div>
-                  <div>
-                    <label>€ / Nacht</label>
-                    <input type="number" name="price_per_night" value="{{ $season->price_per_night }}" min="1" required />
-                  </div>
-                  <div>
-                    <label>Mindestaufenthalt</label>
-                    <input type="number" name="min_nights" value="{{ $season->min_nights }}" min="1" required />
-                  </div>
-                  <div>
-                    <label>Reihenfolge</label>
-                    <input type="number" name="sort_order" value="{{ $season->sort_order }}" min="0" required />
-                  </div>
-                  <div>
-                    <label>Badge-Farbe</label>
-                    <select name="badge_color">
-                      <option value="">– keine –</option>
-                      <option value="blue"   {{ $season->badge_color === 'blue'   ? 'selected' : '' }}>blue (blaugrau)</option>
-                      <option value="green"  {{ $season->badge_color === 'green'  ? 'selected' : '' }}>green (grün)</option>
-                      <option value="orange" {{ $season->badge_color === 'orange' ? 'selected' : '' }}>orange</option>
-                      <option value="gold"   {{ $season->badge_color === 'gold'   ? 'selected' : '' }}>gold</option>
-                    </select>
-                  </div>
-                  <div>
-                    <button type="submit" class="btn btn-save">Speichern</button>
-                  </div>
-                  <div>
-                    <button type="button" class="btn btn-cancel" onclick="closeEdit({{ $season->id }})">Abbrechen</button>
-                  </div>
+          {{-- Edit-Template (versteckt, wird ins Modal kopiert) --}}
+          <template id="edit-tpl-{{ $season->id }}">
+            <form method="POST" action="{{ route('admin.seasons.update', $season) }}">
+              @csrf
+              @method('PUT')
+              <div class="modal-form-grid">
+                <div>
+                  <label>Saisonname</label>
+                  <input type="text" name="name" value="{{ $season->name }}" maxlength="100" required />
                 </div>
-              </form>
-            </td>
-          </tr>
+                <div>
+                  <label>Von</label>
+                  <input type="date" name="from" value="{{ $season->from->format('Y-m-d') }}" required />
+                </div>
+                <div>
+                  <label>Bis</label>
+                  <input type="date" name="to" value="{{ $season->to->format('Y-m-d') }}" required />
+                </div>
+                <div>
+                  <label>€ / Nacht</label>
+                  <input type="number" name="price_per_night" value="{{ $season->price_per_night }}" min="1" required />
+                </div>
+                <div>
+                  <label>Mindestaufenthalt</label>
+                  <input type="number" name="min_nights" value="{{ $season->min_nights }}" min="1" required />
+                </div>
+                <div>
+                  <label>Reihenfolge</label>
+                  <input type="number" name="sort_order" value="{{ $season->sort_order }}" min="0" required />
+                </div>
+                <div class="modal-form-grid__full">
+                  <label>Badge-Farbe</label>
+                  <select name="badge_color">
+                    <option value="">– keine –</option>
+                    <option value="blue"   {{ $season->badge_color === 'blue'   ? 'selected' : '' }}>blue (blaugrau)</option>
+                    <option value="green"  {{ $season->badge_color === 'green'  ? 'selected' : '' }}>green (grün)</option>
+                    <option value="orange" {{ $season->badge_color === 'orange' ? 'selected' : '' }}>orange</option>
+                    <option value="gold"   {{ $season->badge_color === 'gold'   ? 'selected' : '' }}>gold</option>
+                  </select>
+                </div>
+              </div>
+              <div class="modal__actions">
+                <button type="button" class="btn btn-cancel" onclick="closeModal()">Abbrechen</button>
+                <button type="submit" class="btn btn-save">Speichern</button>
+              </div>
+            </form>
+          </template>
         @empty
           <tr class="empty-row">
             <td colspan="8">Noch keine Saisonen vorhanden.</td>
@@ -160,19 +157,3 @@
     </table>
   </div>
 @endsection
-
-@push('scripts')
-<script>
-  function openEdit(id) {
-    document.querySelectorAll('.row-edit.active').forEach(el => {
-      if (el.id !== 'edit-' + id) el.classList.remove('active');
-    });
-    document.getElementById('edit-' + id).classList.add('active');
-    document.getElementById('edit-' + id).querySelector('input').focus();
-  }
-
-  function closeEdit(id) {
-    document.getElementById('edit-' + id).classList.remove('active');
-  }
-</script>
-@endpush
