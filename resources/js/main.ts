@@ -13,7 +13,7 @@ import { initCookieBanner } from './ts/cookie';
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initGallery();
-  initCalendar();
+  initCalendar(); // async, kein await nötig – läuft parallel
   initMap();
   initCookieBanner();
 });
