@@ -146,24 +146,26 @@
   font-size: $font-size-xs;
   font-weight: 600;
   white-space: nowrap;
+  background-color: rgba($color-primary, 0.12);
+  color: $color-primary-dark;
 
-  &--off {
-    background-color: rgba($color-season-off, 0.2);
+  &--blue {
+    background-color: rgba($color-season-blue, 0.2);
     color: #3a5f72;
   }
 
-  &--pre {
-    background-color: rgba($color-season-pre, 0.2);
+  &--green {
+    background-color: rgba($color-season-green, 0.2);
     color: #2a6644;
   }
 
-  &--main {
-    background-color: rgba($color-season-main, 0.2);
+  &--orange {
+    background-color: rgba($color-season-orange, 0.2);
     color: #8c3e25;
   }
 
-  &--holiday {
-    background-color: rgba($color-season-holiday, 0.2);
+  &--gold {
+    background-color: rgba($color-season-gold, 0.2);
     color: #7a5e18;
   }
 }

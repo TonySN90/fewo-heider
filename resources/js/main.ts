@@ -9,11 +9,13 @@ import { initGallery } from './ts/gallery';
 import { initCalendar } from './ts/calendar';
 import { initMap } from './ts/map';
 import { initCookieBanner } from './ts/cookie';
+import { initSeasons } from './ts/seasons';
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initGallery();
-  initCalendar(); // async, kein await nötig – läuft parallel
+  initCalendar();
+  initSeasons();
   initMap();
   initCookieBanner();
 });

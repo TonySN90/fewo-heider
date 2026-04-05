@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Season;
 use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
@@ -32,6 +33,8 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
+        $seasons = Season::ordered()->get();
+
         return view('admin.dashboard', compact(
             'bookingsThisYear',
             'bookingsThisMonth',
@@ -40,6 +43,7 @@ class DashboardController extends Controller
             'daysInMonth',
             'bookedDays',
             'upcomingBookings',
+            'seasons',
         ));
     }
 

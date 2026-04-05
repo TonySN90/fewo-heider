@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SeasonController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => view('home'));
@@ -34,8 +35,13 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/bookings',  [BookingController::class, 'index'])->name('admin.bookings');
     Route::post('/bookings', [BookingController::class, 'store'])->name('admin.bookings.store');
     Route::put('/bookings/{booking}', [BookingController::class, 'update'])->name('admin.bookings.update');
-    Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('admin.bookings.destroy');
+    Route::delete('/bookings/{booking}',  [BookingController::class, 'destroy'])->name('admin.bookings.destroy');
+    Route::get('/seasons',                [SeasonController::class, 'index'])->name('admin.seasons');
+    Route::post('/seasons',               [SeasonController::class, 'store'])->name('admin.seasons.store');
+    Route::put('/seasons/{season}',       [SeasonController::class, 'update'])->name('admin.seasons.update');
+    Route::delete('/seasons/{season}',    [SeasonController::class, 'destroy'])->name('admin.seasons.destroy');
 });
 
-// Öffentliche API für den Kalender
+// Öffentliche API
 Route::get('/api/bookings', [\App\Http\Controllers\Api\BookingController::class, 'index']);
+Route::get('/api/seasons',  [\App\Http\Controllers\Api\SeasonController::class,  'index']);

@@ -40,8 +40,10 @@ label {
 
 input[type='date'],
 input[type='text'],
+input[type='number'],
 input[type='email'],
-input[type='password'] {
+input[type='password'],
+select {
   width: 100%;
   padding: 0.6rem 0.8rem;
   border: 1.5px solid $color-border;
@@ -564,6 +566,7 @@ body.admin-layout {
   border-radius: $border-radius;
   box-shadow: $shadow-sm;
   overflow: hidden;
+  margin-bottom: $space-8;
 
   @media (max-width: 640px) {
     overflow-x: auto;
@@ -574,6 +577,19 @@ body.admin-layout {
     font-weight: 600;
     padding: $space-5 1.75rem;
     border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-5 1.75rem;
+    border-bottom: 1px solid #f0f0f0;
+
+    h2 {
+      padding: 0;
+      border: none;
+    }
   }
 }
 

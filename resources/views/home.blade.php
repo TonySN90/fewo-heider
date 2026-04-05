@@ -235,7 +235,7 @@
       <div class="pricing__layout">
         <!-- Preistabelle -->
         <div class="pricing__table-wrap">
-          <h3 class="pricing__subtitle">Preistabelle 2026</h3>
+          <h3 class="pricing__subtitle">Preistabelle {{ now()->year }}</h3>
           <div class="pricing__table-scroll">
           <table class="pricing__table">
             <thead>
@@ -246,30 +246,9 @@
                 <th>Mindestaufenthalt</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="seasons-tbody">
               <tr>
-                <td><span class="season-badge season-badge--off">Vorsaison</span></td>
-                <td>11.05 – 30.06</td>
-                <td class="price">49 €</td>
-                <td>3 Nächte</td>
-              </tr>
-              <tr>
-                <td><span class="season-badge season-badge--pre">Hauptsaison</span></td>
-                <td>01.07 – 31.08</td>
-                <td class="price">62 €</td>
-                <td>3 Nächte</td>
-              </tr>
-              <tr>
-                <td><span class="season-badge season-badge--main">Nachsaison</span></td>
-                <td>01.09 - 13.09</td>
-                <td class="price">57 €</td>
-                <td>3 Nächte</td>
-              </tr>
-              <tr>
-                <td><span class="season-badge season-badge--holiday">Nebensaison</span></td>
-                <td>14.09 - 06.09</td>
-                <td class="price">49 €</td>
-                <td>3 Nächte</td>
+                <td colspan="4" style="text-align:center;color:#aaa;">Lädt …</td>
               </tr>
             </tbody>
           </table>

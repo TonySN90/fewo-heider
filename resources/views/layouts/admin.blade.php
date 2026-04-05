@@ -40,6 +40,13 @@
           Buchungen
         </a>
       </li>
+      <li>
+        <a href="{{ route('admin.seasons') }}"
+           class="sidebar__link {{ request()->routeIs('admin.seasons') ? 'sidebar__link--active' : '' }}">
+          <span class="sidebar__icon">&#128178;</span>
+          Preise
+        </a>
+      </li>
     </ul>
 
     <div class="sidebar__footer">
