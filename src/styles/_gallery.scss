@@ -8,45 +8,19 @@
 .gallery__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: $space-4;
+  gap: $space-2;
 
-  // Erstes Bild breiter
+  // Erstes Bild breiter – auf allen Bildschirmgrößen gleich
   .gallery-item:first-child {
     grid-column: span 2;
     grid-row: span 2;
-  }
-
-  @include respond-to('lg') {
-    grid-template-columns: repeat(2, 1fr);
-
-    .gallery-item:first-child {
-      grid-column: span 2;
-      grid-row: span 1;
-    }
-  }
-
-  @include respond-to('md') {
-    grid-template-columns: repeat(2, 1fr);
-
-    .gallery-item:first-child {
-      grid-column: span 2;
-      grid-row: span 1;
-    }
-  }
-
-  @include respond-to('sm') {
-    grid-template-columns: 1fr;
-
-    .gallery-item:first-child {
-      grid-column: span 1;
-    }
   }
 }
 
 .gallery-item {
   position: relative;
   overflow: hidden;
-  border-radius: $border-radius;
+  border-radius: $border-radius-sm;
   cursor: pointer;
   aspect-ratio: 4 / 3;
   background-color: $color-bg-alt;
@@ -58,10 +32,6 @@
 
   &:first-child {
     aspect-ratio: auto;
-
-    @include respond-to('lg') {
-      aspect-ratio: 16 / 7;
-    }
   }
 
   img {
