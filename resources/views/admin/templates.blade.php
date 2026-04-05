@@ -64,6 +64,7 @@
                     <th>#</th>
                     <th>Sektion</th>
                     <th>Sichtbar</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -82,6 +83,13 @@
                           />
                           <span class="toggle__slider"></span>
                         </label>
+                      </td>
+                      <td>
+                        @if (in_array($section->section_key, $editableSections))
+                          <a href="{{ route('admin.templates.sections.edit', [$template, $section->section_key]) }}" class="btn btn-edit">
+                            <span class="material-symbols-rounded">edit</span>
+                          </a>
+                        @endif
                       </td>
                     </tr>
                   @endforeach

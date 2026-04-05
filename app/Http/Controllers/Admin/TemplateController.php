@@ -20,13 +20,17 @@ class TemplateController extends Controller
         'kontakt'     => 'Kontakt & Anfrage',
     ];
 
+    // Sektionen, für die eine Bearbeitungsseite existiert
+    private const EDITABLE_SECTIONS = ['hero'];
+
     public function index(): View
     {
         $templates = Template::with(['sections' => fn ($q) => $q->orderBy('sort_order')])->get();
 
         return view('admin.templates', [
-            'templates'     => $templates,
-            'sectionLabels' => self::SECTION_LABELS,
+            'templates'       => $templates,
+            'sectionLabels'   => self::SECTION_LABELS,
+            'editableSections' => self::EDITABLE_SECTIONS,
         ]);
     }
 

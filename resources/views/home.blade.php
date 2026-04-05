@@ -54,9 +54,9 @@
     <div class="hero__bg"></div>
     <div class="hero__overlay"></div>
     <div class="hero__content container">
-      <p class="hero__eyebrow">Willkommen</p>
-      <h1 class="hero__title">Ihr Urlaub auf<br /><em>Rügen</em></h1>
-      <p class="hero__subtitle">Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.</p>
+      <p class="hero__eyebrow">{{ $heroSection?->field('eyebrow', 'Willkommen') ?? 'Willkommen' }}</p>
+      <h1 class="hero__title">{{ $heroSection?->field('title', 'Ihr Urlaub auf Rügen') ?? 'Ihr Urlaub auf Rügen' }}</h1>
+      <p class="hero__subtitle">{{ $heroSection?->field('subtitle', 'Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.') ?? 'Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.' }}</p>
       <div class="hero__actions">
         @if (in_array('galerie', $visibleSections))
           <a href="#galerie" class="btn btn--primary">Galerie ansehen</a>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TemplateSection extends Model
 {
@@ -14,5 +15,16 @@ class TemplateSection extends Model
     public function template(): BelongsTo
     {
         return $this->belongsTo(Template::class);
+    }
+
+    public function content(): HasMany
+    {
+        return $this->hasMany(TemplateSectionContent::class, 'template_section_id');
+    }
+
+    /** Gibt einen einzelnen Feldwert zurück, mit optionalem Fallback. */
+    public function field(string $key, string $default = ''): string
+    {
+        return $this->content->firstWhere('field_key', $key)?->value ?? $default;
     }
 }

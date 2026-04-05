@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PricingNoteController;
 use App\Http\Controllers\Admin\SeasonController;
 use App\Http\Controllers\Admin\SeasonPriceController;
 use App\Http\Controllers\Admin\TemplateController;
+use App\Http\Controllers\Admin\TemplateSectionController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -61,6 +62,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('/templates/{template}',            [TemplateController::class, 'update'])->name('admin.templates.update');
     Route::post('/templates/{template}/activate',  [TemplateController::class, 'activate'])->name('admin.templates.activate');
     Route::put('/templates/{template}/sections',   [TemplateController::class, 'updateSections'])->name('admin.templates.sections');
+
+    Route::get('/templates/{template}/sections/{sectionKey}/edit', [TemplateSectionController::class, 'edit'])->name('admin.templates.sections.edit');
+    Route::put('/templates/{template}/sections/{sectionKey}',      [TemplateSectionController::class, 'update'])->name('admin.templates.sections.update');
 });
 
 // Öffentliche API

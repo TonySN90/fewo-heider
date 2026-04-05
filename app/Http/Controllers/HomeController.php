@@ -15,10 +15,15 @@ class HomeController extends Controller
     {
         $activeTemplate = Template::active();
 
-        $visibleSections = $activeTemplate
-            ? $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray()
-            : self::ALL_SECTIONS;
+        if ($activeTemplate) {
+            $activeTemplate->load('sections.content');
+            $visibleSections = $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray();
+        } else {
+            $visibleSections = self::ALL_SECTIONS;
+        }
 
-        return view('home', compact('activeTemplate', 'visibleSections'));
+        $heroSection = $activeTemplate?->sections->firstWhere('section_key', 'hero');
+
+        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection'));
     }
 }

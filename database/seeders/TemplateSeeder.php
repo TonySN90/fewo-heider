@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Template;
 use App\Models\TemplateSection;
+use App\Models\TemplateSectionContent;
 use Illuminate\Database\Seeder;
 
 class TemplateSeeder extends Seeder
@@ -25,11 +26,26 @@ class TemplateSeeder extends Seeder
             ['name' => 'Fresh Green', 'is_active' => true]
         );
 
+        $heroDefaults = [
+            'eyebrow'  => 'Willkommen',
+            'title'    => 'Ihr Urlaub auf Rügen',
+            'subtitle' => 'Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.',
+        ];
+
         foreach (self::SECTIONS as $section) {
-            TemplateSection::firstOrCreate(
+            $sec = TemplateSection::firstOrCreate(
                 ['template_id' => $template->id, 'section_key' => $section['section_key']],
                 array_merge($section, ['template_id' => $template->id, 'is_visible' => true])
             );
+
+            if ($sec->section_key === 'hero') {
+                foreach ($heroDefaults as $key => $value) {
+                    TemplateSectionContent::firstOrCreate(
+                        ['template_section_id' => $sec->id, 'field_key' => $key],
+                        ['value' => $value]
+                    );
+                }
+            }
         }
     }
 }
