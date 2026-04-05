@@ -734,3 +734,22 @@ tr:last-child td {
   font-style: italic;
   padding: $space-8;
 }
+
+.icon-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+
+  select {
+    flex: 1;
+  }
+}
+
+.icon-preview {
+  font-size: 1.4rem;
+  color: $color-primary;
+  flex-shrink: 0;
+  width: 1.6rem;
+  text-align: center;
+  line-height: 1;
+}

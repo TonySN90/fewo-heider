@@ -2,6 +2,29 @@
 
 @section('title', 'Preise')
 
+@php
+$icons = [
+  ''                  => '– kein Icon –',
+  'check_circle'      => 'check_circle – Häkchen',
+  'info'              => 'info – Info',
+  'pets'              => 'pets – Haustiere',
+  'cleaning_services' => 'cleaning_services – Reinigung',
+  'bed'               => 'bed – Bett',
+  'local_parking'     => 'local_parking – Parken',
+  'wifi'              => 'wifi – WLAN',
+  'euro'              => 'euro – Euro',
+  'calendar_month'    => 'calendar_month – Kalender',
+  'schedule'          => 'schedule – Uhrzeit',
+  'warning'           => 'warning – Warnung',
+  'phone'             => 'phone – Telefon',
+  'mail'              => 'mail – E-Mail',
+  'family_restroom'   => 'family_restroom – Familie',
+  'no_food'           => 'no_food – Kein Essen',
+  'smoking_rooms'     => 'smoking_rooms – Rauchen',
+  'key'               => 'key – Schlüssel',
+];
+@endphp
+
 @section('content')
   <h1>Preise verwalten</h1>
 
@@ -156,4 +179,122 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Hinweise -->
+  <div class="card">
+    <h2>Neuen Hinweis anlegen</h2>
+    <form method="POST" action="{{ route('admin.pricing-notes.store') }}">
+      @csrf
+      <div class="form-grid">
+        <div>
+          <label for="note_text">Hinweistext</label>
+          <input type="text" id="note_text" name="text" value="{{ old('text') }}" placeholder="z.B. Endreinigung: 35 €" maxlength="255" required />
+          @error('text') <p class="field-error">{{ $message }}</p> @enderror
+        </div>
+        <div>
+          <label for="note_icon">Icon</label>
+          <div class="icon-select-wrap">
+            <select id="note_icon" name="icon" onchange="updateIconPreview(this, 'icon-preview-new')">
+              @foreach ($icons as $value => $label)
+                <option value="{{ $value }}" {{ old('icon') === $value ? 'selected' : '' }}>{{ $label }}</option>
+              @endforeach
+            </select>
+            <span class="material-symbols-rounded icon-preview" id="icon-preview-new">{{ old('icon') ?: '' }}</span>
+          </div>
+        </div>
+        <div>
+          <label for="note_sort_order">Reihenfolge</label>
+          <input type="number" id="note_sort_order" name="sort_order" value="{{ old('sort_order', 0) }}" min="0" required />
+        </div>
+        <div>
+          <button type="submit" class="btn btn-add">Speichern</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="table-card">
+    <h2>Alle Hinweise ({{ $notes->count() }})</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Icon</th>
+          <th>Text</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @forelse ($notes as $note)
+          <tr class="row-display">
+            <td>{{ $note->sort_order }}</td>
+            <td>
+              @if ($note->icon)
+                <span class="material-symbols-rounded" style="font-size:1.1rem;vertical-align:middle;color:#555">{{ $note->icon }}</span>
+                <span style="color:#aaa;font-size:0.8rem;margin-left:4px">{{ $note->icon }}</span>
+              @else
+                <span style="color:#aaa">–</span>
+              @endif
+            </td>
+            <td>{{ $note->text }}</td>
+            <td>
+              <div class="actions">
+                <button class="btn btn-edit" onclick="openModal('Hinweis bearbeiten', 'edit-note-tpl-{{ $note->id }}')">Bearbeiten</button>
+                <form method="POST" action="{{ route('admin.pricing-notes.destroy', $note) }}" onsubmit="return confirm('Hinweis wirklich löschen?')">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-delete">Löschen</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+
+          <template id="edit-note-tpl-{{ $note->id }}">
+            <form method="POST" action="{{ route('admin.pricing-notes.update', $note) }}">
+              @csrf
+              @method('PUT')
+              <div class="modal-form-grid">
+                <div class="modal-form-grid__full">
+                  <label>Hinweistext</label>
+                  <input type="text" name="text" value="{{ $note->text }}" maxlength="255" required />
+                </div>
+                <div class="modal-form-grid__full">
+                  <label>Icon</label>
+                  <div class="icon-select-wrap">
+                    <select name="icon" onchange="updateIconPreview(this, 'modal-icon-preview')">
+                      @foreach ($icons as $value => $label)
+                        <option value="{{ $value }}" {{ $note->icon === $value ? 'selected' : '' }}>{{ $label }}</option>
+                      @endforeach
+                    </select>
+                    <span class="material-symbols-rounded icon-preview" id="modal-icon-preview">{{ $note->icon ?: '' }}</span>
+                  </div>
+                </div>
+                <div>
+                  <label>Reihenfolge</label>
+                  <input type="number" name="sort_order" value="{{ $note->sort_order }}" min="0" required />
+                </div>
+              </div>
+              <div class="modal__actions">
+                <button type="button" class="btn btn-cancel" onclick="closeModal()">Abbrechen</button>
+                <button type="submit" class="btn btn-save">Speichern</button>
+              </div>
+            </form>
+          </template>
+        @empty
+          <tr class="empty-row">
+            <td colspan="4">Noch keine Hinweise vorhanden.</td>
+          </tr>
+        @endforelse
+      </tbody>
+    </table>
+  </div>
 @endsection
+
+@push('scripts')
+<script>
+  function updateIconPreview(select, previewId) {
+    const preview = document.getElementById(previewId);
+    if (preview) preview.textContent = select.value;
+  }
+</script>
+@endpush

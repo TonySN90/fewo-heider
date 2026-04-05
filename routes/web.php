@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PricingNoteController;
 use App\Http\Controllers\Admin\SeasonController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,9 +40,14 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/seasons',                [SeasonController::class, 'index'])->name('admin.seasons');
     Route::post('/seasons',               [SeasonController::class, 'store'])->name('admin.seasons.store');
     Route::put('/seasons/{season}',       [SeasonController::class, 'update'])->name('admin.seasons.update');
-    Route::delete('/seasons/{season}',    [SeasonController::class, 'destroy'])->name('admin.seasons.destroy');
+    Route::delete('/seasons/{season}',          [SeasonController::class, 'destroy'])->name('admin.seasons.destroy');
+    Route::get('/pricing-notes',                [PricingNoteController::class, 'index'])->name('admin.pricing-notes');
+    Route::post('/pricing-notes',               [PricingNoteController::class, 'store'])->name('admin.pricing-notes.store');
+    Route::put('/pricing-notes/{note}',         [PricingNoteController::class, 'update'])->name('admin.pricing-notes.update');
+    Route::delete('/pricing-notes/{note}',      [PricingNoteController::class, 'destroy'])->name('admin.pricing-notes.destroy');
 });
 
 // Öffentliche API
 Route::get('/api/bookings', [\App\Http\Controllers\Api\BookingController::class, 'index']);
-Route::get('/api/seasons',  [\App\Http\Controllers\Api\SeasonController::class,  'index']);
+Route::get('/api/seasons',       [\App\Http\Controllers\Api\SeasonController::class,      'index']);
+Route::get('/api/pricing-notes', [\App\Http\Controllers\Api\PricingNoteController::class, 'index']);

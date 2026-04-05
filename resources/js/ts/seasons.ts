@@ -46,6 +46,33 @@ async function loadSeasons(): Promise<void> {
   }
 }
 
+async function loadPricingNotes(): Promise<void> {
+  const container = document.getElementById('pricing-notes-list');
+  if (!container) return;
+
+  try {
+    const res = await fetch('/api/pricing-notes');
+    const notes: { text: string; icon: string | null }[] = await res.json();
+
+    if (notes.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
+
+    container.innerHTML = notes
+      .map((n) => {
+        const icon = n.icon
+          ? `<span class="material-symbols-rounded">${n.icon}</span> `
+          : '';
+        return `<p>${icon}${n.text}</p>`;
+      })
+      .join('');
+  } catch {
+    container.innerHTML = '';
+  }
+}
+
 export function initSeasons(): void {
   loadSeasons();
+  loadPricingNotes();
 }

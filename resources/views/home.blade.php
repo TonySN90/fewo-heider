@@ -254,10 +254,8 @@
           </table>
           </div>
 
-          <div class="pricing__notes">
-            <p><span class="material-symbols-rounded">check_circle</span> Bettwäsche & Handtücher inklusive</p>
-            <p><span class="material-symbols-rounded">check_circle</span> Endreinigung: 35 €</p>
-            <p><span class="material-symbols-rounded">pets</span> Haustiere: auf Anfrage</p>
+          <div class="pricing__notes" id="pricing-notes-list">
+            <p style="color:#aaa;font-size:0.85rem">Lädt …</p>
           </div>
         </div>
 
