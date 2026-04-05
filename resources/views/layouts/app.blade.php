@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <!-- FSLightbox (kein ES-Modul, direkter Script-Tag) -->
-  <script src="/fslightbox.js"></script>
+  <script src="/fslightbox.js" defer></script>
 
   @vite(['resources/js/main.ts'])
 </head>
