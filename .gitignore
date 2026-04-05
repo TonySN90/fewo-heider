@@ -1,6 +1,13 @@
 node_modules/
 dist/
+/public/build/
 .DS_Store
 *.local
 .env
 .env.*
+
+/vendor/
+/.phpunit.cache
+/bootstrap/cache/*
+!bootstrap/cache/.gitkeep
+auth.json

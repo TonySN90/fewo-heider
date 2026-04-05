@@ -1,0 +1,90 @@
+// ============================================================
+// FARBEN
+// ============================================================
+// Rügen Naturpalette – Ostsee-Blaugrün, Strandsand, Kreideküste, Schilf
+$color-primary:      #3d7a6e;   // Ostsee-Blaugrün – CTAs, Akzente
+$color-primary-dark: #2e5f55;   // Tiefes Meeresgrün – Hover
+$color-secondary:    #a8c5b5;   // Blasses Schilfgrün – sekundäre Akzente
+$color-dark:         #263238;   // Tiefes Küstengrau – Überschriften
+$color-text:         #3d4f52;   // Schiefergrau – Haupttext
+$color-text-light:   #6b8088;   // Helles Schiefergrau – Sekundärtext
+$color-bg:           #f7faf8;   // Kreideweiß mit Grünstich – Seitenhintergrund
+$color-bg-alt:       #edf3ef;   // Leichtes Wiesengrün – Alt-Hintergrund
+$color-white:        #ffffff;
+$color-border:       #cfe0d8;   // Zarter Grüngrau-Rand
+
+$color-footer-top:   #2c4a42;   // Dunkelgrünes Schilf – Footer oben
+$color-footer-bot:   #161f1d;   // Fast Schwarz mit Grünton – Footer unten
+
+$color-season-off:     #90a8b8; // Winterliches Ostseeblau – Nebensaison
+$color-season-pre:     #6ab187; // Frühlingsgrün – Vorsaison
+$color-season-main:    #e07b5a; // Sommersandfarbe – Hauptsaison
+$color-season-holiday: #c9a84c; // Bernstein-Gold – Feiertage
+
+// ============================================================
+// TYPOGRAFIE
+// ============================================================
+$font-heading: 'Libre Baskerville', Georgia, serif;
+$font-body:    'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+$font-size-base:  1rem;        // 16px
+$font-size-sm:    0.875rem;    // 14px
+$font-size-xs:    0.75rem;     // 12px
+$font-size-lg:    1.125rem;    // 18px
+$font-size-xl:    1.25rem;     // 20px
+$font-size-2xl:   1.5rem;      // 24px
+$font-size-3xl:   1.875rem;    // 30px
+$font-size-4xl:   2.25rem;     // 36px
+$font-size-5xl:   3rem;        // 48px
+$font-size-6xl:   3.75rem;     // 60px
+
+$line-height-tight:  1.2;
+$line-height-normal: 1.6;
+$line-height-loose:  1.8;
+
+// ============================================================
+// BREAKPOINTS
+// ============================================================
+$bp-sm:      480px;
+$bp-md:      767px;
+$bp-nav:     1090px;
+$bp-lg:      1024px;
+$bp-xl:      1280px;
+
+// ============================================================
+// LAYOUT
+// ============================================================
+$max-width:       1290px;
+$section-padding: 5rem;
+$container-pad:   1.5rem;
+
+// ============================================================
+// ABSTÄNDE
+// ============================================================
+$space-1:  0.25rem;
+$space-2:  0.5rem;
+$space-3:  0.75rem;
+$space-4:  1rem;
+$space-5:  1.25rem;
+$space-6:  1.5rem;
+$space-8:  2rem;
+$space-10: 2.5rem;
+$space-12: 3rem;
+$space-16: 4rem;
+
+// ============================================================
+// DESIGN-ELEMENTE
+// ============================================================
+$border-radius:    10px;
+$border-radius-sm: 6px;
+$border-radius-lg: 20px;
+$border-radius-pill: 50px;
+
+$shadow-sm:  0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-md:  0 4px 16px rgba(0, 0, 0, 0.12);
+$shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.15);
+$shadow-btn: 0 4px 15px rgba(61, 122, 110, 0.35);
+
+$transition-fast:   150ms ease;
+$transition-normal: 300ms ease;
+$transition-slow:   500ms ease;

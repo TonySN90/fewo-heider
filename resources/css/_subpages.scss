@@ -1,0 +1,1328 @@
+// ============================================================
+// SUBPAGES – Styles für alle statischen Unterseiten
+// ============================================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ============================================================
+// BASIS
+// ============================================================
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-body;
+  font-size: $font-size-base;
+  line-height: $line-height-loose;
+  color: $color-text;
+  background: $color-bg;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+p {
+  margin-bottom: $space-3;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// ============================================================
+// SITE NAV (gemeinsam für alle Unterseiten außer impressum/datenschutz)
+// ============================================================
+
+.site-nav {
+  background: rgba(38, 50, 56, 0.97);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-nav__inner {
+  @include flex-between;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $container-pad;
+  height: 64px;
+  gap: $space-4;
+}
+
+.site-nav__logo {
+  font-family: $font-heading;
+  color: $color-white;
+  font-size: $font-size-base;
+  line-height: $line-height-tight;
+
+  span {
+    color: $color-secondary;
+  }
+}
+
+.site-nav__links {
+  // Desktop: in die Navbar-Zeile einpassen
+  position: absolute;
+  right: $container-pad;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: $space-6;
+
+  a {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.75);
+    transition: color $transition-fast;
+
+    &:hover,
+    &.active {
+      color: $color-secondary;
+    }
+  }
+}
+
+.site-nav__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  z-index: 1001;
+
+  span {
+    display: block;
+    height: 2px;
+    background: $color-white;
+    border-radius: 2px;
+    transition: transform $transition-normal, opacity $transition-normal;
+    transform-origin: left center;
+  }
+
+  &.open {
+    span:nth-child(1) { transform: rotate(45deg) translate(1px, -1px); }
+    span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    span:nth-child(3) { transform: rotate(-45deg) translate(1px, 1px); }
+  }
+
+  @include respond-to('nav') {
+    display: flex;
+  }
+}
+
+@include respond-to('nav') {
+  .site-nav__links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: min(320px, 85vw);
+    height: 100vh;
+    background-color: $color-bg;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
+    padding: 100px $space-8 $space-8;
+    transition: right $transition-normal;
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    z-index: 1000;
+    transform: none;
+
+    &.open {
+      right: 0;
+    }
+
+    a {
+      display: block;
+      color: $color-dark !important;
+      padding: $space-4 0;
+      font-size: $font-size-base;
+      border-bottom: 1px solid $color-border;
+      width: 100%;
+      letter-spacing: 0.04em;
+
+      &:hover,
+      &.active {
+        color: $color-primary !important;
+        padding-left: $space-3;
+      }
+    }
+  }
+}
+
+// ============================================================
+// PAGE HERO (Unterseiten mit Bild-Hero)
+// ============================================================
+
+.page-hero {
+  position: relative;
+  height: 380px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  h1 {
+    font-family: $font-heading;
+    font-size: $font-size-4xl;
+    color: $color-white;
+    line-height: $line-height-tight;
+
+    em {
+      color: $color-secondary;
+      font-style: italic;
+    }
+  }
+
+  @include respond-to('sm') {
+    height: 280px;
+
+    h1 {
+      font-size: 1.8rem;
+    }
+  }
+}
+
+.page-hero__overlay {
+  @include absolute-fill;
+  background: linear-gradient(to top, rgba(38, 50, 56, 0.75) 0%, rgba(38, 50, 56, 0.2) 60%);
+}
+
+.page-hero__content {
+  position: absolute;
+  bottom: $space-10;
+  left: 0;
+  right: 0;
+  padding: 0 $container-pad;
+  max-width: $max-width;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  @include flex-center;
+  justify-content: flex-start;
+  gap: $space-2;
+  font-size: $font-size-xs;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: $space-2;
+
+  a {
+    color: rgba(255, 255, 255, 0.65);
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+}
+
+// ============================================================
+// CONTAINER / LAYOUT
+// ============================================================
+
+.container {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $container-pad;
+}
+
+.content {
+  padding: 3.5rem 0 $section-padding;
+}
+
+.section-intro,
+.content__intro {
+  max-width: 760px;
+  margin: 0 auto $space-12;
+  text-align: center;
+
+  h2 {
+    font-family: $font-heading;
+    font-size: $font-size-2xl;
+    color: $color-dark;
+    margin-bottom: $space-3;
+  }
+
+  p {
+    color: $color-text-light;
+    font-size: 1.05rem;
+  }
+}
+
+.divider {
+  width: 50px;
+  height: 3px;
+  background: $color-primary;
+  border-radius: 2px;
+  margin: 0 auto $space-6;
+}
+
+// ============================================================
+// PAGE HEADER (impressum / datenschutz)
+// ============================================================
+
+.page-header {
+  background: linear-gradient(135deg, $color-primary-dark, $color-dark);
+  color: $color-white;
+  padding: $space-12 $container-pad;
+  text-align: center;
+
+  a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: $font-size-sm;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-white;
+    }
+  }
+
+  h1 {
+    font-family: $font-heading;
+    font-size: $font-size-4xl;
+    margin-top: $space-3;
+    color: $color-white;
+  }
+
+  // Variante für ruegen-erleben.html
+  &--gradient {
+    background: linear-gradient(160deg, $color-primary-dark 0%, $color-dark 100%);
+    padding: 4rem $container-pad 3.5rem;
+  }
+}
+
+.page-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: $space-6;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-secondary;
+  }
+}
+
+.page-header__eyebrow {
+  font-size: $font-size-xs;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $color-secondary;
+  margin-bottom: $space-2;
+}
+
+// ============================================================
+// LEGAL PAGES (impressum / datenschutz) – Textinhalt
+// ============================================================
+
+.legal-content {
+  h2 {
+    font-family: $font-heading;
+    font-size: $font-size-2xl;
+    color: $color-dark;
+    margin: $space-8 0 $space-3;
+    border-bottom: 2px solid $color-primary-dark;
+    padding-bottom: $space-2;
+  }
+
+  h3 {
+    font-family: $font-heading;
+    font-size: $font-size-lg;
+    color: $color-dark;
+    margin: $space-6 0 $space-2;
+  }
+
+  a {
+    color: $color-primary-dark;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// ============================================================
+// CATEGORIES GRID (ruegen-erleben.html)
+// ============================================================
+
+.categories {
+  padding: 4rem 0 $section-padding;
+}
+
+.categories__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-6;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.category-card {
+  @include card;
+  border: 1px solid $color-border;
+  transition: transform $transition-normal, box-shadow $transition-normal;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.category-card__img {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: $color-bg-alt;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $transition-slow;
+  }
+
+  .category-card:hover & img {
+    transform: scale(1.06);
+  }
+}
+
+.category-card__body {
+  padding: $space-6;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-card__icon {
+  font-size: 1.8rem;
+  color: $color-primary;
+  margin-bottom: $space-3;
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.category-card__title {
+  font-family: $font-heading;
+  font-size: $font-size-xl;
+  color: $color-dark;
+  margin-bottom: $space-2;
+}
+
+.category-card__desc {
+  font-size: $font-size-sm;
+  color: $color-text-light;
+  line-height: 1.65;
+  flex: 1;
+  margin-bottom: $space-5;
+}
+
+.category-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: $color-primary;
+  transition: gap $transition-fast, color $transition-fast;
+
+  &:hover {
+    color: $color-primary-dark;
+    gap: $space-3;
+  }
+}
+
+// ============================================================
+// TEASER (ruegen-erleben.html)
+// ============================================================
+
+.teaser {
+  background: $color-primary;
+  padding: 3.5rem $container-pad;
+  text-align: center;
+
+  h2 {
+    font-family: $font-heading;
+    font-size: 1.8rem;
+    color: $color-white;
+    margin-bottom: $space-3;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: $space-6;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+// ============================================================
+// CARDS (wandern.html / schloesser-parks.html)
+// ============================================================
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-6;
+
+  // 3-spaltig für schloesser-parks
+  &--three {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-5;
+
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 550px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  @include card;
+  border: 1px solid $color-border;
+  transition: transform $transition-normal, box-shadow $transition-normal;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.card__img {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $transition-normal;
+  }
+
+  .card:hover & img {
+    transform: scale(1.06);
+  }
+
+  // 4:3 Variante für schloesser-parks
+  &--ratio-4-3 {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+.card__body {
+  padding: $space-6;
+}
+
+.card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-bottom: $space-4;
+}
+
+.card__year {
+  font-size: $font-size-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $color-primary;
+  margin-bottom: $space-1;
+}
+
+.card__title {
+  font-family: $font-heading;
+  font-size: $font-size-xl;
+  color: $color-dark;
+  margin-bottom: $space-2;
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: $color-text;
+  line-height: $line-height-loose;
+}
+
+.card__highlights {
+  margin-top: $space-4;
+  padding-top: $space-4;
+  border-top: 1px solid $color-border;
+
+  h4 {
+    font-size: $font-size-xs;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: $color-text-light;
+    margin-bottom: $space-2;
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+  }
+
+  li {
+    font-size: 0.85rem;
+    color: $color-text;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    &::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: $color-primary;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// ============================================================
+// BADGES (wandern.html)
+// ============================================================
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.6rem;
+  border-radius: $border-radius-pill;
+}
+
+.badge--green {
+  background: rgba(61, 122, 110, 0.12);
+  color: $color-primary-dark;
+}
+
+.badge--blue {
+  background: rgba(61, 122, 110, 0.06);
+  color: $color-text-light;
+  border: 1px solid $color-border;
+}
+
+// ============================================================
+// PLACE LIST (ausflugsziele.html)
+// ============================================================
+
+.place-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+}
+
+.place {
+  @include card;
+  border: 1px solid $color-border;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+
+  &:nth-child(even) {
+    grid-template-columns: 1fr 320px;
+
+    .place__img {
+      order: 2;
+    }
+
+    .place__body {
+      order: 1;
+    }
+  }
+
+  @media (max-width: 800px) {
+    &,
+    &:nth-child(even) {
+      grid-template-columns: 1fr;
+    }
+
+    &:nth-child(even) .place__img,
+    &:nth-child(even) .place__body {
+      order: unset;
+    }
+  }
+
+  &:hover .place__img img {
+    transform: scale(1.05);
+  }
+}
+
+.place__img {
+  overflow: hidden;
+  min-height: 220px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $transition-normal;
+  }
+}
+
+.place__body {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.place__dist {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: $color-primary;
+  margin-bottom: $space-2;
+}
+
+.place__title {
+  font-family: $font-heading;
+  font-size: 1.4rem;
+  color: $color-dark;
+  margin-bottom: $space-3;
+}
+
+.place__text {
+  font-size: 0.925rem;
+  color: $color-text;
+  line-height: 1.75;
+}
+
+.place__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-top: $space-4;
+}
+
+// ============================================================
+// TAG (ausflugsziele / familie)
+// ============================================================
+
+.tag {
+  font-size: $font-size-xs;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: $border-radius-pill;
+  background: $color-bg-alt;
+  color: $color-text-light;
+  border: 1px solid $color-border;
+}
+
+// ============================================================
+// FEATURE CARDS (familie.html / sehenswuerdigkeiten.html)
+// ============================================================
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.feature {
+  @include card;
+  border: 1px solid $color-border;
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  margin-bottom: $space-8;
+
+  &--rev {
+    grid-template-columns: 1fr 380px;
+
+    .feature__img {
+      order: 2;
+    }
+
+    .feature__body {
+      order: 1;
+    }
+  }
+
+  @media (max-width: 800px) {
+    &,
+    &--rev {
+      grid-template-columns: 1fr;
+    }
+
+    &--rev .feature__img,
+    &--rev .feature__body {
+      order: unset;
+    }
+  }
+
+  &:hover .feature__img img {
+    transform: scale(1.05);
+  }
+}
+
+// sehenswuerdigkeiten.html: 50/50
+.feature--half {
+  grid-template-columns: 1fr 1fr;
+
+  &.feature--rev {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 750px) {
+    &,
+    &.feature--rev {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.feature__img {
+  overflow: hidden;
+  min-height: 240px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $transition-slow;
+  }
+}
+
+.feature__body {
+  padding: 2rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.feature__age,
+.feature__category {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: $color-primary;
+  margin-bottom: $space-2;
+}
+
+.feature__title {
+  font-family: $font-heading;
+  font-size: 1.4rem;
+  color: $color-dark;
+  margin-bottom: $space-3;
+  line-height: $line-height-tight;
+}
+
+.feature__text {
+  font-size: 0.925rem;
+  color: $color-text;
+  line-height: 1.75;
+}
+
+.feature__highlights {
+  margin-top: $space-5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.feature__info {
+  margin-top: $space-4;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: 0.8rem;
+  color: $color-text-light;
+
+  .material-symbols-rounded {
+    font-size: 0.95rem;
+    color: $color-primary;
+  }
+}
+
+// ============================================================
+// BEACH SECTION (familie.html)
+// ============================================================
+
+.beach-section {
+  margin-top: 3.5rem;
+
+  h2 {
+    font-family: $font-heading;
+    font-size: 1.4rem;
+    color: $color-dark;
+    margin-bottom: $space-5;
+    text-align: center;
+  }
+}
+
+.beach-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-5;
+
+  @include respond-to('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.beach-card {
+  @include card;
+  border: 1px solid $color-border;
+  display: flex;
+}
+
+.beach-card__icon {
+  width: 60px;
+  @include flex-center;
+  background: $color-bg-alt;
+  flex-shrink: 0;
+
+  .material-symbols-rounded {
+    font-size: 1.75rem;
+    color: $color-primary;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+}
+
+.beach-card__body {
+  padding: 1.1rem $space-5;
+}
+
+.beach-card__title {
+  font-weight: 700;
+  font-size: 0.925rem;
+  color: $color-dark;
+  margin-bottom: $space-1;
+}
+
+.beach-card__text {
+  font-size: 0.825rem;
+  color: $color-text-light;
+  line-height: 1.55;
+}
+
+// ============================================================
+// ROUTE LIST (radfahren.html)
+// ============================================================
+
+.route-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.route {
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  padding: 1.75rem $space-8;
+  box-shadow: $shadow-md;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: $space-6;
+  align-items: start;
+
+  @include respond-to('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.route__label {
+  font-size: $font-size-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $color-primary;
+  margin-bottom: $space-2;
+}
+
+.route__title {
+  font-family: $font-heading;
+  font-size: 1.3rem;
+  color: $color-dark;
+  margin-bottom: $space-2;
+}
+
+.route__text {
+  font-size: 0.925rem;
+  color: $color-text;
+  line-height: 1.75;
+}
+
+.route__stats {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  align-items: flex-end;
+  min-width: 140px;
+
+  @include respond-to('sm') {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+}
+
+.stat {
+  text-align: center;
+  background: $color-bg-alt;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  padding: $space-2 $space-3;
+  min-width: 100px;
+}
+
+.stat__value {
+  font-family: $font-heading;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: $color-primary;
+  line-height: 1;
+}
+
+.stat__label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: $color-text-light;
+  margin-top: $space-1;
+}
+
+.diff-badge {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: $border-radius-pill;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: $space-3;
+}
+
+.diff--easy {
+  background: rgba(106, 177, 135, 0.15);
+  color: #2a6644;
+}
+
+.diff--medium {
+  background: rgba(201, 168, 76, 0.15);
+  color: #7a5e18;
+}
+
+// ============================================================
+// HERO FEATURE (schloesser-parks.html)
+// ============================================================
+
+.hero-feature {
+  @include card;
+  border: 1px solid $color-border;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  box-shadow: $shadow-lg;
+  margin-bottom: $space-8;
+
+  @media (max-width: 750px) {
+    grid-template-columns: 1fr;
+  }
+
+  &:hover .hero-feature__img img {
+    transform: scale(1.04);
+  }
+}
+
+.hero-feature__img {
+  min-height: 340px;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $transition-slow;
+  }
+}
+
+.hero-feature__badge {
+  position: absolute;
+  top: $space-4;
+  left: $space-4;
+  background: $color-primary;
+  color: $color-white;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0.3rem 0.8rem;
+  border-radius: $border-radius-pill;
+}
+
+.hero-feature__body {
+  padding: $space-8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-feature__year {
+  font-size: $font-size-xs;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $color-primary;
+  margin-bottom: $space-2;
+}
+
+.hero-feature__title {
+  font-family: $font-heading;
+  font-size: 1.8rem;
+  color: $color-dark;
+  margin-bottom: $space-4;
+  line-height: $line-height-tight;
+}
+
+.hero-feature__text {
+  font-size: 0.95rem;
+  color: $color-text;
+  line-height: 1.8;
+}
+
+.hero-feature__facts {
+  margin-top: $space-6;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-3;
+}
+
+.fact {
+  background: $color-bg-alt;
+  border-radius: $border-radius-sm;
+  padding: $space-3 $space-4;
+  border: 1px solid $color-border;
+}
+
+.fact__label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $color-text-light;
+  margin-bottom: $space-1;
+}
+
+.fact__value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $color-dark;
+  word-break: break-word;
+}
+
+// ============================================================
+// MINI GRID (sehenswuerdigkeiten.html)
+// ============================================================
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-5;
+  margin-top: $space-12;
+
+  @media (max-width: 800px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mini-card {
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  padding: $space-6;
+  box-shadow: $shadow-md;
+}
+
+.mini-card__icon {
+  font-size: 1.75rem;
+  color: $color-primary;
+  margin-bottom: $space-3;
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.mini-card__title {
+  font-family: $font-heading;
+  font-size: 1.05rem;
+  color: $color-dark;
+  margin-bottom: $space-2;
+}
+
+.mini-card__text {
+  font-size: 0.85rem;
+  color: $color-text-light;
+  line-height: 1.65;
+}
+
+// ============================================================
+// TIP BOX
+// ============================================================
+
+.tip-box {
+  background: $color-bg-alt;
+  border: 1px solid $color-border;
+  border-left: 4px solid $color-primary;
+  border-radius: $border-radius;
+  padding: $space-5 $space-6;
+  margin-top: $space-12;
+}
+
+.tip-box__title {
+  font-weight: 700;
+  color: $color-dark;
+  margin-bottom: $space-2;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+// ============================================================
+// CTA STRIP
+// ============================================================
+
+.cta-strip {
+  background: $color-primary;
+  padding: $space-12 $container-pad;
+  text-align: center;
+  margin-top: $section-padding;
+
+  h2 {
+    font-family: $font-heading;
+    font-size: $font-size-2xl;
+    color: $color-white;
+    margin-bottom: $space-2;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: $space-5;
+  }
+}
+
+// ============================================================
+// BUTTONS (Unterseiten-Varianten)
+// ============================================================
+
+.btn {
+  @include btn-base;
+}
+
+.btn--white {
+  background: $color-white;
+  color: $color-primary;
+
+  &:hover {
+    background: $color-bg-alt;
+    transform: translateY(-1px);
+  }
+}
+
+.btn--outline {
+  background: transparent;
+  color: $color-white;
+  border-color: rgba(255, 255, 255, 0.5);
+  margin-left: $space-3;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// ============================================================
+// FOOTER (vereinfacht für Unterseiten)
+// ============================================================
+
+footer {
+  background: $color-footer-top;
+  padding: $space-8 $container-pad;
+  text-align: center;
+
+  p {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  a {
+    color: rgba(255, 255, 255, 0.6);
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+}
+
+.footer__legal {
+  display: flex;
+  gap: $space-6;
+  justify-content: center;
+  margin-top: $space-2;
+}

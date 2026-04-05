@@ -1,0 +1,135 @@
+// ============================================================
+// KONTAKT
+// ============================================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.contact__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-12;
+  align-items: center;
+
+  @include respond-to('lg') {
+    gap: $space-8;
+  }
+
+  @include respond-to('md') {
+    grid-template-columns: 1fr;
+    gap: $space-8;
+  }
+}
+
+.contact__text {
+  p {
+    font-size: $font-size-lg;
+    color: $color-text;
+    margin-bottom: $space-6;
+    line-height: $line-height-loose;
+
+    @include respond-to('md') {
+      font-size: $font-size-base;
+    }
+  }
+
+  .btn {
+    margin-top: $space-4;
+  }
+}
+
+.contact__card {
+  perspective: 1000px;
+}
+
+.contact__card-inner {
+  background: linear-gradient(135deg, $color-primary 0%, #1f4a41 100%);
+  border-radius: $border-radius-lg;
+  padding: $space-10;
+  color: $color-white;
+  box-shadow: $shadow-lg, 0 0 0 1px rgba(255,255,255,0.1) inset;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: -30px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+  }
+}
+
+.contact__card-label {
+  font-size: $font-size-xs;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: $space-2;
+}
+
+.contact__card-name {
+  font-family: $font-heading;
+  font-size: $font-size-3xl;
+  color: $color-white;
+  margin-bottom: $space-6;
+
+  @include respond-to('sm') {
+    font-size: $font-size-2xl;
+  }
+}
+
+.contact__card-details {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  position: relative;
+  z-index: 1;
+}
+
+.contact__card-row {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.9);
+
+  .material-symbols-rounded {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 1px;
+  }
+
+  span:first-child {
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.4);
+
+    &:hover {
+      color: $color-white;
+      text-decoration-color: rgba(255, 255, 255, 0.9);
+    }
+  }
+}

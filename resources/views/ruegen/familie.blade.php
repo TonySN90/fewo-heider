@@ -1,0 +1,178 @@
+@extends('layouts.pages')
+
+@section('meta')
+  <meta name="description" content="Rügen für die ganze Familie – Dinosaurierland, Rasender Roland, Karls Erlebnis-Dorf, Strände und mehr." />
+@endsection
+
+@section('title', 'Rügen für die ganze Familie – Ferienwohnung Heider')
+
+@section('nav')
+  <a href="{{ url('/') }}">Startseite</a>
+  <a href="{{ url('/ruegen-erleben') }}">Rügen erleben</a>
+  <a href="{{ url('/#kontakt') }}">Anfragen</a>
+@endsection
+
+@section('content')
+
+<div class="page-hero">
+  <img src="/images/rasender_roland.jpg" alt="Rügen für die ganze Familie" />
+  <div class="page-hero__overlay"></div>
+  <div class="page-hero__content container">
+    <div class="breadcrumb">
+      <a href="{{ url('/') }}">Startseite</a> <span>/</span>
+      <a href="{{ url('/ruegen-erleben') }}">Rügen erleben</a> <span>/</span>
+      <span>Familie</span>
+    </div>
+    <h1>Rügen für die ganze <em>Familie</em></h1>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container">
+    <div class="section-intro">
+      <h2>Unvergessliche Erlebnisse für Klein und Groß</h2>
+      <div class="divider"></div>
+      <p>Rügen bietet Familien eine schier unerschöpfliche Auswahl an Aktivitäten – von Dino-Abenteuern und Dampflok-Fahrten bis zu endlosen Sandstränden mit flachem Wasser.</p>
+    </div>
+
+    <div class="features">
+
+      <div class="feature">
+        <div class="feature__img">
+          <img src="/images/dinosaurier.jpg" alt="Dinosaurierland Glowe" loading="lazy" />
+        </div>
+        <div class="feature__body">
+          <p class="feature__age"><span class="material-symbols-rounded" style="font-size:0.9rem;">child_care</span> Ab 3 Jahren</p>
+          <h2 class="feature__title">Dinosaurierland Glowe</h2>
+          <p class="feature__text">Auf einem 1,5 km langen Erlebnispfad begegnen Kinder über 120 lebensgroßen Dinosaurier-Modellen in natürlicher Umgebung. Ob riesiger T-Rex oder imposanter Brachiosaurus – die detailgetreuen Nachbauten begeistern Kinder und Erwachsene gleichermaßen. Eine interaktive Fossilien-Ausgrabungsstätte rundet das prähistorische Erlebnis ab.</p>
+          <div class="feature__highlights">
+            <span class="tag">120+ Dino-Modelle</span>
+            <span class="tag">1,5 km Erlebnispfad</span>
+            <span class="tag">Fossilien ausgraben</span>
+          </div>
+          <div class="feature__info">
+            <span class="info-item"><span class="material-symbols-rounded">schedule</span> Apr–Okt tägl. 10–17 Uhr</span>
+            <span class="info-item"><span class="material-symbols-rounded">location_on</span> Glowe, ca. 20 km</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature feature--rev">
+        <div class="feature__img">
+          <img src="/images/erdbeeren.png" alt="Karls Erlebnis-Dorf Zirkow" loading="lazy" />
+        </div>
+        <div class="feature__body">
+          <p class="feature__age"><span class="material-symbols-rounded" style="font-size:0.9rem;">family_restroom</span> Alle Altersgruppen</p>
+          <h2 class="feature__title">Karls Erlebnis-Dorf Zirkow</h2>
+          <p class="feature__text">Direkt in unserer Nachbarschaft befindet sich das beliebte Karls Erlebnis-Dorf! Mit über 40 Attraktionen – vom Riesentrampolin über Strohparcours und Kinderbauernhof bis hin zu Ponyreiten – ist hier für jeden etwas dabei. Das Tobeland bietet auch bei schlechtem Wetter viel Spaß. Das Erdbeerpflücken ist ein Highlight der Saison.</p>
+          <div class="feature__highlights">
+            <span class="tag">40+ Attraktionen</span>
+            <span class="tag">Freier Eintritt</span>
+            <span class="tag">Schlechtwetter geeignet</span>
+            <span class="tag">Direkt in Zirkow</span>
+          </div>
+          <div class="feature__info">
+            <span class="info-item"><span class="material-symbols-rounded">payments</span> Kostenloser Eintritt</span>
+            <span class="info-item"><span class="material-symbols-rounded">location_on</span> Zirkow – direkt nebenan</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature__img">
+          <img src="/images/rasender_roland.jpg" alt="Rasender Roland" loading="lazy" />
+        </div>
+        <div class="feature__body">
+          <p class="feature__age"><span class="material-symbols-rounded" style="font-size:0.9rem;">train</span> Für alle</p>
+          <h2 class="feature__title">Rasender Roland</h2>
+          <p class="feature__text">Die historische Schmalspurbahn „Rügensche Bäderbahn" fährt seit über 100 Jahren über die Insel. Auf 24,2 km zwischen Putbus und Göhren schnauft die Dampflok durch Wälder, Wiesen und Küstendörfer. Für Kinder ist die Fahrt im alten Waggon ein unvergessliches Abenteuer – für Erwachsene ein Stück lebendige Eisenbahngeschichte.</p>
+          <div class="feature__highlights">
+            <span class="tag">24 km Strecke</span>
+            <span class="tag">Historische Dampflok</span>
+            <span class="tag">ca. 1 Std. Fahrt</span>
+          </div>
+          <div class="feature__info">
+            <span class="info-item"><span class="material-symbols-rounded">location_on</span> Start: Putbus, ca. 20 km</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature feature--rev">
+        <div class="feature__img">
+          <img src="/images/u-boot.jpg" alt="U-Boot-Museum Sassnitz" loading="lazy" />
+        </div>
+        <div class="feature__body">
+          <p class="feature__age"><span class="material-symbols-rounded" style="font-size:0.9rem;">anchor</span> Ab 6 Jahren</p>
+          <h2 class="feature__title">U-Boot HMS Otus – Sassnitz</h2>
+          <p class="feature__text">Im Hafen von Sassnitz liegt ein echtes britisches U-Boot der Oberon-Klasse, das von Besuchern begehbar ist. Enge Gänge, authentische Ausstattung und originalgetreue Geräuschkulisse tauchen Groß und Klein in die Welt unter Wasser ein. Geführte Touren erklären spannend die Geschichte des Fahrzeugs aus dem Falklandkrieg.</p>
+          <div class="feature__highlights">
+            <span class="tag">Begehbares U-Boot</span>
+            <span class="tag">Geführte Touren</span>
+            <span class="tag">Ganzjährig geöffnet</span>
+          </div>
+          <div class="feature__info">
+            <span class="info-item"><span class="material-symbols-rounded">payments</span> 7 € Erw. / 3 € Kinder</span>
+            <span class="info-item"><span class="material-symbols-rounded">location_on</span> Sassnitz, ca. 25 km</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="beach-section">
+      <h2>Die besten Familienstrände</h2>
+      <div class="beach-grid">
+        <div class="beach-card">
+          <div class="beach-card__icon"><span class="material-symbols-rounded">beach_access</span></div>
+          <div class="beach-card__body">
+            <p class="beach-card__title">Strand Schaabe</p>
+            <p class="beach-card__text">12 km feinsandiger Strand mit flachem Wasser – ideal für Kleinkinder. Ruhig, naturbelassen und einer der längsten Strände Deutschlands.</p>
+          </div>
+        </div>
+        <div class="beach-card">
+          <div class="beach-card__icon"><span class="material-symbols-rounded">beach_access</span></div>
+          <div class="beach-card__body">
+            <p class="beach-card__title">Strand Binz</p>
+            <p class="beach-card__text">3,2 km Promenadenstrand mit allem Komfort: Strandkörbe, Restaurants, Spielplätze und die berühmte Seebrücke – 3 km von unserer Ferienwohnung.</p>
+          </div>
+        </div>
+        <div class="beach-card">
+          <div class="beach-card__icon"><span class="material-symbols-rounded">waves</span></div>
+          <div class="beach-card__body">
+            <p class="beach-card__title">Strand Sellin</p>
+            <p class="beach-card__text">Ruhigerer Strand mit flachem Einstieg und der beeindruckenden Seebrücke. Besonders schön für Abendausflüge mit Blick auf den Sonnenuntergang.</p>
+          </div>
+        </div>
+        <div class="beach-card">
+          <div class="beach-card__icon"><span class="material-symbols-rounded">sailing</span></div>
+          <div class="beach-card__body">
+            <p class="beach-card__title">Wassersport & Bootstouren</p>
+            <p class="beach-card__text">Kanu, Stand-Up-Paddling, Segelkurse und Bootsausflüge entlang der Kreideküste – für aktive Familien gibt es reichlich Angebote auf und im Wasser.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <p class="tip-box__title"><span class="material-symbols-rounded" style="color:var(--primary);font-size:1.1rem;">lightbulb</span> Tipp: Karls Erlebnis-Dorf liegt direkt in Zirkow</p>
+      <p>Als Gast unserer Ferienwohnung sind Sie nur wenige Gehminuten vom Karls Erlebnis-Dorf entfernt – kostenloser Eintritt und 40+ Attraktionen direkt vor der Haustür. Perfekt für Regentage oder einen spontanen Nachmittagsausflug.</p>
+    </div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2>Familienurlaub auf Rügen</h2>
+  <p>Buchen Sie Ihre Ferienwohnung – zentral gelegen für alle Familienattraktionen der Insel.</p>
+  <a href="{{ url('/#kontakt') }}" class="btn btn--white"><span class="material-symbols-rounded">mail</span> Jetzt anfragen</a>
+  <a href="{{ url('/ruegen-erleben') }}" class="btn btn--outline">Alle Kategorien</a>
+</div>
+
+@endsection
+
+@section('footer')
+  <p>© 2026 Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <nav class="footer__legal">
+    <a href="{{ url('/impressum') }}">Impressum</a>
+    <a href="{{ url('/datenschutz') }}">Datenschutz</a>
+  </nav>
+@endsection

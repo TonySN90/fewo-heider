@@ -1,0 +1,74 @@
+// ============================================================
+// AUSSTATTUNG
+// ============================================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.amenities__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $space-4;
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include respond-to('md') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('sm') {
+    grid-template-columns: 1fr 1fr;
+    gap: $space-3;
+  }
+}
+
+.amenity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  padding: $space-4 $space-5;
+  transition: transform $transition-fast, box-shadow $transition-fast, border-color $transition-fast;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-sm;
+    border-color: $color-secondary;
+  }
+
+  @include respond-to('sm') {
+    padding: $space-3;
+    gap: $space-2;
+  }
+}
+
+.amenity-item__icon {
+  flex-shrink: 0;
+  line-height: 1;
+  font-size: 1.5rem;
+  color: $color-primary;
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  margin-top: 1px;
+
+  @include respond-to('sm') {
+    font-size: 1.25rem;
+  }
+}
+
+.amenity-item__label {
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $color-dark;
+  line-height: $line-height-normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
+
+  @include respond-to('sm') {
+    font-size: $font-size-xs;
+  }
+}

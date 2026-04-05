@@ -1,0 +1,21 @@
+// ============================================================
+// MAIN.SCSS – Einstiegspunkt für alle Styles
+// Alle Partials werden hier direkt per @forward eingebunden.
+// Variablen und Mixins werden in jedem Partial selbst importiert.
+// ============================================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'reset';
+@use 'typography';
+@use 'layout';
+@use 'header';
+@use 'hero';
+@use 'about';
+@use 'amenities';
+@use 'gallery';
+@use 'pricing';
+@use 'map';
+@use 'contact';
+@use 'footer';
+@use 'cookie';

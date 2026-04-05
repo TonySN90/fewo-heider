@@ -1,0 +1,369 @@
+// ============================================================
+// PREISE & BELEGUNGSPLAN
+// ============================================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.pricing__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-12;
+  align-items: start;
+
+  @include respond-to('lg') {
+    grid-template-columns: 1fr;
+    gap: $space-10;
+  }
+}
+
+.pricing__subtitle {
+  font-family: $font-heading;
+  font-size: $font-size-2xl;
+  color: $color-dark;
+  margin-bottom: $space-6;
+}
+
+.pricing__subtitle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cal-nav {
+  display: flex;
+  gap: $space-2;
+}
+
+.cal-nav__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid $color-border;
+  border-radius: 50%;
+  background: $color-bg-alt;
+  color: $color-primary;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+
+  &:hover:not(:disabled) {
+    background: $color-primary;
+    border-color: $color-primary;
+    color: $color-white;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .material-symbols-rounded {
+    font-size: 1.2rem;
+  }
+}
+
+// ============================================================
+// PREISTABELLE
+// ============================================================
+
+.pricing__table-wrap {
+  @include card;
+  padding: $space-8;
+  border: 1px solid $color-border;
+}
+
+.pricing__table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: $space-6;
+}
+
+.pricing__table {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: collapse;
+  margin-bottom: 0;
+
+  thead tr {
+    background-color: $color-primary;
+  }
+
+  th {
+    padding: $space-3;
+    text-align: left;
+    font-family: $font-body;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: $color-white;
+    letter-spacing: 0.04em;
+
+    &:first-child { border-radius: $border-radius-sm 0 0 0; }
+    &:last-child  { border-radius: 0 $border-radius-sm 0 0; }
+  }
+
+  tbody tr {
+    height: 5rem;
+    border-bottom: 1px solid $color-border;
+    transition: background-color $transition-fast;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: rgba($color-primary, 0.04);
+    }
+  }
+
+  td {
+    padding: $space-3;
+    font-size: $font-size-sm;
+    color: $color-text;
+    vertical-align: middle;
+  }
+
+  .price {
+    font-weight: 700;
+    font-size: $font-size-lg;
+    color: $color-primary;
+  }
+
+  @include respond-to('sm') {
+    font-size: $font-size-xs;
+
+    th, td {
+      padding: $space-2 $space-3;
+    }
+  }
+}
+
+.season-badge {
+  display: inline-block;
+  padding: 2px $space-3;
+  border-radius: $border-radius-pill;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &--off {
+    background-color: rgba($color-season-off, 0.2);
+    color: #3a5f72;
+  }
+
+  &--pre {
+    background-color: rgba($color-season-pre, 0.2);
+    color: #2a6644;
+  }
+
+  &--main {
+    background-color: rgba($color-season-main, 0.2);
+    color: #8c3e25;
+  }
+
+  &--holiday {
+    background-color: rgba($color-season-holiday, 0.2);
+    color: #7a5e18;
+  }
+}
+
+.pricing__notes {
+  border-top: 1px solid $color-border;
+  padding-top: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+
+  p {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $font-size-sm;
+    color: $color-text;
+    margin: 0;
+
+    .material-symbols-rounded {
+      font-size: 1.1rem;
+      color: $color-footer-top;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// ============================================================
+// BELEGUNGSKALENDER
+// ============================================================
+
+.pricing__calendar-wrap {
+  @include card;
+  padding: $space-8;
+  border: 1px solid $color-border;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: $space-4;
+  margin-bottom: $space-6;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: $color-text;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+  }
+
+  &--free::before {
+    background-color: rgba($color-footer-top, 0.15);
+    border: 1px solid $color-footer-top;
+  }
+
+  &--booked::before {
+    background-color: $color-primary;
+  }
+}
+
+.booking-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+}
+
+.cal-month {
+  &__header {
+    text-align: center;
+    font-family: $font-heading;
+    font-size: $font-size-lg;
+    color: $color-dark;
+    margin-bottom: $space-3;
+    font-weight: 700;
+  }
+
+  &__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 4px;
+
+    span {
+      text-align: center;
+      font-size: $font-size-xs;
+      font-weight: 600;
+      color: $color-text-light;
+      padding: $space-1 0;
+    }
+  }
+
+  &__days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  @include flex-center;
+  font-size: $font-size-xs;
+  border-radius: 4px;
+  color: $color-text;
+  font-weight: 500;
+  position: relative;
+
+  &__num {
+    position: absolute;
+    inset: 0;
+    @include flex-center;
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  &--empty {
+    background: transparent;
+  }
+
+  &--free {
+    background-color: rgba($color-footer-top, 0.1);
+    color: $color-footer-top;
+
+    &:hover {
+      background-color: rgba($color-footer-top, 0.2);
+    }
+  }
+
+  &--booked {
+    background-color: $color-primary;
+    color: $color-white;
+    font-weight: 600;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  &--check-in {
+    background: linear-gradient(
+      to bottom right,
+      rgba($color-footer-top, 0.1) 50%,
+      $color-primary 50%
+    );
+
+    &::after { display: none; }
+
+    .cal-day__num--main {
+      // Weiß, nur auf dem grünen Dreieck (unten rechts) sichtbar
+      color: $color-white;
+      clip-path: polygon(100% 0%, 100% 100%, 0% 100%);
+    }
+
+    .cal-day__num--alt {
+      // Dunkel, nur auf dem grauen Dreieck (oben links) sichtbar
+      color: $color-text;
+      clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
+    }
+  }
+
+  &--check-out {
+    background: linear-gradient(
+      to top right,
+      $color-primary 50%,
+      rgba($color-footer-top, 0.1) 50%
+    );
+
+    &::after { display: none; }
+
+    .cal-day__num--main {
+      // Weiß, nur auf dem grünen Dreieck (unten links) sichtbar
+      color: $color-white;
+      clip-path: polygon(0% 0%, 0% 100%, 100% 100%);
+    }
+
+    .cal-day__num--alt {
+      // Dunkel, nur auf dem grauen Dreieck (oben rechts) sichtbar
+      color: $color-text;
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+    }
+  }
+
+  &--today {
+    font-weight: 700;
+    border: 2px solid $color-footer-top;
+  }
+
+  &--past {
+    opacity: 0.35;
+  }
+}

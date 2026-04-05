@@ -1,0 +1,97 @@
+@extends('layouts.pages')
+
+@section('title', 'Datenschutzerklärung – Ferienwohnung Heider')
+
+@section('nav')
+  <a href="{{ url('/') }}">Startseite</a>
+  <a href="{{ url('/ruegen-erleben') }}">Rügen erleben</a>
+  <a href="{{ url('/#kontakt') }}">Anfragen</a>
+@endsection
+
+@section('content')
+
+<header class="page-header">
+  <a href="{{ url('/') }}">← Zurück zur Website</a>
+  <h1>Datenschutzerklärung</h1>
+</header>
+
+<div class="container legal-content">
+  <h2>1. Datenschutz auf einen Blick</h2>
+  <h3>Allgemeine Hinweise</h3>
+  <p>
+    Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.
+  </p>
+
+  <h3>Datenerfassung auf dieser Website</h3>
+  <p>
+    <strong>Wer ist verantwortlich für die Datenerfassung auf dieser Website?</strong><br />
+    Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.
+  </p>
+  <p>
+    <strong>Wie erfassen wir Ihre Daten?</strong><br />
+    Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. Hierbei kann es sich z. B. um Daten handeln, die Sie per E-Mail eingeben.
+  </p>
+  <p>
+    Andere Daten werden automatisch oder nach Ihrer Einwilligung beim Besuch der Website durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z. B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufes).
+  </p>
+
+  <h2>2. Hosting</h2>
+  <p>
+    Diese Website wird auf eigenen Servern oder bei einem externen Hosting-Dienstleister gehostet. Personenbezogene Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters gespeichert.
+  </p>
+
+  <h2>3. Allgemeine Hinweise und Pflichtinformationen</h2>
+  <h3>Datenschutz</h3>
+  <p>
+    Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.
+  </p>
+
+  <h3>Hinweis zur verantwortlichen Stelle</h3>
+  <p>
+    Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br /><br />
+    Lolita Heider<br />
+    Serams 8A<br />
+    18528 Zirkow/Serams<br /><br />
+    Telefon: <a href="tel:+493839331283">038393 31283</a><br />
+    E-Mail: <a href="mailto:fewo.heider@gmail.com">fewo.heider@gmail.com</a>
+  </p>
+
+  <h3>Speicherdauer</h3>
+  <p>
+    Soweit innerhalb dieser Datenschutzerklärung keine speziellere Speicherdauer genannt wurde, verbleiben Ihre personenbezogenen Daten bei uns, bis der Zweck für die Datenverarbeitung entfällt. Wenn Sie ein berechtigtes Löschersuchen geltend machen oder eine Einwilligung zur Datenverarbeitung widerrufen, werden Ihre Daten gelöscht, sofern wir keine anderen rechtlich zulässigen Gründe für die Speicherung Ihrer personenbezogenen Daten haben.
+  </p>
+
+  <h2>4. Datenerfassung auf dieser Website</h2>
+  <h3>Kontaktaufnahme per E-Mail</h3>
+  <p>
+    Wenn Sie uns per E-Mail kontaktieren, wird Ihre Anfrage inklusive aller daraus hervorgehenden personenbezogenen Daten (Name, Anfrage) zum Zwecke der Bearbeitung Ihres Anliegens bei uns gespeichert und verarbeitet. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.
+  </p>
+  <p>
+    Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erfüllung eines Vertrags zusammenhängt oder zur Durchführung vorvertraglicher Maßnahmen erforderlich ist.
+  </p>
+
+  <h3>OpenStreetMap</h3>
+  <p>
+    Diese Website nutzt den Kartendienst OpenStreetMap über das Leaflet-Framework. Anbieter ist die OpenStreetMap Foundation (OSMF). Beim Aufruf der Seite mit der Karte können Daten an OpenStreetMap-Server übermittelt werden. Weitere Informationen finden Sie in der <a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener noreferrer">Datenschutzerklärung von OpenStreetMap</a>.
+  </p>
+
+  <h2>5. Ihre Rechte</h2>
+  <p>Sie haben jederzeit das Recht auf:</p>
+  <p>
+    – Auskunft über Ihre bei uns gespeicherten personenbezogenen Daten<br />
+    – Berichtigung unrichtiger Daten<br />
+    – Löschung Ihrer Daten<br />
+    – Einschränkung der Datenverarbeitung<br />
+    – Datenübertragbarkeit<br />
+    – Widerspruch gegen die Verarbeitung
+  </p>
+  <p>
+    Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschutzrecht verstößt, haben Sie das Recht, sich bei der zuständigen Aufsichtsbehörde zu beschweren.
+  </p>
+</div>
+
+@endsection
+
+@section('footer')
+  <p>© 2026 Ferienwohnung Heider &nbsp;|&nbsp; <a href="{{ url('/impressum') }}">Impressum</a></p>
+@endsection

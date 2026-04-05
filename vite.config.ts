@@ -1,26 +1,19 @@
 import { defineConfig } from 'vite'
+import laravel from 'laravel-vite-plugin'
 
 export default defineConfig({
-  root: '.',
-  publicDir: 'public',
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    rollupOptions: {
-      input: {
-        main: 'index.html',
-        pages: 'src/styles/pages.scss',
-      },
-      output: {
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'pages.css') return 'assets/pages.css';
-          return 'assets/[name]-[hash][extname]';
-        },
-      },
-    },
-  },
+  plugins: [
+    laravel({
+      input: [
+        'resources/js/main.ts',
+        'resources/css/main.scss',
+        'resources/css/pages.scss',
+      ],
+      refresh: true,
+    }),
+  ],
   server: {
-    port: 3000,
-    open: true,
+    host: '0.0.0.0',
+    port: 5173,
   },
 })
