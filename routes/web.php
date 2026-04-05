@@ -71,3 +71,4 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 Route::get('/api/bookings',       [\App\Http\Controllers\Api\BookingController::class,     'index']);
 Route::get('/api/seasons',        [\App\Http\Controllers\Api\SeasonController::class,      'index']);
 Route::get('/api/pricing-notes',  [\App\Http\Controllers\Api\PricingNoteController::class, 'index']);
+Route::get('/api/amenities',      [\App\Http\Controllers\Api\AmenityController::class,     'index']);

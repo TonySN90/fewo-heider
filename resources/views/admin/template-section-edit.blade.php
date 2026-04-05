@@ -3,35 +3,8 @@
 @section('title', 'Sektion bearbeiten')
 
 @php
-$highlightIcons = [
-  ''                => '– kein Icon –',
-  'beach_access'    => 'beach_access – Strand',
-  'park'            => 'park – Natur',
-  'directions_bike' => 'directions_bike – Fahrrad',
-  'theater_comedy'  => 'theater_comedy – Kultur',
-  'restaurant'      => 'restaurant – Restaurant',
-  'local_cafe'      => 'local_cafe – Café',
-  'waves'           => 'waves – Wellen',
-  'hiking'          => 'hiking – Wandern',
-  'sailing'         => 'sailing – Segeln',
-  'kayaking'        => 'kayaking – Kajak',
-  'anchor'          => 'anchor – Anker',
-  'forest'          => 'forest – Wald',
-  'sunny'           => 'sunny – Sonne',
-  'star'            => 'star – Stern',
-  'favorite'        => 'favorite – Herz',
-  'home'            => 'home – Haus',
-  'bed'             => 'bed – Bett',
-  'wifi'            => 'wifi – WLAN',
-  'local_parking'   => 'local_parking – Parken',
-  'pets'            => 'pets – Haustiere',
-  'family_restroom' => 'family_restroom – Familie',
-  'child_care'      => 'child_care – Kinder',
-  'cake'            => 'cake – Feier',
-  'spa'             => 'spa – Wellness',
-  'fitness_center'  => 'fitness_center – Fitness',
-  'sports_tennis'   => 'sports_tennis – Sport',
-];
+use App\Models\Icon;
+$highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
 @endphp
 
 @section('content')
@@ -140,12 +113,98 @@ $highlightIcons = [
         </div>
       @endif
 
+      {{-- ===== AUSSTATTUNG ===== --}}
+      @if ($section->section_key === 'ausstattung')
+        <div class="section-edit-form">
+
+          <h2 class="section-edit-form__heading">Sektionskopf</h2>
+          <div class="form-field">
+            <label for="eyebrow">Eyebrow-Text</label>
+            <input type="text" id="eyebrow" name="fields[eyebrow]"
+              value="{{ $section->field('eyebrow', 'Was wir bieten') }}" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="title">Überschrift</label>
+            <input type="text" id="title" name="fields[title]"
+              value="{{ $section->field('title', 'Ausstattung') }}" maxlength="150" />
+          </div>
+
+          <h2 class="section-edit-form__heading">
+            Ausstattungs-Items
+            <span class="form-field__hint">(leer lassen = nicht anzeigen)</span>
+          </h2>
+
+          <div id="amenity-list">
+            @php $existingItems = []; @endphp
+            @for ($i = 1; $i <= 50; $i++)
+              @php
+                $icon  = $section->field("amenity_{$i}_icon");
+                $label = $section->field("amenity_{$i}_label");
+              @endphp
+              @if ($icon || $label)
+                @php $existingItems[] = ['icon' => $icon, 'label' => $label, 'index' => $i]; @endphp
+              @else
+                @break
+              @endif
+            @endfor
+
+            @foreach ($existingItems as $item)
+              <div class="amenity-editor" data-index="{{ $item['index'] }}">
+                <div class="amenity-editor__fields">
+                  <div class="form-field">
+                    <label>Icon</label>
+                    <div class="icon-select-wrap">
+                      <select name="fields[amenity_{{ $item['index'] }}_icon]"
+                              onchange="updateIconPreview(this, 'amenity-icon-{{ $item['index'] }}')">
+                        @foreach ($highlightIcons as $value => $label)
+                          <option value="{{ $value }}" {{ $item['icon'] === $value ? 'selected' : '' }}>
+                            {{ $label }}
+                          </option>
+                        @endforeach
+                      </select>
+                      <span class="material-symbols-rounded icon-preview" id="amenity-icon-{{ $item['index'] }}">
+                        {{ $item['icon'] }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-field">
+                    <label>Bezeichnung</label>
+                    <input type="text" name="fields[amenity_{{ $item['index'] }}_label]"
+                      value="{{ $item['label'] }}" maxlength="100" />
+                  </div>
+                </div>
+                <button type="button" class="btn btn-delete amenity-editor__remove" onclick="removeAmenity(this)">
+                  <span class="material-symbols-rounded">delete</span>
+                </button>
+              </div>
+            @endforeach
+          </div>
+
+          <div>
+            <button type="button" class="btn btn-add" onclick="addAmenity()">
+              <span class="material-symbols-rounded">add</span> Item hinzufügen
+            </button>
+          </div>
+
+        </div>
+      @endif
+
       <div class="section-edit-form__actions">
         <a href="{{ route('admin.templates') }}" class="btn btn-cancel">Abbrechen</a>
         <button type="submit" class="btn btn-save">Speichern</button>
       </div>
     </form>
   </div>
+
+  {{-- Icon-Optionen als JSON für JS --}}
+  @if ($section->section_key === 'ausstattung')
+    <script id="icon-options-data" type="application/json">
+      @json(array_keys($highlightIcons))
+    </script>
+    <script id="icon-labels-data" type="application/json">
+      @json($highlightIcons)
+    </script>
+  @endif
 @endsection
 
 @push('scripts')
@@ -153,6 +212,69 @@ $highlightIcons = [
   function updateIconPreview(select, previewId) {
     const preview = document.getElementById(previewId);
     if (preview) preview.textContent = select.value;
+  }
+
+  // Ausstattungs-Items dynamisch hinzufügen/entfernen
+  function getNextAmenityIndex() {
+    const items = document.querySelectorAll('.amenity-editor');
+    let max = 0;
+    items.forEach(el => {
+      const idx = parseInt(el.dataset.index, 10);
+      if (idx > max) max = idx;
+    });
+    return max + 1;
+  }
+
+  function buildIconSelect(name, previewId) {
+    const labels = JSON.parse(document.getElementById('icon-labels-data')?.textContent || '{}');
+    let select = `<select name="${name}" onchange="updateIconPreview(this, '${previewId}')">`;
+    for (const [value, label] of Object.entries(labels)) {
+      select += `<option value="${value}">${label}</option>`;
+    }
+    select += '</select>';
+    return select;
+  }
+
+  function addAmenity() {
+    const idx   = getNextAmenityIndex();
+    const list  = document.getElementById('amenity-list');
+    const div   = document.createElement('div');
+    div.className   = 'amenity-editor';
+    div.dataset.index = idx;
+    div.innerHTML = `
+      <div class="amenity-editor__fields">
+        <div class="form-field">
+          <label>Icon</label>
+          <div class="icon-select-wrap">
+            ${buildIconSelect('fields[amenity_' + idx + '_icon]', 'amenity-icon-' + idx)}
+            <span class="material-symbols-rounded icon-preview" id="amenity-icon-${idx}"></span>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Bezeichnung</label>
+          <input type="text" name="fields[amenity_${idx}_label]" maxlength="100" />
+        </div>
+      </div>
+      <button type="button" class="btn btn-delete amenity-editor__remove" onclick="removeAmenity(this)">
+        <span class="material-symbols-rounded">delete</span>
+      </button>
+    `;
+    list.appendChild(div);
+  }
+
+  function removeAmenity(btn) {
+    const editor = btn.closest('.amenity-editor');
+    const idx    = editor.dataset.index;
+    // Leere Werte senden damit der Controller die Felder auf '' setzt
+    const iconInput  = document.createElement('input');
+    iconInput.type   = 'hidden';
+    iconInput.name   = `fields[amenity_${idx}_icon]`;
+    iconInput.value  = '';
+    const labelInput  = document.createElement('input');
+    labelInput.type   = 'hidden';
+    labelInput.name   = `fields[amenity_${idx}_label]`;
+    labelInput.value  = '';
+    editor.replaceWith(iconInput, labelInput);
   }
 </script>
 @endpush

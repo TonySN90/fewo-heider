@@ -21,7 +21,7 @@ class TemplateController extends Controller
     ];
 
     // Sections that have a dedicated edit page
-    private const EDITABLE_SECTIONS = ['hero', 'ueber-uns'];
+    private const EDITABLE_SECTIONS = ['hero', 'ueber-uns', 'ausstattung'];
 
     public function index(): View
     {

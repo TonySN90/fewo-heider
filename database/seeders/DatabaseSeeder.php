@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(IconSeeder::class);
         $this->call(SeasonSeeder::class);
         $this->call(PricingNoteSeeder::class);
         $this->call(TemplateSeeder::class);

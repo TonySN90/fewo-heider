@@ -22,9 +22,10 @@ class HomeController extends Controller
             $visibleSections = self::ALL_SECTIONS;
         }
 
-        $heroSection     = $activeTemplate?->sections->firstWhere('section_key', 'hero');
-        $aboutUsSection = $activeTemplate?->sections->firstWhere('section_key', 'ueber-uns');
+        $heroSection      = $activeTemplate?->sections->firstWhere('section_key', 'hero');
+        $aboutUsSection   = $activeTemplate?->sections->firstWhere('section_key', 'ueber-uns');
+        $amenitiesSection = $activeTemplate?->sections->firstWhere('section_key', 'ausstattung');
 
-        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection', 'aboutUsSection'));
+        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection', 'aboutUsSection', 'amenitiesSection'));
     }
 }

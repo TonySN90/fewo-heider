@@ -100,7 +100,9 @@ select {
 }
 
 .btn-add {
-  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
 }
 
 .btn-edit,
@@ -1006,6 +1008,32 @@ tr:last-child td {
     padding: $space-5 $space-6;
     border-top: 1px solid #f0f0f0;
     margin-top: $space-5;
+  }
+}
+
+.amenity-editor {
+  display: flex;
+  align-items: flex-end;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  background: #f9f9f9;
+  border-radius: $border-radius-sm;
+  border: 1px solid #eee;
+
+  &__fields {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: $space-3;
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__remove {
+    flex-shrink: 0;
+    align-self: flex-end;
   }
 }
 

@@ -122,71 +122,44 @@
 
   <!-- ===== AUSSTATTUNG ===== -->
   @if (in_array('ausstattung', $visibleSections))
+  @php $am = $amenitiesSection; @endphp
   <section id="ausstattung" class="amenities section section--alt">
     <div class="container">
       <div class="section__header">
-        <p class="section__eyebrow">Was wir bieten</p>
-        <h2 class="section__title">Ausstattung</h2>
+        <p class="section__eyebrow">{{ $am?->field('eyebrow', 'Was wir bieten') ?? 'Was wir bieten' }}</p>
+        <h2 class="section__title">{{ $am?->field('title', 'Ausstattung') ?? 'Ausstattung' }}</h2>
         <div class="section__divider"></div>
       </div>
 
       <div class="amenities__grid">
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">local_parking</span>
-          <span class="amenity-item__label">Kostenfreier Stellparkplatz</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">wifi</span>
-          <span class="amenity-item__label">W-LAN inklusive</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">radio</span>
-          <span class="amenity-item__label">Radio mit CD-Player</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">tv</span>
-          <span class="amenity-item__label">Satelliten-Fernsehen</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">cooking</span>
-          <span class="amenity-item__label">Herd & Backofen</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">kitchen</span>
-          <span class="amenity-item__label">Kühlschrank mit Tiefkühlfach</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">coffee_maker</span>
-          <span class="amenity-item__label">Kaffeemaschine</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">breakfast_dining</span>
-          <span class="amenity-item__label">Toaster</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">kettle</span>
-          <span class="amenity-item__label">Wasserkocher</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">egg_alt</span>
-          <span class="amenity-item__label">Eierkocher</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">bed</span>
-          <span class="amenity-item__label">Bettwäsche inklusive</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">dry</span>
-          <span class="amenity-item__label">Handtücher inklusive</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">door_front</span>
-          <span class="amenity-item__label">Separater Eingang</span>
-        </div>
-        <div class="amenity-item">
-          <span class="amenity-item__icon material-symbols-rounded">chair</span>
-          <span class="amenity-item__label">Gemütliche Sitzecke</span>
-        </div>
+        @if ($am)
+          @for ($i = 1; $i <= 50; $i++)
+            @php $icon = $am->field("amenity_{$i}_icon"); $label = $am->field("amenity_{$i}_label"); @endphp
+            @if ($icon && $label)
+              <div class="amenity-item">
+                <span class="amenity-item__icon material-symbols-rounded">{{ $icon }}</span>
+                <span class="amenity-item__label">{{ $label }}</span>
+              </div>
+            @elseif (!$icon && !$label)
+              @break
+            @endif
+          @endfor
+        @else
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">local_parking</span><span class="amenity-item__label">Kostenfreier Stellparkplatz</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">wifi</span><span class="amenity-item__label">W-LAN inklusive</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">radio</span><span class="amenity-item__label">Radio mit CD-Player</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">tv</span><span class="amenity-item__label">Satelliten-Fernsehen</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">cooking</span><span class="amenity-item__label">Herd & Backofen</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">kitchen</span><span class="amenity-item__label">Kühlschrank mit Tiefkühlfach</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">coffee_maker</span><span class="amenity-item__label">Kaffeemaschine</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">breakfast_dining</span><span class="amenity-item__label">Toaster</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">kettle</span><span class="amenity-item__label">Wasserkocher</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">egg_alt</span><span class="amenity-item__label">Eierkocher</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">bed</span><span class="amenity-item__label">Bettwäsche inklusive</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">dry</span><span class="amenity-item__label">Handtücher inklusive</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">door_front</span><span class="amenity-item__label">Separater Eingang</span></div>
+          <div class="amenity-item"><span class="amenity-item__icon material-symbols-rounded">chair</span><span class="amenity-item__label">Gemütliche Sitzecke</span></div>
+        @endif
       </div>
     </div>
   </section>

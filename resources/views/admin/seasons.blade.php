@@ -3,6 +3,7 @@
 @section('title', 'Preise')
 
 @php
+use App\Models\Icon;
 $badgeColors = [
   ''       => '– keine –',
   'blue'   => 'blue (blaugrau)',
@@ -10,27 +11,7 @@ $badgeColors = [
   'orange' => 'orange',
   'gold'   => 'gold',
 ];
-
-$icons = [
-  ''                  => '– kein Icon –',
-  'check_circle'      => 'check_circle – Häkchen',
-  'info'              => 'info – Info',
-  'pets'              => 'pets – Haustiere',
-  'cleaning_services' => 'cleaning_services – Reinigung',
-  'bed'               => 'bed – Bett',
-  'local_parking'     => 'local_parking – Parken',
-  'wifi'              => 'wifi – WLAN',
-  'euro'              => 'euro – Euro',
-  'calendar_month'    => 'calendar_month – Kalender',
-  'schedule'          => 'schedule – Uhrzeit',
-  'warning'           => 'warning – Warnung',
-  'phone'             => 'phone – Telefon',
-  'mail'              => 'mail – E-Mail',
-  'family_restroom'   => 'family_restroom – Familie',
-  'no_food'           => 'no_food – Kein Essen',
-  'smoking_rooms'     => 'smoking_rooms – Rauchen',
-  'key'               => 'key – Schlüssel',
-];
+$icons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
 @endphp
 
 @section('content')
