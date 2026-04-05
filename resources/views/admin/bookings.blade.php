@@ -22,8 +22,16 @@
           @error('to') <p class="field-error">{{ $message }}</p> @enderror
         </div>
         <div>
-          <label for="guest_name">Gastname (optional)</label>
+          <label for="guest_name">Gastname</label>
           <input type="text" id="guest_name" name="guest_name" value="{{ old('guest_name') }}" placeholder="z.B. Familie Müller" maxlength="100" />
+        </div>
+        <div>
+          <label for="portal">Buchungsportal</label>
+          <input type="text" id="portal" name="portal" value="{{ old('portal') }}" placeholder="z.B. Airbnb" maxlength="100" />
+        </div>
+        <div>
+          <label for="booked_at">Buchungsdatum</label>
+          <input type="date" id="booked_at" name="booked_at" value="{{ old('booked_at') }}" />
         </div>
         <div>
           <button type="submit" class="btn btn-add">Speichern</button>
@@ -41,6 +49,8 @@
           <th>Anreise</th>
           <th>Abreise</th>
           <th>Gastname</th>
+          <th>Portal</th>
+          <th>Buchungsdatum</th>
           <th></th>
         </tr>
       </thead>
@@ -50,6 +60,8 @@
             <td>{{ $booking->from->format('d.m.Y') }}</td>
             <td>{{ $booking->to->format('d.m.Y') }}</td>
             <td class="guest-name">{{ $booking->guest_name ?? '–' }}</td>
+            <td>{{ $booking->portal ?? '–' }}</td>
+            <td>{{ $booking->booked_at?->format('d.m.Y') ?? '–' }}</td>
             <td>
               <div class="actions">
                 <button class="btn btn-edit" onclick="openEdit({{ $booking->id }})">Bearbeiten</button>
@@ -63,7 +75,7 @@
           </tr>
 
           <tr class="row-edit" id="edit-{{ $booking->id }}">
-            <td colspan="4">
+            <td colspan="6">
               <form method="POST" action="{{ route('admin.bookings.update', $booking) }}">
                 @csrf
                 @method('PUT')
@@ -81,6 +93,14 @@
                     <input type="text" name="guest_name" value="{{ $booking->guest_name }}" placeholder="optional" maxlength="100" />
                   </div>
                   <div>
+                    <label>Buchungsportal</label>
+                    <input type="text" name="portal" value="{{ $booking->portal }}" placeholder="optional" maxlength="100" />
+                  </div>
+                  <div>
+                    <label>Buchungsdatum</label>
+                    <input type="date" name="booked_at" value="{{ $booking->booked_at?->format('Y-m-d') }}" />
+                  </div>
+                  <div>
                     <button type="submit" class="btn btn-save">Speichern</button>
                   </div>
                   <div>
@@ -92,7 +112,7 @@
           </tr>
         @empty
           <tr class="empty-row">
-            <td colspan="4">Noch keine Buchungen vorhanden.</td>
+            <td colspan="6">Noch keine Buchungen vorhanden.</td>
           </tr>
         @endforelse
       </tbody>

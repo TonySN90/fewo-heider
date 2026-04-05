@@ -21,6 +21,8 @@ class BookingController extends Controller
             'from'       => ['required', 'date'],
             'to'         => ['required', 'date', 'after_or_equal:from'],
             'guest_name' => ['nullable', 'string', 'max:100'],
+            'portal'     => ['nullable', 'string', 'max:100'],
+            'booked_at'  => ['nullable', 'date'],
         ]);
 
         Booking::create($data);
@@ -34,6 +36,8 @@ class BookingController extends Controller
             'from'       => ['required', 'date'],
             'to'         => ['required', 'date', 'after_or_equal:from'],
             'guest_name' => ['nullable', 'string', 'max:100'],
+            'portal'     => ['nullable', 'string', 'max:100'],
+            'booked_at'  => ['nullable', 'date'],
         ]);
 
         $booking->update($data);
