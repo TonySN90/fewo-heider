@@ -35,7 +35,7 @@ $icons = [
 
 @section('content')
   <div class="page-header">
-    <h1>Saisons und Preise verwalten</h1>
+    <h1>Saisons und Preise</h1>
     <button class="btn btn-add" onclick="openModal('Neue Saison', 'add-season-tpl')">Neue Saison</button>
   </div>
 
