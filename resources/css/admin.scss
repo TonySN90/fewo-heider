@@ -397,6 +397,8 @@ body.admin-layout {
 
 .admin-main {
   flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
   overflow-y: auto;
   padding: $space-8;
 
@@ -1160,4 +1162,92 @@ tr:last-child td {
     outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
+}
+
+// ===== Gallery Admin Grid =====
+.gallery-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  padding: 1.25rem;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gallery-admin-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &__preview {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__body {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__form {
+    margin: 0;
+  }
+
+  &__form--delete {
+    flex-shrink: 0;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  &__row--actions {
+    gap: 0.35rem;
+  }
+
+  &__caption {
+    width: 100%;
+    margin-bottom: .5rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    font-size: 0.85rem;
+  }
+
+  &__sort-icon {
+    font-size: 1rem;
+    color: #9ca3af;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  &__sort {
+    width: 70px !important;
+    padding: 0.35rem 0.4rem;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+}
+
+.btn-save--sm,
+.btn-delete--sm {
+  padding: 0.6rem 0.6rem;
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  .material-symbols-rounded { font-size: 1rem; }
 }

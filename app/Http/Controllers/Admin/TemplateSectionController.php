@@ -15,7 +15,7 @@ class TemplateSectionController extends Controller
     public function edit(Template $template, string $sectionKey): View
     {
         $section = $template->sections()->where('section_key', $sectionKey)->firstOrFail();
-        $section->load('content');
+        $section->load('content', 'galleryImages');
 
         return view('admin.template-section-edit', compact('template', 'section'));
     }

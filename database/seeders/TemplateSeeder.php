@@ -89,6 +89,10 @@ class TemplateSeeder extends Seeder
                 'amenity_14_icon'  => 'chair',
                 'amenity_14_label' => 'Gemütliche Sitzecke',
             ],
+            'galerie' => [
+                'eyebrow' => 'Eindrücke',
+                'title'   => 'Galerie',
+            ],
         ];
 
         foreach (self::SECTIONS as $section) {

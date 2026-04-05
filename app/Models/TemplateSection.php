@@ -22,6 +22,11 @@ class TemplateSection extends Model
         return $this->hasMany(TemplateSectionContent::class, 'template_section_id');
     }
 
+    public function galleryImages(): HasMany
+    {
+        return $this->hasMany(GalleryImage::class, 'template_section_id')->orderBy('sort_order');
+    }
+
     /** Gibt einen einzelnen Feldwert zurück, mit optionalem Fallback. */
     public function field(string $key, string $default = ''): string
     {

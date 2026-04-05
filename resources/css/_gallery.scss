@@ -6,6 +6,8 @@
 @use 'mixins' as *;
 
 .gallery__grid {
+  width: 1000px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: $space-2;
@@ -79,3 +81,25 @@
     outline-offset: 2px;
   }
 }
+
+.gallery__footer {
+  margin-top: $space-8;
+  text-align: center;
+}
+
+.gallery__show-all {
+  color: $color-primary;
+  border: 2px solid $color-primary;
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+
+  &:hover {
+    border: 2px solid $color-primary;
+  }
+
+  .material-symbols-rounded {
+    font-size: 1.2rem;
+  }
+}
+

@@ -167,52 +167,45 @@
 
   <!-- ===== GALERIE ===== -->
   @if (in_array('galerie', $visibleSections))
+  @php
+    $visibleImgs = $galleryImages->take(6);
+    $hiddenImgs  = $galleryImages->skip(6);
+  @endphp
   <section id="galerie" class="gallery section">
     <div class="container">
       <div class="section__header">
-        <p class="section__eyebrow">Eindrücke</p>
-        <h2 class="section__title">Galerie</h2>
+        <p class="section__eyebrow">{{ $gallerySection?->field('eyebrow', 'Eindrücke') ?? 'Eindrücke' }}</p>
+        <h2 class="section__title">{{ $gallerySection?->field('title', 'Galerie') ?? 'Galerie' }}</h2>
         <div class="section__divider"></div>
       </div>
 
       <div class="gallery__grid" id="gallery-grid">
-        <div class="gallery-item">
-          <a href="/images/gallery/front.webp" data-fslightbox="gallery" data-caption="Hauseingang">
-            <img src="/images/gallery/front.webp" alt="Hauseingang" loading="lazy" />
-          </a>
-          <div class="gallery-item__overlay"><span>Hauseingang</span></div>
-        </div>
-        <div class="gallery-item">
-          <a href="/images/gallery/haus_02.webp" data-fslightbox="gallery" data-caption="Außenansicht">
-            <img src="/images/gallery/haus_02.webp" alt="Außenansicht" loading="lazy" />
-          </a>
-          <div class="gallery-item__overlay"><span>Außenansicht</span></div>
-        </div>
-        <div class="gallery-item">
-          <a href="/images/gallery/w1.webp" data-fslightbox="gallery" data-caption="Wohnbereich">
-            <img src="/images/gallery/w1.webp" alt="Wohnbereich" loading="lazy" />
-          </a>
-          <div class="gallery-item__overlay"><span>Wohnbereich</span></div>
-        </div>
-        <div class="gallery-item">
-          <a href="/images/gallery/w2.webp" data-fslightbox="gallery" data-caption="Schlafbereich">
-            <img src="/images/gallery/w2.webp" alt="Schlafbereich" loading="lazy" />
-          </a>
-          <div class="gallery-item__overlay"><span>Schlafbereich</span></div>
-        </div>
-        <div class="gallery-item">
-          <a href="/images/gallery/k.webp" data-fslightbox="gallery" data-caption="Küche">
-            <img src="/images/gallery/k.webp" alt="Küche" loading="lazy" />
-          </a>
-          <div class="gallery-item__overlay"><span>Küche</span></div>
-        </div>
-        <div class="gallery-item">
-          <a href="/images/gallery/t2.webp" data-fslightbox="gallery" data-caption="Sitzecke">
-            <img src="/images/gallery/t2.webp" alt="Sitzecke" loading="lazy" />
-          </a>
-          <div class="gallery-item__overlay"><span>Sitzecke</span></div>
-        </div>
+        @foreach ($visibleImgs as $img)
+          <div class="gallery-item">
+            <a href="{{ $img->url() }}" data-fslightbox="gallery" data-caption="{{ $img->caption }}">
+              <img src="{{ $img->url() }}" alt="{{ $img->caption ?? 'Galerie-Bild' }}" loading="lazy" />
+            </a>
+            <div class="gallery-item__overlay"><span>{{ $img->caption }}</span></div>
+          </div>
+        @endforeach
+
+        {{-- Versteckte Bilder (ab Bild 6) – nur als <a> für Lightbox, kein img-Request --}}
+        @foreach ($hiddenImgs as $img)
+          <a href="{{ $img->url() }}" data-fslightbox="gallery"
+             data-caption="{{ $img->caption }}" aria-hidden="true" style="display:none"></a>
+        @endforeach
       </div>
+
+      @if ($galleryImages->count() > 6)
+        <div class="gallery__footer">
+          <button type="button"
+                  class="btn btn--outline gallery__show-all"
+                  onclick="fsLightboxInstances['gallery'].open(0)">
+            <span class="material-symbols-rounded">photo_library</span>
+            Alle {{ $galleryImages->count() }} Bilder anschauen
+          </button>
+        </div>
+      @endif
     </div>
   </section>
   @endif

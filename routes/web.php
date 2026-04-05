@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PricingNoteController;
 use App\Http\Controllers\Admin\SeasonController;
 use App\Http\Controllers\Admin\SeasonPriceController;
+use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\TemplateSectionController;
 use App\Http\Controllers\HomeController;
@@ -65,6 +66,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::get('/templates/{template}/sections/{sectionKey}/edit', [TemplateSectionController::class, 'edit'])->name('admin.templates.sections.edit');
     Route::put('/templates/{template}/sections/{sectionKey}',      [TemplateSectionController::class, 'update'])->name('admin.templates.sections.update');
+
+    Route::post('/templates/{template}/sections/{sectionKey}/gallery',                  [GalleryController::class, 'store'])->name('admin.gallery.store');
+    Route::put('/templates/{template}/sections/{sectionKey}/gallery/{image}',           [GalleryController::class, 'update'])->name('admin.gallery.update');
+    Route::delete('/templates/{template}/sections/{sectionKey}/gallery/{image}',        [GalleryController::class, 'destroy'])->name('admin.gallery.destroy');
 });
 
 // Öffentliche API

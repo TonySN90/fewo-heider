@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GalleryImage;
 use App\Models\Template;
 use Illuminate\View\View;
 
@@ -25,7 +26,12 @@ class HomeController extends Controller
         $heroSection      = $activeTemplate?->sections->firstWhere('section_key', 'hero');
         $aboutUsSection   = $activeTemplate?->sections->firstWhere('section_key', 'ueber-uns');
         $amenitiesSection = $activeTemplate?->sections->firstWhere('section_key', 'ausstattung');
+        $gallerySection   = $activeTemplate?->sections->firstWhere('section_key', 'galerie');
 
-        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection', 'aboutUsSection', 'amenitiesSection'));
+        $galleryImages = $gallerySection
+            ? GalleryImage::where('template_section_id', $gallerySection->id)->orderBy('sort_order')->get()
+            : collect();
+
+        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection', 'aboutUsSection', 'amenitiesSection', 'gallerySection', 'galleryImages'));
     }
 }

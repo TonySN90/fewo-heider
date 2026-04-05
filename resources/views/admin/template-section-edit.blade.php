@@ -189,12 +189,112 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
         </div>
       @endif
 
+      {{-- ===== GALERIE (Sektionskopf im PUT-Formular) ===== --}}
+      @if ($section->section_key === 'galerie')
+        <div class="section-edit-form">
+          <h2 class="section-edit-form__heading">Sektionskopf</h2>
+          <div class="form-field">
+            <label for="eyebrow">Eyebrow-Text</label>
+            <input type="text" id="eyebrow" name="fields[eyebrow]"
+              value="{{ $section->field('eyebrow', 'Eindrücke') }}" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="title">Überschrift</label>
+            <input type="text" id="title" name="fields[title]"
+              value="{{ $section->field('title', 'Galerie') }}" maxlength="150" />
+          </div>
+        </div>
+      @endif
+
       <div class="section-edit-form__actions">
         <a href="{{ route('admin.templates') }}" class="btn btn-cancel">Abbrechen</a>
         <button type="submit" class="btn btn-save">Speichern</button>
       </div>
     </form>
   </div>
+
+  {{-- ===== GALERIE: Upload + Bild-Tabelle (außerhalb des PUT-Formulars) ===== --}}
+  @if ($section->section_key === 'galerie')
+    <div class="table-card" style="margin-top:1.5rem">
+      <div class="table-card__header">
+        <h2>Bilder hochladen</h2>
+      </div>
+      <div style="padding:1.75rem">
+        <form method="POST"
+              action="{{ route('admin.gallery.store', [$template, $section->section_key]) }}"
+              enctype="multipart/form-data">
+          @csrf
+          <div class="form-field">
+            <label for="images">
+              Bilder auswählen
+              <span class="form-field__hint">(JPG, PNG, WebP – max. 5 MB pro Bild, mehrere gleichzeitig möglich)</span>
+            </label>
+            <input type="file" id="images" name="images[]"
+                   multiple accept="image/jpeg,image/png,image/webp" />
+            @error('images.*')
+              <span style="color:red;font-size:0.85rem">{{ $message }}</span>
+            @enderror
+          </div>
+          <div style="margin-top:1rem">
+            <button type="submit" class="btn btn-save">
+              <span class="material-symbols-rounded">upload</span>
+              Hochladen
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="table-card" style="margin-top:1.5rem">
+      <div class="table-card__header">
+        <h2>Vorhandene Bilder ({{ $section->galleryImages->count() }})</h2>
+      </div>
+      @if ($section->galleryImages->isEmpty())
+        <p style="padding:1.75rem;color:#aaa">Noch keine Bilder hochgeladen.</p>
+      @else
+        <div class="gallery-admin-grid">
+          @foreach ($section->galleryImages as $img)
+            <div class="gallery-admin-card">
+              <img src="{{ $img->url() }}" alt="{{ $img->caption }}" class="gallery-admin-card__preview" />
+
+              <div class="gallery-admin-card__body">
+                <form method="POST"
+                      action="{{ route('admin.gallery.update', [$template, $section->section_key, $img]) }}">
+                  @csrf @method('PUT')
+
+                  {{-- Zeile 1: Caption --}}
+                  <input type="text" name="caption" value="{{ $img->caption }}"
+                         maxlength="200" placeholder="Bildbeschriftung" class="gallery-admin-card__caption" />
+
+                  {{-- Zeile 2: Sort + Speichern --}}
+                  <div class="gallery-admin-card__row gallery-admin-card__row--actions">
+                    <span class="material-symbols-rounded gallery-admin-card__sort-icon" title="Reihenfolge">swap_vert</span>
+                    <input type="number" name="sort_order" value="{{ $img->sort_order }}"
+                           min="0" class="gallery-admin-card__sort" />
+                    <button type="submit" class="btn btn-save btn-save--sm" title="Speichern">
+                      <span class="material-symbols-rounded">save</span>
+                    </button>
+
+                    {{-- Löschen (eigenes Form, aber in derselben Zeile) --}}
+                    <button type="submit" form="delete-{{ $img->id }}"
+                            class="btn btn-delete btn-delete--sm" title="Löschen">
+                      <span class="material-symbols-rounded">delete</span>
+                    </button>
+                  </div>
+                </form>
+
+                <form id="delete-{{ $img->id }}" method="POST"
+                      action="{{ route('admin.gallery.destroy', [$template, $section->section_key, $img]) }}"
+                      onsubmit="return confirm('Bild wirklich löschen?')" style="display:none">
+                  @csrf @method('DELETE')
+                </form>
+              </div>
+            </div>
+          @endforeach
+        </div>
+      @endif
+    </div>
+  @endif
 
   {{-- Icon-Optionen als JSON für JS --}}
   @if ($section->section_key === 'ausstattung')
