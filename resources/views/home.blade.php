@@ -24,19 +24,32 @@
 
       <nav class="header__nav" id="main-nav">
         <ul>
-          <li><a href="#ueber-uns">Die Wohnung</a></li>
-          <li><a href="#ausstattung">Ausstattung</a></li>
-          <li><a href="#galerie">Galerie</a></li>
-          <li><a href="#preise">Preise</a></li>
-          <li><a href="#anreise">Anreise</a></li>
+          @if (in_array('ueber-uns', $visibleSections))
+            <li><a href="#ueber-uns">Die Wohnung</a></li>
+          @endif
+          @if (in_array('ausstattung', $visibleSections))
+            <li><a href="#ausstattung">Ausstattung</a></li>
+          @endif
+          @if (in_array('galerie', $visibleSections))
+            <li><a href="#galerie">Galerie</a></li>
+          @endif
+          @if (in_array('preise', $visibleSections))
+            <li><a href="#preise">Preise</a></li>
+          @endif
+          @if (in_array('anreise', $visibleSections))
+            <li><a href="#anreise">Anreise</a></li>
+          @endif
           <li><a href="{{ url('/ruegen-erleben') }}">Rügen erleben</a></li>
-          <li><a href="#kontakt" class="nav__cta">Anfragen</a></li>
+          @if (in_array('kontakt', $visibleSections))
+            <li><a href="#kontakt" class="nav__cta">Anfragen</a></li>
+          @endif
         </ul>
       </nav>
     </div>
   </header>
 
   <!-- ===== HERO ===== -->
+  @if (in_array('hero', $visibleSections))
   <section id="hero" class="hero">
     <div class="hero__bg"></div>
     <div class="hero__overlay"></div>
@@ -45,16 +58,22 @@
       <h1 class="hero__title">Ihr Urlaub auf<br /><em>Rügen</em></h1>
       <p class="hero__subtitle">Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.</p>
       <div class="hero__actions">
-        <a href="#galerie" class="btn btn--primary">Galerie ansehen</a>
-        <a href="#kontakt" class="btn btn--outline">Jetzt anfragen</a>
+        @if (in_array('galerie', $visibleSections))
+          <a href="#galerie" class="btn btn--primary">Galerie ansehen</a>
+        @endif
+        @if (in_array('kontakt', $visibleSections))
+          <a href="#kontakt" class="btn btn--outline">Jetzt anfragen</a>
+        @endif
       </div>
     </div>
     <a href="#ueber-uns" class="hero__scroll" aria-label="Nach unten scrollen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </a>
   </section>
+  @endif
 
   <!-- ===== ÜBER UNS / DIE WOHNUNG ===== -->
+  @if (in_array('ueber-uns', $visibleSections))
   <section id="ueber-uns" class="about section">
     <div class="container">
       <div class="section__header">
@@ -74,7 +93,9 @@
           <p>
             Die ca. <strong>30 m²</strong> große Wohnung verfügt über einen separaten Eingang und ist aufgeteilt in einem Wohn-/Schlafraum, kleinem Flur, separater Küche sowie einem Badezimmer. Vor dem Eingang befindet sich eine kleine gemütliche Sitzecke – ideal für ein Glas Wein zum Ausklang des Tages.
           </p>
-          <a href="#kontakt" class="btn btn--primary">Jetzt anfragen</a>
+          @if (in_array('kontakt', $visibleSections))
+            <a href="#kontakt" class="btn btn--primary">Jetzt anfragen</a>
+          @endif
         </div>
 
         <div class="about__highlights">
@@ -102,8 +123,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ===== AUSSTATTUNG ===== -->
+  @if (in_array('ausstattung', $visibleSections))
   <section id="ausstattung" class="amenities section section--alt">
     <div class="container">
       <div class="section__header">
@@ -172,8 +195,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ===== GALERIE ===== -->
+  @if (in_array('galerie', $visibleSections))
   <section id="galerie" class="gallery section">
     <div class="container">
       <div class="section__header">
@@ -222,8 +247,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ===== PREISE & BELEGUNGSPLAN ===== -->
+  @if (in_array('preise', $visibleSections))
   <section id="preise" class="pricing section section--alt">
     <div class="container">
       <div class="section__header">
@@ -281,8 +308,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ===== ANREISE / KARTE ===== -->
+  @if (in_array('anreise', $visibleSections))
   <section id="anreise" class="map-section section">
     <div class="container">
       <div class="section__header">
@@ -327,8 +356,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ===== KONTAKT ===== -->
+  @if (in_array('kontakt', $visibleSections))
   <section id="kontakt" class="contact section section--alt">
     <div class="container">
       <div class="section__header">
@@ -373,6 +404,7 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
@@ -385,10 +417,18 @@
         <div class="footer__nav">
           <h4>Navigation</h4>
           <ul>
-            <li><a href="#ueber-uns">Die Wohnung</a></li>
-            <li><a href="#galerie">Galerie</a></li>
-            <li><a href="#preise">Preise</a></li>
-            <li><a href="#kontakt">Kontakt</a></li>
+            @if (in_array('ueber-uns', $visibleSections))
+              <li><a href="#ueber-uns">Die Wohnung</a></li>
+            @endif
+            @if (in_array('galerie', $visibleSections))
+              <li><a href="#galerie">Galerie</a></li>
+            @endif
+            @if (in_array('preise', $visibleSections))
+              <li><a href="#preise">Preise</a></li>
+            @endif
+            @if (in_array('kontakt', $visibleSections))
+              <li><a href="#kontakt">Kontakt</a></li>
+            @endif
           </ul>
         </div>
         <div class="footer__contact">

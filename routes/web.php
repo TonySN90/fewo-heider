@@ -6,9 +6,11 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PricingNoteController;
 use App\Http\Controllers\Admin\SeasonController;
 use App\Http\Controllers\Admin\SeasonPriceController;
+use App\Http\Controllers\Admin\TemplateController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => view('home'));
+Route::get('/', [HomeController::class, 'index']);
 Route::get('/ruegen-erleben', fn () => view('ruegen-erleben'));
 Route::get('/ruegen/{page}', fn (string $page) => view("ruegen.{$page}"));
 Route::get('/impressum', fn () => view('impressum'));
@@ -54,6 +56,11 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/pricing-notes',              [PricingNoteController::class, 'store'])->name('admin.pricing-notes.store');
     Route::put('/pricing-notes/{note}',        [PricingNoteController::class, 'update'])->name('admin.pricing-notes.update');
     Route::delete('/pricing-notes/{note}',     [PricingNoteController::class, 'destroy'])->name('admin.pricing-notes.destroy');
+
+    Route::get('/templates',                       [TemplateController::class, 'index'])->name('admin.templates');
+    Route::put('/templates/{template}',            [TemplateController::class, 'update'])->name('admin.templates.update');
+    Route::post('/templates/{template}/activate',  [TemplateController::class, 'activate'])->name('admin.templates.activate');
+    Route::put('/templates/{template}/sections',   [TemplateController::class, 'updateSections'])->name('admin.templates.sections');
 });
 
 // Öffentliche API

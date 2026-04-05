@@ -53,6 +53,13 @@
           Preise
         </a>
       </li>
+      <li>
+        <a href="{{ route('admin.templates') }}"
+           class="sidebar__link {{ request()->routeIs('admin.templates') ? 'sidebar__link--active' : '' }}">
+          <span class="material-symbols-rounded sidebar__icon">palette</span>
+          Templates
+        </a>
+      </li>
     </ul>
 
     <div class="sidebar__footer">
