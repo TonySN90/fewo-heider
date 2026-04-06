@@ -807,6 +807,54 @@ tr:last-child td {
   gap: $space-2;
 }
 
+.block-editor {
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  padding: $space-4;
+  background: $color-white;
+
+  &__type {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: $color-text-light;
+    margin-bottom: $space-3;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+  }
+
+  &__input {
+    width: 100%;
+    padding: $space-2 $space-3;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-base;
+  }
+
+  &__textarea {
+    width: 100%;
+    padding: $space-2 $space-3;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-base;
+    resize: vertical;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $space-2;
+    justify-content: flex-end;
+  }
+}
+
 .table__actions {
   display: flex;
   gap: $space-2;
@@ -1565,4 +1613,63 @@ tr:last-child td {
   .material-symbols-rounded { font-size: 1rem; }
 
   &:hover { background: $color-primary-dark; }
+}
+
+// ── Seitengruppen (Details/Summary) ─────────────────────────────────────────
+
+.page-group {
+  border-top: 1px solid $color-border;
+
+  &:last-of-type {
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__summary {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-3 $space-6;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    background: #fafafa;
+
+    &::-webkit-details-marker { display: none; }
+    &::marker { display: none; }
+
+    &:hover { background: #f0f2f5; }
+  }
+
+  &__chevron {
+    transition: transform 0.2s;
+    color: #888;
+  }
+
+  &[open] &__chevron {
+    transform: rotate(0deg);
+  }
+
+  &:not([open]) &__chevron {
+    transform: rotate(-90deg);
+  }
+
+  &__meta {
+    font-size: $font-size-sm;
+    color: #888;
+    font-style: italic;
+  }
+
+  &__body {
+    background: $color-white;
+    border-top: 1px solid $color-border;
+
+    table {
+      margin-top: 0;
+    }
+  }
+}
+
+.btn--sm {
+  font-size: $font-size-sm;
+  padding: 0.3rem 0.75rem;
 }

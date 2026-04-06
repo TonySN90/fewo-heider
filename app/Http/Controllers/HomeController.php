@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GalleryImage;
+use App\Models\PageGroup;
 use App\Models\Tenant;
 use App\Models\Template;
 use Illuminate\View\View;
@@ -56,6 +57,13 @@ class HomeController extends Controller
             ? GalleryImage::where('template_section_id', $gallerySection->id)->orderBy('sort_order')->get()
             : collect();
 
-        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection', 'aboutUsSection', 'amenitiesSection', 'gallerySection', 'galleryImages'));
+        $pageGroups = $tenant
+            ? PageGroup::where('tenant_id', $tenant->id)
+                ->where('is_visible', true)
+                ->orderBy('sort_order')
+                ->get()
+            : collect();
+
+        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection', 'aboutUsSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'pageGroups'));
     }
 }

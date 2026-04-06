@@ -15,24 +15,35 @@ use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\TemplateSectionController;
 use App\Http\Controllers\Admin\UserPermissionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 // Slug-basierte Preview-Route (für lokale Entwicklung, kein Domain-Lookup nötig)
 // Muss VOR der resolve.tenant-Gruppe stehen, damit kein Domain-Lookup stattfindet
-Route::get('/{tenantSlug}', [HomeController::class, 'preview'])
+Route::get('/preview/{tenantSlug}', [HomeController::class, 'preview'])
     ->name('tenant.preview')
-    ->where('tenantSlug', '^(?!admin|api|ruegen|impressum|datenschutz)[a-z0-9\-]+$');
+    ->where('tenantSlug', '^[a-z0-9\-]+$');
 
 // Öffentliche Routen (Domain-basiertes Tenant-Resolving)
 Route::middleware('resolve.tenant')->group(function () {
     Route::get('/', [HomeController::class, 'index']);
-    Route::get('/ruegen-erleben', fn () => view('ruegen-erleben'));
-    Route::get('/ruegen/{page}', fn (string $page) => view("ruegen.{$page}"));
+    // Dynamische Seitengruppen-Routen (Gruppe → Kategorie → Eintrag)
+    Route::get('/{groupSlug}', [PageController::class, 'groupIndex'])
+        ->name('pages.group')
+        ->where('groupSlug', '^(?!admin|api|impressum|datenschutz|preview)[a-z0-9\-]+$');
+    Route::get('/{groupSlug}/{pageSlug}', [PageController::class, 'show'])->name('pages.show')
+        ->where('groupSlug', '^(?!admin|api)[a-z0-9\-]+$');
+    Route::get('/{groupSlug}/{pageSlug}/{entrySlug}', [PageController::class, 'entry'])->name('pages.entry')
+        ->where('groupSlug', '^(?!admin|api)[a-z0-9\-]+$');
+
+    // Legacy-Weiterleitungen für alte /ruegen/*-URLs → neue dynamische URLs
+    Route::get('/ruegen/{pageSlug}/{entrySlug}', fn (string $pageSlug, string $entrySlug) => redirect("/ruegen-erleben/{$pageSlug}/{$entrySlug}", 301))->name('ruegen.entry');
+    Route::get('/ruegen/{pageSlug}', fn (string $pageSlug) => redirect("/ruegen-erleben/{$pageSlug}", 301))->name('ruegen.page');
+    Route::redirect('/ruegen-erleben.html', '/ruegen-erleben', 301);
     Route::get('/impressum', fn () => view('impressum'));
     Route::get('/datenschutz', fn () => view('datenschutz'));
 
     // 301-Redirects für alte .html-URLs (SEO / Bookmarks)
-    Route::redirect('/ruegen-erleben.html', '/ruegen-erleben', 301);
     Route::redirect('/impressum.html', '/impressum', 301);
     Route::redirect('/datenschutz.html', '/datenschutz', 301);
     Route::redirect('/ruegen/wandern.html', '/ruegen/wandern', 301);
@@ -126,6 +137,24 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
         Route::post('/page-structure/sections/{sectionKey}/gallery',              [GalleryController::class, 'storeForTenant'])->name('admin.page-structure.gallery.store');
         Route::put('/page-structure/sections/{sectionKey}/gallery/{image}',       [GalleryController::class, 'updateForTenant'])->name('admin.page-structure.gallery.update');
         Route::delete('/page-structure/sections/{sectionKey}/gallery/{image}',    [GalleryController::class, 'destroyForTenant'])->name('admin.page-structure.gallery.destroy');
+
+        // Seitengruppen
+        Route::post('/page-structure/groups',           [\App\Http\Controllers\Admin\PageController::class, 'storeGroup'])->name('admin.pages.groups.store');
+        Route::put('/page-structure/groups/{group}',    [\App\Http\Controllers\Admin\PageController::class, 'updateGroup'])->name('admin.pages.groups.update');
+        Route::delete('/page-structure/groups/{group}', [\App\Http\Controllers\Admin\PageController::class, 'destroyGroup'])->name('admin.pages.groups.destroy');
+
+        // Kategorien + Einträge + Blöcke
+        Route::post('/page-structure/pages',                                        [\App\Http\Controllers\Admin\PageController::class, 'store'])->name('admin.pages.store');
+        Route::put('/page-structure/pages/{page}',                                  [\App\Http\Controllers\Admin\PageController::class, 'update'])->name('admin.pages.update');
+        Route::delete('/page-structure/pages/{page}',                               [\App\Http\Controllers\Admin\PageController::class, 'destroy'])->name('admin.pages.destroy');
+        Route::get('/page-structure/pages/{page}/entries',                          [\App\Http\Controllers\Admin\PageController::class, 'entries'])->name('admin.pages.entries');
+        Route::post('/page-structure/pages/{page}/entries',                         [\App\Http\Controllers\Admin\PageController::class, 'storeEntry'])->name('admin.pages.entries.store');
+        Route::get('/page-structure/pages/{page}/entries/{entry}/edit',             [\App\Http\Controllers\Admin\PageController::class, 'editEntry'])->name('admin.pages.entry.edit');
+        Route::put('/page-structure/pages/{page}/entries/{entry}',                  [\App\Http\Controllers\Admin\PageController::class, 'updateEntry'])->name('admin.pages.entries.update');
+        Route::delete('/page-structure/pages/{page}/entries/{entry}',               [\App\Http\Controllers\Admin\PageController::class, 'destroyEntry'])->name('admin.pages.entries.destroy');
+        Route::post('/page-structure/pages/{page}/entries/{entry}/blocks',          [\App\Http\Controllers\Admin\PageController::class, 'storeBlock'])->name('admin.pages.blocks.store');
+        Route::put('/page-structure/pages/{page}/entries/{entry}/blocks/{block}',   [\App\Http\Controllers\Admin\PageController::class, 'updateBlock'])->name('admin.pages.blocks.update');
+        Route::delete('/page-structure/pages/{page}/entries/{entry}/blocks/{block}',[\App\Http\Controllers\Admin\PageController::class, 'destroyBlock'])->name('admin.pages.blocks.destroy');
     });
 
     // Instanzen-Verwaltung (nur Super-Admin)

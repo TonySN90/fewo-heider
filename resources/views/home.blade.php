@@ -39,7 +39,9 @@
           @if (in_array('anreise', $visibleSections))
             <li><a href="#anreise">Anreise</a></li>
           @endif
-          <li><a href="{{ url('/ruegen-erleben') }}">Rügen erleben</a></li>
+          @foreach ($pageGroups as $group)
+            <li><a href="{{ url('/' . $group->slug) }}">{{ $group->nav_label }}</a></li>
+          @endforeach
           @if (in_array('kontakt', $visibleSections))
             <li><a href="#kontakt" class="nav__cta">Anfragen</a></li>
           @endif

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Page;
+use App\Models\PageGroup;
 use App\Models\TemplateSectionContent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,12 +32,17 @@ class PageStructureController extends Controller
         abort_unless($tenant && $template, 404, 'Kein Template zugeordnet.');
 
         $sections = $template->sectionsForTenant($tenant->id)->get();
+        $groups   = PageGroup::where('tenant_id', $tenant->id)
+            ->orderBy('sort_order')
+            ->with(['pages' => fn ($q) => $q->orderBy('sort_order')])
+            ->get();
 
         return view('admin.page-structure', [
-            'template'        => $template,
-            'sections'        => $sections,
-            'sectionLabels'   => self::SECTION_LABELS,
+            'template'         => $template,
+            'sections'         => $sections,
+            'sectionLabels'    => self::SECTION_LABELS,
             'editableSections' => self::EDITABLE_SECTIONS,
+            'groups'           => $groups,
         ]);
     }
 

@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SeasonSeeder::class);
         $this->call(PricingNoteSeeder::class);
         $this->call(GallerySeeder::class);
+        $this->call(PageSeeder::class);
     }
 }
