@@ -92,8 +92,9 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
 
     // Einstellungen (admin + super-admin)
     Route::middleware('role:admin|super-admin')->group(function () {
-        Route::get('/settings',         [UserPermissionController::class, 'index'])->name('admin.settings');
-        Route::put('/settings/{user}',  [UserPermissionController::class, 'update'])->name('admin.settings.update');
+        Route::get('/settings',                    [UserPermissionController::class, 'index'])->name('admin.settings');
+        Route::put('/settings/{user}',             [UserPermissionController::class, 'update'])->name('admin.settings.update');
+        Route::put('/settings/{user}/profile',     [UserPermissionController::class, 'updateProfile'])->name('admin.settings.profile');
     });
 
     // Templates & Gallery

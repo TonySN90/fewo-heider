@@ -23,6 +23,18 @@ class UserPermissionController extends Controller
 
         $user->syncPermissions($request->input('permissions', []));
 
-        return back()->with('success', 'Rechte für ' . $user->name . ' gespeichert.');
+        return back()->with('success', 'Rechte für ' . $user->full_name . ' gespeichert.');
+    }
+
+    public function updateProfile(Request $request, User $user)
+    {
+        $data = $request->validate([
+            'first_name' => ['nullable', 'string', 'max:100'],
+            'last_name'  => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $user->update($data);
+
+        return back()->with('success', 'Profil von ' . $user->full_name . ' gespeichert.');
     }
 }

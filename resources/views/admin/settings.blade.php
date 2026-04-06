@@ -24,6 +24,24 @@
             </div>
           </div>
 
+          {{-- Profil: Vor-/Nachname --}}
+          <form method="POST" action="{{ route('admin.settings.profile', $client) }}" class="permission-card__profile">
+            @csrf
+            @method('PUT')
+            <div class="permission-card__profile-fields">
+              <div class="form-field">
+                <label>Vorname</label>
+                <input type="text" name="first_name" value="{{ $client->first_name }}" maxlength="100" />
+              </div>
+              <div class="form-field">
+                <label>Nachname</label>
+                <input type="text" name="last_name" value="{{ $client->last_name }}" maxlength="100" />
+              </div>
+              <button type="submit" class="btn btn-save">Profil speichern</button>
+            </div>
+          </form>
+
+          {{-- Rechte --}}
           <form method="POST" action="{{ route('admin.settings.update', $client) }}">
             @csrf
             @method('PUT')
@@ -43,7 +61,7 @@
             </div>
 
             <div class="permission-card__footer">
-              <button type="submit" class="btn btn-save">Speichern</button>
+              <button type="submit" class="btn btn-save">Rechte speichern</button>
             </div>
           </form>
         </div>

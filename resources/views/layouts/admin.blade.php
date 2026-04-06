@@ -15,7 +15,13 @@
 <body class="admin-layout">
 
 <header class="topbar">
-  <span class="topbar__brand">{{ $currentTenant?->name ?? 'Admin' }} <span>– Admin</span></span>
+{{--  <span class="topbar__brand">{{ $currentTenant?->name ?? 'Admin-Login' }} </span>--}}
+
+    <span class="topbar__user">
+      <span class="material-symbols-rounded">account_circle</span>
+      {{ auth()->user()->full_name }}
+{{--      <span class="topbar__role">{{ auth()->user()->getRoleNames()->first() }}</span>--}}
+    </span>
   <div class="topbar__actions">
 
     {{-- Aktiver Tenant-Kontext (Super-Admin in einer Instanz) --}}
@@ -46,11 +52,6 @@
       </form>
     @endif
 
-    <span class="topbar__user">
-      <span class="material-symbols-rounded">account_circle</span>
-      {{ auth()->user()->name }}
-      <span class="topbar__role">{{ auth()->user()->getRoleNames()->first() }}</span>
-    </span>
     @if($currentTenant?->domain)
       <a href="https://{{ $currentTenant->domain }}" target="_blank">Website ansehen ↗</a>
     @elseif($currentTenant?->slug)

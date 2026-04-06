@@ -13,7 +13,6 @@
       <p class="login-card__logo-sub">{{ $tenant ? 'Admin-Bereich' : 'Plattform-Verwaltung' }}</p>
     </div>
 
-    <h1>Admin-Login</h1>
 
     @if ($errors->any())
       <div class="login-error">{{ $errors->first('email') }}</div>
@@ -43,8 +42,6 @@
 
       <button type="submit">Einloggen</button>
     </form>
-
-    <p class="login-back"><a href="{{ url('/') }}">← Zurück zur Website</a></p>
   </div>
 </body>
 </html>
