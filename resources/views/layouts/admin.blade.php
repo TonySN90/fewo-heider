@@ -15,7 +15,7 @@
 <body class="admin-layout">
 
 <header class="topbar">
-  <span class="topbar__brand">Ferienwohnung <span>Heider</span> – Admin</span>
+  <span class="topbar__brand">{{ $currentTenant?->name ?? 'Admin' }} <span>– Admin</span></span>
   <div class="topbar__actions">
 
     {{-- Aktiver Tenant-Kontext (Super-Admin in einer Instanz) --}}

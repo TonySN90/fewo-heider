@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin – Ferienwohnung Heider</title>
+  <title>Admin – {{ $tenant?->name ?? 'Admin' }}</title>
   @vite(['resources/css/admin.scss'])
 </head>
 <body class="login-body">
   <div class="login-card">
     <div class="login-card__logo">
-      <p class="login-card__logo-title">Ferienwohnung Heider</p>
-      <p class="login-card__logo-sub">Rügen · Serams</p>
+      <p class="login-card__logo-title">{{ $tenant?->name ?? 'Admin' }}</p>
+      <p class="login-card__logo-sub">{{ $tenant ? 'Admin-Bereich' : 'Plattform-Verwaltung' }}</p>
     </div>
 
     <h1>Admin-Login</h1>

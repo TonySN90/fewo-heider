@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +15,11 @@ class AuthController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        return view('admin.login');
+        $tenant = Tenant::where('domain', request()->getHost())
+            ->where('is_active', true)
+            ->first();
+
+        return view('admin.login', compact('tenant'));
     }
 
     public function login(Request $request)

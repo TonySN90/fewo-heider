@@ -82,11 +82,13 @@ select {
 .btn {
   border: none;
   border-radius: $border-radius-sm;
+  height: 34px;
   font-size: $font-size-sm;
   font-weight: 600;
   cursor: pointer;
   padding: 0.45rem 0.9rem;
   transition: background $transition-fast, color $transition-fast;
+  text-decoration: none;
 }
 
 .btn-add,
