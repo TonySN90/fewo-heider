@@ -90,11 +90,11 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
         Route::delete('/pricing-notes/{note}',     [PricingNoteController::class, 'destroy'])->name('admin.pricing-notes.destroy');
     });
 
-    // Einstellungen (admin + super-admin)
+    // Benutzer-Verwaltung (admin + super-admin)
     Route::middleware('role:admin|super-admin')->group(function () {
-        Route::get('/settings',                    [UserPermissionController::class, 'index'])->name('admin.settings');
-        Route::put('/settings/{user}',             [UserPermissionController::class, 'update'])->name('admin.settings.update');
-        Route::put('/settings/{user}/profile',     [UserPermissionController::class, 'updateProfile'])->name('admin.settings.profile');
+        Route::get('/users',                   [UserPermissionController::class, 'index'])->name('admin.users');
+        Route::put('/users/{user}',            [UserPermissionController::class, 'update'])->name('admin.users.update');
+        Route::put('/users/{user}/profile',    [UserPermissionController::class, 'updateProfile'])->name('admin.users.profile');
     });
 
     // Templates & Gallery

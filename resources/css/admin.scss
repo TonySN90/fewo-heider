@@ -799,6 +799,12 @@ tr:last-child td {
   gap: $space-2;
 }
 
+.table__actions {
+  display: flex;
+  gap: $space-2;
+  align-items: center;
+}
+
 .guest-name {
   color: #555;
 }

@@ -120,10 +120,10 @@
       <ul class="sidebar__nav">
         @hasanyrole('admin|super-admin')
         <li>
-          <a href="{{ route('admin.settings') }}"
-             class="sidebar__link {{ request()->routeIs('admin.settings') ? 'sidebar__link--active' : '' }}">
-            <span class="material-symbols-rounded sidebar__icon">manage_accounts</span>
-            Einstellungen
+          <a href="{{ route('admin.users') }}"
+             class="sidebar__link {{ request()->routeIs('admin.users*') ? 'sidebar__link--active' : '' }}">
+            <span class="material-symbols-rounded sidebar__icon">group</span>
+            Benutzer
           </a>
         </li>
         @endhasanyrole

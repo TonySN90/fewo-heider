@@ -168,6 +168,11 @@
     background-color: rgba($color-season-gold, 0.2);
     color: #7a5e18;
   }
+
+  &--gray {
+    background-color: rgba(#000, 0.07);
+    color: #555;
+  }
 }
 
 .pricing__notes {
