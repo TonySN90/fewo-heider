@@ -37,9 +37,25 @@ class ResolveTenant
             return $next($request);
         }
 
-        // Super-Admin auf eigenem Domain ohne gesetzten Kontext → Tenant-Verwaltungsbereich
+        // Super-Admin ohne Tenant-Kontext: nur Plattform-Routen erlauben
         if ($user?->hasRole('super-admin') && $request->is('admin*')) {
-            return $next($request);
+            $platformRoutes = [
+                'admin',
+                'admin/profile',
+                'admin/users*',
+                'admin/tenants*',
+                'admin/templates*',
+            ];
+
+            foreach ($platformRoutes as $pattern) {
+                if ($request->is($pattern)) {
+                    return $next($request);
+                }
+            }
+
+            // Instanz-spezifische Route ohne Kontext → zur Instanzen-Übersicht
+            return redirect()->route('admin.tenants')
+                ->with('info', 'Bitte wähle zuerst eine Instanz aus.');
         }
 
         // Öffentliche Route ohne passende Domain
