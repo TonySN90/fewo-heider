@@ -26,6 +26,15 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+
+            $user = Auth::user();
+            if (! $user->hasRole('super-admin')) {
+                $firstTenant = $user->tenants()->where('is_active', true)->first();
+                if ($firstTenant) {
+                    $request->session()->put('current_tenant_id', $firstTenant->id);
+                }
+            }
+
             return redirect()->intended(route('admin.dashboard'));
         }
 

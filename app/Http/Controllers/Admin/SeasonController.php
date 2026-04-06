@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PricingNote;
 use App\Models\Season;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SeasonController extends Controller
 {
@@ -20,7 +21,8 @@ class SeasonController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'year'       => ['required', 'integer', 'min:2020', 'max:2099', 'unique:seasons,year'],
+            'year'       => ['required', 'integer', 'min:2020', 'max:2099',
+                             Rule::unique('seasons', 'year')->where('tenant_id', current_tenant()?->id)],
             'name'       => ['required', 'string', 'max:100'],
             'sort_order' => ['required', 'integer', 'min:0'],
         ]);

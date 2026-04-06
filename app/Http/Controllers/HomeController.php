@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GalleryImage;
+use App\Models\Tenant;
 use App\Models\Template;
 use Illuminate\View\View;
 
@@ -12,21 +13,43 @@ class HomeController extends Controller
         'hero', 'ueber-uns', 'ausstattung', 'galerie', 'preise', 'anreise', 'kontakt',
     ];
 
+    public function preview(string $tenantSlug): View
+    {
+        $tenant = Tenant::where('slug', $tenantSlug)->where('is_active', true)->firstOrFail();
+        app()->instance('currentTenant', $tenant);
+
+        return $this->index();
+    }
+
     public function index(): View
     {
-        $activeTemplate = Template::active();
+        $tenant = current_tenant();
 
-        if ($activeTemplate) {
+        $activeTemplate = $tenant?->template_id
+            ? Template::find($tenant->template_id)
+            : null;
+
+        if ($activeTemplate && $tenant) {
+            $sections = $activeTemplate->sectionsForTenant($tenant->id)
+                ->with('content', 'galleryImages')
+                ->get();
+
+            $visibleSections  = $sections->where('is_visible', true)->pluck('section_key')->toArray();
+            $heroSection      = $sections->firstWhere('section_key', 'hero');
+            $aboutUsSection   = $sections->firstWhere('section_key', 'ueber-uns');
+            $amenitiesSection = $sections->firstWhere('section_key', 'ausstattung');
+            $gallerySection   = $sections->firstWhere('section_key', 'galerie');
+        } elseif ($activeTemplate) {
             $activeTemplate->load('sections.content');
-            $visibleSections = $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray();
+            $visibleSections  = $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray();
+            $heroSection      = $activeTemplate->getSection('hero');
+            $aboutUsSection   = $activeTemplate->getSection('ueber-uns');
+            $amenitiesSection = $activeTemplate->getSection('ausstattung');
+            $gallerySection   = $activeTemplate->getSection('galerie');
         } else {
-            $visibleSections = self::ALL_SECTIONS;
+            $visibleSections  = self::ALL_SECTIONS;
+            $heroSection = $aboutUsSection = $amenitiesSection = $gallerySection = null;
         }
-
-        $heroSection      = $activeTemplate?->getSection('hero');
-        $aboutUsSection   = $activeTemplate?->getSection('ueber-uns');
-        $amenitiesSection = $activeTemplate?->getSection('ausstattung');
-        $gallerySection   = $activeTemplate?->getSection('galerie');
 
         $galleryImages = $gallerySection
             ? GalleryImage::where('template_section_id', $gallerySection->id)->orderBy('sort_order')->get()

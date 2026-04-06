@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
+ * @property int $tenant_id
  * @property int $year
  * @property string $name
  * @property bool $is_active
@@ -16,7 +18,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Season extends Model
 {
-    protected $fillable = ['year', 'name', 'is_active', 'sort_order'];
+    use BelongsToTenant;
+
+    protected $fillable = ['tenant_id', 'year', 'name', 'is_active', 'sort_order'];
 
     protected $casts = [
         'is_active' => 'boolean',

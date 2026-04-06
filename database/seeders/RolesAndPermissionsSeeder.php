@@ -26,16 +26,19 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::firstOrCreate(['name' => $permission]);
         }
 
+        $superAdmin = Role::firstOrCreate(['name' => 'super-admin']);
+        $superAdmin->syncPermissions($permissions);
+
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $admin->syncPermissions($permissions);
 
         $client = Role::firstOrCreate(['name' => 'client']);
         $client->syncPermissions(['view bookings', 'manage bookings', 'manage seasons', 'manage pricing']);
 
-        // Bestehenden Admin-User Rolle zuweisen
+        // tony@co-ding.de → super-admin
         $user = User::where('email', 'tony@co-ding.de')->first();
-        if ($user && ! $user->hasRole('admin')) {
-            $user->assignRole('admin');
+        if ($user) {
+            $user->syncRoles(['super-admin']);
         }
     }
 }

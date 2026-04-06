@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class TemplateSection extends Model
 {
-    protected $fillable = ['template_id', 'section_key', 'is_visible', 'sort_order'];
+    protected $fillable = ['tenant_id', 'template_id', 'section_key', 'is_visible', 'sort_order'];
 
     protected $casts = ['is_visible' => 'boolean'];
 
