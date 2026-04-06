@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PricingNoteController;
 use App\Http\Controllers\Admin\SeasonController;
 use App\Http\Controllers\Admin\SeasonPriceController;
 use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\PageStructureController;
 use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\Admin\TemplateController;
@@ -58,6 +59,9 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
     Route::get('/', fn () => redirect()->route('admin.dashboard'));
 
     // Für alle Rollen zugänglich
+    Route::get('/profile',  [ProfileController::class, 'edit'])->name('admin.profile');
+    Route::put('/profile',  [ProfileController::class, 'update'])->name('admin.profile.update');
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/bookings',  [BookingController::class, 'index'])->name('admin.bookings');
     Route::post('/tenant-switch', [ClientTenantController::class, 'switch'])->name('admin.tenant-switch');

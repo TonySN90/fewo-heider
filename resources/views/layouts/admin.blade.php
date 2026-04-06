@@ -17,11 +17,10 @@
 <header class="topbar">
 {{--  <span class="topbar__brand">{{ $currentTenant?->name ?? 'Admin-Login' }} </span>--}}
 
-    <span class="topbar__user">
+    <a href="{{ route('admin.profile') }}" class="topbar__user {{ request()->routeIs('admin.profile') ? 'topbar__user--active' : '' }}">
       <span class="material-symbols-rounded">account_circle</span>
       {{ auth()->user()->full_name }}
-{{--      <span class="topbar__role">{{ auth()->user()->getRoleNames()->first() }}</span>--}}
-    </span>
+    </a>
   <div class="topbar__actions">
 
     {{-- Aktiver Tenant-Kontext (Super-Admin in einer Instanz) --}}
@@ -56,8 +55,6 @@
       <a href="https://{{ $currentTenant->domain }}" target="_blank">Website ansehen ↗</a>
     @elseif($currentTenant?->slug)
       <a href="{{ route('tenant.preview', $currentTenant->slug) }}" target="_blank">Website ansehen ↗</a>
-    @elseif(! $currentTenant)
-      <a href="{{ url('/') }}" target="_blank">Website ansehen ↗</a>
     @endif
     <button class="topbar__hamburger" id="sidebarToggle" aria-label="Navigation öffnen">
       <span></span>
