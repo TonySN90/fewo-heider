@@ -523,6 +523,31 @@ body.admin-layout {
     }
   }
 
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $font-size-sm;
+    color: $color-dark;
+    font-weight: 500;
+
+    .material-symbols-rounded {
+      font-size: 20px;
+      color: #666;
+    }
+  }
+
+  &__role {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: $color-primary;
+    color: $color-white;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+
   &__hamburger {
     display: none;
     flex-direction: column;
@@ -1250,4 +1275,107 @@ tr:last-child td {
   gap: 0.25rem;
 
   .material-symbols-rounded { font-size: 1rem; }
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+
+.settings-section {
+  max-width: 720px;
+
+  h2 {
+    font-size: $font-size-lg;
+    font-weight: 700;
+    margin-bottom: $space-2;
+  }
+
+  &__desc {
+    font-size: $font-size-sm;
+    color: #666;
+    margin-bottom: $space-6;
+  }
+}
+
+.settings-empty {
+  color: #888;
+  font-size: $font-size-sm;
+}
+
+.permission-card {
+  background: $color-white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: $space-6;
+  margin-bottom: $space-5;
+
+  &__header {
+    margin-bottom: $space-5;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+
+    .material-symbols-rounded {
+      font-size: 36px;
+      color: #aaa;
+    }
+
+    strong {
+      display: block;
+      font-size: $font-size-base;
+      font-weight: 600;
+    }
+
+    span {
+      font-size: $font-size-sm;
+      color: #666;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: $space-3;
+    margin-bottom: $space-5;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #f0f0f0;
+    padding-top: $space-4;
+  }
+}
+
+.permission-checkbox {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  cursor: pointer;
+  padding: $space-2 $space-3;
+  border: 1px solid #e5e7eb;
+  border-radius: 7px;
+  transition: border-color 0.15s, background 0.15s;
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: $color-primary;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  &:has(input:checked) {
+    border-color: $color-primary;
+    background: lighten($color-primary, 46%);
+  }
+
+  &__label {
+    font-size: $font-size-sm;
+    color: $color-dark;
+    line-height: 1.3;
+  }
 }

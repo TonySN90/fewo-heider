@@ -8,7 +8,9 @@
   <div class="table-card">
     <div class="table-card__header">
       <h2>Alle Buchungen ({{ $bookings->count() }})</h2>
+      @can('manage bookings')
       <button class="btn btn-add" onclick="openModal('Neue Buchung', 'add-booking-tpl')">Neue Buchung</button>
+      @endcan
     </div>
     <table>
       <thead>
@@ -18,7 +20,7 @@
           <th>Gastname</th>
           <th>Portal</th>
           <th>Buchungsdatum</th>
-          <th></th>
+          @can('manage bookings')<th></th>@endcan
         </tr>
       </thead>
       <tbody>
@@ -29,6 +31,7 @@
             <td class="guest-name">{{ $booking->guest_name ?? '–' }}</td>
             <td>{{ $booking->portal ?? '–' }}</td>
             <td>{{ $booking->booked_at?->format('d.m.Y') ?? '–' }}</td>
+            @can('manage bookings')
             <td>
               <div class="actions">
                 <button class="btn btn-edit" onclick="openModal('Buchung bearbeiten', 'edit-tpl-{{ $booking->id }}')"><span class="material-symbols-rounded">edit</span></button>
@@ -39,6 +42,7 @@
                 </form>
               </div>
             </td>
+            @endcan
           </tr>
 
           <template id="edit-tpl-{{ $booking->id }}">

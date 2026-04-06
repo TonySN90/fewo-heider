@@ -17,6 +17,11 @@
 <header class="topbar">
   <span class="topbar__brand">Ferienwohnung <span>Heider</span> – Admin</span>
   <div class="topbar__actions">
+    <span class="topbar__user">
+      <span class="material-symbols-rounded">account_circle</span>
+      {{ auth()->user()->name }}
+      <span class="topbar__role">{{ auth()->user()->getRoleNames()->first() }}</span>
+    </span>
     <a href="{{ url('/') }}" target="_blank">Website ansehen ↗</a>
     <button class="topbar__hamburger" id="sidebarToggle" aria-label="Navigation öffnen">
       <span></span>
@@ -46,6 +51,7 @@
           Buchungen
         </a>
       </li>
+      @can('manage seasons')
       <li>
         <a href="{{ route('admin.seasons') }}"
            class="sidebar__link {{ request()->routeIs('admin.seasons') ? 'sidebar__link--active' : '' }}">
@@ -53,6 +59,8 @@
           Preise
         </a>
       </li>
+      @endcan
+      @can('manage templates')
       <li>
         <a href="{{ route('admin.templates') }}"
            class="sidebar__link {{ request()->routeIs('admin.templates') ? 'sidebar__link--active' : '' }}">
@@ -60,6 +68,16 @@
           Templates
         </a>
       </li>
+      @endcan
+      @role('admin')
+      <li>
+        <a href="{{ route('admin.settings') }}"
+           class="sidebar__link {{ request()->routeIs('admin.settings') ? 'sidebar__link--active' : '' }}">
+          <span class="material-symbols-rounded sidebar__icon">manage_accounts</span>
+          Einstellungen
+        </a>
+      </li>
+      @endrole
     </ul>
 
     <div class="sidebar__footer">

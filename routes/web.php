@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SeasonPriceController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\TemplateSectionController;
+use App\Http\Controllers\Admin\UserPermissionController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,39 +38,55 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.log
 // Admin (geschützt)
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/',          fn () => redirect()->route('admin.dashboard'));
+
+    // Für admin und client zugänglich
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/bookings',  [BookingController::class, 'index'])->name('admin.bookings');
 
-    Route::get('/bookings',              [BookingController::class, 'index'])->name('admin.bookings');
-    Route::post('/bookings',             [BookingController::class, 'store'])->name('admin.bookings.store');
-    Route::put('/bookings/{booking}',    [BookingController::class, 'update'])->name('admin.bookings.update');
-    Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('admin.bookings.destroy');
+    // Nur admin
+    Route::middleware('permission:manage bookings')->group(function () {
+        Route::post('/bookings',             [BookingController::class, 'store'])->name('admin.bookings.store');
+        Route::put('/bookings/{booking}',    [BookingController::class, 'update'])->name('admin.bookings.update');
+        Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('admin.bookings.destroy');
+    });
 
-    Route::get('/seasons',                    [SeasonController::class, 'index'])->name('admin.seasons');
-    Route::post('/seasons',                   [SeasonController::class, 'store'])->name('admin.seasons.store');
-    Route::put('/seasons/{season}',           [SeasonController::class, 'update'])->name('admin.seasons.update');
-    Route::delete('/seasons/{season}',        [SeasonController::class, 'destroy'])->name('admin.seasons.destroy');
-    Route::post('/seasons/{season}/activate', [SeasonController::class, 'activate'])->name('admin.seasons.activate');
+    Route::middleware('permission:manage seasons')->group(function () {
+        Route::get('/seasons',                    [SeasonController::class, 'index'])->name('admin.seasons');
+        Route::post('/seasons',                   [SeasonController::class, 'store'])->name('admin.seasons.store');
+        Route::put('/seasons/{season}',           [SeasonController::class, 'update'])->name('admin.seasons.update');
+        Route::delete('/seasons/{season}',        [SeasonController::class, 'destroy'])->name('admin.seasons.destroy');
+        Route::post('/seasons/{season}/activate', [SeasonController::class, 'activate'])->name('admin.seasons.activate');
 
-    Route::post('/seasons/{season}/prices',  [SeasonPriceController::class, 'store'])->name('admin.season-prices.store');
-    Route::put('/season-prices/{price}',     [SeasonPriceController::class, 'update'])->name('admin.season-prices.update');
-    Route::delete('/season-prices/{price}',  [SeasonPriceController::class, 'destroy'])->name('admin.season-prices.destroy');
+        Route::post('/seasons/{season}/prices',  [SeasonPriceController::class, 'store'])->name('admin.season-prices.store');
+        Route::put('/season-prices/{price}',     [SeasonPriceController::class, 'update'])->name('admin.season-prices.update');
+        Route::delete('/season-prices/{price}',  [SeasonPriceController::class, 'destroy'])->name('admin.season-prices.destroy');
+    });
 
-    Route::get('/pricing-notes', fn () => redirect()->route('admin.seasons'))->name('admin.pricing-notes');
-    Route::post('/pricing-notes',              [PricingNoteController::class, 'store'])->name('admin.pricing-notes.store');
-    Route::put('/pricing-notes/{note}',        [PricingNoteController::class, 'update'])->name('admin.pricing-notes.update');
-    Route::delete('/pricing-notes/{note}',     [PricingNoteController::class, 'destroy'])->name('admin.pricing-notes.destroy');
+    Route::middleware('permission:manage pricing')->group(function () {
+        Route::get('/pricing-notes', fn () => redirect()->route('admin.seasons'))->name('admin.pricing-notes');
+        Route::post('/pricing-notes',              [PricingNoteController::class, 'store'])->name('admin.pricing-notes.store');
+        Route::put('/pricing-notes/{note}',        [PricingNoteController::class, 'update'])->name('admin.pricing-notes.update');
+        Route::delete('/pricing-notes/{note}',     [PricingNoteController::class, 'destroy'])->name('admin.pricing-notes.destroy');
+    });
 
-    Route::get('/templates',                       [TemplateController::class, 'index'])->name('admin.templates');
-    Route::put('/templates/{template}',            [TemplateController::class, 'update'])->name('admin.templates.update');
-    Route::post('/templates/{template}/activate',  [TemplateController::class, 'activate'])->name('admin.templates.activate');
-    Route::put('/templates/{template}/sections',   [TemplateController::class, 'updateSections'])->name('admin.templates.sections');
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/settings',         [UserPermissionController::class, 'index'])->name('admin.settings');
+        Route::put('/settings/{user}',  [UserPermissionController::class, 'update'])->name('admin.settings.update');
+    });
 
-    Route::get('/templates/{template}/sections/{sectionKey}/edit', [TemplateSectionController::class, 'edit'])->name('admin.templates.sections.edit');
-    Route::put('/templates/{template}/sections/{sectionKey}',      [TemplateSectionController::class, 'update'])->name('admin.templates.sections.update');
+    Route::middleware('permission:manage templates')->group(function () {
+        Route::get('/templates',                       [TemplateController::class, 'index'])->name('admin.templates');
+        Route::put('/templates/{template}',            [TemplateController::class, 'update'])->name('admin.templates.update');
+        Route::post('/templates/{template}/activate',  [TemplateController::class, 'activate'])->name('admin.templates.activate');
+        Route::put('/templates/{template}/sections',   [TemplateController::class, 'updateSections'])->name('admin.templates.sections');
 
-    Route::post('/templates/{template}/sections/{sectionKey}/gallery',                  [GalleryController::class, 'store'])->name('admin.gallery.store');
-    Route::put('/templates/{template}/sections/{sectionKey}/gallery/{image}',           [GalleryController::class, 'update'])->name('admin.gallery.update');
-    Route::delete('/templates/{template}/sections/{sectionKey}/gallery/{image}',        [GalleryController::class, 'destroy'])->name('admin.gallery.destroy');
+        Route::get('/templates/{template}/sections/{sectionKey}/edit', [TemplateSectionController::class, 'edit'])->name('admin.templates.sections.edit');
+        Route::put('/templates/{template}/sections/{sectionKey}',      [TemplateSectionController::class, 'update'])->name('admin.templates.sections.update');
+
+        Route::post('/templates/{template}/sections/{sectionKey}/gallery',                  [GalleryController::class, 'store'])->name('admin.gallery.store');
+        Route::put('/templates/{template}/sections/{sectionKey}/gallery/{image}',           [GalleryController::class, 'update'])->name('admin.gallery.update');
+        Route::delete('/templates/{template}/sections/{sectionKey}/gallery/{image}',        [GalleryController::class, 'destroy'])->name('admin.gallery.destroy');
+    });
 });
 
 // Öffentliche API
