@@ -23,10 +23,10 @@ class HomeController extends Controller
             $visibleSections = self::ALL_SECTIONS;
         }
 
-        $heroSection      = $activeTemplate?->sections->firstWhere('section_key', 'hero');
-        $aboutUsSection   = $activeTemplate?->sections->firstWhere('section_key', 'ueber-uns');
-        $amenitiesSection = $activeTemplate?->sections->firstWhere('section_key', 'ausstattung');
-        $gallerySection   = $activeTemplate?->sections->firstWhere('section_key', 'galerie');
+        $heroSection      = $activeTemplate?->getSection('hero');
+        $aboutUsSection   = $activeTemplate?->getSection('ueber-uns');
+        $amenitiesSection = $activeTemplate?->getSection('ausstattung');
+        $gallerySection   = $activeTemplate?->getSection('galerie');
 
         $galleryImages = $gallerySection
             ? GalleryImage::where('template_section_id', $gallerySection->id)->orderBy('sort_order')->get()

@@ -15,6 +15,7 @@ class GallerySeeder extends Seeder
             return;
         }
 
+        /** @var \App\Models\TemplateSection|null $section */
         $section = $template->sections()->where('section_key', 'galerie')->first();
         if (! $section) {
             return;

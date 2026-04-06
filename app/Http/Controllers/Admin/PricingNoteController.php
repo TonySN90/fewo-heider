@@ -8,13 +8,6 @@ use Illuminate\Http\Request;
 
 class PricingNoteController extends Controller
 {
-    public function index()
-    {
-        $notes = PricingNote::ordered()->get();
-
-        return view('admin.pricing-notes', compact('notes'));
-    }
-
     public function store(Request $request)
     {
         $data = $request->validate([

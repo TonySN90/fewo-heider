@@ -14,7 +14,7 @@ class GalleryController extends Controller
 {
     public function store(Request $request, Template $template, string $sectionKey): RedirectResponse
     {
-        $section = $template->sections()->where('section_key', $sectionKey)->firstOrFail();
+        $section = $template->findSection($sectionKey);
 
         $request->validate([
             'images'   => ['required', 'array', 'max:20'],
@@ -42,7 +42,7 @@ class GalleryController extends Controller
 
     public function update(Request $request, Template $template, string $sectionKey, GalleryImage $image): RedirectResponse
     {
-        $section = $template->sections()->where('section_key', $sectionKey)->firstOrFail();
+        $section = $template->findSection($sectionKey);
         abort_if($image->template_section_id !== $section->id, 403);
 
         $data = $request->validate([
@@ -59,7 +59,7 @@ class GalleryController extends Controller
 
     public function destroy(Template $template, string $sectionKey, GalleryImage $image): RedirectResponse
     {
-        $section = $template->sections()->where('section_key', $sectionKey)->firstOrFail();
+        $section = $template->findSection($sectionKey);
         abort_if($image->template_section_id !== $section->id, 403);
 
         Storage::disk('public')->delete('gallery/' . $image->filename);

@@ -17,7 +17,7 @@ class SeasonController extends Controller
 
         return response()->json([
             'year'   => $season->year,
-            'prices' => $season->prices()->ordered()->get()->map(fn ($p) => [
+            'prices' => $season->prices()->orderBy('sort_order')->orderBy('from')->get()->map(fn ($p) => [
                 'name'            => $p->name,
                 'from'            => $p->from->toDateString(),
                 'to'              => $p->to->toDateString(),

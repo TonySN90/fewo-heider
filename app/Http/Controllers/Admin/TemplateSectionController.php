@@ -14,7 +14,7 @@ class TemplateSectionController extends Controller
 {
     public function edit(Template $template, string $sectionKey): View
     {
-        $section = $template->sections()->where('section_key', $sectionKey)->firstOrFail();
+        $section = $template->findSection($sectionKey);
         $section->load('content', 'galleryImages');
 
         return view('admin.template-section-edit', compact('template', 'section'));
@@ -22,7 +22,7 @@ class TemplateSectionController extends Controller
 
     public function update(Request $request, Template $template, string $sectionKey): RedirectResponse
     {
-        $section = $template->sections()->where('section_key', $sectionKey)->firstOrFail();
+        $section = $template->findSection($sectionKey);
 
         $fields = $request->input('fields', []);
 

@@ -33,8 +33,8 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        $activeSeason = Season::where('is_active', true)->with(['prices' => fn ($q) => $q->ordered()])->first();
-        $seasons = $activeSeason?->prices ?? collect();
+        $activeSeason = Season::where('is_active', true)->with(['prices' => fn ($q) => $q->orderBy('sort_order')->orderBy('from')])->first();
+        $seasons = $activeSeason !== null ? $activeSeason->prices : collect();
 
         return view('admin.dashboard', compact(
             'bookingsThisYear',

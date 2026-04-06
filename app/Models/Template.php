@@ -11,9 +11,22 @@ class Template extends Model
 
     protected $casts = ['is_active' => 'boolean'];
 
+    /** @return HasMany<TemplateSection, $this> */
     public function sections(): HasMany
     {
         return $this->hasMany(TemplateSection::class)->orderBy('sort_order');
+    }
+
+    public function findSection(string $sectionKey): TemplateSection
+    {
+        /** @var TemplateSection */
+        return $this->sections()->where('section_key', $sectionKey)->firstOrFail();
+    }
+
+    public function getSection(string $sectionKey): ?TemplateSection
+    {
+        /** @var TemplateSection|null */
+        return $this->sections->firstWhere('section_key', $sectionKey);
     }
 
     public function activate(): void

@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $id
+ * @property int $template_id
+ * @property string $section_key
+ * @property bool $is_visible
+ * @property int $sort_order
+ * @property \Illuminate\Database\Eloquent\Collection<int, TemplateSectionContent> $content
+ */
 class TemplateSection extends Model
 {
     protected $fillable = ['template_id', 'section_key', 'is_visible', 'sort_order'];
@@ -30,6 +38,8 @@ class TemplateSection extends Model
     /** Gibt einen einzelnen Feldwert zurück, mit optionalem Fallback. */
     public function field(string $key, string $default = ''): string
     {
-        return $this->content->firstWhere('field_key', $key)?->value ?? $default;
+        $item = $this->content->firstWhere('field_key', $key);
+
+        return $item !== null ? ($item->value ?? $default) : $default;
     }
 }

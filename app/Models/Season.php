@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $id
+ * @property int $year
+ * @property string $name
+ * @property bool $is_active
+ * @property int $sort_order
+ * @property \Illuminate\Database\Eloquent\Collection<int, SeasonPrice> $prices
+ */
 class Season extends Model
 {
     protected $fillable = ['year', 'name', 'is_active', 'sort_order'];
@@ -14,6 +22,7 @@ class Season extends Model
         'is_active' => 'boolean',
     ];
 
+    /** @return HasMany<SeasonPrice, $this> */
     public function prices(): HasMany
     {
         return $this->hasMany(SeasonPrice::class);

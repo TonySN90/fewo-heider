@@ -54,7 +54,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('/season-prices/{price}',     [SeasonPriceController::class, 'update'])->name('admin.season-prices.update');
     Route::delete('/season-prices/{price}',  [SeasonPriceController::class, 'destroy'])->name('admin.season-prices.destroy');
 
-    Route::get('/pricing-notes',               [PricingNoteController::class, 'index'])->name('admin.pricing-notes');
+    Route::get('/pricing-notes', fn () => redirect()->route('admin.seasons'))->name('admin.pricing-notes');
     Route::post('/pricing-notes',              [PricingNoteController::class, 'store'])->name('admin.pricing-notes.store');
     Route::put('/pricing-notes/{note}',        [PricingNoteController::class, 'update'])->name('admin.pricing-notes.update');
     Route::delete('/pricing-notes/{note}',     [PricingNoteController::class, 'destroy'])->name('admin.pricing-notes.destroy');
