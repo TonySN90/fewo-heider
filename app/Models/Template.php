@@ -12,7 +12,7 @@ class Template extends Model
 
     protected $casts = ['is_active' => 'boolean'];
 
-    /** Globale Sektionen (ohne Tenant) — als Vorlage */
+    /** @return HasMany<TemplateSection, $this> */
     public function sections(): HasMany
     {
         return $this->hasMany(TemplateSection::class)
@@ -20,7 +20,10 @@ class Template extends Model
             ->orderBy('sort_order');
     }
 
-    /** Tenant-eigene Sektionen */
+    /**
+     * Tenant-eigene Sektionen
+     * @return Builder<TemplateSection>
+     */
     public function sectionsForTenant(int $tenantId): Builder
     {
         return TemplateSection::where('template_id', $this->id)

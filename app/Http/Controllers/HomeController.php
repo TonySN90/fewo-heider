@@ -25,11 +25,12 @@ class HomeController extends Controller
     {
         $tenant = current_tenant();
 
-        $activeTemplate = $tenant?->template_id
+        $activeTemplate = $tenant !== null && $tenant->template_id !== null
             ? Template::find($tenant->template_id)
             : null;
 
-        if ($activeTemplate && $tenant) {
+        if ($activeTemplate !== null && $tenant !== null) {
+            /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\TemplateSection> $sections */
             $sections = $activeTemplate->sectionsForTenant($tenant->id)
                 ->with('content', 'galleryImages')
                 ->get();
@@ -39,7 +40,7 @@ class HomeController extends Controller
             $aboutUsSection   = $sections->firstWhere('section_key', 'ueber-uns');
             $amenitiesSection = $sections->firstWhere('section_key', 'ausstattung');
             $gallerySection   = $sections->firstWhere('section_key', 'galerie');
-        } elseif ($activeTemplate) {
+        } elseif ($activeTemplate !== null) {
             $activeTemplate->load('sections.content');
             $visibleSections  = $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray();
             $heroSection      = $activeTemplate->getSection('hero');

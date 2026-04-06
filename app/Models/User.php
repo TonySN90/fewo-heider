@@ -28,6 +28,7 @@ class User extends Authenticatable
         return $this->name;
     }
 
+    /** @return BelongsToMany<Tenant, $this> */
     public function tenants(): BelongsToMany
     {
         return $this->belongsToMany(Tenant::class);
