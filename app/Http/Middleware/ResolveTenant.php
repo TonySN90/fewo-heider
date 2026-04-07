@@ -41,6 +41,7 @@ class ResolveTenant
         if ($user?->hasRole('super-admin') && $request->is('admin*')) {
             $platformRoutes = [
                 'admin',
+                'admin/overview',
                 'admin/profile',
                 'admin/users*',
                 'admin/tenants*',

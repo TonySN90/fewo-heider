@@ -78,7 +78,7 @@
           <a href="{{ route('admin.dashboard') }}"
              class="sidebar__link {{ request()->routeIs('admin.dashboard') ? 'sidebar__link--active' : '' }}">
             <span class="material-symbols-rounded sidebar__icon">dashboard</span>
-            Dashboard
+            Übersicht
           </a>
         </li>
         <li>
@@ -115,6 +115,15 @@
     <div class="sidebar__section sidebar__section--platform">
       <span class="sidebar__section-label">Plattform</span>
       <ul class="sidebar__nav">
+        @role('super-admin')
+        <li>
+          <a href="{{ route('admin.overview') }}"
+             class="sidebar__link {{ request()->routeIs('admin.overview') ? 'sidebar__link--active' : '' }}">
+            <span class="material-symbols-rounded sidebar__icon">dashboard</span>
+            Admin-Übersicht
+          </a>
+        </li>
+        @endrole
         @hasanyrole('admin|super-admin')
         <li>
           <a href="{{ route('admin.users') }}"

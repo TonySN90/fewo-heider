@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard')
+@section('title', 'Übersicht')
 
 @section('content')
-  <h1>Dashboard</h1>
+  <h1>Übersicht</h1>
 
   <div class="stat-grid">
 
@@ -43,64 +43,64 @@
 
   </div>
 
-  <div class="table-card">
-    <h2>Nächste Buchungen</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Anreise</th>
-          <th>Abreise</th>
-          <th>Nächte</th>
-          <th>Gastname</th>
-        </tr>
-      </thead>
-      <tbody>
-        @forelse ($upcomingBookings as $booking)
-          <tr>
-            <td>{{ $booking->from->format('d.m.Y') }}</td>
-            <td>{{ $booking->to->format('d.m.Y') }}</td>
-            <td>{{ $booking->from->diffInDays($booking->to) }}</td>
-            <td class="guest-name">{{ $booking->guest_name ?? '–' }}</td>
-          </tr>
-        @empty
-          <tr class="empty-row">
-            <td colspan="4">Keine anstehenden Buchungen.</td>
-          </tr>
-        @endforelse
-      </tbody>
-    </table>
-  </div>
+{{--  <div class="table-card">--}}
+{{--    <h2>Nächste Buchungen</h2>--}}
+{{--    <table>--}}
+{{--      <thead>--}}
+{{--        <tr>--}}
+{{--          <th>Anreise</th>--}}
+{{--          <th>Abreise</th>--}}
+{{--          <th>Nächte</th>--}}
+{{--          <th>Gastname</th>--}}
+{{--        </tr>--}}
+{{--      </thead>--}}
+{{--      <tbody>--}}
+{{--        @forelse ($upcomingBookings as $booking)--}}
+{{--          <tr>--}}
+{{--            <td>{{ $booking->from->format('d.m.Y') }}</td>--}}
+{{--            <td>{{ $booking->to->format('d.m.Y') }}</td>--}}
+{{--            <td>{{ $booking->from->diffInDays($booking->to) }}</td>--}}
+{{--            <td class="guest-name">{{ $booking->guest_name ?? '–' }}</td>--}}
+{{--          </tr>--}}
+{{--        @empty--}}
+{{--          <tr class="empty-row">--}}
+{{--            <td colspan="4">Keine anstehenden Buchungen.</td>--}}
+{{--          </tr>--}}
+{{--        @endforelse--}}
+{{--      </tbody>--}}
+{{--    </table>--}}
+{{--  </div>--}}
 
-  <div class="table-card">
-    <div class="table-card__header">
-      <h2>Preisübersicht</h2>
-      <a href="{{ route('admin.seasons') }}" class="btn btn-edit">Verwalten</a>
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Saison</th>
-          <th>Von</th>
-          <th>Bis</th>
-          <th>€ / Nacht</th>
-          <th>Mindestaufenthalt</th>
-        </tr>
-      </thead>
-      <tbody>
-        @forelse ($seasons as $season)
-          <tr>
-            <td>{{ $season->name }}</td>
-            <td>{{ $season->from->format('d.m.Y') }}</td>
-            <td>{{ $season->to->format('d.m.Y') }}</td>
-            <td>{{ $season->price_per_night }} €</td>
-            <td>{{ $season->min_nights }} {{ $season->min_nights === 1 ? 'Nacht' : 'Nächte' }}</td>
-          </tr>
-        @empty
-          <tr class="empty-row">
-            <td colspan="5">Noch keine Saisonen angelegt. <a href="{{ route('admin.seasons') }}">Jetzt anlegen</a></td>
-          </tr>
-        @endforelse
-      </tbody>
-    </table>
-  </div>
+{{--  <div class="table-card">--}}
+{{--    <div class="table-card__header">--}}
+{{--      <h2>Preisübersicht</h2>--}}
+{{--      <a href="{{ route('admin.seasons') }}" class="btn btn-edit">Verwalten</a>--}}
+{{--    </div>--}}
+{{--    <table>--}}
+{{--      <thead>--}}
+{{--        <tr>--}}
+{{--          <th>Saison</th>--}}
+{{--          <th>Von</th>--}}
+{{--          <th>Bis</th>--}}
+{{--          <th>€ / Nacht</th>--}}
+{{--          <th>Mindestaufenthalt</th>--}}
+{{--        </tr>--}}
+{{--      </thead>--}}
+{{--      <tbody>--}}
+{{--        @forelse ($seasons as $season)--}}
+{{--          <tr>--}}
+{{--            <td>{{ $season->name }}</td>--}}
+{{--            <td>{{ $season->from->format('d.m.Y') }}</td>--}}
+{{--            <td>{{ $season->to->format('d.m.Y') }}</td>--}}
+{{--            <td>{{ $season->price_per_night }} €</td>--}}
+{{--            <td>{{ $season->min_nights }} {{ $season->min_nights === 1 ? 'Nacht' : 'Nächte' }}</td>--}}
+{{--          </tr>--}}
+{{--        @empty--}}
+{{--          <tr class="empty-row">--}}
+{{--            <td colspan="5">Noch keine Saisonen angelegt. <a href="{{ route('admin.seasons') }}">Jetzt anlegen</a></td>--}}
+{{--          </tr>--}}
+{{--        @endforelse--}}
+{{--      </tbody>--}}
+{{--    </table>--}}
+{{--  </div>--}}
 @endsection

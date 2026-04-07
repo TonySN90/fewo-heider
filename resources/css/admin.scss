@@ -514,6 +514,24 @@ body.admin-layout {
   }
 }
 
+.platform-section-label {
+  font-size: $font-size-xs;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: $space-3;
+  margin-top: $space-8;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.text-muted {
+  color: #888;
+}
+
 // ============================================================
 // TOPBAR
 // ============================================================

@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\PageStructureController;
 use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\TemplateSectionController;
+use App\Http\Controllers\Admin\OverviewController;
 use App\Http\Controllers\Admin\UserPermissionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
@@ -156,6 +157,9 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
         Route::put('/page-structure/pages/{page}/entries/{entry}/blocks/{block}',   [\App\Http\Controllers\Admin\PageController::class, 'updateBlock'])->name('admin.pages.blocks.update');
         Route::delete('/page-structure/pages/{page}/entries/{entry}/blocks/{block}',[\App\Http\Controllers\Admin\PageController::class, 'destroyBlock'])->name('admin.pages.blocks.destroy');
     });
+
+    // Admin-Übersicht (nur Super-Admin, kein Tenant-Kontext nötig)
+    Route::middleware('role:super-admin')->get('/overview', [OverviewController::class, 'index'])->name('admin.overview');
 
     // Instanzen-Verwaltung (nur Super-Admin)
     Route::middleware('role:super-admin')->group(function () {
