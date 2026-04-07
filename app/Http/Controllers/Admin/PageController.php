@@ -105,6 +105,7 @@ class PageController extends Controller
             'description'   => ['nullable', 'string', 'max:500'],
             'cover_image'   => ['nullable', 'image', 'max:4096'],
             'is_visible'    => ['boolean'],
+            'layout'        => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
         ]);
 
         $slug = Str::slug($data['title']);
@@ -130,6 +131,7 @@ class PageController extends Controller
             'cover_image'   => $coverPath,
             'is_visible'    => $request->boolean('is_visible', true),
             'sort_order'    => $nextOrder + 1,
+            'layout'        => $data['layout'] ?? 'cards',
         ]);
 
         return redirect()->route('admin.page-structure')
@@ -145,6 +147,7 @@ class PageController extends Controller
             'description'   => ['nullable', 'string', 'max:500'],
             'cover_image'   => ['nullable', 'image', 'max:4096'],
             'is_visible'    => ['boolean'],
+            'layout'        => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
         ]);
 
         $coverPath = $page->cover_image;
@@ -157,6 +160,7 @@ class PageController extends Controller
             'description' => $data['description'] ?? null,
             'cover_image' => $coverPath,
             'is_visible'  => $request->boolean('is_visible', true),
+            'layout'      => $data['layout'] ?? $page->layout,
         ]);
 
         return redirect()->route('admin.page-structure')
@@ -255,6 +259,7 @@ class PageController extends Controller
         $this->authorizePage($page);
         abort_if($entry->page_id !== $page->id, 403);
         $entry->load('blocks');
+        $page->load('group');
 
         return view('admin.page-entry-edit', compact('page', 'entry'));
     }

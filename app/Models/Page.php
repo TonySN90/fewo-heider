@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class Page extends Model
 {
-    protected $fillable = ['tenant_id', 'page_group_id', 'title', 'slug', 'description', 'cover_image', 'is_visible', 'sort_order'];
+    protected $fillable = ['tenant_id', 'page_group_id', 'title', 'slug', 'description', 'cover_image', 'is_visible', 'sort_order', 'layout'];
 
     protected $casts = ['is_visible' => 'boolean'];
 

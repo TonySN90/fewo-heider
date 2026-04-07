@@ -33,7 +33,7 @@
       @forelse ($pages as $page)
         <a href="{{ route('pages.show', [$group->slug, $page->slug]) }}" class="category-card">
           @if ($page->cover_image)
-            <div class="category-card__image">
+            <div class="category-card__img">
               <img src="{{ Storage::url($page->cover_image) }}" alt="{{ $page->title }}" loading="lazy" />
             </div>
           @endif
@@ -52,10 +52,18 @@
   </div>
 </section>
 
+<div class="teaser">
+  <h2>Ihr Ausgangspunkt für all das</h2>
+  <p>Unsere Ferienwohnung in Zirkow/Serams liegt zentral – ideal für Tagesausflüge in alle Richtungen der Insel.</p>
+  <a href="{{ url('/#kontakt') }}" class="btn btn--white">
+    <span class="material-symbols-rounded">mail</span> Jetzt anfragen
+  </a>
+</div>
+
 @endsection
 
 @section('footer')
-  <p>© {{ date('Y') }} Ferienwohnung Heider</p>
+  <p>© {{ date('Y') }} Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
   <nav class="footer__legal">
     <a href="{{ url('/impressum') }}">Impressum</a>
     <a href="{{ url('/datenschutz') }}">Datenschutz</a>

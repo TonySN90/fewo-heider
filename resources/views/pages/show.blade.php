@@ -25,28 +25,44 @@
   </div>
 </div>
 
-<div class="container" style="padding:3rem 1rem">
-  @if ($page->entries->isEmpty())
-    <p style="color:#888;text-align:center">Noch keine Einträge vorhanden.</p>
-  @else
-    <div class="entries-grid">
-      @foreach ($page->entries as $entry)
-        <a href="{{ route('pages.entry', [$group->slug, $page->slug, $entry->slug]) }}" class="entry-card">
-          @if ($entry->cover_image)
-            <div class="entry-card__image">
-              <img src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" loading="lazy" />
-            </div>
-          @endif
-          <h2 class="entry-card__title">{{ $entry->title }}</h2>
-          <span class="entry-card__link">Mehr lesen <span class="material-symbols-rounded" style="font-size:1rem">arrow_forward</span></span>
-        </a>
-      @endforeach
-    </div>
-  @endif
+@if ($page->entries->isEmpty())
+  <div class="container" style="padding:3rem 1rem;text-align:center;color:#888">
+    Noch keine Einträge vorhanden.
+  </div>
+@else
+  @switch($page->layout)
+    @case('place-list')
+      @include('pages.layouts.place-list', ['entries' => $page->entries])
+      @break
+    @case('route')
+      @include('pages.layouts.route', ['entries' => $page->entries])
+      @break
+    @case('feature')
+      @include('pages.layouts.feature', ['entries' => $page->entries])
+      @break
+    @case('hero-feature')
+      @include('pages.layouts.hero-feature', ['entries' => $page->entries])
+      @break
+    @default
+      @include('pages.layouts.cards', ['entries' => $page->entries])
+  @endswitch
+@endif
+
+<div class="cta-strip">
+  <h2>{{ $page->title }} auf Rügen erleben</h2>
+  <p>Buchen Sie Ihre Ferienwohnung in Zirkow/Serams – ideal als Ausgangspunkt.</p>
+  <a href="{{ url('/#kontakt') }}" class="btn btn--white">
+    <span class="material-symbols-rounded">mail</span> Jetzt anfragen
+  </a>
+  <a href="{{ route('pages.group', $group->slug) }}" class="btn btn--outline">Alle Kategorien</a>
 </div>
 
 @endsection
 
 @section('footer')
-  <p>© {{ date('Y') }} Ferienwohnung Heider</p>
+  <p>© {{ date('Y') }} Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <nav class="footer__legal">
+    <a href="{{ url('/impressum') }}">Impressum</a>
+    <a href="{{ url('/datenschutz') }}">Datenschutz</a>
+  </nav>
 @endsection

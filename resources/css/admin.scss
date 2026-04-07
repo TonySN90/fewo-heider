@@ -157,10 +157,24 @@ select {
 // ============================================================
 
 .alert {
-  padding: 0.75rem $space-4;
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: 0.85rem $space-4;
   border-radius: $border-radius-sm;
+  background: #fafafa;
+  border: 1px solid $color-border;
   margin-bottom: $space-5;
   font-size: $font-size-base * 0.9;
+
+  .material-symbols-rounded {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  > div { flex: 1; }
+  p { margin: 0; }
 
   &--success {
     background: #f0fdf4;

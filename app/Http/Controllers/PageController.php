@@ -34,7 +34,7 @@ class PageController extends Controller
             ->where('is_visible', true)
             ->firstOrFail();
 
-        $page->load('entries');
+        $page->load('entries.blocks');
 
         return view('pages.show', compact('group', 'page'));
     }
