@@ -34,7 +34,7 @@
             <b>Heading</b> (optional, nur 1. Eintrag) = Seiten-Intro ·
             <b>1. Text</b> = Beschreibung der Karte ·
             <b>2. Text</b> = Highlight-Liste (Punkte mit •) ·
-            <b>Letzter Text</b> = Metazeile mit Schwierigkeit &amp; Distanz, getrennt mit ·
+            <b>Badge-Blöcke</b> = farbige Labels (Schwierigkeit, Distanz, etc.) — Farbe frei wählbar
             @break
           @case('place-list')
             <b>1. Text</b> = Beschreibung des Ortes ·
@@ -75,7 +75,8 @@
       <div class="section-edit-form">
         <div class="form-field">
           <label>Titel</label>
-          <input type="text" name="title" value="{{ $entry->title }}" maxlength="200" required />
+          <input type="text" name="title" value="{{ $entry->title }}" maxlength="200" required
+                 oninput="updatePreviewTitle(this.value)" />
         </div>
         <div class="form-field">
           <label>URL</label>
@@ -92,7 +93,8 @@
           @if ($entry->cover_image)
             <img src="{{ Storage::url($entry->cover_image) }}" alt="" style="max-height:120px;border-radius:6px;margin-bottom:.5rem;display:block" />
           @endif
-          <input type="file" name="cover_image" accept="image/*" />
+          <input type="file" name="cover_image" accept="image/*"
+                 onchange="updatePreviewImage(this)" />
         </div>
       </div>
       <div class="section-edit-form__actions">
@@ -119,9 +121,13 @@
           <div class="block-editor">
             <div class="block-editor__type">
               <span class="material-symbols-rounded">
-                {{ $block->type === 'heading' ? 'title' : ($block->type === 'image' ? 'image' : 'notes') }}
+                @if($block->type === 'heading') title
+                @elseif($block->type === 'image') image
+                @elseif($block->type === 'badge') sell
+                @else notes
+                @endif
               </span>
-              {{ ucfirst($block->type) }}
+              {{ $block->type === 'badge' ? 'Badge' : ucfirst($block->type) }}
             </div>
 
             <form method="POST"
@@ -140,9 +146,29 @@
                 @endif
                 <input type="text" name="content" value="{{ $block->content }}"
                        placeholder="Bildpfad oder URL" class="block-editor__input" />
+              @elseif ($block->type === 'badge')
+                <div class="block-editor__badge-preview">
+                  <span class="badge badge--{{ $block->color ?? 'gray' }}" id="badge-preview-{{ $block->id }}">{{ $block->content ?: 'Vorschau' }}</span>
+                </div>
+                <div class="block-editor__badge-controls">
+                  <input type="text" name="content" value="{{ $block->content }}"
+                         placeholder="Badge-Text" class="block-editor__input"
+                         data-block-id="{{ $block->id }}" data-block-type="badge"
+                         oninput="document.getElementById('badge-preview-{{ $block->id }}').textContent = this.value || 'Vorschau'; updatePreviewBadge({{ $block->id }}, this.value, null)" />
+                  <select name="color" class="block-editor__color-select"
+                          data-block-id="{{ $block->id }}" data-block-type="badge-color"
+                          onchange="document.getElementById('badge-preview-{{ $block->id }}').className = 'badge badge--' + this.value; updatePreviewBadge({{ $block->id }}, null, this.value)">
+                    <option value="green"  @selected(($block->color ?? 'gray') === 'green')>Grün</option>
+                    <option value="blue"   @selected(($block->color ?? 'gray') === 'blue')>Blau</option>
+                    <option value="orange" @selected(($block->color ?? 'gray') === 'orange')>Orange</option>
+                    <option value="gray"   @selected(($block->color ?? 'gray') === 'gray')>Grau</option>
+                  </select>
+                </div>
               @else
                 <textarea name="content" rows="4" class="block-editor__textarea"
-                          placeholder="Text eingeben...">{{ $block->content }}</textarea>
+                          placeholder="Text eingeben..."
+                          data-block-id="{{ $block->id }}" data-block-sort="{{ $block->sort_order }}"
+                          oninput="updatePreviewText({{ $block->sort_order }}, this.value)">{{ $block->content }}</textarea>
               @endif
 
               <div class="block-editor__actions">
@@ -168,6 +194,54 @@
     @endif
   </div>
 
+  {{-- Card-Vorschau (nur bei cards-Layout) --}}
+  @if ($page->layout === 'cards')
+  <div class="table-card" style="margin-top:1.5rem" id="card-preview-wrap">
+    <div class="table-card__header">
+      <h2>Vorschau</h2>
+      <span style="font-size:.8rem;color:#aaa">Aktualisiert sich live beim Bearbeiten</span>
+    </div>
+    <div class="entry-preview">
+      <div class="card" id="card-preview">
+        @if ($entry->cover_image)
+          <div class="card__img">
+            <img id="preview-img" src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" />
+          </div>
+        @else
+          <div class="card__img" id="preview-img-wrap" style="display:none">
+            <img id="preview-img" src="" alt="" />
+          </div>
+        @endif
+        <div class="card__body">
+          <div class="card__meta" id="preview-badges">
+            @foreach ($entry->blocks->where('type', 'badge') as $b)
+              <span class="badge badge--{{ $b->color ?? 'gray' }}" data-block-id="{{ $b->id }}">{{ $b->content }}</span>
+            @endforeach
+          </div>
+          <h3 class="card__title" id="preview-title">{{ $entry->title }}</h3>
+          @php
+            $previewTextBlocks = $entry->blocks->where('type', 'text')->values();
+            $previewDesc       = $previewTextBlocks->first()?->content;
+            $previewHighlights = $previewTextBlocks->skip(1)->first()?->content;
+          @endphp
+          <p class="card__text" id="preview-desc">{{ $previewDesc }}</p>
+          <div class="card__highlights" id="preview-highlights"
+               style="{{ ($previewHighlights && str_contains($previewHighlights, '•')) ? '' : 'display:none' }}">
+            <h4>Highlights</h4>
+            <ul id="preview-highlights-list">
+              @if ($previewHighlights)
+                @foreach (array_filter(array_map('trim', explode('•', $previewHighlights))) as $item)
+                  <li>{{ $item }}</li>
+                @endforeach
+              @endif
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  @endif
+
   {{-- Modal: Neuer Block --}}
   <template id="new-block-tpl">
     <form method="POST" action="{{ route('admin.pages.blocks.store', [$page, $entry]) }}">
@@ -178,6 +252,7 @@
           <select name="type" id="block-type-select" onchange="updateBlockContentField(this.value)">
             <option value="text">Text</option>
             <option value="heading">Überschrift</option>
+            <option value="badge">Badge</option>
             <option value="image">Bild (URL/Pfad)</option>
           </select>
         </div>
@@ -196,15 +271,95 @@
 
 @push('scripts')
 <script>
+// ── Modal: Block-Typ wechseln ─────────────────────────────────────────────
 function updateBlockContentField(type) {
   const wrap = document.getElementById('block-content-field');
   if (type === 'text') {
     wrap.innerHTML = '<label>Inhalt</label><textarea name="content" rows="4"></textarea>';
   } else if (type === 'heading') {
     wrap.innerHTML = '<label>Überschrift</label><input type="text" name="content" maxlength="200" />';
+  } else if (type === 'badge') {
+    wrap.innerHTML = `
+      <div style="margin-bottom:.75rem">
+        <label>Badge-Text</label>
+        <input type="text" name="content" maxlength="200" placeholder="z.B. Leicht – Moderat"
+               oninput="document.getElementById('modal-badge-preview').textContent = this.value || 'Vorschau'" />
+      </div>
+      <div style="margin-bottom:.75rem">
+        <label>Farbe</label>
+        <select name="color" onchange="document.getElementById('modal-badge-preview').className = 'badge badge--' + this.value">
+          <option value="green">Grün</option>
+          <option value="blue">Blau</option>
+          <option value="orange">Orange</option>
+          <option value="gray">Grau</option>
+        </select>
+      </div>
+      <div>
+        <label>Vorschau</label>
+        <div style="padding:.5rem 0"><span id="modal-badge-preview" class="badge badge--green">Vorschau</span></div>
+      </div>`;
   } else {
     wrap.innerHTML = '<label>Bild-URL oder Pfad</label><input type="text" name="content" />';
   }
 }
+
+// ── Card-Vorschau: Live-Updates ───────────────────────────────────────────
+function updatePreviewTitle(val) {
+  const el = document.getElementById('preview-title');
+  if (el) el.textContent = val || '';
+}
+
+function updatePreviewImage(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('preview-img');
+    const wrap = document.getElementById('preview-img-wrap');
+    if (img) {
+      img.src = e.target.result;
+      if (wrap) wrap.style.display = '';
+    }
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// Sammelt alle Text-Blöcke nach sort_order und aktualisiert desc + highlights
+const _textContents = {};
+function updatePreviewText(sortOrder, val) {
+  _textContents[sortOrder] = val;
+  const sorted = Object.entries(_textContents).sort((a,b) => a[0]-b[0]).map(e => e[1]);
+  const desc = sorted[0] || '';
+  const highlights = sorted[1] || '';
+
+  const descEl = document.getElementById('preview-desc');
+  if (descEl) descEl.textContent = desc;
+
+  const hlWrap = document.getElementById('preview-highlights');
+  const hlList = document.getElementById('preview-highlights-list');
+  if (hlWrap && hlList) {
+    const items = highlights.split('•').map(s => s.trim()).filter(Boolean);
+    if (items.length > 0) {
+      hlList.innerHTML = items.map(i => `<li>${i}</li>`).join('');
+      hlWrap.style.display = '';
+    } else {
+      hlWrap.style.display = 'none';
+    }
+  }
+}
+
+// Badge in der Vorschau aktualisieren (text oder farbe)
+function updatePreviewBadge(blockId, text, color) {
+  const el = document.querySelector(`#preview-badges [data-block-id="${blockId}"]`);
+  if (!el) return;
+  if (text !== null) el.textContent = text;
+  if (color !== null) el.className = 'badge badge--' + color;
+}
+
+// Beim Laden: Text-Block-Inhalte initialisieren damit updatePreviewText korrekt startet
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('textarea[data-block-sort]').forEach(ta => {
+    _textContents[ta.dataset.blockSort] = ta.value;
+  });
+});
 </script>
 @endpush

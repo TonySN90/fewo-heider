@@ -17,13 +17,11 @@
     <div class="cards">
       @foreach ($entries as $entry)
         @php
-          $blocks   = $entry->blocks;
-          $textBlocks = $blocks->where('type', 'text')->values();
-          $desc     = $textBlocks->first()?->content;
-          $highlights = $textBlocks->skip(1)->first()?->content;
-          $meta       = $textBlocks->last()?->content; // z.B. "Schwierigkeit: ... · km"
-          // Badges aus Meta-Zeile parsen (enthält "·"-Trenner)
-          $badges = $meta ? array_map('trim', explode('·', $meta)) : [];
+          $blocks      = $entry->blocks;
+          $badgeBlocks = $blocks->where('type', 'badge');
+          $textBlocks  = $blocks->where('type', 'text')->values();
+          $desc        = $textBlocks->first()?->content;
+          $highlights  = $textBlocks->skip(1)->first()?->content;
         @endphp
         <div class="card">
           @if ($entry->cover_image)
@@ -32,10 +30,10 @@
             </div>
           @endif
           <div class="card__body">
-            @if (count($badges) > 1)
+            @if ($badgeBlocks->isNotEmpty())
               <div class="card__meta">
-                @foreach ($badges as $badge)
-                  <span class="badge badge--{{ $loop->first ? 'green' : 'blue' }}">{{ $badge }}</span>
+                @foreach ($badgeBlocks as $badge)
+                  <span class="badge badge--{{ $badge->color ?? 'gray' }}">{{ $badge->content }}</span>
                 @endforeach
               </div>
             @endif

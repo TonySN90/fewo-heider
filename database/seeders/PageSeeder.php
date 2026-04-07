@@ -107,28 +107,32 @@ class PageSeeder extends Seeder
             ['text', 'Einer der schönsten Wanderwege Deutschlands führt durch den Nationalpark Jasmund entlang der weißen Kreidefelsen. Der Weg verbindet Lohme und Sassnitz und bietet immer wieder spektakuläre Ausblicke auf die Ostsee. UNESCO-geschützte Buchenwälder säumen den Pfad.'],
             ['heading', 'Highlights'],
             ['text', "• Königsstuhl (118 m) – bekanntester Kreidefelsen Rügens\n• Wissower Klinken & Victoriasicht\n• Ernst-Moritz-Arndt-Sicht\n• UNESCO-Buchenwälder"],
-            ['text', 'Schwierigkeitsgrad: Leicht – Moderat · 12,6 km · ca. 3,5 Std.'],
+            ['badge', 'Leicht – Moderat', 'green'],
+            ['badge', '12,6 km · ca. 3,5 Std.', 'blue'],
         ]);
 
         $this->entry($wandern, 'Schmachter See Rundweg', 'schmachter-see-rundweg', 2, [
             ['text', 'Eine herrliche Rundwanderung ab Binz rund um den naturgeschützten Schmachter See. Der Weg führt durch ruhige Wälder und Felder, vorbei am Jagdschloss Granitz und durch den romantischen Kurpark von Binz. Ideal für Familien und weniger geübte Wanderer.'],
             ['heading', 'Highlights'],
             ['text', "• Jagdschloss Granitz mit Aussichtsturm\n• Naturschutzgebiet Schmachter See\n• Kurpark Binz mit Rosengarten\n• Strandabschnitte bei Binz"],
-            ['text', 'Schwierigkeitsgrad: Leicht · 12–13 km · ca. 3 Std.'],
+            ['badge', 'Leicht', 'green'],
+            ['badge', '12–13 km · ca. 3 Std.', 'blue'],
         ]);
 
         $this->entry($wandern, 'Schaabe Strandwanderung', 'schaabe-strandwanderung', 3, [
             ['text', 'Entlang des längsten Strandes Rügens – der Schaabe – verläuft dieser traumhafte Küstenwanderweg zwischen Juliusruh und Glowe. Die bis zu 2 km breite Sandbank bietet endlose Weite, frische Ostseeluft und herrliche Ausblicke auf die Tromper Wiek.'],
             ['heading', 'Highlights'],
             ['text', "• 12 km Sandstrand – längster Rügens\n• Naturlandschaft Tromper Wiek\n• Blick auf Kap Arkona\n• Ruhige, unberührte Natur"],
-            ['text', 'Schwierigkeitsgrad: Leicht · ca. 12 km · ca. 3 Std.'],
+            ['badge', 'Leicht', 'green'],
+            ['badge', 'ca. 12 km · ca. 3 Std.', 'blue'],
         ]);
 
         $this->entry($wandern, 'Kreidefelsenpfad Stubbenkammer', 'kreidefelsenpfad-stubbenkammer', 4, [
             ['text', 'Dieser anspruchsvollere Küstenpfad zwischen Sassnitz und Lohme führt direkt an der Abbruchkante der Kreidefelsen entlang. Dramatische Ausblicke, das Rauschen der Ostsee tief unten und der Kontrast zwischen leuchtendem Weiß und tiefem Blau machen diesen Weg unvergesslich.'],
             ['heading', 'Highlights'],
             ['text', "• Königsstuhl & Nationalpark-Zentrum\n• Wissower Klinken\n• Victoriasicht & Arndt-Sicht\n• Dramatische Klippenabschnitte"],
-            ['text', 'Schwierigkeitsgrad: Moderat · 8–12 km · 3–4 Std.'],
+            ['badge', 'Moderat', 'orange'],
+            ['badge', '8–12 km · 3–4 Std.', 'blue'],
         ]);
 
         // ── Einträge & Blöcke: RADFAHREN ──────────────────────────────────────
@@ -307,11 +311,14 @@ class PageSeeder extends Seeder
 
         // Nur anlegen wenn noch keine Blöcke vorhanden
         if ($entry->wasRecentlyCreated) {
-            foreach ($blocks as $i => [$type, $content]) {
+            foreach ($blocks as $i => $block) {
+                [$type, $content] = $block;
+                $color = $block[2] ?? null;
                 PageEntryBlock::create([
                     'page_entry_id' => $entry->id,
                     'type'          => $type,
                     'content'       => $content,
+                    'color'         => $color,
                     'sort_order'    => $i + 1,
                 ]);
             }

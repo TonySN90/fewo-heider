@@ -272,8 +272,9 @@ class PageController extends Controller
         abort_if($entry->page_id !== $page->id, 403);
 
         $data = $request->validate([
-            'type'    => ['required', 'in:text,heading,image'],
-            'content' => ['nullable', 'string'],
+            'type'    => ['required', 'in:text,heading,image,badge'],
+            'content' => ['nullable', 'string', 'max:500'],
+            'color'   => ['nullable', 'in:green,blue,orange,gray'],
         ]);
 
         $nextOrder = PageEntryBlock::where('page_entry_id', $entry->id)->max('sort_order') ?? 0;
@@ -282,6 +283,7 @@ class PageController extends Controller
             'page_entry_id' => $entry->id,
             'type'          => $data['type'],
             'content'       => $data['content'] ?? '',
+            'color'         => $data['color'] ?? null,
             'sort_order'    => $nextOrder + 1,
         ]);
 
@@ -294,10 +296,14 @@ class PageController extends Controller
         abort_if($block->page_entry_id !== $entry->id, 403);
 
         $data = $request->validate([
-            'content' => ['nullable', 'string'],
+            'content' => ['nullable', 'string', 'max:500'],
+            'color'   => ['nullable', 'in:green,blue,orange,gray'],
         ]);
 
-        $block->update(['content' => $data['content'] ?? '']);
+        $block->update([
+            'content' => $data['content'] ?? '',
+            'color'   => $data['color'] ?? null,
+        ]);
 
         return back()->with('success', 'Block gespeichert.');
     }

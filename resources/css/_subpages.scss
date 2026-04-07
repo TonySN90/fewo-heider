@@ -703,6 +703,17 @@ p {
   border: 1px solid $color-border;
 }
 
+.badge--orange {
+  background: rgba(201, 120, 40, 0.12);
+  color: #7a3e10;
+}
+
+.badge--gray {
+  background: rgba(100, 100, 100, 0.10);
+  color: #555;
+  border: 1px solid $color-border;
+}
+
 // ============================================================
 // PLACE LIST (ausflugsziele.html)
 // ============================================================
