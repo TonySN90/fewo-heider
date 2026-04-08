@@ -637,6 +637,36 @@ p {
   font-size: 0.9rem;
   color: $color-text;
   line-height: $line-height-loose;
+
+  & + & {
+    margin-top: $space-2;
+  }
+}
+
+.card__text-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  padding: 0;
+
+  li {
+    font-size: 0.9rem;
+    color: $color-text;
+    line-height: $line-height-loose;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    &::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: $color-primary;
+      flex-shrink: 0;
+    }
+  }
 }
 
 .card__highlights {

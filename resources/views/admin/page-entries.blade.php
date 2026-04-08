@@ -27,20 +27,40 @@
     ];
     $lInfo = $layoutLabels[$page->layout] ?? $layoutLabels['cards'];
   @endphp
-  <div class="alert" style="border-left:4px solid {{ $lInfo['color'] }};margin-bottom:1.5rem">
-    <span class="material-symbols-rounded" style="color:{{ $lInfo['color'] }}">{{ $lInfo['icon'] }}</span>
+  @php $alertMod = ['cards'=>'cards','place-list'=>'place-list','feature'=>'feature','route'=>'route','hero-feature'=>'hero'][$page->layout] ?? 'cards'; @endphp
+  <div class="alert alert--{{ $alertMod }}">
+    <span class="material-symbols-rounded alert__icon--{{ $alertMod }}">{{ $lInfo['icon'] }}</span>
     <div>
       <strong>Layout: {{ $lInfo['label'] }}</strong>
-      <p style="margin-top:.25rem;font-size:.875rem;color:#666">
+      <ul class="alert__list">
         @switch($page->layout)
-          @case('cards') Jeder Eintrag wird als Karte gerendert. Blöcke: <b>1. Text</b> = Beschreibung · <b>Letzter Text</b> = Metazeile mit Schwierigkeit &amp; km (Trenner: ·) · <b>Zweiter Text</b> = Highlights (Aufzählung mit •) @break
-          @case('place-list') Jeder Eintrag = Ort (Bild abwechselnd links/rechts). Blöcke: <b>1. Text</b> = Beschreibung · <b>Letzter Text</b> sollte „Entfernung: ca. X km" enthalten @break
-          @case('feature') Jeder Eintrag = Feature-Block (abwechselnd gespiegelt). Blöcke: <b>Heading</b> = Kategorie-Label · <b>1. Text</b> = Haupttext · <b>Letzter Text</b> = Info-Zeilen (Trenner: ·) @break
-          @case('route') Jeder Eintrag = Route. Blöcke: <b>Heading</b> = Routen-Label (z.B. „Mehrtages-Tour") · <b>1. Text</b> = Beschreibung · <b>Letzter Text</b> = Stats (z.B. „Länge: 275 km · Etappen: 5 · Schwierigkeit: Leicht") @break
-          @case('hero-feature') Erster Eintrag = großer Hero-Block. Blöcke: <b>1. Text</b> = Haupttext · <b>Letzter Text</b> = Fakten (z.B. „Entfernung: 10 km · Höhe: 38 m"). Weitere Einträge = 3-spaltiges Karten-Grid @break
-          @default Jeder Eintrag wird als Karte gerendert. @break
+          @case('cards')
+            <li><b>1. Text</b> — Beschreibung · <code>- Punkt</code> = Listenpunkt · Leerzeile = Abstand</li>
+            <li><b>2. Text</b> — Highlights (<code>- Punkt</code> = Listenpunkt, 1. Zeile = Überschrift)</li>
+            <li><b>Badges</b> — farbige Labels (Schwierigkeit, Distanz …)</li>
+            @break
+          @case('place-list')
+            <li><b>1. Text</b> — Beschreibung des Ortes</li>
+            <li><b>Letzter Text</b> — „Entfernung: ca. X km"</li>
+            @break
+          @case('feature')
+            <li><b>1. Heading</b> — Kategorie-Label (klein, farbig)</li>
+            <li><b>1. Text</b> — Hauptbeschreibung</li>
+            <li><b>Letzter Text</b> — Info-Zeilen, getrennt mit ·</li>
+            @break
+          @case('route')
+            <li><b>1. Heading</b> — Routen-Label (z.B. „Mehrtages-Tour")</li>
+            <li><b>1. Text</b> — Streckenbeschreibung</li>
+            <li><b>Letzter Text</b> — Stats, getrennt mit · (z.B. „Länge: 275 km · Etappen: 5")</li>
+            @break
+          @case('hero-feature')
+            <li><b>1. Eintrag</b> — großer Hero-Block (1. Text = Haupttext, Letzter Text = Fakten)</li>
+            <li><b>Weitere Einträge</b> — 3-spaltiges Karten-Grid</li>
+            @break
+          @default
+            <li>Jeder Eintrag wird als Karte gerendert.</li>
         @endswitch
-      </p>
+      </ul>
     </div>
   </div>
 

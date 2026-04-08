@@ -13,58 +13,20 @@
     </div>
   </div>
 
-  {{-- Layout-Hinweis --}}
-  @php
-    $layoutLabels = [
-      'cards'        => ['label' => 'Karten-Grid',       'icon' => 'grid_view',       'color' => '#3d7a6e'],
-      'place-list'   => ['label' => 'Orte / alternierend','icon' => 'location_on',     'color' => '#5a6e9a'],
-      'feature'      => ['label' => 'Feature-Blöcke',    'icon' => 'view_agenda',     'color' => '#7a5e18'],
-      'route'        => ['label' => 'Routen-Liste',       'icon' => 'directions_bike', 'color' => '#2e6644'],
-      'hero-feature' => ['label' => 'Hero + Karten-Grid', 'icon' => 'star',            'color' => '#8b3a3a'],
-    ];
-    $lInfo = $layoutLabels[$page->layout] ?? $layoutLabels['cards'];
-  @endphp
-  <div class="alert" style="border-left:4px solid {{ $lInfo['color'] }};margin-bottom:1.5rem">
-    <span class="material-symbols-rounded" style="color:{{ $lInfo['color'] }}">{{ $lInfo['icon'] }}</span>
+  @if ($page->layout === 'cards')
+  <div class="alert alert--cards">
+    <span class="material-symbols-rounded alert__icon--cards">tips_and_updates</span>
     <div>
-      <strong>Layout der Kategorie: {{ $lInfo['label'] }}</strong>
-      <p style="margin-top:.25rem;font-size:.875rem;color:#666">
-        @switch($page->layout)
-          @case('cards')
-            <b>Heading</b> (optional, nur 1. Eintrag) = Seiten-Intro ·
-            <b>1. Text</b> = Beschreibung der Karte ·
-            <b>2. Text</b> = Highlight-Liste (Punkte mit •) ·
-            <b>Badge-Blöcke</b> = farbige Labels (Schwierigkeit, Distanz, etc.) — Farbe frei wählbar
-            @break
-          @case('place-list')
-            <b>1. Text</b> = Beschreibung des Ortes ·
-            <b>Letzter Text</b> = „Entfernung: ca. X km" (wird als Distanz-Label angezeigt)
-            @break
-          @case('feature')
-            <b>1. Heading</b> = Kategorie-Label (klein, farbig über dem Titel) ·
-            <b>1. Text</b> = Hauptbeschreibung ·
-            <b>2. Text</b> = zweiter Absatz ·
-            <b>Letzter Text</b> = Info-Zeilen getrennt mit · (z.B. „Öffnungszeiten: tägl. 10–17 Uhr · Eintritt: ab 12 €")
-            @break
-          @case('route')
-            <b>1. Heading</b> = Routen-Label (z.B. „Mehrtages-Tour", „Tagesausflug") ·
-            <b>1. Text</b> = Streckenbeschreibung ·
-            <b>Letzter Text</b> = Stats getrennt mit · (z.B. „Länge: 275 km · Etappen: 5 · Schwierigkeit: Leicht")
-            @break
-          @case('hero-feature')
-            @if ($entry->sort_order === 1)
-              Dieser Eintrag wird als großer <b>Hero-Block</b> dargestellt. ·
-              <b>1. Text</b> = Haupttext · <b>2. Text</b> = zweiter Absatz ·
-              <b>Letzter Text</b> = Fakten getrennt mit · (z.B. „Entfernung: 10 km · Höhe: 38 m · Stil: Renaissance")
-            @else
-              Dieser Eintrag erscheint im <b>3-spaltigen Karten-Grid</b> (nach dem Hero). ·
-              <b>1. Text</b> = Beschreibung · <b>Letzter Text</b> = Jahreszahl oder kurzer Hinweis
-            @endif
-            @break
-        @endswitch
-      </p>
+      <strong>Karte bearbeiten</strong>
+      <ul class="alert__list">
+        <li><b>Bild</b> — Klick auf das Vorschaubild</li>
+        <li><b>Badges</b> — Farbe wählbar, verschiebbar, löschbar</li>
+        <li><b>Titel &amp; Texte</b> — direkt in der Karte anklicken</li>
+        <li><b>Highlights</b> — <code>- Text</code> = Listenpunkt, 1. Zeile = Überschrift</li>
+      </ul>
     </div>
   </div>
+  @endif
 
   {{-- URL-Info --}}
   @php
@@ -170,7 +132,7 @@
 
           {{-- Beschreibung: inline editierbar --}}
           @if ($previewDescBlock)
-            <p class="card__text preview-editable"
+            <p class="card__text preview-editable preview-editable--multiline"
                contenteditable="true"
                data-type="block"
                data-block-id="{{ $previewDescBlock->id }}"
@@ -537,7 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     el.addEventListener('blur', async () => {
-      const text = el.innerText.trim();
+      const text = el.innerText.replace(/\n{3,}/g, '\n\n').trim();
       const url  = el.dataset.url;
       const type = el.dataset.type;
 

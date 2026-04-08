@@ -217,6 +217,24 @@ class PageController extends Controller
             'sort_order'  => $nextOrder + 1,
         ]);
 
+        if ($page->layout === 'cards') {
+            $placeholders = [
+                ['type' => 'badge',  'content' => 'Leicht',          'color' => 'green', 'sort_order' => 1],
+                ['type' => 'badge',  'content' => '5 km',            'color' => 'blue',  'sort_order' => 2],
+                ['type' => 'text',   'content' => 'Kurze Beschreibung dieser Tour oder dieses Ortes.', 'color' => null, 'sort_order' => 3],
+                ['type' => 'text',   'content' => "Highlights\n- Erster Punkt\n- Zweiter Punkt\n- Dritter Punkt", 'color' => null, 'sort_order' => 4],
+            ];
+            foreach ($placeholders as $p) {
+                PageEntryBlock::create([
+                    'page_entry_id' => $entry->id,
+                    'type'          => $p['type'],
+                    'content'       => $p['content'],
+                    'color'         => $p['color'],
+                    'sort_order'    => $p['sort_order'],
+                ]);
+            }
+        }
+
         return redirect()->route('admin.pages.entry.edit', [$page, $entry])
             ->with('success', 'Eintrag angelegt.');
     }
@@ -273,7 +291,7 @@ class PageController extends Controller
 
         $data = $request->validate([
             'type'    => ['required', 'in:text,heading,image,badge'],
-            'content' => ['nullable', 'string', 'max:500'],
+            'content' => ['nullable', 'string', 'max:2000'],
             'color'   => ['nullable', 'in:green,blue,orange,gray'],
         ]);
 
@@ -304,7 +322,7 @@ class PageController extends Controller
         abort_if($block->page_entry_id !== $entry->id, 403);
 
         $data = $request->validate([
-            'content' => ['nullable', 'string', 'max:500'],
+            'content' => ['nullable', 'string', 'max:2000'],
             'color'   => ['nullable', 'in:green,blue,orange,gray'],
         ]);
 

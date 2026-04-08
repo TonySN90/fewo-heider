@@ -39,7 +39,29 @@
             @endif
             <h3 class="card__title">{{ $entry->title }}</h3>
             @if ($desc)
-              <p class="card__text">{{ $desc }}</p>
+              @php
+                $descNorm  = preg_replace('/\n{3,}/', "\n\n", str_replace(["\r\n", "\r"], "\n", $desc));
+                $descLines = explode("\n", $descNorm);
+                $inList    = false;
+                $lastEmpty = false;
+              @endphp
+              @foreach ($descLines as $line)
+                @php $line = trim($line); @endphp
+                @if (str_starts_with($line, '- '))
+                  @if (!$inList) <ul class="card__text-list"> @php $inList = true; @endphp @endif
+                  <li>{{ substr($line, 2) }}</li>
+                @else
+                  @if ($inList) </ul> @php $inList = false; @endphp @endif
+                  @if ($line !== '')
+                    @php $lastEmpty = false; @endphp
+                    <p class="card__text">{{ $line }}</p>
+                  @elseif (!$lastEmpty)
+                    @php $lastEmpty = true; @endphp
+                    <br>
+                  @endif
+                @endif
+              @endforeach
+              @if ($inList) </ul> @endif
             @endif
             @if ($highlights)
               @php
