@@ -64,12 +64,12 @@
       <h2>Unterseiten</h2>
       <button class="btn btn-add" onclick="openModal('Neue Gruppe', 'new-group-tpl')">
         <span class="material-symbols-rounded">add</span>
-        Neue Gruppe
+        Neue Unterseite
       </button>
     </div>
 
     @if ($groups->isEmpty())
-      <p style="padding:1.75rem;color:#aaa">Noch keine Gruppen angelegt.</p>
+      <p style="padding:1.75rem;color:#aaa">Noch keine Unterseite angelegt.</p>
     @else
       @foreach ($groups as $group)
         <details class="page-group" open>
@@ -84,12 +84,12 @@
             </span>
             <div class="table__actions" style="margin-left:1rem" onclick="event.preventDefault()">
               <button class="btn btn-edit"
-                      onclick="openModal('Gruppe bearbeiten', 'edit-group-tpl-{{ $group->id }}')"
+                      onclick="openModal('Unterseite bearbeiten', 'edit-group-tpl-{{ $group->id }}')"
                       title="Bearbeiten">
                 <span class="material-symbols-rounded">edit</span>
               </button>
               <button class="btn btn-delete"
-                      onclick="openModal('Gruppe löschen', 'delete-group-tpl-{{ $group->id }}')"
+                      onclick="openModal('Unterseite löschen', 'delete-group-tpl-{{ $group->id }}')"
                       title="Löschen">
                 <span class="material-symbols-rounded">delete</span>
               </button>
@@ -225,18 +225,31 @@
                 <input type="text" name="nav_label" value="{{ $group->nav_label }}" maxlength="150" />
               </div>
               <div class="modal-form-grid__full">
-                <label>Beschreibung <span class="form-field__hint">(optional)</span></label>
-                <textarea name="description" rows="3" maxlength="500">{{ $group->description }}</textarea>
+                <label>Beschreibung <span class="form-field__hint">(Wird als Untertitel im Hero angezeigt)</span></label>
+                <textarea name="description" rows="5" maxlength="500" style="width:100%">{{ $group->description }}</textarea>
               </div>
               <div class="modal-form-grid__full">
-                <label class="toggle" style="gap:.75rem">
-                  <input type="hidden" name="is_visible" value="0" />
-                  <input type="checkbox" name="is_visible" value="1" {{ $group->is_visible ? 'checked' : '' }} />
-                  <span class="toggle__slider"></span>
-                  Sichtbar
-                </label>
+                <div class="modal-form__toggle-row">
+                  <label class="toggle">
+                    <input type="hidden" name="is_visible" value="0" />
+                    <input type="checkbox" name="is_visible" value="1" {{ $group->is_visible ? 'checked' : '' }} />
+                    <span class="toggle__slider"></span>
+                  </label>
+                  <span>Sichtbar</span>
+                </div>
               </div>
             </div>
+
+            {{-- Hero-Vorschau --}}
+            <div class="modal-hero-preview">
+              <div class="modal-hero-preview__overlay"></div>
+              <div class="modal-hero-preview__content">
+                <p class="modal-hero-preview__label">Vorschau</p>
+                <h2 class="modal-hero-preview__title">{{ $group->nav_label }}</h2>
+                <p class="modal-hero-preview__desc">{{ $group->description }}</p>
+              </div>
+            </div>
+
             <div class="modal__actions">
               <button type="button" class="btn btn-cancel" onclick="closeModal()">Abbrechen</button>
               <button type="submit" class="btn btn-save">Speichern</button>

@@ -222,6 +222,21 @@
     modalBody.innerHTML = tpl.innerHTML;
     modalOverlay.classList.add('is-open');
     modalBody.querySelector('input, select')?.focus();
+    initModalLivePreview();
+  }
+
+  function initModalLivePreview() {
+    const titleInput = modalBody.querySelector('[name="nav_label"], [name="title"]');
+    const descInput  = modalBody.querySelector('[name="description"]');
+    const prevTitle  = modalBody.querySelector('.modal-hero-preview__title');
+    const prevDesc   = modalBody.querySelector('.modal-hero-preview__desc');
+    if (!prevTitle) return;
+    if (titleInput) titleInput.addEventListener('input', () => {
+      prevTitle.textContent = titleInput.value || prevTitle.textContent;
+    });
+    if (descInput) descInput.addEventListener('input', () => {
+      prevDesc.textContent = descInput.value;
+    });
   }
 
   function closeModal() {
