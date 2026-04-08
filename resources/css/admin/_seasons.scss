@@ -1,0 +1,221 @@
+@use '../variables' as *;
+
+.table__actions {
+  display: flex;
+  gap: $space-2;
+  align-items: center;
+}
+
+.guest-name {
+  color: #555;
+}
+
+.empty-row td {
+  text-align: center;
+  color: #aaa;
+  font-style: italic;
+  padding: $space-8;
+}
+
+.icon-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+
+  select {
+    flex: 1;
+  }
+}
+
+.icon-preview {
+  font-size: 1.4rem;
+  color: $color-primary;
+  flex-shrink: 0;
+  width: 1.6rem;
+  text-align: center;
+  line-height: 1;
+}
+
+// ── Saisonen Tab-Navigation ───────────────────────────────────────────────────
+
+.seasons-tabs {
+  background: $color-white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-sm;
+  margin-bottom: $space-8;
+  overflow: hidden;
+
+  &__bar {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 2px solid #f0f0f0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  &__tab {
+    position: relative;
+    padding: 0.9rem 1.4rem;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: #6b7280;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s, border-color 0.15s;
+
+    &:hover {
+      color: $color-primary;
+    }
+
+    &.is-active {
+      color: $color-primary;
+      border-bottom-color: $color-primary;
+    }
+
+    &--add {
+      margin-left: auto;
+      color: #9ca3af;
+      font-weight: 500;
+
+      &:hover { color: $color-primary; }
+      &.is-active { color: $color-primary; border-bottom-color: $color-primary; }
+    }
+  }
+
+  &__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #16a34a;
+    flex-shrink: 0;
+  }
+
+  &__panel {
+    display: none;
+
+    &.is-active {
+      display: block;
+    }
+  }
+}
+
+// ── Saison-Panel-Header ───────────────────────────────────────────────────────
+
+.season-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $space-3;
+  padding: $space-5 1.75rem;
+  border-bottom: 1px solid #f0f0f0;
+
+  .season-panel__meta {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  .season-panel__name {
+    font-size: $font-size-base;
+    font-weight: 600;
+    color: $color-dark;
+  }
+}
+
+// ── Saison-Header (Legacy) ────────────────────────────────────────────────────
+
+.season-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $space-3;
+  padding: $space-5 1.75rem;
+  border-bottom: 1px solid #f0f0f0;
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+
+    h2 {
+      font-size: $font-size-lg * 0.93;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: $space-2;
+    }
+  }
+
+  &__year {
+    font-size: $font-size-sm;
+    color: #aaa;
+    font-weight: 500;
+  }
+}
+
+.btn-activate {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1.5px solid #86efac;
+
+  &:hover {
+    background: #dcfce7;
+  }
+}
+
+// ── Preis anlegen (Details/Summary) ──────────────────────────────────────────
+
+.add-price-details {
+  border-top: 1px solid #f0f0f0;
+  padding: 0 1.75rem;
+
+  summary {
+    padding: $space-4 0;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: $color-primary;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+
+    &::-webkit-details-marker { display: none; }
+
+    &:hover {
+      color: $color-primary-dark;
+    }
+  }
+
+  .add-price-form {
+    padding-bottom: $space-5;
+  }
+}
+
+// ── Back Link ─────────────────────────────────────────────────────────────────
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $font-size-sm;
+  color: #888;
+  text-decoration: none;
+  margin-bottom: $space-2;
+
+  .material-symbols-rounded {
+    font-size: 1rem;
+  }
+
+  &:hover {
+    color: $color-primary;
+  }
+}

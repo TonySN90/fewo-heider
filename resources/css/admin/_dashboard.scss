@@ -1,0 +1,179 @@
+@use '../variables' as *;
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: $space-5;
+  margin-bottom: $space-8;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: $space-3;
+    margin-bottom: $space-5;
+  }
+}
+
+.stat-card {
+  background: $color-white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-sm;
+  padding: 1.5rem;
+
+  &__label {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: $space-2;
+  }
+
+  &__value {
+    font-size: $font-size-2xl;
+    font-weight: 700;
+    color: $color-dark;
+    line-height: 1.1;
+
+    &--lg {
+      font-size: $font-size-xl;
+    }
+
+    &--empty {
+      color: #bbb;
+    }
+  }
+
+  &__sub {
+    font-size: $font-size-xs;
+    color: #888;
+    margin-top: $space-1;
+  }
+
+  &__bar {
+    margin-top: $space-3;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  &__bar-fill {
+    height: 100%;
+    background: $color-primary;
+    border-radius: 99px;
+  }
+}
+
+.platform-section-label {
+  font-size: $font-size-xs;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: $space-3;
+  margin-top: $space-8;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.text-muted {
+  color: #888;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $admin-topbar-height;
+  z-index: 100;
+  background: $color-white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 $space-8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__brand {
+    font-weight: 700;
+    font-size: $font-size-base;
+    color: $color-dark;
+
+    span {
+      color: $color-primary;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: $space-4;
+    align-items: center;
+
+    a {
+      font-size: $font-size-sm;
+      color: #666;
+      text-decoration: none;
+
+      &:hover {
+        color: $color-dark;
+      }
+
+      @media (max-width: 480px) {
+        display: none;
+      }
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $font-size-sm;
+    color: $color-dark;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+
+    .material-symbols-rounded {
+      font-size: 20px;
+      color: #666;
+    }
+  }
+
+  &__role {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: $color-primary;
+    color: $color-white;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+
+    span {
+      display: block;
+      height: 2px;
+      background: $color-dark;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      display: flex;
+    }
+  }
+}

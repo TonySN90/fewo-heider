@@ -1,0 +1,74 @@
+@use '../variables' as *;
+
+.btn {
+  border: none;
+  border-radius: $border-radius-sm;
+  height: 34px;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.45rem 0.9rem;
+  transition: background $transition-fast, color $transition-fast;
+  text-decoration: none;
+}
+
+.btn-add,
+.btn-save {
+  background: $color-primary;
+  color: $color-white;
+
+  &:hover {
+    background: $color-primary-dark;
+  }
+}
+
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+}
+
+.btn-edit,
+.btn-delete {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  .material-symbols-rounded {
+    font-size: 1.1rem;
+  }
+}
+
+.btn-edit {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1.5px solid #e5e7eb;
+
+  &:hover {
+    background: #e5e7eb;
+  }
+}
+
+.btn-cancel {
+  background: none;
+  color: #6b7280;
+  border: 1.5px solid #e5e7eb;
+
+  &:hover {
+    background: #f9fafb;
+  }
+}
+
+.btn-delete {
+  background: none;
+  color: #b91c1c;
+  border: 1.5px solid #fca5a5;
+
+  &:hover {
+    background: #fef2f2;
+  }
+}

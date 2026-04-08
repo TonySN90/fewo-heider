@@ -1,0 +1,72 @@
+@use '../variables' as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #f4f6f8;
+  color: $color-dark;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: $font-size-2xl;
+  font-weight: 700;
+  margin-bottom: $space-6;
+
+  @media (max-width: 480px) {
+    font-size: $font-size-xl;
+    margin-bottom: $space-4;
+  }
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  margin-bottom: $space-6;
+
+  h1 {
+    margin-bottom: 0;
+  }
+}
+
+label {
+  display: block;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: $space-1;
+}
+
+input[type='date'],
+input[type='text'],
+input[type='number'],
+input[type='email'],
+input[type='password'],
+select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1.5px solid $color-border;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-base * 0.9;
+  outline: none;
+  transition: border-color $transition-fast;
+
+  &:focus {
+    border-color: $color-primary;
+  }
+}
+
+.field-error {
+  color: #b91c1c;
+  font-size: $font-size-xs;
+  margin-top: $space-1;
+}

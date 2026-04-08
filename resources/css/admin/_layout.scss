@@ -1,0 +1,147 @@
+@use '../variables' as *;
+
+body.admin-layout {
+  overflow: hidden;
+}
+
+.admin-shell {
+  display: flex;
+  height: 100vh;
+  padding-top: $admin-topbar-height;
+
+  @media (max-width: 768px) {
+    padding-top: $admin-topbar-height;
+  }
+}
+
+.sidebar {
+  position: relative;
+  width: $admin-sidebar-width;
+  flex-shrink: 0;
+  background: $color-dark;
+  height: 100%;
+  overflow-y: auto;
+  transition: transform $transition-fast;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    top: $admin-topbar-height;
+    left: 0;
+    bottom: 0;
+    z-index: 90;
+    transform: translateX(-100%);
+    padding-top: $space-4;
+
+    &.is-open {
+      transform: translateX(0);
+    }
+  }
+
+  &__section {
+    margin-bottom: $space-2;
+
+    &--platform {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: $space-2;
+    }
+  }
+
+  &__section-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.3);
+    padding: $space-4 $space-5 $space-1;
+  }
+
+  &__nav {
+    list-style: none;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: 0.65rem $space-5;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: background $transition-fast, color $transition-fast, border-color $transition-fast;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: $color-white;
+    }
+
+    &--active {
+      background: rgba(61, 122, 110, 0.25);
+      color: $color-white;
+      border-left-color: $color-primary;
+    }
+  }
+
+  &__icon {
+    font-size: 1.25rem;
+    width: 1.5rem;
+    text-align: center;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  &__footer {
+    margin-top: auto;
+    padding: $space-4 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  &__logout {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    width: 100%;
+    padding: 0.65rem $space-5;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: left;
+    transition: background $transition-fast, color $transition-fast;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fca5a5;
+    }
+  }
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(0, 0, 0, 0.35);
+
+  &.is-open {
+    display: block;
+  }
+}
+
+.admin-main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow-y: auto;
+  padding: $space-8;
+
+  @media (max-width: 768px) {
+    padding: $space-5 $space-4;
+  }
+}
