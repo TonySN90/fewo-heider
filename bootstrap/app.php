@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\ResolveTenant;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,10 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'auth'           => \App\Http\Middleware\Authenticate::class,
-            'role'           => \Spatie\Permission\Middleware\RoleMiddleware::class,
-            'permission'     => \Spatie\Permission\Middleware\PermissionMiddleware::class,
-            'resolve.tenant' => \App\Http\Middleware\ResolveTenant::class,
+            'auth' => Authenticate::class,
+            'role' => RoleMiddleware::class,
+            'permission' => PermissionMiddleware::class,
+            'resolve.tenant' => ResolveTenant::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

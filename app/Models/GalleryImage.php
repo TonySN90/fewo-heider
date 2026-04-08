@@ -23,6 +23,6 @@ class GalleryImage extends Model
 
     public function url(): string
     {
-        return '/storage/gallery/' . $this->filename;
+        return '/storage/gallery/'.$this->filename;
     }
 }

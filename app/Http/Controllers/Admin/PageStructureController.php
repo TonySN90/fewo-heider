@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Page;
 use App\Models\PageGroup;
 use App\Models\TemplateSectionContent;
 use Illuminate\Http\RedirectResponse;
@@ -13,48 +12,48 @@ use Illuminate\View\View;
 class PageStructureController extends Controller
 {
     private const SECTION_LABELS = [
-        'hero'        => 'Hero (Hauptbild)',
-        'ueber-uns'   => 'Die Wohnung',
+        'hero' => 'Hero (Hauptbild)',
+        'ueber-uns' => 'Die Wohnung',
         'ausstattung' => 'Ausstattung',
-        'galerie'     => 'Galerie',
-        'preise'      => 'Preise & Verfügbarkeit',
-        'anreise'     => 'Anreise / Karte',
-        'kontakt'     => 'Kontakt & Anfrage',
+        'galerie' => 'Galerie',
+        'preise' => 'Preise & Verfügbarkeit',
+        'anreise' => 'Anreise / Karte',
+        'kontakt' => 'Kontakt & Anfrage',
     ];
 
     private const EDITABLE_SECTIONS = ['hero', 'ueber-uns', 'ausstattung', 'galerie'];
 
     public function index(): View
     {
-        $tenant   = current_tenant();
+        $tenant = current_tenant();
         $template = $tenant?->template;
 
         abort_unless($tenant && $template, 404, 'Kein Template zugeordnet.');
 
         $sections = $template->sectionsForTenant($tenant->id)->get();
-        $groups   = PageGroup::where('tenant_id', $tenant->id)
+        $groups = PageGroup::where('tenant_id', $tenant->id)
             ->orderBy('sort_order')
             ->with(['pages' => fn ($q) => $q->orderBy('sort_order')])
             ->get();
 
         return view('admin.page-structure', [
-            'template'         => $template,
-            'sections'         => $sections,
-            'sectionLabels'    => self::SECTION_LABELS,
+            'template' => $template,
+            'sections' => $sections,
+            'sectionLabels' => self::SECTION_LABELS,
             'editableSections' => self::EDITABLE_SECTIONS,
-            'groups'           => $groups,
+            'groups' => $groups,
         ]);
     }
 
     public function updateSections(Request $request): RedirectResponse
     {
-        $tenant   = current_tenant();
+        $tenant = current_tenant();
         $template = $tenant?->template;
 
         abort_unless($tenant && $template, 404);
 
         $data = $request->validate([
-            'sections'   => ['required', 'array'],
+            'sections' => ['required', 'array'],
             'sections.*' => ['boolean'],
         ]);
 
@@ -69,7 +68,7 @@ class PageStructureController extends Controller
 
     public function edit(string $sectionKey): View
     {
-        $tenant   = current_tenant();
+        $tenant = current_tenant();
         $template = $tenant?->template;
 
         abort_unless($tenant && $template, 404);
@@ -82,7 +81,7 @@ class PageStructureController extends Controller
 
     public function update(Request $request, string $sectionKey): RedirectResponse
     {
-        $tenant   = current_tenant();
+        $tenant = current_tenant();
         $template = $tenant?->template;
 
         abort_unless($tenant && $template, 404);

@@ -32,6 +32,7 @@ class PageGroup extends Model
         return $this->belongsTo(Tenant::class);
     }
 
+    /** @return HasMany<Page, $this> */
     public function pages(): HasMany
     {
         return $this->hasMany(Page::class)->orderBy('sort_order');

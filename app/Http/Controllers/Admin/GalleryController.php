@@ -16,38 +16,38 @@ class GalleryController extends Controller
 
     public function storeForTenant(Request $request, string $sectionKey): RedirectResponse
     {
-        $tenant   = current_tenant();
+        $tenant = current_tenant();
         $template = $tenant?->template;
         abort_unless($tenant && $template, 404);
 
         $section = $template->findTenantSection($sectionKey, $tenant->id);
 
         $request->validate([
-            'images'   => ['required', 'array', 'max:20'],
+            'images' => ['required', 'array', 'max:20'],
             'images.*' => ['required', 'file', 'image', 'max:5120', 'mimes:jpg,jpeg,png,webp'],
         ]);
 
         $nextOrder = GalleryImage::where('template_section_id', $section->id)->max('sort_order') ?? 0;
 
         foreach ($request->file('images') as $file) {
-            $filename = (string) Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $filename = (string) Str::uuid().'.'.$file->getClientOriginalExtension();
             $file->storeAs('gallery', $filename, 'public');
             GalleryImage::create([
                 'template_section_id' => $section->id,
-                'filename'            => $filename,
-                'caption'             => null,
-                'sort_order'          => ++$nextOrder,
+                'filename' => $filename,
+                'caption' => null,
+                'sort_order' => ++$nextOrder,
             ]);
         }
 
         return redirect()
             ->route('admin.page-structure.edit', $sectionKey)
-            ->with('success', count($request->file('images')) . ' Bild(er) wurden hochgeladen.');
+            ->with('success', count($request->file('images')).' Bild(er) wurden hochgeladen.');
     }
 
     public function updateForTenant(Request $request, string $sectionKey, GalleryImage $image): RedirectResponse
     {
-        $tenant   = current_tenant();
+        $tenant = current_tenant();
         $template = $tenant?->template;
         abort_unless($tenant && $template, 404);
 
@@ -55,7 +55,7 @@ class GalleryController extends Controller
         abort_if($image->template_section_id !== $section->id, 403);
 
         $image->update($request->validate([
-            'caption'    => ['nullable', 'string', 'max:200'],
+            'caption' => ['nullable', 'string', 'max:200'],
             'sort_order' => ['required', 'integer', 'min:0', 'max:9999'],
         ]));
 
@@ -66,14 +66,14 @@ class GalleryController extends Controller
 
     public function destroyForTenant(string $sectionKey, GalleryImage $image): RedirectResponse
     {
-        $tenant   = current_tenant();
+        $tenant = current_tenant();
         $template = $tenant?->template;
         abort_unless($tenant && $template, 404);
 
         $section = $template->findTenantSection($sectionKey, $tenant->id);
         abort_if($image->template_section_id !== $section->id, 403);
 
-        Storage::disk('public')->delete('gallery/' . $image->filename);
+        Storage::disk('public')->delete('gallery/'.$image->filename);
         $image->delete();
 
         return redirect()
@@ -88,27 +88,27 @@ class GalleryController extends Controller
         $section = $template->findSection($sectionKey);
 
         $request->validate([
-            'images'   => ['required', 'array', 'max:20'],
+            'images' => ['required', 'array', 'max:20'],
             'images.*' => ['required', 'file', 'image', 'max:5120', 'mimes:jpg,jpeg,png,webp'],
         ]);
 
         $nextOrder = GalleryImage::where('template_section_id', $section->id)->max('sort_order') ?? 0;
 
         foreach ($request->file('images') as $file) {
-            $filename = (string) Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $filename = (string) Str::uuid().'.'.$file->getClientOriginalExtension();
             $file->storeAs('gallery', $filename, 'public');
 
             GalleryImage::create([
                 'template_section_id' => $section->id,
-                'filename'            => $filename,
-                'caption'             => null,
-                'sort_order'          => ++$nextOrder,
+                'filename' => $filename,
+                'caption' => null,
+                'sort_order' => ++$nextOrder,
             ]);
         }
 
         return redirect()
             ->route('admin.templates.sections.edit', [$template, $sectionKey])
-            ->with('success', count($request->file('images')) . ' Bild(er) wurden hochgeladen.');
+            ->with('success', count($request->file('images')).' Bild(er) wurden hochgeladen.');
     }
 
     public function update(Request $request, Template $template, string $sectionKey, GalleryImage $image): RedirectResponse
@@ -117,7 +117,7 @@ class GalleryController extends Controller
         abort_if($image->template_section_id !== $section->id, 403);
 
         $data = $request->validate([
-            'caption'    => ['nullable', 'string', 'max:200'],
+            'caption' => ['nullable', 'string', 'max:200'],
             'sort_order' => ['required', 'integer', 'min:0', 'max:9999'],
         ]);
 
@@ -133,7 +133,7 @@ class GalleryController extends Controller
         $section = $template->findSection($sectionKey);
         abort_if($image->template_section_id !== $section->id, 403);
 
-        Storage::disk('public')->delete('gallery/' . $image->filename);
+        Storage::disk('public')->delete('gallery/'.$image->filename);
         $image->delete();
 
         return redirect()

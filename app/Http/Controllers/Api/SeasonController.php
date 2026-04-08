@@ -16,14 +16,14 @@ class SeasonController extends Controller
         }
 
         return response()->json([
-            'year'   => $season->year,
+            'year' => $season->year,
             'prices' => $season->prices()->orderBy('sort_order')->orderBy('from')->get()->map(fn ($p) => [
-                'name'            => $p->name,
-                'from'            => $p->from->toDateString(),
-                'to'              => $p->to->toDateString(),
+                'name' => $p->name,
+                'from' => $p->from->toDateString(),
+                'to' => $p->to->toDateString(),
                 'price_per_night' => $p->price_per_night,
-                'min_nights'      => $p->min_nights,
-                'badge_color'     => $p->badge_color,
+                'min_nights' => $p->min_nights,
+                'badge_color' => $p->badge_color,
             ]),
         ]);
     }

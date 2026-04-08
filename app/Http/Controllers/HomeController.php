@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\GalleryImage;
 use App\Models\PageGroup;
-use App\Models\Tenant;
 use App\Models\Template;
+use App\Models\TemplateSection;
+use App\Models\Tenant;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -31,25 +33,25 @@ class HomeController extends Controller
             : null;
 
         if ($activeTemplate !== null && $tenant !== null) {
-            /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\TemplateSection> $sections */
+            /** @var Collection<int, TemplateSection> $sections */
             $sections = $activeTemplate->sectionsForTenant($tenant->id)
                 ->with('content', 'galleryImages')
                 ->get();
 
-            $visibleSections  = $sections->where('is_visible', true)->pluck('section_key')->toArray();
-            $heroSection      = $sections->firstWhere('section_key', 'hero');
-            $aboutUsSection   = $sections->firstWhere('section_key', 'ueber-uns');
+            $visibleSections = $sections->where('is_visible', true)->pluck('section_key')->toArray();
+            $heroSection = $sections->firstWhere('section_key', 'hero');
+            $aboutUsSection = $sections->firstWhere('section_key', 'ueber-uns');
             $amenitiesSection = $sections->firstWhere('section_key', 'ausstattung');
-            $gallerySection   = $sections->firstWhere('section_key', 'galerie');
+            $gallerySection = $sections->firstWhere('section_key', 'galerie');
         } elseif ($activeTemplate !== null) {
             $activeTemplate->load('sections.content');
-            $visibleSections  = $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray();
-            $heroSection      = $activeTemplate->getSection('hero');
-            $aboutUsSection   = $activeTemplate->getSection('ueber-uns');
+            $visibleSections = $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray();
+            $heroSection = $activeTemplate->getSection('hero');
+            $aboutUsSection = $activeTemplate->getSection('ueber-uns');
             $amenitiesSection = $activeTemplate->getSection('ausstattung');
-            $gallerySection   = $activeTemplate->getSection('galerie');
+            $gallerySection = $activeTemplate->getSection('galerie');
         } else {
-            $visibleSections  = self::ALL_SECTIONS;
+            $visibleSections = self::ALL_SECTIONS;
             $heroSection = $aboutUsSection = $amenitiesSection = $gallerySection = null;
         }
 

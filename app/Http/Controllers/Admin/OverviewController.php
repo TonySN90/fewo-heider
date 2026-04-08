@@ -23,15 +23,15 @@ class OverviewController extends Controller
         $activeTenantIds = Season::where('is_active', true)->pluck('tenant_id');
 
         $tenantRows = $tenants->map(fn ($t) => [
-            'tenant'          => $t,
+            'tenant' => $t,
             'hasActiveSeason' => $activeTenantIds->contains($t->id),
-            'bookingsYear'    => $bookingsPerTenant[$t->id] ?? 0,
+            'bookingsYear' => $bookingsPerTenant[$t->id] ?? 0,
         ]);
 
-        $totalTenants  = $tenants->count();
+        $totalTenants = $tenants->count();
         $activeTenants = $tenants->where('is_active', true)->count();
 
-        $totalUsers  = User::count();
+        $totalUsers = User::count();
         $usersByRole = DB::table('model_has_roles')
             ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
             ->where('model_type', User::class)

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Page;
 use App\Models\PageGroup;
 use Illuminate\View\View;
 
@@ -11,7 +10,7 @@ class PageController extends Controller
     public function groupIndex(string $groupSlug): View
     {
         $tenant = current_tenant();
-        $group  = PageGroup::where('tenant_id', $tenant?->id)
+        $group = PageGroup::where('tenant_id', $tenant?->id)
             ->where('slug', $groupSlug)
             ->where('is_visible', true)
             ->firstOrFail();
@@ -24,7 +23,7 @@ class PageController extends Controller
     public function show(string $groupSlug, string $pageSlug): View
     {
         $tenant = current_tenant();
-        $group  = PageGroup::where('tenant_id', $tenant?->id)
+        $group = PageGroup::where('tenant_id', $tenant?->id)
             ->where('slug', $groupSlug)
             ->where('is_visible', true)
             ->firstOrFail();
@@ -42,7 +41,7 @@ class PageController extends Controller
     public function entry(string $groupSlug, string $pageSlug, string $entrySlug): View
     {
         $tenant = current_tenant();
-        $group  = PageGroup::where('tenant_id', $tenant?->id)
+        $group = PageGroup::where('tenant_id', $tenant?->id)
             ->where('slug', $groupSlug)
             ->where('is_visible', true)
             ->firstOrFail();

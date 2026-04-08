@@ -11,13 +11,13 @@ use Illuminate\View\View;
 class TemplateController extends Controller
 {
     private const SECTION_LABELS = [
-        'hero'        => 'Hero (Hauptbild)',
-        'ueber-uns'   => 'Die Wohnung',
+        'hero' => 'Hero (Hauptbild)',
+        'ueber-uns' => 'Die Wohnung',
         'ausstattung' => 'Ausstattung',
-        'galerie'     => 'Galerie',
-        'preise'      => 'Preise & Verfügbarkeit',
-        'anreise'     => 'Anreise / Karte',
-        'kontakt'     => 'Kontakt & Anfrage',
+        'galerie' => 'Galerie',
+        'preise' => 'Preise & Verfügbarkeit',
+        'anreise' => 'Anreise / Karte',
+        'kontakt' => 'Kontakt & Anfrage',
     ];
 
     // Sections that have a dedicated edit page
@@ -28,8 +28,8 @@ class TemplateController extends Controller
         $templates = Template::with(['sections' => fn ($q) => $q->orderBy('sort_order')])->get();
 
         return view('admin.templates', [
-            'templates'       => $templates,
-            'sectionLabels'   => self::SECTION_LABELS,
+            'templates' => $templates,
+            'sectionLabels' => self::SECTION_LABELS,
             'editableSections' => self::EDITABLE_SECTIONS,
         ]);
     }
@@ -49,13 +49,13 @@ class TemplateController extends Controller
     {
         $template->activate();
 
-        return back()->with('success', 'Template "' . $template->name . '" ist jetzt aktiv.');
+        return back()->with('success', 'Template "'.$template->name.'" ist jetzt aktiv.');
     }
 
     public function updateSections(Request $request, Template $template): RedirectResponse
     {
         $data = $request->validate([
-            'sections'   => ['required', 'array'],
+            'sections' => ['required', 'array'],
             'sections.*' => ['boolean'],
         ]);
 

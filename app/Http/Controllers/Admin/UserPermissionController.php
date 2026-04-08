@@ -11,7 +11,7 @@ class UserPermissionController extends Controller
 {
     public function index()
     {
-        $users       = User::with('roles', 'tenants')->orderBy('name')->get();
+        $users = User::with('roles', 'tenants')->orderBy('name')->get();
         $permissions = Permission::orderBy('name')->get();
 
         return view('admin.users', compact('users', 'permissions'));
@@ -23,7 +23,7 @@ class UserPermissionController extends Controller
 
         $user->syncPermissions($request->input('permissions', []));
 
-        return back()->with('success', 'Rechte für ' . $user->full_name . ' gespeichert.');
+        return back()->with('success', 'Rechte für '.$user->full_name.' gespeichert.');
     }
 
     public function updateProfile(Request $request, User $user)
@@ -32,9 +32,9 @@ class UserPermissionController extends Controller
 
         $data = $request->validate([
             'first_name' => ['nullable', 'string', 'max:100'],
-            'last_name'  => ['nullable', 'string', 'max:100'],
-            'email'      => ['required', 'email', 'max:150', 'unique:users,email,' . $user->id],
-            'password'   => ['nullable', 'string', 'min:8', 'confirmed'],
+            'last_name' => ['nullable', 'string', 'max:100'],
+            'email' => ['required', 'email', 'max:150', 'unique:users,email,'.$user->id],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
         if (empty($data['password'])) {
@@ -43,6 +43,6 @@ class UserPermissionController extends Controller
 
         $user->update($data);
 
-        return back()->with('success', 'Profil von ' . $user->full_name . ' gespeichert.');
+        return back()->with('success', 'Profil von '.$user->full_name.' gespeichert.');
     }
 }

@@ -10,16 +10,16 @@ class AmenityController extends Controller
     public function index()
     {
         $template = Template::active();
-        $section  = $template?->getSection('ausstattung');
+        $section = $template?->getSection('ausstattung');
         $section?->load('content');
 
         $items = [];
         for ($i = 1; $i <= 50; $i++) {
-            $icon  = $section?->field("amenity_{$i}_icon");
+            $icon = $section?->field("amenity_{$i}_icon");
             $label = $section?->field("amenity_{$i}_label");
             if ($icon && $label) {
                 $items[] = ['icon' => $icon, 'label' => $label];
-            } elseif (!$icon && !$label) {
+            } elseif (! $icon && ! $label) {
                 break;
             }
         }

@@ -18,11 +18,11 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'from'       => ['required', 'date'],
-            'to'         => ['required', 'date', 'after_or_equal:from'],
+            'from' => ['required', 'date'],
+            'to' => ['required', 'date', 'after_or_equal:from'],
             'guest_name' => ['nullable', 'string', 'max:100'],
-            'portal'     => ['nullable', 'string', 'max:100'],
-            'booked_at'  => ['nullable', 'date'],
+            'portal' => ['nullable', 'string', 'max:100'],
+            'booked_at' => ['nullable', 'date'],
         ]);
 
         Booking::create($data);
@@ -33,11 +33,11 @@ class BookingController extends Controller
     public function update(Request $request, Booking $booking)
     {
         $data = $request->validate([
-            'from'       => ['required', 'date'],
-            'to'         => ['required', 'date', 'after_or_equal:from'],
+            'from' => ['required', 'date'],
+            'to' => ['required', 'date', 'after_or_equal:from'],
             'guest_name' => ['nullable', 'string', 'max:100'],
-            'portal'     => ['nullable', 'string', 'max:100'],
-            'booked_at'  => ['nullable', 'date'],
+            'portal' => ['nullable', 'string', 'max:100'],
+            'booked_at' => ['nullable', 'date'],
         ]);
 
         $booking->update($data);

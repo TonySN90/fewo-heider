@@ -17,9 +17,9 @@ class TenantSeeder extends Seeder
         $tenant = Tenant::firstOrCreate(
             ['domain' => 'fewo-heider.de'],
             [
-                'name'        => 'Ferienwohnung Heider',
+                'name' => 'Ferienwohnung Heider',
                 'template_id' => $template?->id,
-                'is_active'   => true,
+                'is_active' => true,
             ]
         );
 

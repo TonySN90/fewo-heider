@@ -13,7 +13,7 @@ class ClientSeeder extends Seeder
         $user = User::updateOrCreate(
             ['email' => 'gast@fewo-heider.de'],
             [
-                'name'     => 'Gast',
+                'name' => 'Gast',
                 'password' => Hash::make('Gast-Password-2026!'),
             ]
         );

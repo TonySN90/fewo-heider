@@ -13,7 +13,7 @@ class SeasonController extends Controller
     public function index()
     {
         $seasons = Season::ordered()->with(['prices' => fn ($q) => $q->ordered()])->get();
-        $notes   = PricingNote::ordered()->get();
+        $notes = PricingNote::ordered()->get();
 
         return view('admin.seasons', compact('seasons', 'notes'));
     }
@@ -21,9 +21,9 @@ class SeasonController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'year'       => ['required', 'integer', 'min:2020', 'max:2099',
-                             Rule::unique('seasons', 'year')->where('tenant_id', current_tenant()?->id)],
-            'name'       => ['required', 'string', 'max:100'],
+            'year' => ['required', 'integer', 'min:2020', 'max:2099',
+                Rule::unique('seasons', 'year')->where('tenant_id', current_tenant()?->id)],
+            'name' => ['required', 'string', 'max:100'],
             'sort_order' => ['required', 'integer', 'min:0'],
         ]);
 
@@ -35,7 +35,7 @@ class SeasonController extends Controller
     public function update(Request $request, Season $season)
     {
         $data = $request->validate([
-            'name'       => ['required', 'string', 'max:100'],
+            'name' => ['required', 'string', 'max:100'],
             'sort_order' => ['required', 'integer', 'min:0'],
         ]);
 

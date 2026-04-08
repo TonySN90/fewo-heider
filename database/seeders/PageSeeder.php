@@ -26,8 +26,8 @@ class PageSeeder extends Seeder
         $group = PageGroup::firstOrCreate(
             ['tenant_id' => $tenant->id, 'slug' => 'ruegen-erleben'],
             [
-                'title'      => 'Rügen entdecken',
-                'nav_label'  => 'Rügen erleben',
+                'title' => 'Rügen entdecken',
+                'nav_label' => 'Rügen erleben',
                 'description' => 'Entdecken Sie die schönsten Ecken der Insel – von Kreidefelsen und Buchenwäldern bis zu historischen Schlössern und familienfreundlichen Ausflügen.',
                 'is_visible' => true,
                 'sort_order' => 1,
@@ -38,40 +38,40 @@ class PageSeeder extends Seeder
 
         $categories = [
             [
-                'title'       => 'Wandern',
-                'slug'        => 'wandern',
+                'title' => 'Wandern',
+                'slug' => 'wandern',
                 'description' => 'Atemberaubende Wanderwege entlang der Kreideküste, durch UNESCO-Buchenwälder und am Hochufer des Nationalparks Jasmund.',
-                'sort_order'  => 1,
+                'sort_order' => 1,
             ],
             [
-                'title'       => 'Radfahren',
-                'slug'        => 'radfahren',
+                'title' => 'Radfahren',
+                'slug' => 'radfahren',
                 'description' => 'Rügen ist ein Paradies für Radfahrer – flache Strecken, gut ausgebaute Radwege und herrliche Küstenlandschaften auf 275 km Rundweg.',
-                'sort_order'  => 2,
+                'sort_order' => 2,
             ],
             [
-                'title'       => 'Ausflugsziele',
-                'slug'        => 'ausflugsziele',
+                'title' => 'Ausflugsziele',
+                'slug' => 'ausflugsziele',
                 'description' => 'Von der eleganten Seebrücke in Sellin bis zum wilden Kap Arkona – die schönsten Orte und Ausflugsziele der Insel Rügen.',
-                'sort_order'  => 3,
+                'sort_order' => 3,
             ],
             [
-                'title'       => 'Sehenswürdigkeiten',
-                'slug'        => 'sehenswuerdigkeiten',
+                'title' => 'Sehenswürdigkeiten',
+                'slug' => 'sehenswuerdigkeiten',
                 'description' => 'Der Königsstuhl, die Störtebeker Festspiele, die Leuchttürme von Kap Arkona – Rügens historische und natürliche Highlights.',
-                'sort_order'  => 4,
+                'sort_order' => 4,
             ],
             [
-                'title'       => 'Schlösser & Parks',
-                'slug'        => 'schloesser-parks',
+                'title' => 'Schlösser & Parks',
+                'slug' => 'schloesser-parks',
                 'description' => 'Das Jagdschloss Granitz, die klassizistische „Weiße Stadt" Putbus und prächtige Parkanlagen – Rügens fürstliches Erbe.',
-                'sort_order'  => 5,
+                'sort_order' => 5,
             ],
             [
-                'title'       => 'Familie',
-                'slug'        => 'familie',
+                'title' => 'Familie',
+                'slug' => 'familie',
                 'description' => 'Dinosaurierland, Rasender Roland, Karls Erlebnis-Dorf und kilometerlange Sandstrände – Rügen begeistert Klein und Groß.',
-                'sort_order'  => 6,
+                'sort_order' => 6,
             ],
         ];
 
@@ -81,10 +81,10 @@ class PageSeeder extends Seeder
                 ['tenant_id' => $tenant->id, 'slug' => $data['slug']],
                 [
                     'page_group_id' => $group->id,
-                    'title'         => $data['title'],
-                    'description'   => $data['description'],
-                    'sort_order'    => $data['sort_order'],
-                    'is_visible'    => true,
+                    'title' => $data['title'],
+                    'description' => $data['description'],
+                    'sort_order' => $data['sort_order'],
+                    'is_visible' => true,
                 ]
             );
             // page_group_id bei bestehenden Pages nachrüsten
@@ -304,7 +304,7 @@ class PageSeeder extends Seeder
         $entry = PageEntry::firstOrCreate(
             ['page_id' => $page->id, 'slug' => $slug],
             [
-                'title'      => $title,
+                'title' => $title,
                 'sort_order' => $order,
             ]
         );
@@ -316,10 +316,10 @@ class PageSeeder extends Seeder
                 $color = $block[2] ?? null;
                 PageEntryBlock::create([
                     'page_entry_id' => $entry->id,
-                    'type'          => $type,
-                    'content'       => $content,
-                    'color'         => $color,
-                    'sort_order'    => $i + 1,
+                    'type' => $type,
+                    'content' => $content,
+                    'color' => $color,
+                    'sort_order' => $i + 1,
                 ]);
             }
         }

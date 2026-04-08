@@ -19,36 +19,36 @@ class PageController extends Controller
     public function storeGroup(Request $request): RedirectResponse
     {
         $tenant = current_tenant();
-        abort_unless($tenant, 403);
+        abort_if($tenant === null, 403);
 
         $data = $request->validate([
-            'title'       => ['required', 'string', 'max:150'],
-            'nav_label'   => ['nullable', 'string', 'max:150'],
+            'title' => ['required', 'string', 'max:150'],
+            'nav_label' => ['nullable', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:500'],
-            'is_visible'  => ['boolean'],
+            'is_visible' => ['boolean'],
         ]);
 
         $slug = Str::slug($data['title']);
         $base = $slug;
-        $i    = 1;
+        $i = 1;
         while (PageGroup::where('tenant_id', $tenant->id)->where('slug', $slug)->exists()) {
-            $slug = $base . '-' . $i++;
+            $slug = $base.'-'.$i++;
         }
 
         $nextOrder = PageGroup::where('tenant_id', $tenant->id)->max('sort_order') ?? 0;
 
         PageGroup::create([
-            'tenant_id'   => $tenant->id,
-            'title'       => $data['title'],
-            'nav_label'   => $data['nav_label'] ?: $data['title'],
-            'slug'        => $slug,
+            'tenant_id' => $tenant->id,
+            'title' => $data['title'],
+            'nav_label' => $data['nav_label'] ?: $data['title'],
+            'slug' => $slug,
             'description' => $data['description'] ?? null,
-            'is_visible'  => $request->boolean('is_visible', true),
-            'sort_order'  => $nextOrder + 1,
+            'is_visible' => $request->boolean('is_visible', true),
+            'sort_order' => $nextOrder + 1,
         ]);
 
         return redirect()->route('admin.page-structure')
-            ->with('success', 'Gruppe „' . $data['title'] . '" wurde angelegt.');
+            ->with('success', 'Gruppe „'.$data['title'].'" wurde angelegt.');
     }
 
     public function updateGroup(Request $request, PageGroup $group): RedirectResponse
@@ -56,27 +56,27 @@ class PageController extends Controller
         $this->authorizeGroup($group);
 
         $data = $request->validate([
-            'title'       => ['required', 'string', 'max:150'],
-            'nav_label'   => ['nullable', 'string', 'max:150'],
+            'title' => ['required', 'string', 'max:150'],
+            'nav_label' => ['nullable', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:500'],
-            'is_visible'  => ['boolean'],
+            'is_visible' => ['boolean'],
         ]);
 
         $newSlug = Str::slug($data['title']);
         if ($newSlug !== $group->slug) {
             $base = $newSlug;
-            $i    = 1;
+            $i = 1;
             while (PageGroup::where('tenant_id', $group->tenant_id)->where('slug', $newSlug)->where('id', '!=', $group->id)->exists()) {
-                $newSlug = $base . '-' . $i++;
+                $newSlug = $base.'-'.$i++;
             }
         }
 
         $group->update([
-            'title'       => $data['title'],
-            'slug'        => $newSlug,
-            'nav_label'   => $data['nav_label'] ?: $data['title'],
+            'title' => $data['title'],
+            'slug' => $newSlug,
+            'nav_label' => $data['nav_label'] ?: $data['title'],
             'description' => $data['description'] ?? null,
-            'is_visible'  => $request->boolean('is_visible', true),
+            'is_visible' => $request->boolean('is_visible', true),
         ]);
 
         return redirect()->route('admin.page-structure')
@@ -97,22 +97,22 @@ class PageController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $tenant = current_tenant();
-        abort_unless($tenant, 403);
+        abort_if($tenant === null, 403);
 
         $data = $request->validate([
             'page_group_id' => ['required', 'integer', 'exists:page_groups,id'],
-            'title'         => ['required', 'string', 'max:150'],
-            'description'   => ['nullable', 'string', 'max:500'],
-            'cover_image'   => ['nullable', 'image', 'max:4096'],
-            'is_visible'    => ['boolean'],
-            'layout'        => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
+            'title' => ['required', 'string', 'max:150'],
+            'description' => ['nullable', 'string', 'max:500'],
+            'cover_image' => ['nullable', 'image', 'max:4096'],
+            'is_visible' => ['boolean'],
+            'layout' => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
         ]);
 
         $slug = Str::slug($data['title']);
         $base = $slug;
-        $i    = 1;
+        $i = 1;
         while (Page::where('tenant_id', $tenant->id)->where('slug', $slug)->exists()) {
-            $slug = $base . '-' . $i++;
+            $slug = $base.'-'.$i++;
         }
 
         $nextOrder = Page::where('tenant_id', $tenant->id)->max('sort_order') ?? 0;
@@ -123,19 +123,19 @@ class PageController extends Controller
         }
 
         Page::create([
-            'tenant_id'     => $tenant->id,
+            'tenant_id' => $tenant->id,
             'page_group_id' => $data['page_group_id'],
-            'title'         => $data['title'],
-            'slug'          => $slug,
-            'description'   => $data['description'] ?? null,
-            'cover_image'   => $coverPath,
-            'is_visible'    => $request->boolean('is_visible', true),
-            'sort_order'    => $nextOrder + 1,
-            'layout'        => $data['layout'] ?? 'cards',
+            'title' => $data['title'],
+            'slug' => $slug,
+            'description' => $data['description'] ?? null,
+            'cover_image' => $coverPath,
+            'is_visible' => $request->boolean('is_visible', true),
+            'sort_order' => $nextOrder + 1,
+            'layout' => $data['layout'] ?? 'cards',
         ]);
 
         return redirect()->route('admin.page-structure')
-            ->with('success', 'Kategorie „' . $data['title'] . '" wurde angelegt.');
+            ->with('success', 'Kategorie „'.$data['title'].'" wurde angelegt.');
     }
 
     public function update(Request $request, Page $page): RedirectResponse
@@ -143,11 +143,11 @@ class PageController extends Controller
         $this->authorizePage($page);
 
         $data = $request->validate([
-            'title'         => ['required', 'string', 'max:150'],
-            'description'   => ['nullable', 'string', 'max:500'],
-            'cover_image'   => ['nullable', 'image', 'max:4096'],
-            'is_visible'    => ['boolean'],
-            'layout'        => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
+            'title' => ['required', 'string', 'max:150'],
+            'description' => ['nullable', 'string', 'max:500'],
+            'cover_image' => ['nullable', 'image', 'max:4096'],
+            'is_visible' => ['boolean'],
+            'layout' => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
         ]);
 
         $coverPath = $page->cover_image;
@@ -156,11 +156,11 @@ class PageController extends Controller
         }
 
         $page->update([
-            'title'       => $data['title'],
+            'title' => $data['title'],
             'description' => $data['description'] ?? null,
             'cover_image' => $coverPath,
-            'is_visible'  => $request->boolean('is_visible', true),
-            'layout'      => $data['layout'] ?? $page->layout,
+            'is_visible' => $request->boolean('is_visible', true),
+            'layout' => $data['layout'] ?? $page->layout,
         ]);
 
         return redirect()->route('admin.page-structure')
@@ -191,15 +191,15 @@ class PageController extends Controller
         $this->authorizePage($page);
 
         $data = $request->validate([
-            'title'       => ['required', 'string', 'max:200'],
+            'title' => ['required', 'string', 'max:200'],
             'cover_image' => ['nullable', 'image', 'max:4096'],
         ]);
 
         $slug = Str::slug($data['title']);
         $base = $slug;
-        $i    = 1;
+        $i = 1;
         while (PageEntry::where('page_id', $page->id)->where('slug', $slug)->exists()) {
-            $slug = $base . '-' . $i++;
+            $slug = $base.'-'.$i++;
         }
 
         $nextOrder = PageEntry::where('page_id', $page->id)->max('sort_order') ?? 0;
@@ -210,11 +210,11 @@ class PageController extends Controller
         }
 
         $entry = PageEntry::create([
-            'page_id'     => $page->id,
-            'title'       => $data['title'],
-            'slug'        => $slug,
+            'page_id' => $page->id,
+            'title' => $data['title'],
+            'slug' => $slug,
             'cover_image' => $coverPath,
-            'sort_order'  => $nextOrder + 1,
+            'sort_order' => $nextOrder + 1,
         ]);
 
         if ($page->layout === 'cards') {
@@ -227,10 +227,10 @@ class PageController extends Controller
             foreach ($placeholders as $p) {
                 PageEntryBlock::create([
                     'page_entry_id' => $entry->id,
-                    'type'          => $p['type'],
-                    'content'       => $p['content'],
-                    'color'         => $p['color'],
-                    'sort_order'    => $p['sort_order'],
+                    'type' => $p['type'],
+                    'content' => $p['content'],
+                    'color' => $p['color'],
+                    'sort_order' => $p['sort_order'],
                 ]);
             }
         }
@@ -245,7 +245,7 @@ class PageController extends Controller
         abort_if($entry->page_id !== $page->id, 403);
 
         $data = $request->validate([
-            'title'       => ['required', 'string', 'max:200'],
+            'title' => ['required', 'string', 'max:200'],
             'cover_image' => ['nullable', 'image', 'max:4096'],
         ]);
 
@@ -255,7 +255,7 @@ class PageController extends Controller
         }
 
         $entry->update([
-            'title'       => $data['title'],
+            'title' => $data['title'],
             'cover_image' => $coverPath,
         ]);
 
@@ -290,25 +290,25 @@ class PageController extends Controller
         abort_if($entry->page_id !== $page->id, 403);
 
         $data = $request->validate([
-            'type'    => ['required', 'in:text,heading,image,badge'],
+            'type' => ['required', 'in:text,heading,image,badge'],
             'content' => ['nullable', 'string', 'max:2000'],
-            'color'   => ['nullable', 'in:green,blue,orange,gray'],
+            'color' => ['nullable', 'in:green,blue,orange,gray'],
         ]);
 
         $nextOrder = PageEntryBlock::where('page_entry_id', $entry->id)->max('sort_order') ?? 0;
 
         $block = PageEntryBlock::create([
             'page_entry_id' => $entry->id,
-            'type'          => $data['type'],
-            'content'       => $data['content'] ?? '',
-            'color'         => $data['color'] ?? null,
-            'sort_order'    => $nextOrder + 1,
+            'type' => $data['type'],
+            'content' => $data['content'] ?? '',
+            'color' => $data['color'] ?? null,
+            'sort_order' => $nextOrder + 1,
         ]);
 
         if ($request->expectsJson() || $request->wantsJson() || $request->ajax()) {
             return response()->json([
-                'id'        => $block->id,
-                'url'       => route('admin.pages.blocks.update', [$page, $entry, $block]),
+                'id' => $block->id,
+                'url' => route('admin.pages.blocks.update', [$page, $entry, $block]),
                 'deleteUrl' => route('admin.pages.blocks.destroy', [$page, $entry, $block]),
             ]);
         }
@@ -323,12 +323,12 @@ class PageController extends Controller
 
         $data = $request->validate([
             'content' => ['nullable', 'string', 'max:2000'],
-            'color'   => ['nullable', 'in:green,blue,orange,gray'],
+            'color' => ['nullable', 'in:green,blue,orange,gray'],
         ]);
 
         $block->update([
             'content' => $data['content'] ?? '',
-            'color'   => $data['color'] ?? null,
+            'color' => $data['color'] ?? null,
         ]);
 
         return back()->with('success', 'Block gespeichert.');

@@ -22,6 +22,7 @@ class Template extends Model
 
     /**
      * Tenant-eigene Sektionen
+     *
      * @return Builder<TemplateSection>
      */
     public function sectionsForTenant(int $tenantId): Builder
@@ -61,7 +62,7 @@ class Template extends Model
                 [
                     'template_id' => $this->id,
                     'section_key' => $global->section_key,
-                    'tenant_id'   => $tenant->id,
+                    'tenant_id' => $tenant->id,
                 ],
                 [
                     'is_visible' => $global->is_visible,
@@ -73,7 +74,7 @@ class Template extends Model
                 TemplateSectionContent::firstOrCreate(
                     [
                         'template_section_id' => $tenantSection->id,
-                        'field_key'           => $item->field_key,
+                        'field_key' => $item->field_key,
                     ],
                     ['value' => $item->value]
                 );

@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('pages', function (Blueprint $table) {
             $table->foreignId('page_group_id')->nullable()->after('tenant_id')
-                  ->constrained('page_groups')->nullOnDelete();
+                ->constrained('page_groups')->nullOnDelete();
             $table->index('page_group_id');
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $section_key
  * @property bool $is_visible
  * @property int $sort_order
- * @property \Illuminate\Database\Eloquent\Collection<int, TemplateSectionContent> $content
+ * @property Collection<int, TemplateSectionContent> $content
  */
 class TemplateSection extends Model
 {

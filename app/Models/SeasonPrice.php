@@ -12,7 +12,7 @@ class SeasonPrice extends Model
 
     protected $casts = [
         'from' => 'date',
-        'to'   => 'date',
+        'to' => 'date',
     ];
 
     public function season(): BelongsTo

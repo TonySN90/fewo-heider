@@ -13,7 +13,7 @@ class BookingController extends Controller
             ->get()
             ->map(fn ($b) => [
                 'from' => $b->from->toDateString(),
-                'to'   => $b->to->toDateString(),
+                'to' => $b->to->toDateString(),
             ]);
     }
 }

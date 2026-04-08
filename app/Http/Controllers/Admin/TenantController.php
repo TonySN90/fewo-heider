@@ -20,7 +20,7 @@ class TenantController extends Controller
     public function create()
     {
         $templates = Template::orderBy('name')->get();
-        $clients   = User::role('client')->get();
+        $clients = User::role('client')->get();
 
         return view('admin.tenants.edit', compact('templates', 'clients'));
     }
@@ -28,21 +28,21 @@ class TenantController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'        => ['required', 'string', 'max:100'],
-            'slug'        => ['nullable', 'string', 'max:100', 'alpha_dash', 'unique:tenants,slug'],
-            'domain'      => ['nullable', 'string', 'max:253', 'unique:tenants,domain'],
+            'name' => ['required', 'string', 'max:100'],
+            'slug' => ['nullable', 'string', 'max:100', 'alpha_dash', 'unique:tenants,slug'],
+            'domain' => ['nullable', 'string', 'max:253', 'unique:tenants,domain'],
             'template_id' => ['nullable', 'exists:templates,id'],
-            'is_active'   => ['boolean'],
-            'user_ids'    => ['nullable', 'array'],
-            'user_ids.*'  => ['exists:users,id'],
+            'is_active' => ['boolean'],
+            'user_ids' => ['nullable', 'array'],
+            'user_ids.*' => ['exists:users,id'],
         ]);
 
         $tenant = Tenant::create([
-            'name'        => $data['name'],
-            'slug'        => $data['slug'] ?? null,
-            'domain'      => $data['domain'] ?? null,
+            'name' => $data['name'],
+            'slug' => $data['slug'] ?? null,
+            'domain' => $data['domain'] ?? null,
             'template_id' => $data['template_id'] ?? null,
-            'is_active'   => $request->boolean('is_active', true),
+            'is_active' => $request->boolean('is_active', true),
         ]);
 
         if (! empty($data['user_ids'])) {
@@ -58,8 +58,8 @@ class TenantController extends Controller
 
     public function edit(Tenant $tenant)
     {
-        $templates       = Template::orderBy('name')->get();
-        $clients         = User::role('client')->get();
+        $templates = Template::orderBy('name')->get();
+        $clients = User::role('client')->get();
         $assignedUserIds = $tenant->users()->pluck('users.id')->toArray();
 
         return view('admin.tenants.edit', compact('tenant', 'templates', 'clients', 'assignedUserIds'));
@@ -68,21 +68,21 @@ class TenantController extends Controller
     public function update(Request $request, Tenant $tenant)
     {
         $data = $request->validate([
-            'name'        => ['required', 'string', 'max:100'],
-            'slug'        => ['nullable', 'string', 'max:100', 'alpha_dash', 'unique:tenants,slug,' . $tenant->id],
-            'domain'      => ['nullable', 'string', 'max:253', 'unique:tenants,domain,' . $tenant->id],
+            'name' => ['required', 'string', 'max:100'],
+            'slug' => ['nullable', 'string', 'max:100', 'alpha_dash', 'unique:tenants,slug,'.$tenant->id],
+            'domain' => ['nullable', 'string', 'max:253', 'unique:tenants,domain,'.$tenant->id],
             'template_id' => ['nullable', 'exists:templates,id'],
-            'is_active'   => ['boolean'],
-            'user_ids'    => ['nullable', 'array'],
-            'user_ids.*'  => ['exists:users,id'],
+            'is_active' => ['boolean'],
+            'user_ids' => ['nullable', 'array'],
+            'user_ids.*' => ['exists:users,id'],
         ]);
 
         $tenant->update([
-            'name'        => $data['name'],
-            'slug'        => $data['slug'] ?? null,
-            'domain'      => $data['domain'] ?? null,
+            'name' => $data['name'],
+            'slug' => $data['slug'] ?? null,
+            'domain' => $data['domain'] ?? null,
             'template_id' => $data['template_id'] ?? null,
-            'is_active'   => $request->boolean('is_active'),
+            'is_active' => $request->boolean('is_active'),
         ]);
 
         $tenant->users()->sync($data['user_ids'] ?? []);
@@ -107,7 +107,7 @@ class TenantController extends Controller
     {
         $request->session()->put('admin_tenant_id', $tenant->id);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Kontext: ' . $tenant->name);
+        return redirect()->route('admin.dashboard')->with('success', 'Kontext: '.$tenant->name);
     }
 
     public function clearContext(Request $request)

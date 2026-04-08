@@ -20,9 +20,9 @@ class ProfileController extends Controller
 
         $data = $request->validate([
             'first_name' => ['nullable', 'string', 'max:100'],
-            'last_name'  => ['nullable', 'string', 'max:100'],
-            'email'      => ['required', 'email', 'max:150', 'unique:users,email,' . $user->id],
-            'password'   => ['nullable', 'string', 'min:8', 'confirmed'],
+            'last_name' => ['nullable', 'string', 'max:100'],
+            'email' => ['required', 'email', 'max:150', 'unique:users,email,'.$user->id],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
         if (empty($data['password'])) {

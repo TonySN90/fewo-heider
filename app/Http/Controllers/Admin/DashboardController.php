@@ -12,18 +12,18 @@ class DashboardController extends Controller
     public function index()
     {
         $today = Carbon::today();
-        $year  = $today->year;
+        $year = $today->year;
         $month = $today->month;
 
-        $bookingsThisYear  = Booking::whereYear('from', $year)->count();
+        $bookingsThisYear = Booking::whereYear('from', $year)->count();
         $bookingsThisMonth = Booking::whereYear('from', $year)->whereMonth('from', $month)->count();
 
         $nextBooking = Booking::where('from', '>=', $today)
             ->orderBy('from')
             ->first();
 
-        $daysInMonth   = $today->daysInMonth;
-        $bookedDays    = $this->bookedDaysInMonth($today);
+        $daysInMonth = $today->daysInMonth;
+        $bookedDays = $this->bookedDaysInMonth($today);
         $occupancyRate = $daysInMonth > 0
             ? round(($bookedDays / $daysInMonth) * 100)
             : 0;
@@ -51,7 +51,7 @@ class DashboardController extends Controller
     private function bookedDaysInMonth(Carbon $today): int
     {
         $monthStart = $today->copy()->startOfMonth();
-        $monthEnd   = $today->copy()->endOfMonth();
+        $monthEnd = $today->copy()->endOfMonth();
 
         $bookings = Booking::where('to', '>=', $monthStart)
             ->where('from', '<=', $monthEnd)
@@ -60,7 +60,7 @@ class DashboardController extends Controller
         $days = [];
         foreach ($bookings as $booking) {
             $cursor = $booking->from->max($monthStart)->copy();
-            $end    = $booking->to->min($monthEnd);
+            $end = $booking->to->min($monthEnd);
             while ($cursor->lte($end)) {
                 $days[$cursor->format('Y-m-d')] = true;
                 $cursor->addDay();

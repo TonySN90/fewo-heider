@@ -12,7 +12,7 @@ class ResolveTenant
     public function handle(Request $request, Closure $next): Response
     {
         $tenant = null;
-        $user   = $request->user();
+        $user = $request->user();
 
         // 1. Super-Admin wechselt per Session in eine Instanz
         if ($user?->hasRole('super-admin') && $request->session()->has('admin_tenant_id')) {
@@ -22,7 +22,7 @@ class ResolveTenant
         // 2. Client hat eine Instanz per Session gewählt (muss zur eigenen gehören)
         if (! $tenant && $user && ! $user->hasRole('super-admin') && $request->session()->has('current_tenant_id')) {
             $tenantId = $request->session()->get('current_tenant_id');
-            $tenant   = $user->tenants()->where('tenants.id', $tenantId)->first();
+            $tenant = $user->tenants()->where('tenants.id', $tenantId)->first();
         }
 
         // 3. Domain-Lookup
@@ -34,6 +34,7 @@ class ResolveTenant
 
         if ($tenant) {
             app()->instance('currentTenant', $tenant);
+
             return $next($request);
         }
 

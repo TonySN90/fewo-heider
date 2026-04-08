@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property bool $is_active
  * @property int $sort_order
- * @property \Illuminate\Database\Eloquent\Collection<int, SeasonPrice> $prices
+ * @property Collection<int, SeasonPrice> $prices
  */
 class Season extends Model
 {

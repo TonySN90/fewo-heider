@@ -12,8 +12,8 @@ class Booking extends Model
     protected $fillable = ['tenant_id', 'from', 'to', 'guest_name', 'portal', 'booked_at'];
 
     protected $casts = [
-        'from'      => 'date',
-        'to'        => 'date',
+        'from' => 'date',
+        'to' => 'date',
         'booked_at' => 'date',
     ];
 }

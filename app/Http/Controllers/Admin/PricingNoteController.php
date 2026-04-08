@@ -11,8 +11,8 @@ class PricingNoteController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'text'       => ['required', 'string', 'max:255'],
-            'icon'       => ['nullable', 'string', 'max:50'],
+            'text' => ['required', 'string', 'max:255'],
+            'icon' => ['nullable', 'string', 'max:50'],
             'sort_order' => ['required', 'integer', 'min:0'],
         ]);
 
@@ -24,8 +24,8 @@ class PricingNoteController extends Controller
     public function update(Request $request, PricingNote $note)
     {
         $data = $request->validate([
-            'text'       => ['required', 'string', 'max:255'],
-            'icon'       => ['nullable', 'string', 'max:50'],
+            'text' => ['required', 'string', 'max:255'],
+            'icon' => ['nullable', 'string', 'max:50'],
             'sort_order' => ['required', 'integer', 'min:0'],
         ]);
 

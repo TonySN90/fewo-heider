@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\GalleryImage;
 use App\Models\Template;
+use App\Models\TemplateSection;
 use Illuminate\Database\Seeder;
 
 class GallerySeeder extends Seeder
@@ -15,7 +16,7 @@ class GallerySeeder extends Seeder
             return;
         }
 
-        /** @var \App\Models\TemplateSection|null $section */
+        /** @var TemplateSection|null $section */
         $section = $template->sections()->where('section_key', 'galerie')->first();
         if (! $section) {
             return;
