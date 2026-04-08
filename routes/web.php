@@ -153,9 +153,10 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
         Route::get('/page-structure/pages/{page}/entries/{entry}/edit',             [\App\Http\Controllers\Admin\PageController::class, 'editEntry'])->name('admin.pages.entry.edit');
         Route::put('/page-structure/pages/{page}/entries/{entry}',                  [\App\Http\Controllers\Admin\PageController::class, 'updateEntry'])->name('admin.pages.entries.update');
         Route::delete('/page-structure/pages/{page}/entries/{entry}',               [\App\Http\Controllers\Admin\PageController::class, 'destroyEntry'])->name('admin.pages.entries.destroy');
-        Route::post('/page-structure/pages/{page}/entries/{entry}/blocks',          [\App\Http\Controllers\Admin\PageController::class, 'storeBlock'])->name('admin.pages.blocks.store');
-        Route::put('/page-structure/pages/{page}/entries/{entry}/blocks/{block}',   [\App\Http\Controllers\Admin\PageController::class, 'updateBlock'])->name('admin.pages.blocks.update');
-        Route::delete('/page-structure/pages/{page}/entries/{entry}/blocks/{block}',[\App\Http\Controllers\Admin\PageController::class, 'destroyBlock'])->name('admin.pages.blocks.destroy');
+        Route::post('/page-structure/pages/{page}/entries/{entry}/blocks',                [\App\Http\Controllers\Admin\PageController::class, 'storeBlock'])->name('admin.pages.blocks.store');
+        Route::post('/page-structure/pages/{page}/entries/{entry}/blocks/reorder',      [\App\Http\Controllers\Admin\PageController::class, 'reorderBlocks'])->name('admin.pages.blocks.reorder');
+        Route::put('/page-structure/pages/{page}/entries/{entry}/blocks/{block}',       [\App\Http\Controllers\Admin\PageController::class, 'updateBlock'])->name('admin.pages.blocks.update');
+        Route::delete('/page-structure/pages/{page}/entries/{entry}/blocks/{block}',    [\App\Http\Controllers\Admin\PageController::class, 'destroyBlock'])->name('admin.pages.blocks.destroy');
     });
 
     // Admin-Übersicht (nur Super-Admin, kein Tenant-Kontext nötig)

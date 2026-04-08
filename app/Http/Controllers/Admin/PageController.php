@@ -266,7 +266,7 @@ class PageController extends Controller
 
     // ── Blöcke ────────────────────────────────────────────────────────────────
 
-    public function storeBlock(Request $request, Page $page, PageEntry $entry): RedirectResponse
+    public function storeBlock(Request $request, Page $page, PageEntry $entry)
     {
         $this->authorizePage($page);
         abort_if($entry->page_id !== $page->id, 403);
@@ -279,13 +279,21 @@ class PageController extends Controller
 
         $nextOrder = PageEntryBlock::where('page_entry_id', $entry->id)->max('sort_order') ?? 0;
 
-        PageEntryBlock::create([
+        $block = PageEntryBlock::create([
             'page_entry_id' => $entry->id,
             'type'          => $data['type'],
             'content'       => $data['content'] ?? '',
             'color'         => $data['color'] ?? null,
             'sort_order'    => $nextOrder + 1,
         ]);
+
+        if ($request->expectsJson() || $request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'id'        => $block->id,
+                'url'       => route('admin.pages.blocks.update', [$page, $entry, $block]),
+                'deleteUrl' => route('admin.pages.blocks.destroy', [$page, $entry, $block]),
+            ]);
+        }
 
         return back()->with('success', 'Block hinzugefügt.');
     }
@@ -315,6 +323,22 @@ class PageController extends Controller
         $block->delete();
 
         return back()->with('success', 'Block gelöscht.');
+    }
+
+    public function reorderBlocks(Request $request, Page $page, PageEntry $entry)
+    {
+        $this->authorizePage($page);
+        abort_if($entry->page_id !== $page->id, 403);
+
+        $ids = $request->validate(['ids' => ['required', 'array'], 'ids.*' => ['integer']])['ids'];
+
+        foreach ($ids as $order => $id) {
+            PageEntryBlock::where('id', $id)
+                ->where('page_entry_id', $entry->id)
+                ->update(['sort_order' => $order + 1]);
+        }
+
+        return response()->json(['ok' => true]);
     }
 
     // ── Hilfsmethoden ─────────────────────────────────────────────────────────

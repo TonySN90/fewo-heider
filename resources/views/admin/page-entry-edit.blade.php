@@ -66,300 +66,521 @@
     </div>
   </div>
 
-  {{-- Titel bearbeiten --}}
-  <div class="table-card" style="margin-bottom:1.5rem">
-    <div class="table-card__header"><h2>Eintrag</h2></div>
-    <form method="POST" action="{{ route('admin.pages.entries.update', [$page, $entry]) }}" enctype="multipart/form-data">
-      @csrf
-      @method('PUT')
-      <div class="section-edit-form">
-        <div class="form-field">
-          <label>Titel</label>
-          <input type="text" name="title" value="{{ $entry->title }}" maxlength="200" required
-                 oninput="updatePreviewTitle(this.value)" />
-        </div>
-        <div class="form-field">
-          <label>URL</label>
-          @php
-            $group = $page->group;
-            $urlPath = $group
-              ? '/' . $group->slug . '/' . $page->slug . '/' . $entry->slug
-              : '/' . $page->slug . '/' . $entry->slug;
-          @endphp
-          <input type="text" value="{{ $urlPath }}" disabled style="color:#888" />
-        </div>
-        <div class="form-field">
-          <label>Titelbild <span class="form-field__hint">(optional, wird als Hero-Bild gezeigt)</span></label>
-          @if ($entry->cover_image)
-            <img src="{{ Storage::url($entry->cover_image) }}" alt="" style="max-height:120px;border-radius:6px;margin-bottom:.5rem;display:block" />
-          @endif
-          <input type="file" name="cover_image" accept="image/*"
-                 onchange="updatePreviewImage(this)" />
-        </div>
-      </div>
-      <div class="section-edit-form__actions">
-        <button type="submit" class="btn btn-save">Speichern</button>
-      </div>
-    </form>
-  </div>
+  {{-- URL-Info --}}
+  @php
+    $group = $page->group;
+    $urlPath = $group
+      ? '/' . $group->slug . '/' . $page->slug . '/' . $entry->slug
+      : '/' . $page->slug . '/' . $entry->slug;
+  @endphp
+  <p style="font-size:.8rem;color:#aaa;margin-bottom:1.5rem">
+    <span class="material-symbols-rounded" style="font-size:.9rem;vertical-align:middle">link</span>
+    {{ $urlPath }}
+  </p>
 
-  {{-- Blöcke --}}
-  <div class="table-card">
-    <div class="table-card__header">
-      <h2>Inhaltsblöcke</h2>
-      <button class="btn btn-add" onclick="openModal('Block hinzufügen', 'new-block-tpl')">
-        <span class="material-symbols-rounded">add</span>
-        Block hinzufügen
-      </button>
-    </div>
-
-    @if ($entry->blocks->isEmpty())
-      <p style="padding:1.75rem;color:#aaa">Noch keine Blöcke vorhanden. Füge deinen ersten Block hinzu.</p>
-    @else
-      <div style="padding:1.5rem;display:flex;flex-direction:column;gap:1rem">
-        @foreach ($entry->blocks as $block)
-          <div class="block-editor">
-            <div class="block-editor__type">
-              <span class="material-symbols-rounded">
-                @if($block->type === 'heading') title
-                @elseif($block->type === 'image') image
-                @elseif($block->type === 'badge') sell
-                @else notes
-                @endif
-              </span>
-              {{ $block->type === 'badge' ? 'Badge' : ucfirst($block->type) }}
-            </div>
-
-            <form method="POST"
-                  action="{{ route('admin.pages.blocks.update', [$page, $entry, $block]) }}"
-                  class="block-editor__form"
-                  @if($block->type === 'image') enctype="multipart/form-data" @endif>
-              @csrf
-              @method('PUT')
-
-              @if ($block->type === 'heading')
-                <input type="text" name="content" value="{{ $block->content }}"
-                       placeholder="Überschrift" class="block-editor__input" />
-              @elseif ($block->type === 'image')
-                @if ($block->content)
-                  <img src="{{ Storage::url($block->content) }}" alt="" style="max-height:120px;border-radius:4px;margin-bottom:.5rem" />
-                @endif
-                <input type="text" name="content" value="{{ $block->content }}"
-                       placeholder="Bildpfad oder URL" class="block-editor__input" />
-              @elseif ($block->type === 'badge')
-                <div class="block-editor__badge-preview">
-                  <span class="badge badge--{{ $block->color ?? 'gray' }}" id="badge-preview-{{ $block->id }}">{{ $block->content ?: 'Vorschau' }}</span>
-                </div>
-                <div class="block-editor__badge-controls">
-                  <input type="text" name="content" value="{{ $block->content }}"
-                         placeholder="Badge-Text" class="block-editor__input"
-                         data-block-id="{{ $block->id }}" data-block-type="badge"
-                         oninput="document.getElementById('badge-preview-{{ $block->id }}').textContent = this.value || 'Vorschau'; updatePreviewBadge({{ $block->id }}, this.value, null)" />
-                  <select name="color" class="block-editor__color-select"
-                          data-block-id="{{ $block->id }}" data-block-type="badge-color"
-                          onchange="document.getElementById('badge-preview-{{ $block->id }}').className = 'badge badge--' + this.value; updatePreviewBadge({{ $block->id }}, null, this.value)">
-                    <option value="green"  @selected(($block->color ?? 'gray') === 'green')>Grün</option>
-                    <option value="blue"   @selected(($block->color ?? 'gray') === 'blue')>Blau</option>
-                    <option value="orange" @selected(($block->color ?? 'gray') === 'orange')>Orange</option>
-                    <option value="gray"   @selected(($block->color ?? 'gray') === 'gray')>Grau</option>
-                  </select>
-                </div>
-              @else
-                <textarea name="content" rows="4" class="block-editor__textarea"
-                          placeholder="Text eingeben..."
-                          data-block-id="{{ $block->id }}" data-block-sort="{{ $block->sort_order }}"
-                          oninput="updatePreviewText({{ $block->sort_order }}, this.value)">{{ $block->content }}</textarea>
-              @endif
-
-              <div class="block-editor__actions">
-                <button type="submit" class="btn btn-save btn-save--sm">
-                  <span class="material-symbols-rounded">save</span>
-                </button>
-                <button type="submit" form="delete-block-{{ $block->id }}"
-                        class="btn btn-delete btn-delete--sm">
-                  <span class="material-symbols-rounded">delete</span>
-                </button>
-              </div>
-            </form>
-
-            <form id="delete-block-{{ $block->id }}" method="POST"
-                  action="{{ route('admin.pages.blocks.destroy', [$page, $entry, $block]) }}"
-                  onsubmit="return confirm('Block löschen?')" style="display:none">
-              @csrf
-              @method('DELETE')
-            </form>
-          </div>
-        @endforeach
-      </div>
-    @endif
-  </div>
-
-  {{-- Card-Vorschau (nur bei cards-Layout) --}}
+  {{-- Card-Vorschau mit Inline-Editing (nur bei cards-Layout) --}}
   @if ($page->layout === 'cards')
-  <div class="table-card" style="margin-top:1.5rem" id="card-preview-wrap">
+  @php
+    $previewTextBlocks  = $entry->blocks->where('type', 'text')->values();
+    $previewDesc        = $previewTextBlocks->first()?->content;
+    $previewHighlights  = $previewTextBlocks->skip(1)->first()?->content;
+    $previewDescBlock   = $previewTextBlocks->first();
+    $previewHlBlock     = $previewTextBlocks->skip(1)->first();
+  @endphp
+  <div class="table-card" style="margin-top:1.5rem">
     <div class="table-card__header">
       <h2>Vorschau</h2>
-      <span style="font-size:.8rem;color:#aaa">Aktualisiert sich live beim Bearbeiten</span>
+      <span style="font-size:.8rem;color:#aaa">
+        <span class="material-symbols-rounded" style="font-size:.9rem;vertical-align:middle">edit</span>
+        Klicke direkt in die Vorschau zum Bearbeiten
+      </span>
     </div>
     <div class="entry-preview">
-      <div class="card" id="card-preview">
-        @if ($entry->cover_image)
-          <div class="card__img">
+      <div class="card">
+        <div class="card__img card__img--clickable" id="preview-img-wrap"
+             onclick="document.getElementById('preview-img-upload').click()"
+             title="Klicken um Bild zu ändern">
+          @if ($entry->cover_image)
             <img id="preview-img" src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" />
+          @else
+            <div id="preview-img-placeholder" class="card__img-placeholder">
+              <span class="material-symbols-rounded">add_photo_alternate</span>
+              <span>Bild hochladen</span>
+            </div>
+          @endif
+          <div class="card__img-overlay">
+            <span class="material-symbols-rounded">photo_camera</span>
           </div>
-        @else
-          <div class="card__img" id="preview-img-wrap" style="display:none">
-            <img id="preview-img" src="" alt="" />
-          </div>
-        @endif
+        </div>
+        <input type="file" id="preview-img-upload"
+               accept="image/*" style="display:none"
+               data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}" />
         <div class="card__body">
+
+          {{-- Badges: Text + Farbe inline editierbar --}}
           <div class="card__meta" id="preview-badges">
             @foreach ($entry->blocks->where('type', 'badge') as $b)
-              <span class="badge badge--{{ $b->color ?? 'gray' }}" data-block-id="{{ $b->id }}">{{ $b->content }}</span>
+              <span class="badge-wrap">
+                <span class="badge-drag-handle" title="Verschieben">⠿</span>
+                <span class="badge badge--{{ $b->color ?? 'gray' }} preview-editable"
+                      contenteditable="true"
+                      draggable="false"
+                      data-type="block"
+                      data-block-id="{{ $b->id }}"
+                      data-color="{{ $b->color ?? 'gray' }}"
+                      data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $b]) }}">{{ $b->content }}</span>
+                <button type="button" class="badge-delete-btn"
+                        data-delete-url="{{ route('admin.pages.blocks.destroy', [$page, $entry, $b]) }}"
+                        title="Badge löschen">×</button>
+              </span>
             @endforeach
+            <button type="button" id="badge-add-btn" class="badge-add-btn" title="Badge hinzufügen">
+              <span class="material-symbols-rounded">add</span>
+            </button>
           </div>
-          <h3 class="card__title" id="preview-title">{{ $entry->title }}</h3>
-          @php
-            $previewTextBlocks = $entry->blocks->where('type', 'text')->values();
-            $previewDesc       = $previewTextBlocks->first()?->content;
-            $previewHighlights = $previewTextBlocks->skip(1)->first()?->content;
-          @endphp
-          <p class="card__text" id="preview-desc">{{ $previewDesc }}</p>
-          <div class="card__highlights" id="preview-highlights"
-               style="{{ ($previewHighlights && str_contains($previewHighlights, '•')) ? '' : 'display:none' }}">
-            <h4>Highlights</h4>
-            <ul id="preview-highlights-list">
-              @if ($previewHighlights)
-                @foreach (array_filter(array_map('trim', explode('•', $previewHighlights))) as $item)
-                  <li>{{ $item }}</li>
-                @endforeach
-              @endif
-            </ul>
+
+          {{-- Farb-Picker + Neu-Badge Popup --}}
+          <div id="badge-color-picker" class="badge-color-picker" style="display:none">
+            <button type="button" data-color="green"  class="badge badge--green">Grün</button>
+            <button type="button" data-color="blue"   class="badge badge--blue">Blau</button>
+            <button type="button" data-color="orange" class="badge badge--orange">Orange</button>
+            <button type="button" data-color="gray"   class="badge badge--gray">Grau</button>
           </div>
+
+          {{-- Neuer Badge: Inline-Input (erscheint beim Klick auf +) --}}
+          <div id="badge-new-form" class="badge-new-form" style="display:none">
+            <input type="text" id="badge-new-input" placeholder="Badge-Text" maxlength="60" />
+            <div class="badge-new-form__colors">
+              <button type="button" data-color="green"  class="badge badge--green">Grün</button>
+              <button type="button" data-color="blue"   class="badge badge--blue">Blau</button>
+              <button type="button" data-color="orange" class="badge badge--orange">Orange</button>
+              <button type="button" data-color="gray"   class="badge badge--gray">Grau</button>
+            </div>
+            <div class="badge-new-form__actions">
+              <button type="button" id="badge-new-save" class="btn btn-save btn-save--sm">Hinzufügen</button>
+              <button type="button" id="badge-new-cancel" class="btn btn-cancel">Abbrechen</button>
+            </div>
+          </div>
+
+          {{-- Titel: inline editierbar --}}
+          <h3 class="card__title preview-editable"
+              contenteditable="true"
+              data-type="entry-title"
+              data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">{{ $entry->title }}</h3>
+
+          {{-- Beschreibung: inline editierbar --}}
+          @if ($previewDescBlock)
+            <p class="card__text preview-editable"
+               contenteditable="true"
+               data-type="block"
+               data-block-id="{{ $previewDescBlock->id }}"
+               data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $previewDescBlock]) }}">{{ $previewDesc }}</p>
+          @endif
+
+          {{-- Highlights: Titel + Body jeweils eigenes contenteditable --}}
+          @if ($previewHlBlock)
+            @php
+              $hlLines   = explode("\n", $previewHlBlock->content);
+              $firstLine = trim($hlLines[0] ?? '');
+              $hlHeading = (!str_starts_with($firstLine, '- ') && $firstLine !== '') ? $firstLine : 'Highlights';
+              $hlBody    = implode("\n", array_slice($hlLines, $hlHeading !== 'Highlights' || count($hlLines) > 1 ? 1 : 0));
+            @endphp
+            <div class="card__highlights">
+              <h4 class="preview-editable"
+                  contenteditable="true"
+                  data-type="hl-title"
+                  data-block-id="{{ $previewHlBlock->id }}"
+                  data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $previewHlBlock]) }}">{{ $hlHeading }}</h4>
+              <pre class="preview-editable preview-editable--multiline"
+                   contenteditable="true"
+                   data-type="hl-body"
+                   data-block-id="{{ $previewHlBlock->id }}"
+                   data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $previewHlBlock]) }}">{{ $hlBody }}</pre>
+            </div>
+          @endif
+
         </div>
       </div>
     </div>
+
   </div>
   @endif
 
-  {{-- Modal: Neuer Block --}}
-  <template id="new-block-tpl">
-    <form method="POST" action="{{ route('admin.pages.blocks.store', [$page, $entry]) }}">
-      @csrf
-      <div class="modal-form-grid">
-        <div class="modal-form-grid__full">
-          <label>Typ</label>
-          <select name="type" id="block-type-select" onchange="updateBlockContentField(this.value)">
-            <option value="text">Text</option>
-            <option value="heading">Überschrift</option>
-            <option value="badge">Badge</option>
-            <option value="image">Bild (URL/Pfad)</option>
-          </select>
-        </div>
-        <div class="modal-form-grid__full" id="block-content-field">
-          <label>Inhalt</label>
-          <textarea name="content" rows="4"></textarea>
-        </div>
-      </div>
-      <div class="modal__actions">
-        <button type="button" class="btn btn-cancel" onclick="closeModal()">Abbrechen</button>
-        <button type="submit" class="btn btn-save">Hinzufügen</button>
-      </div>
-    </form>
-  </template>
 @endsection
 
 @push('scripts')
 <script>
-// ── Modal: Block-Typ wechseln ─────────────────────────────────────────────
-function updateBlockContentField(type) {
-  const wrap = document.getElementById('block-content-field');
-  if (type === 'text') {
-    wrap.innerHTML = '<label>Inhalt</label><textarea name="content" rows="4"></textarea>';
-  } else if (type === 'heading') {
-    wrap.innerHTML = '<label>Überschrift</label><input type="text" name="content" maxlength="200" />';
-  } else if (type === 'badge') {
-    wrap.innerHTML = `
-      <div style="margin-bottom:.75rem">
-        <label>Badge-Text</label>
-        <input type="text" name="content" maxlength="200" placeholder="z.B. Leicht – Moderat"
-               oninput="document.getElementById('modal-badge-preview').textContent = this.value || 'Vorschau'" />
-      </div>
-      <div style="margin-bottom:.75rem">
-        <label>Farbe</label>
-        <select name="color" onchange="document.getElementById('modal-badge-preview').className = 'badge badge--' + this.value">
-          <option value="green">Grün</option>
-          <option value="blue">Blau</option>
-          <option value="orange">Orange</option>
-          <option value="gray">Grau</option>
-        </select>
-      </div>
-      <div>
-        <label>Vorschau</label>
-        <div style="padding:.5rem 0"><span id="modal-badge-preview" class="badge badge--green">Vorschau</span></div>
-      </div>`;
-  } else {
-    wrap.innerHTML = '<label>Bild-URL oder Pfad</label><input type="text" name="content" />';
-  }
-}
 
-// ── Card-Vorschau: Live-Updates ───────────────────────────────────────────
-function updatePreviewTitle(val) {
-  const el = document.getElementById('preview-title');
-  if (el) el.textContent = val || '';
-}
-
-function updatePreviewImage(input) {
-  if (!input.files || !input.files[0]) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const img = document.getElementById('preview-img');
-    const wrap = document.getElementById('preview-img-wrap');
-    if (img) {
-      img.src = e.target.result;
-      if (wrap) wrap.style.display = '';
-    }
-  };
-  reader.readAsDataURL(input.files[0]);
-}
-
-// Sammelt alle Text-Blöcke nach sort_order und aktualisiert desc + highlights
-const _textContents = {};
-function updatePreviewText(sortOrder, val) {
-  _textContents[sortOrder] = val;
-  const sorted = Object.entries(_textContents).sort((a,b) => a[0]-b[0]).map(e => e[1]);
-  const desc = sorted[0] || '';
-  const highlights = sorted[1] || '';
-
-  const descEl = document.getElementById('preview-desc');
-  if (descEl) descEl.textContent = desc;
-
-  const hlWrap = document.getElementById('preview-highlights');
-  const hlList = document.getElementById('preview-highlights-list');
-  if (hlWrap && hlList) {
-    const items = highlights.split('•').map(s => s.trim()).filter(Boolean);
-    if (items.length > 0) {
-      hlList.innerHTML = items.map(i => `<li>${i}</li>`).join('');
-      hlWrap.style.display = '';
-    } else {
-      hlWrap.style.display = 'none';
-    }
-  }
-}
-
-// Badge in der Vorschau aktualisieren (text oder farbe)
-function updatePreviewBadge(blockId, text, color) {
-  const el = document.querySelector(`#preview-badges [data-block-id="${blockId}"]`);
-  if (!el) return;
-  if (text !== null) el.textContent = text;
-  if (color !== null) el.className = 'badge badge--' + color;
-}
-
-// Beim Laden: Text-Block-Inhalte initialisieren damit updatePreviewText korrekt startet
+// ── Inline-Editing: AJAX blur-save ───────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('textarea[data-block-sort]').forEach(ta => {
-    _textContents[ta.dataset.blockSort] = ta.value;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+
+  // Bild-Upload via Klick auf Vorschau
+  const imgUpload = document.getElementById('preview-img-upload');
+  if (imgUpload) {
+    imgUpload.addEventListener('change', async () => {
+      const file = imgUpload.files[0];
+      if (!file) return;
+      const wrap = document.getElementById('preview-img-wrap');
+      wrap?.classList.add('card__img--uploading');
+
+      // Sofort lokal vorschauen
+      const reader = new FileReader();
+      reader.onload = e => {
+        let img = document.getElementById('preview-img');
+        const placeholder = document.getElementById('preview-img-placeholder');
+        if (placeholder) {
+          placeholder.outerHTML = `<img id="preview-img" src="${e.target.result}" alt="" />`;
+        } else if (img) {
+          img.src = e.target.result;
+        }
+      };
+      reader.readAsDataURL(file);
+
+      // AJAX-Upload
+      const formData = new FormData();
+      formData.append('_method', 'PUT');
+      formData.append('_token', csrfToken);
+      formData.append('title', document.querySelector('[data-type="entry-title"]')?.innerText.trim() ?? '{{ $entry->title }}');
+      formData.append('cover_image', file);
+
+      try {
+        const res = await fetch(imgUpload.dataset.url, { method: 'POST', body: formData });
+        wrap?.classList.remove('card__img--uploading');
+        if (res.ok) {
+          wrap?.classList.add('card__img--saved');
+          setTimeout(() => wrap?.classList.remove('card__img--saved'), 1200);
+          // Bild-Vorschau im Formular oben auch aktualisieren
+          const formImg = document.querySelector('.section-edit-form img');
+          if (formImg) { const r2 = new FileReader(); r2.onload = e => formImg.src = e.target.result; r2.readAsDataURL(file); }
+        } else {
+          wrap?.classList.add('card__img--error');
+          setTimeout(() => wrap?.classList.remove('card__img--error'), 2000);
+        }
+      } catch {
+        wrap?.classList.remove('card__img--uploading');
+        wrap?.classList.add('card__img--error');
+        setTimeout(() => wrap?.classList.remove('card__img--error'), 2000);
+      }
+    });
+  }
+
+  // ── Badge Farb-Picker ─────────────────────────────────────────────────────
+  const picker = document.getElementById('badge-color-picker');
+  let activeBadge = null;
+
+  function showPicker(badge) {
+    if (!picker) return;
+    activeBadge = badge;
+    const rect = badge.getBoundingClientRect();
+    const wrapRect = badge.closest('.entry-preview').getBoundingClientRect();
+    picker.style.top  = (rect.bottom - wrapRect.top + 6) + 'px';
+    picker.style.left = (rect.left - wrapRect.left) + 'px';
+    picker.style.display = 'flex';
+    // Aktive Farbe markieren
+    picker.querySelectorAll('button').forEach(btn => {
+      btn.classList.toggle('badge-color-picker__active', btn.dataset.color === badge.dataset.color);
+    });
+  }
+
+  function hidePicker() {
+    if (picker) picker.style.display = 'none';
+    activeBadge = null;
+  }
+
+  picker?.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('mousedown', async e => {
+      e.preventDefault(); // blur des Badge verhindern
+      const color = btn.dataset.color;
+      if (!activeBadge) return;
+
+      const url = activeBadge.dataset.url;
+      const body = new FormData();
+      body.append('_method', 'PUT');
+      body.append('_token', csrfToken);
+      body.append('content', activeBadge.innerText.trim());
+      body.append('color', color);
+
+      // Sofort visuell aktualisieren
+      activeBadge.className = `badge badge--${color} preview-editable`;
+      activeBadge.dataset.color = color;
+      // Block-Editor-Select synchronisieren
+      const sel = document.querySelector(`select[data-block-id="${activeBadge.dataset.blockId}"]`);
+      if (sel) sel.value = color;
+
+      await fetch(url, { method: 'POST', body });
+      hidePicker();
+    });
   });
+
+  // Picker schließen bei Klick außerhalb
+  document.addEventListener('mousedown', e => {
+    if (picker && !picker.contains(e.target) && e.target !== activeBadge) {
+      hidePicker();
+    }
+  });
+
+  // ── Badge löschen ────────────────────────────────────────────────────────
+  async function deleteBadge(btn) {
+    const url = btn.dataset.deleteUrl;
+    if (!url) return;
+    const wrap = btn.closest('.badge-wrap');
+    wrap.style.opacity = '.4';
+    const body = new FormData();
+    body.append('_method', 'DELETE');
+    body.append('_token', csrfToken);
+    try {
+      const res = await fetch(url, { method: 'POST', body });
+      if (res.ok) {
+        wrap.remove();
+      } else {
+        wrap.style.opacity = '';
+      }
+    } catch {
+      wrap.style.opacity = '';
+    }
+  }
+
+  document.querySelectorAll('.badge-delete-btn').forEach(btn => {
+    btn.addEventListener('click', () => deleteBadge(btn));
+  });
+
+  // ── Badge Drag & Drop ────────────────────────────────────────────────────
+  const reorderUrl = '{{ route('admin.pages.blocks.reorder', [$page, $entry]) }}';
+
+  function initDraggable(wrap) {
+    wrap.setAttribute('draggable', 'false'); // default off
+    const handle = wrap.querySelector('.badge-drag-handle');
+
+    // Drag nur erlauben wenn Handle gedrückt wird
+    handle?.addEventListener('mousedown', () => wrap.setAttribute('draggable', 'true'));
+    handle?.addEventListener('mouseup',   () => wrap.setAttribute('draggable', 'false'));
+    wrap.addEventListener('dragend',      () => wrap.setAttribute('draggable', 'false'));
+
+    wrap.addEventListener('dragstart', e => {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', ''); // Firefox requires this
+      wrap.classList.add('badge-wrap--dragging');
+      window._dragBadge = wrap;
+    });
+
+    wrap.addEventListener('dragend', () => {
+      wrap.classList.remove('badge-wrap--dragging');
+      document.querySelectorAll('.badge-wrap--over').forEach(el => el.classList.remove('badge-wrap--over'));
+      window._dragBadge = null;
+      saveBadgeOrder();
+    });
+
+    wrap.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const dragging = window._dragBadge;
+      if (!dragging || dragging === wrap) return;
+      // Einfügeposition bestimmen: vor oder nach dem Ziel
+      const rect   = wrap.getBoundingClientRect();
+      const midX   = rect.left + rect.width / 2;
+      const before = e.clientX < midX;
+      wrap.classList.add('badge-wrap--over');
+      if (before) {
+        badgesWrap.insertBefore(dragging, wrap);
+      } else {
+        wrap.after(dragging);
+      }
+    });
+
+    wrap.addEventListener('dragleave', () => {
+      wrap.classList.remove('badge-wrap--over');
+    });
+  }
+
+  async function saveBadgeOrder() {
+    const ids = [...badgesWrap.querySelectorAll('.badge-wrap')]
+      .map(w => w.querySelector('[data-block-id]')?.dataset.blockId)
+      .filter(Boolean)
+      .map(Number);
+    if (!ids.length) return;
+    const body = new FormData();
+    body.append('_token', csrfToken);
+    ids.forEach(id => body.append('ids[]', id));
+    await fetch(reorderUrl, { method: 'POST', body });
+  }
+
+  // Bestehende Wrappers initialisieren
+  document.querySelectorAll('#preview-badges .badge-wrap').forEach(initDraggable);
+
+  // ── Badge hinzufügen (+) ──────────────────────────────────────────────────
+  const addBtn      = document.getElementById('badge-add-btn');
+  const newForm     = document.getElementById('badge-new-form');
+  const newInput    = document.getElementById('badge-new-input');
+  const newSave     = document.getElementById('badge-new-save');
+  const newCancel   = document.getElementById('badge-new-cancel');
+  const badgesWrap  = document.getElementById('preview-badges');
+  let   newColor    = 'green';
+
+  // Farb-Buttons im Neu-Formular
+  newForm?.querySelectorAll('[data-color]').forEach(btn => {
+    if (btn.dataset.color === newColor) btn.classList.add('is-active');
+    btn.addEventListener('click', () => {
+      newColor = btn.dataset.color;
+      newForm.querySelectorAll('[data-color]').forEach(b => b.classList.toggle('is-active', b === btn));
+    });
+  });
+
+  addBtn?.addEventListener('click', () => {
+    newForm.style.display = 'flex';
+    newInput.value = '';
+    newInput.focus();
+    addBtn.style.display = 'none';
+  });
+
+  function hideNewForm() {
+    newForm.style.display = 'none';
+    addBtn.style.display  = '';
+  }
+
+  newCancel?.addEventListener('click', hideNewForm);
+
+  newSave?.addEventListener('click', async () => {
+    const text = newInput.value.trim();
+    if (!text) { newInput.focus(); return; }
+
+    const storeUrl = '{{ route('admin.pages.blocks.store', [$page, $entry]) }}';
+    const body = new FormData();
+    body.append('_token', csrfToken);
+    body.append('type', 'badge');
+    body.append('content', text);
+    body.append('color', newColor);
+
+    try {
+      const res  = await fetch(storeUrl, { method: 'POST', body, headers: { 'Accept': 'application/json' } });
+      const data = await res.json();
+      if (res.ok && data.id) {
+        // Badge-Span erstellen
+        const span = document.createElement('span');
+        span.className        = `badge badge--${newColor} preview-editable`;
+        span.contentEditable  = 'true';
+        span.draggable        = false;
+        span.dataset.type     = 'block';
+        span.dataset.blockId  = data.id;
+        span.dataset.color    = newColor;
+        span.dataset.url      = data.url;
+        span.textContent      = text;
+
+        span.addEventListener('focus', () => showPicker(span));
+        span.addEventListener('blur',  () => setTimeout(hidePicker, 150));
+        span.addEventListener('keydown', e => {
+          if (e.key === 'Enter') { e.preventDefault(); span.blur(); }
+        });
+        span.addEventListener('blur', async () => {
+          const body2 = new FormData();
+          body2.append('_method', 'PUT');
+          body2.append('_token', csrfToken);
+          body2.append('content', span.innerText.trim());
+          body2.append('color', span.dataset.color);
+          const r = await fetch(span.dataset.url, { method: 'POST', body: body2 });
+          if (r.ok) {
+            span.classList.add('preview-editable--saved');
+            setTimeout(() => span.classList.remove('preview-editable--saved'), 1200);
+          }
+        });
+
+        // Delete-Button erstellen
+        const delBtn = document.createElement('button');
+        delBtn.type      = 'button';
+        delBtn.className = 'badge-delete-btn';
+        delBtn.title     = 'Badge löschen';
+        delBtn.textContent = '×';
+        delBtn.dataset.deleteUrl = data.deleteUrl ?? '';
+        delBtn.addEventListener('click', () => deleteBadge(delBtn));
+
+        // Drag-Handle
+        const handle = document.createElement('span');
+        handle.className = 'badge-drag-handle';
+        handle.title     = 'Verschieben';
+        handle.textContent = '⠿';
+
+        // Wrapper
+        const wrap = document.createElement('span');
+        wrap.className = 'badge-wrap';
+        wrap.appendChild(handle);
+        wrap.appendChild(span);
+        wrap.appendChild(delBtn);
+
+        initDraggable(wrap);
+        badgesWrap.insertBefore(wrap, addBtn);
+        hideNewForm();
+      }
+    } catch (err) {
+      console.error('Badge speichern fehlgeschlagen', err);
+    }
+  });
+
+  // Enter im Input = Speichern
+  newInput?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); newSave.click(); }
+    if (e.key === 'Escape') hideNewForm();
+  });
+
+  document.querySelectorAll('.preview-editable').forEach(el => {
+    // Badge: Picker bei Focus zeigen
+    if (el.dataset.type === 'block' && el.classList.contains('badge')) {
+      el.addEventListener('focus', () => showPicker(el));
+      el.addEventListener('blur',  () => setTimeout(hidePicker, 150));
+    }
+
+    // Enter bei einzeiligen Elementen → blur statt Zeilenumbruch
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !el.classList.contains('preview-editable--multiline')) {
+        e.preventDefault();
+        el.blur();
+      }
+    });
+
+    el.addEventListener('blur', async () => {
+      const text = el.innerText.trim();
+      const url  = el.dataset.url;
+      const type = el.dataset.type;
+
+      const body = new FormData();
+      body.append('_method', 'PUT');
+      body.append('_token', csrfToken);
+
+      if (type === 'entry-title') {
+        body.append('title', text);
+      } else if (type === 'hl-title' || type === 'hl-body') {
+        // Titel + Body zusammensetzen
+        const titleEl = document.querySelector('[data-type="hl-title"]');
+        const bodyEl  = document.querySelector('[data-type="hl-body"]');
+        const title   = titleEl?.innerText.trim() ?? '';
+        const hlBody  = bodyEl?.innerText.trim() ?? '';
+        body.append('content', title ? title + '\n' + hlBody : hlBody);
+      } else {
+        body.append('content', text);
+        if (el.dataset.color) body.append('color', el.dataset.color);
+      }
+
+      try {
+        const res = await fetch(url, { method: 'POST', body });
+        if (res.ok) {
+          // Grüner Flash
+          el.classList.add('preview-editable--saved');
+          setTimeout(() => el.classList.remove('preview-editable--saved'), 1200);
+          // Titel-Input synchronisieren
+          if (type === 'entry-title') {
+            const titleInput = document.querySelector('input[name="title"]');
+            if (titleInput) titleInput.value = text;
+          }
+        } else {
+          el.classList.add('preview-editable--error');
+          setTimeout(() => el.classList.remove('preview-editable--error'), 2000);
+        }
+      } catch {
+        el.classList.add('preview-editable--error');
+        setTimeout(() => el.classList.remove('preview-editable--error'), 2000);
+      }
+    });
+  });
+
 });
 </script>
 @endpush

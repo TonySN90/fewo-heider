@@ -41,14 +41,37 @@
             @if ($desc)
               <p class="card__text">{{ $desc }}</p>
             @endif
-            @if ($highlights && str_contains($highlights, '•'))
+            @if ($highlights)
+              @php
+                $hlLines   = explode("\n", $highlights);
+                $firstLine = trim($hlLines[0] ?? '');
+                $hlHeading = (!str_starts_with($firstLine, '- ') && $firstLine !== '') ? $firstLine : null;
+                $hlBody    = $hlHeading ? array_slice($hlLines, 1) : $hlLines;
+              @endphp
               <div class="card__highlights">
-                <h4>Highlights</h4>
-                <ul>
-                  @foreach (array_filter(array_map('trim', explode('•', $highlights))) as $item)
-                    <li>{{ $item }}</li>
+                @if ($hlHeading)
+                  <h4>{{ $hlHeading }}</h4>
+                @endif
+                @php $listItems = array_filter($hlBody, fn($l) => str_starts_with(trim($l), '- ')); @endphp
+                @if (count($listItems))
+                  <ul>
+                    @foreach ($hlBody as $line)
+                      @php $line = trim($line); @endphp
+                      @if (str_starts_with($line, '- '))
+                        <li>{{ substr($line, 2) }}</li>
+                      @elseif ($line !== '')
+                        </ul><p>{{ $line }}</p><ul>
+                      @endif
+                    @endforeach
+                  </ul>
+                @else
+                  @foreach ($hlBody as $line)
+                    @php $line = trim($line); @endphp
+                    @if ($line !== '')
+                      <p>{{ $line }}</p>
+                    @endif
                   @endforeach
-                </ul>
+                @endif
               </div>
             @endif
           </div>

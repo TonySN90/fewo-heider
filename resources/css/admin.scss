@@ -913,8 +913,31 @@ tr:last-child td {
   }
 }
 
+// ── Badge Farb-Picker ─────────────────────────────────────────────────────
+.badge-color-picker {
+  position: absolute;
+  z-index: 100;
+  display: flex;
+  gap: $space-2;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  padding: $space-2 $space-3;
+  box-shadow: $shadow-md;
+
+  button {
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform .1s, border-color .1s;
+
+    &:hover   { transform: scale(1.08); }
+    &.badge-color-picker__active { border-color: $color-dark; }
+  }
+}
+
 // ── Eintrag-Vorschau (card-Layout Vorschau im Admin) ─────────────────────
 .entry-preview {
+  position: relative;
   padding: 1.5rem;
   background: #f5f5f3;
 
@@ -929,7 +952,45 @@ tr:last-child td {
   .card__img {
     aspect-ratio: 16 / 9;
     overflow: hidden;
+    position: relative;
     img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    &--clickable {
+      cursor: pointer;
+
+      .card__img-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity .2s;
+        color: #fff;
+        .material-symbols-rounded { font-size: 2rem; }
+      }
+
+      &:hover .card__img-overlay { opacity: 1; }
+    }
+
+    &-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: $space-2;
+      background: #f0f0ee;
+      color: #aaa;
+      font-size: $font-size-sm;
+      .material-symbols-rounded { font-size: 2rem; }
+    }
+
+    &--uploading { opacity: .6; pointer-events: none; }
+    &--saved     { outline: 2px solid #4caf50; }
+    &--error     { outline: 2px solid #e53935; }
   }
 
   .card__body { padding: $space-6; }
@@ -974,6 +1035,164 @@ tr:last-child td {
     &--blue   { background: rgba(61,122,110,.06); color: $color-text-light; border: 1px solid $color-border; }
     &--orange { background: rgba(201,120,40,.12); color: #7a3e10; }
     &--gray   { background: rgba(100,100,100,.10); color: #555; border: 1px solid $color-border; }
+  }
+
+  .badge-drag-handle {
+    display: flex;
+    align-items: center;
+    padding: 0 3px 0 0;
+    font-size: .85rem;
+    color: #bbb;
+    cursor: grab;
+    user-select: none;
+    line-height: 1;
+
+    &:active { cursor: grabbing; }
+  }
+
+  // Badge-Wrapper mit Löschen-Button + Drag & Drop
+  .badge-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    transition: opacity .15s;
+
+
+    &--dragging {
+      opacity: .35;
+    }
+
+    .badge-delete-btn {
+      display: none;
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      background: #e53935;
+      color: #fff;
+      border: none;
+      font-size: .65rem;
+      line-height: 1;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    &:hover .badge-delete-btn { display: flex; }
+  }
+
+  // Badge hinzufügen
+  .badge-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: 1.5px dashed $color-border;
+    background: transparent;
+    cursor: pointer;
+    color: $color-text-light;
+    transition: border-color .15s, color .15s, background .15s;
+    flex-shrink: 0;
+
+    .material-symbols-rounded { font-size: 1rem; }
+
+    &:hover {
+      border-color: $color-primary;
+      color: $color-primary;
+      background: rgba($color-primary, .06);
+    }
+  }
+
+  .badge-new-form {
+    margin-top: $space-2;
+    padding: $space-3;
+    background: $color-white;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+
+    input[type="text"] {
+      width: 100%;
+      padding: $space-1 $space-2;
+      border: 1px solid $color-border;
+      border-radius: $border-radius-sm;
+      font-size: $font-size-sm;
+
+      &:focus { outline: 2px solid $color-primary; border-color: $color-primary; }
+    }
+
+    &__colors {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $space-2;
+
+      button {
+        cursor: pointer;
+        border: 2px solid transparent;
+        opacity: .7;
+        transition: opacity .15s, border-color .15s;
+
+        &:hover { opacity: 1; }
+        &.is-active { border-color: $color-dark; opacity: 1; }
+      }
+    }
+
+    &__actions {
+      display: flex;
+      gap: $space-2;
+    }
+  }
+
+  .badge-color-picker {
+    position: absolute;
+    z-index: 100;
+    display: flex;
+    gap: $space-2;
+    background: $color-white;
+    border: 1px solid $color-border;
+    border-radius: $border-radius;
+    padding: $space-2 $space-3;
+    box-shadow: $shadow-md;
+
+    button {
+      cursor: pointer;
+      border: 2px solid transparent;
+
+      &.badge-color-picker__active { border-color: $color-dark; }
+    }
+  }
+
+  // Inline-editierbare Elemente
+  .preview-editable {
+    border-radius: 3px;
+    outline: 2px solid transparent;
+    transition: outline-color .15s, background .15s;
+    cursor: text;
+
+    &:hover { outline-color: rgba($color-primary, .35); background: rgba($color-primary, .04); }
+    &:focus { outline-color: $color-primary; background: rgba($color-primary, .06); outline-offset: 2px; }
+
+    &--saved { outline-color: #4caf50 !important; background: rgba(76,175,80,.07) !important; }
+    &--error { outline-color: #e53935 !important; background: rgba(229,57,53,.05) !important; }
+
+    &--multiline {
+      display: block;
+      white-space: pre-wrap;
+      font-family: inherit;
+      font-size: .85rem;
+      color: $color-text;
+      line-height: 1.6;
+      min-height: 2rem;
+      margin: 0;
+      padding: 0;
+    }
   }
 }
 
