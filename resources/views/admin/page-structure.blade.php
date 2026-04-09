@@ -8,10 +8,11 @@
   </div>
 
   {{-- ===== STARTSEITE ===== --}}
-  <div class="table-card" style="margin-bottom:1.5rem">
-    <div class="table-card__header">
-      <h2>Startseite</h2>
-    </div>
+  <details class="table-card table-card--collapsible" style="margin-bottom:1.5rem">
+    <summary class="table-card__header table-card__header--summary">
+      <span class="material-symbols-rounded table-card__chevron">expand_more</span>
+      <h2>Hauptseite</h2>
+    </summary>
     <form method="POST" action="{{ route('admin.page-structure.sections') }}">
       @csrf
       @method('PUT')
@@ -56,7 +57,7 @@
         <button type="submit" class="btn btn-save">Sektionen speichern</button>
       </div>
     </form>
-  </div>
+  </details>
 
   {{-- ===== SEITENGRUPPEN ===== --}}
   <div class="table-card">
@@ -72,7 +73,7 @@
       <p style="padding:1.75rem;color:#aaa">Noch keine Unterseite angelegt.</p>
     @else
       @foreach ($groups as $group)
-        <details class="page-group" open>
+        <details class="page-group">
           <summary class="page-group__summary">
             <span class="material-symbols-rounded page-group__chevron">expand_more</span>
             <strong>{{ $group->title }}</strong>

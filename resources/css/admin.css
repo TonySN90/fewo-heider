@@ -671,6 +671,36 @@ body.admin-layout {
   padding: 0;
   border: none;
 }
+.table-card__header--summary {
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  gap: 0.75rem;
+  justify-content: flex-start;
+}
+.table-card__header--summary::-webkit-details-marker {
+  display: none;
+}
+.table-card__header--summary::marker {
+  display: none;
+}
+.table-card__header--summary:hover {
+  background: #fafafa;
+}
+.table-card__chevron {
+  transition: transform 0.2s;
+  color: #888;
+  flex-shrink: 0;
+}
+.table-card--collapsible[open] .table-card__chevron {
+  transform: rotate(0deg);
+}
+.table-card--collapsible:not([open]) .table-card__chevron {
+  transform: rotate(-90deg);
+}
+.table-card--collapsible:not([open]) {
+  overflow: visible;
+}
 
 table {
   width: 100%;

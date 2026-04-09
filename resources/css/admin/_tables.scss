@@ -65,6 +65,37 @@
       padding: 0;
       border: none;
     }
+
+    &--summary {
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+      gap: $space-3;
+      justify-content: flex-start;
+
+      &::-webkit-details-marker { display: none; }
+      &::marker { display: none; }
+
+      &:hover { background: #fafafa; }
+    }
+  }
+
+  &__chevron {
+    transition: transform 0.2s;
+    color: #888;
+    flex-shrink: 0;
+  }
+
+  &--collapsible[open] &__chevron {
+    transform: rotate(0deg);
+  }
+
+  &--collapsible:not([open]) &__chevron {
+    transform: rotate(-90deg);
+  }
+
+  &--collapsible:not([open]) {
+    overflow: visible;
   }
 }
 
