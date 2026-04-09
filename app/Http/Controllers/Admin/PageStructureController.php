@@ -7,6 +7,8 @@ use App\Models\PageGroup;
 use App\Models\TemplateSectionContent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class PageStructureController extends Controller
@@ -88,7 +90,58 @@ class PageStructureController extends Controller
 
         $section = $template->findTenantSection($sectionKey, $tenant->id);
 
-        foreach ($request->input('fields', []) as $key => $value) {
+        $fields = $request->input('fields', []);
+
+        // Hero-Bild: löschen
+        if (isset($fields['cover_image_delete']) && $fields['cover_image_delete'] === '1') {
+            $existing = TemplateSectionContent::where('template_section_id', $section->id)
+                ->where('field_key', 'cover_image')->first();
+            if ($existing) {
+                Storage::disk('public')->delete($existing->value);
+                $existing->delete();
+            }
+            unset($fields['cover_image_delete']);
+        }
+
+        // Hero-Bild: hochladen
+        if ($request->hasFile('hero_image')) {
+            $request->validate([
+                'hero_image' => ['file', 'image', 'max:20480', 'mimes:jpg,jpeg,png,webp'],
+            ]);
+            $file = $request->file('hero_image');
+            $filename = (string) Str::uuid().'.webp';
+
+            [$width, $height] = getimagesize($file->getRealPath());
+            if ($height > $width) {
+                return back()->withErrors(['hero_image' => 'Bitte kein Hochkantbild hochladen. Das Bild muss breiter als hoch sein.'])->withInput();
+            }
+
+            $image = new \Imagick($file->getRealPath());
+            $image->setImageFormat('webp');
+            if ($image->getImageWidth() > 1800) {
+                $image->resizeImage(1800, 0, \Imagick::FILTER_LANCZOS, 1);
+            }
+            $image->setImageCompressionQuality(85);
+            Storage::disk('public')->makeDirectory('hero');
+            $image->writeImage(Storage::disk('public')->path('hero/'.$filename));
+            $image->destroy();
+
+            $path = 'hero/'.$filename;
+
+            // Altes Bild löschen
+            $existing = TemplateSectionContent::where('template_section_id', $section->id)
+                ->where('field_key', 'cover_image')->first();
+            if ($existing) {
+                Storage::disk('public')->delete($existing->value);
+            }
+
+            TemplateSectionContent::updateOrCreate(
+                ['template_section_id' => $section->id, 'field_key' => 'cover_image'],
+                ['value' => $path]
+            );
+        }
+
+        foreach ($fields as $key => $value) {
             TemplateSectionContent::updateOrCreate(
                 ['template_section_id' => $section->id, 'field_key' => $key],
                 ['value' => $value]
@@ -96,7 +149,7 @@ class PageStructureController extends Controller
         }
 
         return redirect()
-            ->route('admin.page-structure')
+            ->route('admin.page-structure.edit', $sectionKey)
             ->with('success', 'Sektion wurde gespeichert.');
     }
 }

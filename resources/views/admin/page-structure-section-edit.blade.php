@@ -19,7 +19,8 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
   </div>
 
   <div class="table-card">
-    <form method="POST" action="{{ route('admin.page-structure.update', $sectionKey) }}">
+    <form method="POST" action="{{ route('admin.page-structure.update', $sectionKey) }}"
+          enctype="multipart/form-data">
       @csrf
       @method('PUT')
 
@@ -39,6 +40,25 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
           <div class="form-field">
             <label for="subtitle">Untertitel</label>
             <textarea id="subtitle" name="fields[subtitle]" rows="3" maxlength="300">{{ $section->field('subtitle') }}</textarea>
+          </div>
+          <div class="form-field">
+            <label>Hintergrundbild <span class="form-field__hint">(JPG, PNG, WebP – max. 20 MB, wird automatisch in WebP konvertiert)</span></label>
+            @php $coverImage = $section->field('cover_image'); @endphp
+            @if ($coverImage)
+              <div style="margin-bottom:.75rem">
+                <img src="{{ Storage::url($coverImage) }}" alt="Hero-Bild"
+                     style="max-width:100%;max-height:200px;border-radius:6px;object-fit:cover" />
+              </div>
+              <label style="display:flex;align-items:center;gap:.5rem;font-size:.875rem;margin-bottom:.5rem">
+                <input type="checkbox" name="fields[cover_image_delete]" value="1" />
+                Bild löschen
+              </label>
+            @endif
+            <input type="file" id="hero_image" name="hero_image"
+                   accept="image/jpeg,image/png,image/webp" />
+            @error('hero_image')
+              <span style="color:red;font-size:0.85rem">{{ $message }}</span>
+            @enderror
           </div>
         </div>
       @endif

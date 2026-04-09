@@ -53,7 +53,7 @@
   <!-- ===== HERO ===== -->
   @if (in_array('hero', $visibleSections))
   <section id="hero" class="hero">
-    <div class="hero__bg"></div>
+    <div class="hero__bg" @if($heroSection?->field('cover_image')) style="background-image:url('{{ Storage::url($heroSection->field('cover_image')) }}')" @endif></div>
     <div class="hero__overlay"></div>
     <div class="hero__content container">
       <p class="hero__eyebrow">{{ $heroSection?->field('eyebrow', 'Willkommen') ?? 'Willkommen' }}</p>
