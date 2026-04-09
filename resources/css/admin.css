@@ -764,7 +764,7 @@ tr:last-child td {
 }
 .modal__actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 0.75rem;
   margin-top: 1.5rem;
   padding-top: 1.25rem;
@@ -852,6 +852,237 @@ tr:last-child td {
   font-size: 0.875rem;
   opacity: 0.8;
   line-height: 1.4;
+}
+
+.modal-page-hero {
+  position: relative;
+  height: 200px;
+  margin-bottom: 1.25rem;
+  border-radius: 6px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #2e4a3e 0%, #3d7a6e 100%);
+  background-size: cover;
+  background-position: center;
+}
+.modal-page-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.2) 100%);
+  transition: background 0.2s;
+}
+.modal-page-hero:hover .modal-page-hero__overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.35) 100%);
+}
+.modal-page-hero__upload-hint {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 3px 8px;
+  border-radius: 20px;
+  pointer-events: none;
+}
+.modal-page-hero__upload-hint .material-symbols-rounded {
+  font-size: 0.9rem;
+}
+.modal-page-hero__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  color: #ffffff;
+  gap: 0.5rem;
+}
+.modal-page-hero__title {
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+  border-radius: 3px;
+  outline: 2px solid transparent;
+  transition: outline-color 0.15s, background 0.15s;
+  padding: 2px 6px;
+  min-width: 4rem;
+  width: 100%;
+  cursor: text;
+}
+.modal-page-hero__title:hover {
+  outline-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+}
+.modal-page-hero__title:focus {
+  outline-color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.12);
+  outline-offset: 2px;
+}
+.modal-page-hero__title.preview-editable--saved {
+  outline-color: #4caf50 !important;
+}
+.modal-page-hero__title.preview-editable--error {
+  outline-color: #e53935 !important;
+}
+.modal-page-hero__desc {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4;
+  border-radius: 3px;
+  outline: 2px solid transparent;
+  transition: outline-color 0.15s, background 0.15s;
+  padding: 2px 6px;
+  min-width: 4rem;
+  cursor: text;
+}
+.modal-page-hero__desc:empty::before {
+  content: attr(data-placeholder);
+  opacity: 0.5;
+}
+.modal-page-hero__desc:hover {
+  outline-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+}
+.modal-page-hero__desc:focus {
+  outline-color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.12);
+  outline-offset: 2px;
+}
+.modal-page-hero__desc.preview-editable--saved {
+  outline-color: #4caf50 !important;
+}
+.modal-page-hero__desc.preview-editable--error {
+  outline-color: #e53935 !important;
+}
+
+.modal-page-settings {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 0.5rem;
+}
+.modal-page-settings__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 140px;
+}
+.modal-page-settings__group label:first-child {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.modal-page-settings__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #3d4f52;
+}
+
+.modal-intro-preview {
+  margin-top: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  background: #f7faf8;
+  border: 1px solid #cfe0d8;
+  border-radius: 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.modal-intro-preview__label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b8088;
+  margin-bottom: 0.75rem;
+}
+.modal-intro-preview__heading {
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #263238;
+  line-height: 1.2;
+  min-height: 1.5rem;
+  border-radius: 3px;
+  outline: 2px solid transparent;
+  transition: outline-color 0.15s, background 0.15s;
+  cursor: text;
+}
+.modal-intro-preview__heading:empty::before {
+  content: attr(data-placeholder);
+  color: #bbb;
+  font-weight: 400;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.modal-intro-preview__heading:hover {
+  outline-color: rgba(61, 122, 110, 0.35);
+  background: rgba(61, 122, 110, 0.04);
+}
+.modal-intro-preview__heading:focus {
+  outline-color: #3d7a6e;
+  background: rgba(61, 122, 110, 0.06);
+  outline-offset: 2px;
+}
+.modal-intro-preview__heading.preview-editable--saved {
+  outline-color: #4caf50 !important;
+  background: rgba(76, 175, 80, 0.07) !important;
+}
+.modal-intro-preview__heading.preview-editable--error {
+  outline-color: #e53935 !important;
+}
+.modal-intro-preview__divider {
+  width: 48px;
+  height: 3px;
+  background: #3d7a6e;
+  border-radius: 2px;
+  margin: 0.75rem 0;
+}
+.modal-intro-preview__text {
+  font-size: 0.875rem;
+  color: #3d4f52;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  min-height: 2.5rem;
+  border-radius: 3px;
+  outline: 2px solid transparent;
+  transition: outline-color 0.15s, background 0.15s;
+  cursor: text;
+}
+.modal-intro-preview__text:empty::before {
+  content: attr(data-placeholder);
+  color: #bbb;
+}
+.modal-intro-preview__text:hover {
+  outline-color: rgba(61, 122, 110, 0.35);
+  background: rgba(61, 122, 110, 0.04);
+}
+.modal-intro-preview__text:focus {
+  outline-color: #3d7a6e;
+  background: rgba(61, 122, 110, 0.06);
+  outline-offset: 2px;
+}
+.modal-intro-preview__text.preview-editable--saved {
+  outline-color: #4caf50 !important;
+  background: rgba(76, 175, 80, 0.07) !important;
+}
+.modal-intro-preview__text.preview-editable--error {
+  outline-color: #e53935 !important;
 }
 
 .actions {

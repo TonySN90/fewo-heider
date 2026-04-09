@@ -146,49 +146,76 @@
 
                     {{-- Modal: Kategorie bearbeiten --}}
                     <template id="edit-page-tpl-{{ $page->id }}">
-                      <form method="POST" action="{{ route('admin.pages.update', $page) }}" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-form-grid">
-                          <div class="modal-form-grid__full">
-                            <label>Titel</label>
-                            <input type="text" name="title" value="{{ $page->title }}" maxlength="150" required />
-                          </div>
-                          <div class="modal-form-grid__full">
-                            <label>Beschreibung <span class="form-field__hint">(optional)</span></label>
-                            <textarea name="description" rows="3" maxlength="500">{{ $page->description }}</textarea>
-                          </div>
-                          <div class="modal-form-grid__full">
-                            <label>Titelbild <span class="form-field__hint">(optional)</span></label>
-                            @if ($page->cover_image)
-                              <img src="{{ Storage::url($page->cover_image) }}" alt="" style="width:100%;max-height:120px;object-fit:cover;border-radius:6px;margin-bottom:.5rem" />
-                            @endif
-                            <input type="file" name="cover_image" accept="image/*" />
-                          </div>
-                          <div class="modal-form-grid__full">
-                            <label>Layout</label>
-                            <select name="layout">
-                              <option value="cards" {{ $page->layout === 'cards' ? 'selected' : '' }}>Karten-Grid</option>
-                              <option value="place-list" {{ $page->layout === 'place-list' ? 'selected' : '' }}>Orte / alternierend</option>
-                              <option value="feature" {{ $page->layout === 'feature' ? 'selected' : '' }}>Feature-Blöcke</option>
-                              <option value="route" {{ $page->layout === 'route' ? 'selected' : '' }}>Routen-Liste</option>
-                              <option value="hero-feature" {{ $page->layout === 'hero-feature' ? 'selected' : '' }}>Hero + Karten-Grid</option>
-                            </select>
-                          </div>
-                          <div class="modal-form-grid__full">
-                            <label class="toggle" style="gap:.75rem">
-                              <input type="hidden" name="is_visible" value="0" />
-                              <input type="checkbox" name="is_visible" value="1" {{ $page->is_visible ? 'checked' : '' }} />
+                      @php
+                        $introEntry   = $page->entries->first();
+                        $introHeading = $introEntry?->blocks->firstWhere('type', 'heading')?->content ?? '';
+                        $introText    = $introEntry?->blocks->firstWhere('type', 'text')?->content ?? '';
+                        $updateUrl    = route('admin.pages.update', $page);
+                      @endphp
+
+                      {{-- ── Hero: direkt editierbar ── --}}
+                      <div class="modal-page-hero"
+                           @if($page->cover_image) style="background-image:url('{{ Storage::url($page->cover_image) }}')" @endif
+                           title="Klicken um Bild zu wechseln">
+                        <div class="modal-page-hero__overlay"></div>
+                        <span class="modal-page-hero__upload-hint">
+                          <span class="material-symbols-rounded">photo_camera</span> Bild wechseln
+                        </span>
+                        <div class="modal-page-hero__content">
+                          <h2 class="modal-page-hero__title"
+                              contenteditable="true"
+                              data-field="title"
+                              data-url="{{ $updateUrl }}">{{ $page->title }}</h2>
+                          <p class="modal-page-hero__desc"
+                             contenteditable="true"
+                             data-field="description"
+                             data-url="{{ $updateUrl }}"
+                             data-placeholder="Untertitel eingeben …">{{ $page->description }}</p>
+                        </div>
+                        <input type="file" class="modal-page-hero__upload" accept="image/*"
+                               style="display:none" data-url="{{ $updateUrl }}" />
+                      </div>
+
+                      {{-- ── Intro: direkt editierbar ── --}}
+                      <div class="modal-intro-preview">
+                        <p class="modal-intro-preview__label">Intro-Bereich</p>
+                        <h3 class="modal-intro-preview__heading"
+                            contenteditable="true"
+                            data-field="intro_heading"
+                            data-url="{{ $updateUrl }}"
+                            data-placeholder="Überschrift eingeben …">{{ $introHeading }}</h3>
+                        <div class="modal-intro-preview__divider"></div>
+                        <p class="modal-intro-preview__text"
+                           contenteditable="true"
+                           data-field="intro_text"
+                           data-multiline="true"
+                           data-url="{{ $updateUrl }}"
+                           data-placeholder="Einleitungstext eingeben …">{{ $introText }}</p>
+                      </div>
+
+                      {{-- ── Einstellungen (AJAX on change) ── --}}
+                      <div class="modal-page-settings" data-url="{{ $updateUrl }}">
+                        <div class="modal-page-settings__group">
+                          <label>Layout</label>
+                          <select data-field="layout">
+                            <option value="cards"        {{ $page->layout === 'cards'        ? 'selected' : '' }}>Karten-Grid</option>
+                            <option value="place-list"   {{ $page->layout === 'place-list'   ? 'selected' : '' }}>Orte / alternierend</option>
+                            <option value="feature"      {{ $page->layout === 'feature'      ? 'selected' : '' }}>Feature-Blöcke</option>
+                            <option value="route"        {{ $page->layout === 'route'        ? 'selected' : '' }}>Routen-Liste</option>
+                            <option value="hero-feature" {{ $page->layout === 'hero-feature' ? 'selected' : '' }}>Hero + Karten-Grid</option>
+                          </select>
+                        </div>
+                        <div class="modal-page-settings__group">
+                          <label>&nbsp;</label>
+                          <div class="modal-page-settings__toggle">
+                            <label class="toggle">
+                              <input type="checkbox" data-field="is_visible" {{ $page->is_visible ? 'checked' : '' }} />
                               <span class="toggle__slider"></span>
-                              Sichtbar
                             </label>
+                            <span>Sichtbar</span>
                           </div>
                         </div>
-                        <div class="modal__actions">
-                          <button type="button" class="btn btn-cancel" onclick="closeModal()">Abbrechen</button>
-                          <button type="submit" class="btn btn-save">Speichern</button>
-                        </div>
-                      </form>
+                      </div>
                     </template>
 
                     {{-- Modal: Kategorie löschen --}}
@@ -212,49 +239,47 @@
 
         {{-- Modal: Gruppe bearbeiten --}}
         <template id="edit-group-tpl-{{ $group->id }}">
-          <form method="POST" action="{{ route('admin.pages.groups.update', $group) }}">
-            @csrf
-            @method('PUT')
-            <div class="modal-form-grid">
-              <div class="modal-form-grid__full">
-                <label>Interner Name</label>
-                <input type="text" name="title" value="{{ $group->title }}" maxlength="150" required />
-              </div>
-              <div class="modal-form-grid__full">
-                <label>Nav-Label <span class="form-field__hint">(Text im Menü)</span></label>
-                <input type="text" name="nav_label" value="{{ $group->nav_label }}" maxlength="150" />
-              </div>
-              <div class="modal-form-grid__full">
-                <label>Beschreibung <span class="form-field__hint">(Wird als Untertitel im Hero angezeigt)</span></label>
-                <textarea name="description" rows="5" maxlength="500" style="width:100%">{{ $group->description }}</textarea>
-              </div>
-              <div class="modal-form-grid__full">
-                <div class="modal-form__toggle-row">
-                  <label class="toggle">
-                    <input type="hidden" name="is_visible" value="0" />
-                    <input type="checkbox" name="is_visible" value="1" {{ $group->is_visible ? 'checked' : '' }} />
-                    <span class="toggle__slider"></span>
-                  </label>
-                  <span>Sichtbar</span>
-                </div>
-              </div>
-            </div>
+          @php $groupUpdateUrl = route('admin.pages.groups.update', $group); @endphp
 
-            {{-- Hero-Vorschau --}}
-            <div class="modal-hero-preview">
-              <div class="modal-hero-preview__overlay"></div>
-              <div class="modal-hero-preview__content">
-                <p class="modal-hero-preview__label">Vorschau</p>
-                <h2 class="modal-hero-preview__title">{{ $group->nav_label }}</h2>
-                <p class="modal-hero-preview__desc">{{ $group->description }}</p>
+          {{-- ── Hero: nav_label + description direkt editierbar ── --}}
+          <div class="modal-page-hero"
+               data-url="{{ $groupUpdateUrl }}">
+            <div class="modal-page-hero__overlay"></div>
+            <div class="modal-page-hero__content">
+              <h2 class="modal-page-hero__title"
+                  contenteditable="true"
+                  data-field="title"
+                  data-url="{{ $groupUpdateUrl }}">{{ $group->title }}</h2>
+              <p class="modal-page-hero__desc"
+                 contenteditable="true"
+                 data-field="description"
+                 data-url="{{ $groupUpdateUrl }}"
+                 data-placeholder="Untertitel eingeben …">{{ $group->description }}</p>
+            </div>
+          </div>
+
+          {{-- ── Einstellungen ── --}}
+          <div class="modal-page-settings" data-url="{{ $groupUpdateUrl }}">
+            <div class="modal-page-settings__group">
+              <label>Navigation</label>
+              <input type="text"
+                     data-field="nav_label"
+                     data-url="{{ $groupUpdateUrl }}"
+                     value="{{ $group->nav_label }}"
+                     maxlength="150"
+                     placeholder="Navigationsbezeichnung" />
+            </div>
+            <div class="modal-page-settings__group">
+              <label>&nbsp;</label>
+              <div class="modal-page-settings__toggle">
+                <label class="toggle">
+                  <input type="checkbox" data-field="is_visible" {{ $group->is_visible ? 'checked' : '' }} />
+                  <span class="toggle__slider"></span>
+                </label>
+                <span>Sichtbar</span>
               </div>
             </div>
-
-            <div class="modal__actions">
-              <button type="button" class="btn btn-cancel" onclick="closeModal()">Abbrechen</button>
-              <button type="submit" class="btn btn-save">Speichern</button>
-            </div>
-          </form>
+          </div>
         </template>
 
         {{-- Modal: Gruppe löschen --}}

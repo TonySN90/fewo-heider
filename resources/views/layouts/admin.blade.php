@@ -216,13 +216,176 @@
   const modalTitle   = document.getElementById('modalTitle');
   const modalBody    = document.getElementById('modalBody');
 
+  let activeTemplateId = null;
+
   function openModal(title, templateId) {
     const tpl = document.getElementById(templateId);
+    activeTemplateId = templateId;
     modalTitle.textContent = title;
     modalBody.innerHTML = tpl.innerHTML;
     modalOverlay.classList.add('is-open');
     modalBody.querySelector('input, select')?.focus();
     initModalLivePreview();
+    initModalPageEdit(templateId);
+  }
+
+  function initModalPageEdit(templateId) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+
+    // ── Inline-Save für contenteditable [data-field] Elemente ────────────────
+    modalBody.querySelectorAll('[data-field]').forEach(el => {
+      const isMultiline = el.dataset.multiline === 'true';
+
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !isMultiline) { e.preventDefault(); el.blur(); }
+      });
+
+      el.addEventListener('blur', async () => {
+        const text  = (el.innerText || el.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
+        const url   = el.dataset.url;
+        const field = el.dataset.field;
+        if (!url) return;
+
+        // Summary der zugehörigen page-group aktualisieren
+        if (field === 'title' && templateId) {
+          const trigger = document.querySelector(`[onclick*="${templateId}"]`);
+          const summary = trigger?.closest('details')?.querySelector('.page-group__summary');
+          const strong = summary?.querySelector('strong');
+          if (strong) strong.textContent = text;
+        }
+
+        const body = new FormData();
+        body.append('_method', 'PUT');
+        body.append('_token', csrfToken);
+        body.append(field, text);
+
+        // title ist required — immer mitsenden
+        if (field !== 'title') {
+          const titleEl = modalBody.querySelector('[data-field="title"]');
+          const titleVal = titleEl
+            ? (titleEl.value !== undefined ? titleEl.value : (titleEl.innerText || titleEl.textContent || '')).trim()
+            : '';
+          body.append('title', titleVal);
+        }
+
+        try {
+          const res = await fetch(url, { method: 'POST', body, headers: { 'Accept': 'application/json' } });
+          if (res.ok) {
+            el.classList.add('preview-editable--saved');
+            setTimeout(() => el.classList.remove('preview-editable--saved'), 1200);
+          } else {
+            el.classList.add('preview-editable--error');
+            setTimeout(() => el.classList.remove('preview-editable--error'), 2000);
+          }
+        } catch {
+          el.classList.add('preview-editable--error');
+          setTimeout(() => el.classList.remove('preview-editable--error'), 2000);
+        }
+      });
+    });
+
+    // ── Bild-Upload via Klick auf Hero ────────────────────────────────────────
+    const heroWrap  = modalBody.querySelector('.modal-page-hero');
+    const imgUpload = modalBody.querySelector('.modal-page-hero__upload');
+    if (heroWrap && imgUpload) {
+      heroWrap.addEventListener('click', e => {
+        if (!e.target.closest('[contenteditable]')) imgUpload.click();
+      });
+
+      imgUpload.addEventListener('change', async () => {
+        const file = imgUpload.files[0];
+        if (!file) return;
+
+        // Sofort lokal vorschauen
+        const reader = new FileReader();
+        reader.onload = ev => {
+          heroWrap.style.backgroundImage = `url('${ev.target.result}')`;
+        };
+        reader.readAsDataURL(file);
+
+        // AJAX Upload
+        const formData = new FormData();
+        formData.append('_method', 'PUT');
+        formData.append('_token', csrfToken);
+        formData.append('title', modalBody.querySelector('[data-field="title"]')?.innerText.trim() ?? '');
+        formData.append('cover_image', file);
+
+        try {
+          await fetch(imgUpload.dataset.url, { method: 'POST', body: formData });
+        } catch { /* silent */ }
+      });
+    }
+
+    // ── Settings: input/select/checkbox per change/blur speichern ───────────
+    const settings = modalBody.querySelector('.modal-page-settings');
+    if (settings) {
+      const settingsUrl = settings.dataset.url;
+
+      async function saveField(field, value, indicatorEl) {
+        // Pflichtfeld title immer mitsenden
+        const titleEl = modalBody.querySelector('[data-field="title"]');
+        const titleVal = titleEl
+          ? (titleEl.value !== undefined ? titleEl.value : (titleEl.innerText || titleEl.textContent || '')).trim()
+          : '';
+
+        const body = new FormData();
+        body.append('_method', 'PUT');
+        body.append('_token', csrfToken);
+        if (field !== 'title') body.append('title', titleVal);
+        // nav_label_sync schreibt auf nav_label
+        body.append(field === 'nav_label_sync' ? 'nav_label' : field, value);
+
+        try {
+          const res = await fetch(settingsUrl, { method: 'POST', body, headers: { 'Accept': 'application/json' } });
+          if (indicatorEl) {
+            indicatorEl.classList.add(res.ok ? 'preview-editable--saved' : 'preview-editable--error');
+            setTimeout(() => {
+              indicatorEl.classList.remove('preview-editable--saved', 'preview-editable--error');
+            }, 1200);
+          }
+        } catch { /* silent */ }
+      }
+
+      // <input type="text"> — blur speichert
+      settings.querySelectorAll('input[data-field]').forEach(input => {
+        if (input.type === 'checkbox') return;
+        input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
+        input.addEventListener('blur', function () {
+          // Summary der zugehörigen page-group aktualisieren
+          if (templateId) {
+            const trigger = document.querySelector(`[onclick*="${templateId}"]`);
+            const summary = trigger?.closest('details')?.querySelector('.page-group__summary');
+            if (summary) {
+              if (this.dataset.field === 'title') {
+                const strong = summary.querySelector('strong');
+                if (strong) strong.textContent = this.value.trim();
+              } else if (this.dataset.field === 'nav_label') {
+                const meta = summary.querySelector('.page-group__meta');
+                if (meta) {
+                  const slug = meta.textContent.match(/\/\S+$/)?.[0] ?? '';
+                  meta.textContent = `Nav: \u201e${this.value.trim()}\u201c \u00a0\u00b7\u00a0 ${slug}`;
+                }
+              }
+            }
+          }
+          saveField(this.dataset.field, this.value.trim(), this);
+        });
+      });
+
+      // <select> — change speichert
+      settings.querySelectorAll('select[data-field]').forEach(sel => {
+        sel.addEventListener('change', function () {
+          saveField(this.dataset.field, this.value, this);
+        });
+      });
+
+      // <input type="checkbox"> — change speichert
+      settings.querySelectorAll('input[type="checkbox"][data-field]').forEach(cb => {
+        cb.addEventListener('change', function () {
+          saveField(this.dataset.field, this.checked ? '1' : '0');
+        });
+      });
+    }
   }
 
   function initModalLivePreview() {
@@ -230,16 +393,52 @@
     const descInput  = modalBody.querySelector('[name="description"]');
     const prevTitle  = modalBody.querySelector('.modal-hero-preview__title');
     const prevDesc   = modalBody.querySelector('.modal-hero-preview__desc');
-    if (!prevTitle) return;
-    if (titleInput) titleInput.addEventListener('input', () => {
-      prevTitle.textContent = titleInput.value || prevTitle.textContent;
-    });
-    if (descInput) descInput.addEventListener('input', () => {
-      prevDesc.textContent = descInput.value;
-    });
+    if (prevTitle) {
+      if (titleInput) titleInput.addEventListener('input', () => {
+        prevTitle.textContent = titleInput.value || prevTitle.textContent;
+      });
+      if (descInput) descInput.addEventListener('input', () => {
+        prevDesc.textContent = descInput.value;
+      });
+    }
+
+    // Intro-Vorschau (Kategorie-Modal)
+    const introHeadingInput = modalBody.querySelector('[name="intro_heading"]');
+    const introTextInput    = modalBody.querySelector('[name="intro_text"]');
+    const prevIntroHeading  = modalBody.querySelector('.modal-intro-preview__heading');
+    const prevIntroText     = modalBody.querySelector('.modal-intro-preview__text');
+    if (introHeadingInput && prevIntroHeading) {
+      introHeadingInput.addEventListener('input', () => {
+        prevIntroHeading.textContent = introHeadingInput.value;
+      });
+    }
+    if (introTextInput && prevIntroText) {
+      introTextInput.addEventListener('input', () => {
+        prevIntroText.textContent = introTextInput.value;
+      });
+    }
   }
 
   function closeModal() {
+    if (activeTemplateId) {
+      const tpl = document.getElementById(activeTemplateId);
+      if (tpl) {
+        // Input-Properties ins Attribut übertragen, damit innerHTML sie enthält
+        modalBody.querySelectorAll('input[type="text"], input[type="hidden"], textarea').forEach(el => {
+          el.setAttribute('value', el.value);
+        });
+        modalBody.querySelectorAll('input[type="checkbox"]').forEach(el => {
+          el.checked ? el.setAttribute('checked', '') : el.removeAttribute('checked');
+        });
+        modalBody.querySelectorAll('select').forEach(sel => {
+          Array.from(sel.options).forEach(o => {
+            o.selected ? o.setAttribute('selected', '') : o.removeAttribute('selected');
+          });
+        });
+        tpl.innerHTML = modalBody.innerHTML;
+      }
+      activeTemplateId = null;
+    }
     modalOverlay.classList.remove('is-open');
   }
 

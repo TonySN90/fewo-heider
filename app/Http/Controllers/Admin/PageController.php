@@ -7,6 +7,7 @@ use App\Models\Page;
 use App\Models\PageEntry;
 use App\Models\PageEntryBlock;
 use App\Models\PageGroup;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -51,15 +52,15 @@ class PageController extends Controller
             ->with('success', 'Gruppe „'.$data['title'].'" wurde angelegt.');
     }
 
-    public function updateGroup(Request $request, PageGroup $group): RedirectResponse
+    public function updateGroup(Request $request, PageGroup $group): JsonResponse|RedirectResponse
     {
         $this->authorizeGroup($group);
 
         $data = $request->validate([
-            'title' => ['required', 'string', 'max:150'],
-            'nav_label' => ['nullable', 'string', 'max:150'],
+            'title'       => ['required', 'string', 'max:150'],
+            'nav_label'   => ['nullable', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:500'],
-            'is_visible' => ['boolean'],
+            'is_visible'  => ['nullable', 'boolean'],
         ]);
 
         $newSlug = Str::slug($data['title']);
@@ -71,13 +72,19 @@ class PageController extends Controller
             }
         }
 
-        $group->update([
+        $update = [
             'title' => $data['title'],
-            'slug' => $newSlug,
-            'nav_label' => $data['nav_label'] ?: $data['title'],
-            'description' => $data['description'] ?? null,
-            'is_visible' => $request->boolean('is_visible', true),
-        ]);
+            'slug'  => $newSlug,
+        ];
+        if ($request->has('nav_label'))   $update['nav_label']   = ($data['nav_label'] ?? null) ?: $data['title'];
+        if ($request->has('description')) $update['description'] = $data['description'] ?? null;
+        if ($request->has('is_visible'))  $update['is_visible']  = $request->boolean('is_visible');
+
+        $group->update($update);
+
+        if ($request->expectsJson()) {
+            return response()->json(['ok' => true]);
+        }
 
         return redirect()->route('admin.page-structure')
             ->with('success', 'Gruppe gespeichert.');
@@ -138,30 +145,56 @@ class PageController extends Controller
             ->with('success', 'Kategorie „'.$data['title'].'" wurde angelegt.');
     }
 
-    public function update(Request $request, Page $page): RedirectResponse
+    public function update(Request $request, Page $page): JsonResponse|RedirectResponse
     {
         $this->authorizePage($page);
 
         $data = $request->validate([
-            'title' => ['required', 'string', 'max:150'],
-            'description' => ['nullable', 'string', 'max:500'],
-            'cover_image' => ['nullable', 'image', 'max:4096'],
-            'is_visible' => ['boolean'],
-            'layout' => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
+            'title'         => ['required', 'string', 'max:150'],
+            'description'   => ['nullable', 'string', 'max:500'],
+            'cover_image'   => ['nullable', 'image', 'max:4096'],
+            'is_visible'    => ['nullable', 'boolean'],
+            'layout'        => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
+            'intro_heading' => ['nullable', 'string', 'max:200'],
+            'intro_text'    => ['nullable', 'string', 'max:2000'],
         ]);
 
-        $coverPath = $page->cover_image;
+        $update = ['title' => $data['title']];
+        if ($request->has('description'))  $update['description'] = $data['description'] ?? null;
+        if ($request->has('layout'))       $update['layout']      = $data['layout'] ?? $page->layout;
+        if ($request->has('is_visible'))   $update['is_visible']  = $request->boolean('is_visible');
         if ($request->hasFile('cover_image')) {
-            $coverPath = $request->file('cover_image')->store('pages', 'public');
+            $update['cover_image'] = $request->file('cover_image')->store('pages', 'public');
         }
 
-        $page->update([
-            'title' => $data['title'],
-            'description' => $data['description'] ?? null,
-            'cover_image' => $coverPath,
-            'is_visible' => $request->boolean('is_visible', true),
-            'layout' => $data['layout'] ?? $page->layout,
-        ]);
+        $page->update($update);
+
+        // Intro-Blöcke nur updaten wenn die Felder gesendet wurden
+        if ($request->has('intro_heading') || $request->has('intro_text')) {
+            $introEntry = $page->entries()->orderBy('sort_order')->first();
+            if ($introEntry) {
+                if ($request->has('intro_heading')) {
+                    $headingBlock = $introEntry->blocks()->where('type', 'heading')->first();
+                    if ($headingBlock) {
+                        $headingBlock->update(['content' => $data['intro_heading'] ?? '']);
+                    } elseif (!empty($data['intro_heading'])) {
+                        $introEntry->blocks()->create(['type' => 'heading', 'content' => $data['intro_heading'], 'sort_order' => 0]);
+                    }
+                }
+                if ($request->has('intro_text')) {
+                    $textBlock = $introEntry->blocks()->where('type', 'text')->first();
+                    if ($textBlock) {
+                        $textBlock->update(['content' => $data['intro_text'] ?? '']);
+                    } elseif (!empty($data['intro_text'])) {
+                        $introEntry->blocks()->create(['type' => 'text', 'content' => $data['intro_text'], 'sort_order' => 1]);
+                    }
+                }
+            }
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['ok' => true]);
+        }
 
         return redirect()->route('admin.page-structure')
             ->with('success', 'Kategorie gespeichert.');

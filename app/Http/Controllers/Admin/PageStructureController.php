@@ -33,7 +33,7 @@ class PageStructureController extends Controller
         $sections = $template->sectionsForTenant($tenant->id)->get();
         $groups = PageGroup::where('tenant_id', $tenant->id)
             ->orderBy('sort_order')
-            ->with(['pages' => fn ($q) => $q->orderBy('sort_order')])
+            ->with(['pages' => fn ($q) => $q->orderBy('sort_order')->with(['entries' => fn ($eq) => $eq->orderBy('sort_order')->limit(1)->with('blocks')])])
             ->get();
 
         return view('admin.page-structure', [

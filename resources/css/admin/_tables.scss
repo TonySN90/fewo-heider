@@ -166,7 +166,7 @@ tr:last-child td {
 
   &__actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: $space-3;
     margin-top: $space-6;
     padding-top: $space-5;
@@ -261,6 +261,196 @@ tr:last-child td {
     font-size: $font-size-sm;
     opacity: .8;
     line-height: 1.4;
+  }
+}
+
+.modal-page-hero {
+  position: relative;
+  height: 200px;
+  margin-bottom: $space-5;
+  border-radius: $border-radius-sm;
+  overflow: hidden;
+  background: linear-gradient(135deg, #2e4a3e 0%, #3d7a6e 100%);
+  background-size: cover;
+  background-position: center;
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.6) 0%, rgba(0,0,0,.2) 100%);
+    transition: background .2s;
+  }
+
+  &:hover &__overlay {
+    background: linear-gradient(to top, rgba(0,0,0,.65) 0%, rgba(0,0,0,.35) 100%);
+  }
+
+  &__upload-hint {
+    position: absolute;
+    top: $space-3;
+    right: $space-3;
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    font-size: $font-size-xs;
+    color: rgba(255,255,255,.7);
+    background: rgba(0,0,0,.3);
+    padding: 3px 8px;
+    border-radius: 20px;
+    pointer-events: none;
+
+    .material-symbols-rounded { font-size: .9rem; }
+  }
+
+  &__content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: $space-6;
+    text-align: center;
+    color: $color-white;
+    gap: $space-2;
+  }
+
+  &__title {
+    font-family: $font-heading;
+    font-size: $font-size-2xl;
+    font-weight: 700;
+    line-height: 1.2;
+    color: $color-white;
+    border-radius: 3px;
+    outline: 2px solid transparent;
+    transition: outline-color .15s, background .15s;
+    padding: 2px 6px;
+    min-width: 4rem;
+    width: 100%;
+    cursor: text;
+
+    &:hover { outline-color: rgba(255,255,255,.5); background: rgba(255,255,255,.08); }
+    &:focus { outline-color: rgba(255,255,255,.9); background: rgba(255,255,255,.12); outline-offset: 2px; }
+    &.preview-editable--saved { outline-color: #4caf50 !important; }
+    &.preview-editable--error { outline-color: #e53935 !important; }
+  }
+
+  &__desc {
+    font-size: $font-size-sm;
+    color: rgba(255,255,255,.85);
+    line-height: 1.4;
+    border-radius: 3px;
+    outline: 2px solid transparent;
+    transition: outline-color .15s, background .15s;
+    padding: 2px 6px;
+    min-width: 4rem;
+    cursor: text;
+
+    &:empty::before { content: attr(data-placeholder); opacity: .5; }
+    &:hover { outline-color: rgba(255,255,255,.5); background: rgba(255,255,255,.08); }
+    &:focus { outline-color: rgba(255,255,255,.9); background: rgba(255,255,255,.12); outline-offset: 2px; }
+    &.preview-editable--saved { outline-color: #4caf50 !important; }
+    &.preview-editable--error { outline-color: #e53935 !important; }
+  }
+}
+
+.modal-page-settings {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-4;
+  padding: $space-4 0;
+  border-top: 1px solid #f0f0f0;
+  margin-top: $space-2;
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    flex: 1;
+    min-width: 140px;
+
+    label:first-child {
+      font-size: $font-size-xs;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+  }
+
+  &__toggle {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $font-size-sm;
+    color: $color-text;
+  }
+}
+
+.modal-intro-preview {
+  margin-top: $space-3;
+  padding: $space-5 $space-6;
+  background: $color-bg;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__label {
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: $color-text-light;
+    margin-bottom: $space-3;
+  }
+
+  &__heading {
+    font-family: $font-heading;
+    font-size: $font-size-xl;
+    font-weight: 700;
+    color: $color-dark;
+    line-height: 1.2;
+    min-height: 1.5rem;
+    border-radius: 3px;
+    outline: 2px solid transparent;
+    transition: outline-color .15s, background .15s;
+    cursor: text;
+
+    &:empty::before { content: attr(data-placeholder); color: #bbb; font-weight: 400; font-family: $font-body; }
+    &:hover { outline-color: rgba($color-primary, .35); background: rgba($color-primary, .04); }
+    &:focus { outline-color: $color-primary; background: rgba($color-primary, .06); outline-offset: 2px; }
+    &.preview-editable--saved { outline-color: #4caf50 !important; background: rgba(76,175,80,.07) !important; }
+    &.preview-editable--error { outline-color: #e53935 !important; }
+  }
+
+  &__divider {
+    width: 48px;
+    height: 3px;
+    background: $color-primary;
+    border-radius: 2px;
+    margin: $space-3 0;
+  }
+
+  &__text {
+    font-size: $font-size-sm;
+    color: $color-text;
+    line-height: $line-height-normal;
+    white-space: pre-wrap;
+    min-height: 2.5rem;
+    border-radius: 3px;
+    outline: 2px solid transparent;
+    transition: outline-color .15s, background .15s;
+    cursor: text;
+
+    &:empty::before { content: attr(data-placeholder); color: #bbb; }
+    &:hover { outline-color: rgba($color-primary, .35); background: rgba($color-primary, .04); }
+    &:focus { outline-color: $color-primary; background: rgba($color-primary, .06); outline-offset: 2px; }
+    &.preview-editable--saved { outline-color: #4caf50 !important; background: rgba(76,175,80,.07) !important; }
+    &.preview-editable--error { outline-color: #e53935 !important; }
   }
 }
 
