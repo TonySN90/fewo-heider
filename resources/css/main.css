@@ -786,7 +786,8 @@ em {
 }
 
 .gallery__grid {
-  width: 1000px;
+  width: 100%;
+  max-width: 1000px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
