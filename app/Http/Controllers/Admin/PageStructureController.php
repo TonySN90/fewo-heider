@@ -23,7 +23,7 @@ class PageStructureController extends Controller
         'kontakt' => 'Kontakt & Anfrage',
     ];
 
-    private const EDITABLE_SECTIONS = ['hero', 'ueber-uns', 'ausstattung', 'galerie'];
+    private const EDITABLE_SECTIONS = ['hero', 'ueber-uns', 'ausstattung', 'galerie', 'anreise'];
 
     public function index(): View
     {
@@ -142,10 +142,16 @@ class PageStructureController extends Controller
         }
 
         foreach ($fields as $key => $value) {
-            TemplateSectionContent::updateOrCreate(
-                ['template_section_id' => $section->id, 'field_key' => $key],
-                ['value' => $value]
-            );
+            if ($value === '' || $value === null) {
+                TemplateSectionContent::where('template_section_id', $section->id)
+                    ->where('field_key', $key)
+                    ->delete();
+            } else {
+                TemplateSectionContent::updateOrCreate(
+                    ['template_section_id' => $section->id, 'field_key' => $key],
+                    ['value' => $value]
+                );
+            }
         }
 
         return redirect()

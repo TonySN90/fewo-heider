@@ -206,6 +206,117 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
         </div>
       @endif
 
+      {{-- ===== ANREISE / KARTE ===== --}}
+      @if ($section->section_key === 'anreise')
+        <div class="section-edit-form">
+          <h2 class="section-edit-form__heading">Sektionskopf</h2>
+          <div class="form-field">
+            <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
+            <input type="text" id="eyebrow" name="fields[eyebrow]"
+              value="{{ $section->field('eyebrow') }}" placeholder="So finden Sie uns" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="title">Überschrift</label>
+            <input type="text" id="title" name="fields[title]"
+              value="{{ $section->field('title') }}" placeholder="Anreise" maxlength="150" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Adresse</h2>
+          <div class="form-field">
+            <label for="address_subtitle">Abschnittsüberschrift</label>
+            <input type="text" id="address_subtitle" name="fields[address_subtitle]"
+              value="{{ $section->field('address_subtitle') }}" placeholder="Ihre Unterkunft" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="address_name">Name</label>
+            <input type="text" id="address_name" name="fields[address_name]"
+              value="{{ $section->field('address_name') }}" placeholder="Max Mustermann" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="address_street">Straße &amp; Hausnummer</label>
+            <input type="text" id="address_street" name="fields[address_street]"
+              value="{{ $section->field('address_street') }}" placeholder="Musterstraße 1" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="address_city">PLZ &amp; Ort</label>
+            <input type="text" id="address_city" name="fields[address_city]"
+              value="{{ $section->field('address_city') }}" placeholder="12345 Musterstadt" maxlength="100" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Kontakt</h2>
+          <div class="form-field">
+            <label for="phone">Telefon <span class="form-field__hint">(z.B. 038393 31283)</span></label>
+            <input type="text" id="phone" name="fields[phone]"
+              value="{{ $section->field('phone') }}" placeholder="030 123456" maxlength="50" />
+          </div>
+          <div class="form-field">
+            <label for="phone_href">Telefon (tel:-Link) <span class="form-field__hint">(z.B. +493839331283)</span></label>
+            <input type="text" id="phone_href" name="fields[phone_href]"
+              value="{{ $section->field('phone_href') }}" placeholder="+4930123456" maxlength="50" />
+          </div>
+          <div class="form-field">
+            <label for="email">E-Mail</label>
+            <input type="email" id="email" name="fields[email]"
+              value="{{ $section->field('email') }}" placeholder="max.mustermann@beispiel.de" maxlength="150" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Anreise-Tipps <span class="form-field__hint">(leer lassen = nicht anzeigen)</span></h2>
+          <div class="form-field">
+            <label for="hints_title">Abschnittsüberschrift</label>
+            <input type="text" id="hints_title" name="fields[hints_title]"
+              value="{{ $section->field('hints_title') }}" placeholder="Anreise-Tipps" maxlength="100" />
+          </div>
+          @for ($i = 1; $i <= 5; $i++)
+            <div class="highlight-card-editor">
+              <div class="highlight-card-editor__label">Tipp {{ $i }}</div>
+              <div class="highlight-card-editor__fields">
+                <div class="form-field">
+                  <label>Icon</label>
+                  <div class="icon-select-wrap">
+                    <select name="fields[hint_{{ $i }}_icon]" onchange="updateIconPreview(this, 'hint-icon-{{ $i }}')">
+                      @foreach ($highlightIcons as $value => $label)
+                        <option value="{{ $value }}" {{ $section->field("hint_{$i}_icon") === $value ? 'selected' : '' }}>
+                          {{ $label }}
+                        </option>
+                      @endforeach
+                    </select>
+                    <span class="material-symbols-rounded icon-preview" id="hint-icon-{{ $i }}">
+                      {{ $section->field("hint_{$i}_icon") }}
+                    </span>
+                  </div>
+                </div>
+                <div class="form-field">
+                  <label>Text</label>
+                  <input type="text" name="fields[hint_{{ $i }}_text]"
+                    value="{{ $section->field("hint_{$i}_text") }}" maxlength="200" />
+                </div>
+              </div>
+            </div>
+          @endfor
+
+          <h2 class="section-edit-form__heading">Kartenposition</h2>
+          <div class="form-field">
+            <label>Koordinaten <span class="form-field__hint">(auf Karte klicken oder Marker ziehen)</span></label>
+            <div class="coord-picker-wrap">
+              <div id="admin-coord-picker" class="coord-picker"></div>
+              <div class="coord-picker__inputs">
+                <div class="form-field">
+                  <label for="map_lat">Breitengrad (Lat)</label>
+                  <input type="text" id="map_lat" name="fields[map_lat]"
+                    value="{{ $section->field('map_lat') }}" placeholder="54.3835" maxlength="20" readonly />
+                </div>
+                <div class="form-field">
+                  <label for="map_lng">Längengrad (Lng)</label>
+                  <input type="text" id="map_lng" name="fields[map_lng]"
+                    value="{{ $section->field('map_lng') }}" placeholder="13.5632" maxlength="20" readonly />
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      @endif
+
       {{-- ===== GALERIE (Sektionskopf) ===== --}}
       @if ($section->section_key === 'galerie')
         <div class="section-edit-form">
@@ -390,3 +501,52 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
   }
 </script>
 @endpush
+
+@if ($section->section_key === 'anreise')
+@push('head')
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+@endpush
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  (function () {
+    const latInput = document.getElementById('map_lat');
+    const lngInput = document.getElementById('map_lng');
+    if (!latInput || !lngInput) return;
+
+    const defaultLat = parseFloat(latInput.value) || 54.3835;
+    const defaultLng = parseFloat(lngInput.value) || 13.5632;
+    const token = '{{ env("VITE_MAPBOX_TOKEN") }}';
+
+    const map = L.map('admin-coord-picker', {
+      center: [defaultLat, defaultLng],
+      zoom: 13,
+    });
+
+    L.tileLayer(
+      'https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{z}/{x}/{y}?access_token=' + token,
+      { tileSize: 512, zoomOffset: -1, maxZoom: 20 }
+    ).addTo(map);
+
+    const marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
+
+    function updateInputs(lat, lng) {
+      latInput.value = lat.toFixed(6);
+      lngInput.value = lng.toFixed(6);
+      latInput.removeAttribute('readonly');
+      lngInput.removeAttribute('readonly');
+    }
+
+    map.on('click', function (e) {
+      marker.setLatLng(e.latlng);
+      updateInputs(e.latlng.lat, e.latlng.lng);
+    });
+
+    marker.on('dragend', function () {
+      const pos = marker.getLatLng();
+      updateInputs(pos.lat, pos.lng);
+    });
+  })();
+</script>
+@endpush
+@endif

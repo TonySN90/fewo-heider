@@ -278,43 +278,73 @@
   <section id="anreise" class="map-section section">
     <div class="container">
       <div class="section__header">
-        <p class="section__eyebrow">So finden Sie uns</p>
-        <h2 class="section__title">Anreise</h2>
+        <p class="section__eyebrow">{{ $anreiseSection?->field('eyebrow') }}</p>
+        <h2 class="section__title">{{ $anreiseSection?->field('title') }}</h2>
         <div class="section__divider"></div>
       </div>
 
       <div class="map-section__layout">
         <div class="map-section__address">
-          <h3>Ihre Unterkunft</h3>
+          <h3>{{ $anreiseSection?->field('address_subtitle') ?: 'Ihre Unterkunft' }}</h3>
           <address>
-            <p class="address__name">Lolita Heider</p>
-            <p>Serams 8A</p>
-            <p>18528 Zirkow/Serams</p>
+            <p class="address__name">{{ $anreiseSection?->field('address_name') }}</p>
+            <p>{{ $anreiseSection?->field('address_street') }}</p>
+            <p>{{ $anreiseSection?->field('address_city') }}</p>
           </address>
 
+          @php
+            $anreisePhone     = $anreiseSection?->field('phone') ?? '';
+            $anreisePhoneHref = $anreiseSection?->field('phone_href') ?? '';
+            $anreiseEmail     = $anreiseSection?->field('email') ?? '';
+          @endphp
+          @if ($anreisePhone || $anreiseEmail)
           <div class="address__contact">
-            <a href="tel:+493839331283" class="contact-link">
+            @if ($anreisePhone)
+            <a href="tel:{{ $anreisePhoneHref }}" class="contact-link">
               <span class="contact-link__icon material-symbols-rounded">call</span>
-              038393 31283
+              {{ $anreisePhone }}
             </a>
-            <a href="mailto:fewo.heider@gmail.com" class="contact-link">
+            @endif
+            @if ($anreiseEmail)
+            <a href="mailto:{{ $anreiseEmail }}" class="contact-link">
               <span class="contact-link__icon material-symbols-rounded">mail</span>
-              fewo.heider@gmail.com
+              {{ $anreiseEmail }}
             </a>
+            @endif
           </div>
+          @endif
 
+          @php
+            $anreiseHints = [];
+            for ($i = 1; $i <= 5; $i++) {
+              $icon = $anreiseSection?->field("hint_{$i}_icon");
+              $text = $anreiseSection?->field("hint_{$i}_text");
+              if ($icon || $text) {
+                $anreiseHints[] = ['icon' => $icon, 'text' => $text];
+              }
+            }
+          @endphp
+          @if (!empty($anreiseHints))
           <div class="address__hints">
-            <h4>Anreise-Tipps</h4>
+            <h4>{{ $anreiseSection?->field('hints_title', 'Anreise-Tipps') ?? 'Anreise-Tipps' }}</h4>
             <ul>
-              <li><span class="material-symbols-rounded">directions_car</span> Über A20 → Rügen-Brücke → B196 Richtung Binz</li>
-              <li><span class="material-symbols-rounded">train</span> Zug bis Bergen auf Rügen, dann Bus Richtung Binz</li>
-              <li><span class="material-symbols-rounded">flight</span> Flughafen Rostock-Laage (ca. 75 km)</li>
+              @foreach ($anreiseHints as $hint)
+                <li>
+                  @if ($hint['icon'])
+                    <span class="material-symbols-rounded">{{ $hint['icon'] }}</span>
+                  @endif
+                  {{ $hint['text'] }}
+                </li>
+              @endforeach
             </ul>
           </div>
+          @endif
         </div>
 
         <div class="map-section__map">
-          <div id="map"></div>
+          <div id="map"
+            data-lat="{{ $anreiseSection?->field('map_lat') ?: '54.3835' }}"
+            data-lng="{{ $anreiseSection?->field('map_lng') ?: '13.5632' }}"></div>
         </div>
       </div>
     </div>

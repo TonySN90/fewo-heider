@@ -1801,7 +1801,7 @@ tr:last-child td {
 .highlight-card-editor__fields {
   flex: 1;
   display: grid;
-  grid-template-columns: 200px 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
   gap: 0.75rem;
 }
 @media (max-width: 768px) {
@@ -1889,6 +1889,25 @@ tr:last-child td {
 .toggle input[type=checkbox]:focus-visible + .toggle__slider {
   outline: 2px solid #3d7a6e;
   outline-offset: 2px;
+}
+
+.coord-picker-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.coord-picker {
+  height: 300px;
+  border-radius: 6px;
+  border: 1px solid #cfe0d8;
+  z-index: 0;
+}
+
+.coord-picker__inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
 }
 
 .gallery-admin-grid {

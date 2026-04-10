@@ -12,14 +12,14 @@ L.Icon.Default.mergeOptions({
   shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).href,
 });
 
-// Koordinaten: Serams/Zirkow, Rügen
-const LAT = 54.3835;
-const LNG = 13.5632;
 const ZOOM = 13;
 
 export function initMap(): void {
   const mapEl = document.getElementById('map');
   if (!mapEl) return;
+
+  const LAT = parseFloat(mapEl.dataset.lat ?? '53.618577') || 53.618577;
+  const LNG = parseFloat(mapEl.dataset.lng ?? '11.469308') || 11.469308;
 
   const map = L.map('map', {
     center: [LAT, LNG],
