@@ -77,7 +77,7 @@
   <!-- ===== ÜBER UNS / DIE WOHNUNG ===== -->
   @if (in_array('about', $visibleSections))
   @php $u = $aboutSection; @endphp
-  <section id="about" class="about section">
+  <section id="about" class="about section{{ $u?->field('bg_alt') === '1' ? ' section--alt' : '' }}">
     <div class="container">
       <div class="section__header">
         <p class="section__eyebrow">{{ $u?->field('eyebrow', 'Willkommen') ?? 'Willkommen' }}</p>
@@ -125,7 +125,7 @@
   <!-- ===== AUSSTATTUNG ===== -->
   @if (in_array('amenities', $visibleSections))
   @php $am = $amenitiesSection; @endphp
-  <section id="amenities" class="amenities section section--alt">
+  <section id="amenities" class="amenities section{{ $am?->field('bg_alt') === '1' ? ' section--alt' : '' }}">
     <div class="container">
       <div class="section__header">
         <p class="section__eyebrow">{{ $am?->field('eyebrow', 'Was wir bieten') ?? 'Was wir bieten' }}</p>
@@ -173,7 +173,7 @@
     $visibleImgs = $galleryImages->take(6);
     $hiddenImgs  = $galleryImages->skip(6);
   @endphp
-  <section id="gallery" class="gallery section">
+  <section id="gallery" class="gallery section{{ $gallerySection?->field('bg_alt') === '1' ? ' section--alt' : '' }}">
     <div class="container">
       <div class="section__header">
         <p class="section__eyebrow">{{ $gallerySection?->field('eyebrow', 'Eindrücke') ?? 'Eindrücke' }}</p>
@@ -275,7 +275,7 @@
 
   <!-- ===== ANREISE / KARTE ===== -->
   @if (in_array('arrival', $visibleSections))
-  <section id="arrival" class="map-section section">
+  <section id="arrival" class="map-section section{{ $arrivalSection?->field('bg_alt') === '1' ? ' section--alt' : '' }}">
     <div class="container">
       <div class="section__header">
         <p class="section__eyebrow">{{ $arrivalSection?->field('eyebrow') }}</p>
@@ -353,7 +353,7 @@
 
   <!-- ===== KONTAKT ===== -->
   @if (in_array('contact', $visibleSections))
-  <section id="contact" class="contact section section--alt">
+  <section id="contact" class="contact section{{ $contactSection?->field('bg_alt') === '1' ? ' section--alt' : '' }}">
     <div class="container">
       @php
         $k = $contactSection;

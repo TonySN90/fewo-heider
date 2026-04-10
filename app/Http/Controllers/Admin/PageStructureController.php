@@ -18,7 +18,7 @@ class PageStructureController extends Controller
         'about'     => 'Die Wohnung',
         'amenities' => 'Ausstattung',
         'gallery'   => 'Galerie',
-        'pricing'   => 'Preise & Verfügbarkeit',
+        'pricing'   => 'Preise & Buchungen',
         'arrival'   => 'Anreise / Karte',
         'contact'   => 'Kontakt & Anfrage',
     ];

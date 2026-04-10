@@ -67,6 +67,16 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       @if ($section->section_key === 'about')
         <div class="section-edit-form">
 
+          <div class="form-field form-field--inline">
+            <input type="hidden" name="fields[bg_alt]" value="" />
+            <label class="toggle">
+              <input type="checkbox" name="fields[bg_alt]" value="1"
+                {{ $section->field('bg_alt') === '1' ? 'checked' : '' }} />
+              <span class="toggle__slider"></span>
+            </label>
+            <span>Alternativer Hintergrund</span>
+          </div>
+
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
           <div class="form-field">
             <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
@@ -133,6 +143,16 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       {{-- ===== AUSSTATTUNG ===== --}}
       @if ($section->section_key === 'amenities')
         <div class="section-edit-form">
+
+          <div class="form-field form-field--inline">
+            <input type="hidden" name="fields[bg_alt]" value="" />
+            <label class="toggle">
+              <input type="checkbox" name="fields[bg_alt]" value="1"
+                {{ $section->field('bg_alt') === '1' ? 'checked' : '' }} />
+              <span class="toggle__slider"></span>
+            </label>
+            <span>Alternativer Hintergrund</span>
+          </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
           <div class="form-field">
@@ -209,6 +229,16 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       {{-- ===== ANREISE / KARTE ===== --}}
       @if ($section->section_key === 'arrival')
         <div class="section-edit-form">
+          <div class="form-field form-field--inline">
+            <input type="hidden" name="fields[bg_alt]" value="" />
+            <label class="toggle">
+              <input type="checkbox" name="fields[bg_alt]" value="1"
+                {{ $section->field('bg_alt') === '1' ? 'checked' : '' }} />
+              <span class="toggle__slider"></span>
+            </label>
+            <span>Alternativer Hintergrund</span>
+          </div>
+
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
           <div class="form-field">
             <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
@@ -320,6 +350,16 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       {{-- ===== GALERIE (Sektionskopf) ===== --}}
       @if ($section->section_key === 'gallery')
         <div class="section-edit-form">
+          <div class="form-field form-field--inline">
+            <input type="hidden" name="fields[bg_alt]" value="" />
+            <label class="toggle">
+              <input type="checkbox" name="fields[bg_alt]" value="1"
+                {{ $section->field('bg_alt') === '1' ? 'checked' : '' }} />
+              <span class="toggle__slider"></span>
+            </label>
+            <span>Alternativer Hintergrund</span>
+          </div>
+
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
           <div class="form-field">
             <label for="eyebrow">Eyebrow-Text</label>
@@ -337,6 +377,16 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       {{-- ===== KONTAKT & ANFRAGE ===== --}}
       @if ($section->section_key === 'contact')
         <div class="section-edit-form">
+
+          <div class="form-field form-field--inline">
+            <input type="hidden" name="fields[bg_alt]" value="" />
+            <label class="toggle">
+              <input type="checkbox" name="fields[bg_alt]" value="1"
+                {{ $section->field('bg_alt') === '1' ? 'checked' : '' }} />
+              <span class="toggle__slider"></span>
+            </label>
+            <span>Alternativer Hintergrund</span>
+          </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
           <div class="form-field">
