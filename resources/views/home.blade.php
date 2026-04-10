@@ -24,26 +24,26 @@
 
       <nav class="header__nav" id="main-nav">
         <ul>
-          @if (in_array('ueber-uns', $visibleSections))
-            <li><a href="#ueber-uns">Die Wohnung</a></li>
+          @if (in_array('about', $visibleSections))
+            <li><a href="#about">Die Wohnung</a></li>
           @endif
-          @if (in_array('ausstattung', $visibleSections))
-            <li><a href="#ausstattung">Ausstattung</a></li>
+          @if (in_array('amenities', $visibleSections))
+            <li><a href="#amenities">Ausstattung</a></li>
           @endif
-          @if (in_array('galerie', $visibleSections))
-            <li><a href="#galerie">Galerie</a></li>
+          @if (in_array('gallery', $visibleSections))
+            <li><a href="#gallery">Galerie</a></li>
           @endif
-          @if (in_array('preise', $visibleSections))
-            <li><a href="#preise">Preise</a></li>
+          @if (in_array('pricing', $visibleSections))
+            <li><a href="#pricing">Preise</a></li>
           @endif
-          @if (in_array('anreise', $visibleSections))
-            <li><a href="#anreise">Anreise</a></li>
+          @if (in_array('arrival', $visibleSections))
+            <li><a href="#arrival">Anreise</a></li>
           @endif
           @foreach ($pageGroups as $group)
             <li><a href="{{ url('/' . $group->slug) }}">{{ $group->nav_label }}</a></li>
           @endforeach
-          @if (in_array('kontakt', $visibleSections))
-            <li><a href="#kontakt" class="nav__cta">Anfragen</a></li>
+          @if (in_array('contact', $visibleSections))
+            <li><a href="#contact" class="nav__cta">Anfragen</a></li>
           @endif
         </ul>
       </nav>
@@ -60,24 +60,24 @@
       <h1 class="hero__title">{{ $heroSection?->field('title', 'Ihr Urlaub auf Rügen') ?? 'Ihr Urlaub auf Rügen' }}</h1>
       <p class="hero__subtitle">{{ $heroSection?->field('subtitle', 'Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.') ?? 'Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.' }}</p>
       <div class="hero__actions">
-        @if (in_array('galerie', $visibleSections))
-          <a href="#galerie" class="btn btn--primary">Galerie ansehen</a>
+        @if (in_array('gallery', $visibleSections))
+          <a href="#gallery" class="btn btn--primary">Galerie ansehen</a>
         @endif
-        @if (in_array('kontakt', $visibleSections))
-          <a href="#kontakt" class="btn btn--outline">Jetzt anfragen</a>
+        @if (in_array('contact', $visibleSections))
+          <a href="#contact" class="btn btn--outline">Jetzt anfragen</a>
         @endif
       </div>
     </div>
-    <a href="#ueber-uns" class="hero__scroll" aria-label="Nach unten scrollen">
+    <a href="#about" class="hero__scroll" aria-label="Nach unten scrollen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </a>
   </section>
   @endif
 
   <!-- ===== ÜBER UNS / DIE WOHNUNG ===== -->
-  @if (in_array('ueber-uns', $visibleSections))
-  @php $u = $aboutUsSection; @endphp
-  <section id="ueber-uns" class="about section">
+  @if (in_array('about', $visibleSections))
+  @php $u = $aboutSection; @endphp
+  <section id="about" class="about section">
     <div class="container">
       <div class="section__header">
         <p class="section__eyebrow">{{ $u?->field('eyebrow', 'Willkommen') ?? 'Willkommen' }}</p>
@@ -96,8 +96,8 @@
           @if ($u?->field('text_3'))
             <p>{{ $u->field('text_3') }}</p>
           @endif
-          @if (in_array('kontakt', $visibleSections))
-            <a href="#kontakt" class="btn btn--primary">Jetzt anfragen</a>
+          @if (in_array('contact', $visibleSections))
+            <a href="#contact" class="btn btn--primary">Jetzt anfragen</a>
           @endif
         </div>
 
@@ -123,9 +123,9 @@
   @endif
 
   <!-- ===== AUSSTATTUNG ===== -->
-  @if (in_array('ausstattung', $visibleSections))
+  @if (in_array('amenities', $visibleSections))
   @php $am = $amenitiesSection; @endphp
-  <section id="ausstattung" class="amenities section section--alt">
+  <section id="amenities" class="amenities section section--alt">
     <div class="container">
       <div class="section__header">
         <p class="section__eyebrow">{{ $am?->field('eyebrow', 'Was wir bieten') ?? 'Was wir bieten' }}</p>
@@ -168,12 +168,12 @@
   @endif
 
   <!-- ===== GALERIE ===== -->
-  @if (in_array('galerie', $visibleSections))
+  @if (in_array('gallery', $visibleSections))
   @php
     $visibleImgs = $galleryImages->take(6);
     $hiddenImgs  = $galleryImages->skip(6);
   @endphp
-  <section id="galerie" class="gallery section">
+  <section id="gallery" class="gallery section">
     <div class="container">
       <div class="section__header">
         <p class="section__eyebrow">{{ $gallerySection?->field('eyebrow', 'Eindrücke') ?? 'Eindrücke' }}</p>
@@ -213,8 +213,8 @@
   @endif
 
   <!-- ===== PREISE & BELEGUNGSPLAN ===== -->
-  @if (in_array('preise', $visibleSections))
-  <section id="preise" class="pricing section section--alt">
+  @if (in_array('pricing', $visibleSections))
+  <section id="pricing" class="pricing section section--alt">
     <div class="container">
       <div class="section__header">
         <p class="section__eyebrow">Übersicht</p>
@@ -274,61 +274,61 @@
   @endif
 
   <!-- ===== ANREISE / KARTE ===== -->
-  @if (in_array('anreise', $visibleSections))
-  <section id="anreise" class="map-section section">
+  @if (in_array('arrival', $visibleSections))
+  <section id="arrival" class="map-section section">
     <div class="container">
       <div class="section__header">
-        <p class="section__eyebrow">{{ $anreiseSection?->field('eyebrow') }}</p>
-        <h2 class="section__title">{{ $anreiseSection?->field('title') }}</h2>
+        <p class="section__eyebrow">{{ $arrivalSection?->field('eyebrow') }}</p>
+        <h2 class="section__title">{{ $arrivalSection?->field('title') }}</h2>
         <div class="section__divider"></div>
       </div>
 
       <div class="map-section__layout">
         <div class="map-section__address">
-          <h3>{{ $anreiseSection?->field('address_subtitle') ?: 'Ihre Unterkunft' }}</h3>
+          <h3>{{ $arrivalSection?->field('address_subtitle') ?: 'Ihre Unterkunft' }}</h3>
           <address>
-            <p class="address__name">{{ $anreiseSection?->field('address_name') }}</p>
-            <p>{{ $anreiseSection?->field('address_street') }}</p>
-            <p>{{ $anreiseSection?->field('address_city') }}</p>
+            <p class="address__name">{{ $arrivalSection?->field('address_name') }}</p>
+            <p>{{ $arrivalSection?->field('address_street') }}</p>
+            <p>{{ $arrivalSection?->field('address_city') }}</p>
           </address>
 
           @php
-            $anreisePhone     = $anreiseSection?->field('phone') ?? '';
-            $anreisePhoneHref = $anreiseSection?->field('phone_href') ?? '';
-            $anreiseEmail     = $anreiseSection?->field('email') ?? '';
+            $arrivalPhone     = $arrivalSection?->field('phone') ?? '';
+            $arrivalPhoneHref = $arrivalSection?->field('phone_href') ?? '';
+            $arrivalEmail     = $arrivalSection?->field('email') ?? '';
           @endphp
-          @if ($anreisePhone || $anreiseEmail)
+          @if ($arrivalPhone || $arrivalEmail)
           <div class="address__contact">
-            @if ($anreisePhone)
-            <a href="tel:{{ $anreisePhoneHref }}" class="contact-link">
+            @if ($arrivalPhone)
+            <a href="tel:{{ $arrivalPhoneHref }}" class="contact-link">
               <span class="contact-link__icon material-symbols-rounded">call</span>
-              {{ $anreisePhone }}
+              {{ $arrivalPhone }}
             </a>
             @endif
-            @if ($anreiseEmail)
-            <a href="mailto:{{ $anreiseEmail }}" class="contact-link">
+            @if ($arrivalEmail)
+            <a href="mailto:{{ $arrivalEmail }}" class="contact-link">
               <span class="contact-link__icon material-symbols-rounded">mail</span>
-              {{ $anreiseEmail }}
+              {{ $arrivalEmail }}
             </a>
             @endif
           </div>
           @endif
 
           @php
-            $anreiseHints = [];
+            $arrivalHints = [];
             for ($i = 1; $i <= 5; $i++) {
-              $icon = $anreiseSection?->field("hint_{$i}_icon");
-              $text = $anreiseSection?->field("hint_{$i}_text");
+              $icon = $arrivalSection?->field("hint_{$i}_icon");
+              $text = $arrivalSection?->field("hint_{$i}_text");
               if ($icon || $text) {
-                $anreiseHints[] = ['icon' => $icon, 'text' => $text];
+                $arrivalHints[] = ['icon' => $icon, 'text' => $text];
               }
             }
           @endphp
-          @if (!empty($anreiseHints))
+          @if (!empty($arrivalHints))
           <div class="address__hints">
-            <h4>{{ $anreiseSection?->field('hints_title', 'Anreise-Tipps') ?? 'Anreise-Tipps' }}</h4>
+            <h4>{{ $arrivalSection?->field('hints_title', 'Anreise-Tipps') ?? 'Anreise-Tipps' }}</h4>
             <ul>
-              @foreach ($anreiseHints as $hint)
+              @foreach ($arrivalHints as $hint)
                 <li>
                   @if ($hint['icon'])
                     <span class="material-symbols-rounded">{{ $hint['icon'] }}</span>
@@ -343,8 +343,8 @@
 
         <div class="map-section__map">
           <div id="map"
-            data-lat="{{ $anreiseSection?->field('map_lat') ?: '54.3835' }}"
-            data-lng="{{ $anreiseSection?->field('map_lng') ?: '13.5632' }}"></div>
+            data-lat="{{ $arrivalSection?->field('map_lat') ?: '54.3835' }}"
+            data-lng="{{ $arrivalSection?->field('map_lng') ?: '13.5632' }}"></div>
         </div>
       </div>
     </div>
@@ -352,11 +352,11 @@
   @endif
 
   <!-- ===== KONTAKT ===== -->
-  @if (in_array('kontakt', $visibleSections))
-  <section id="kontakt" class="contact section section--alt">
+  @if (in_array('contact', $visibleSections))
+  <section id="contact" class="contact section section--alt">
     <div class="container">
       @php
-        $k = $kontaktSection;
+        $k = $contactSection;
         $kPhone     = $k?->field('phone') ?? '';
         $kPhoneHref = $k?->field('phone_href') ?? '';
         $kEmail     = $k?->field('email') ?? '';
@@ -431,17 +431,17 @@
         <div class="footer__nav">
           <h4>Navigation</h4>
           <ul>
-            @if (in_array('ueber-uns', $visibleSections))
-              <li><a href="#ueber-uns">Die Wohnung</a></li>
+            @if (in_array('about', $visibleSections))
+              <li><a href="#about">Die Wohnung</a></li>
             @endif
-            @if (in_array('galerie', $visibleSections))
-              <li><a href="#galerie">Galerie</a></li>
+            @if (in_array('gallery', $visibleSections))
+              <li><a href="#gallery">Galerie</a></li>
             @endif
-            @if (in_array('preise', $visibleSections))
-              <li><a href="#preise">Preise</a></li>
+            @if (in_array('pricing', $visibleSections))
+              <li><a href="#pricing">Preise</a></li>
             @endif
-            @if (in_array('kontakt', $visibleSections))
-              <li><a href="#kontakt">Kontakt</a></li>
+            @if (in_array('contact', $visibleSections))
+              <li><a href="#contact">Kontakt</a></li>
             @endif
           </ul>
         </div>

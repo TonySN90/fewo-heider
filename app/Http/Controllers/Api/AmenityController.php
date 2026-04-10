@@ -10,7 +10,7 @@ class AmenityController extends Controller
     public function index()
     {
         $template = Template::active();
-        $section = $template?->getSection('ausstattung');
+        $section = $template?->getSection('amenities');
         $section?->load('content');
 
         $items = [];

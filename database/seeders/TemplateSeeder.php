@@ -10,13 +10,13 @@ use Illuminate\Database\Seeder;
 class TemplateSeeder extends Seeder
 {
     const SECTIONS = [
-        ['section_key' => 'hero',        'sort_order' => 1],
-        ['section_key' => 'ueber-uns',   'sort_order' => 2],
-        ['section_key' => 'ausstattung', 'sort_order' => 3],
-        ['section_key' => 'galerie',     'sort_order' => 4],
-        ['section_key' => 'preise',      'sort_order' => 5],
-        ['section_key' => 'anreise',     'sort_order' => 6],
-        ['section_key' => 'kontakt',     'sort_order' => 7],
+        ['section_key' => 'hero',      'sort_order' => 1],
+        ['section_key' => 'about',     'sort_order' => 2],
+        ['section_key' => 'amenities', 'sort_order' => 3],
+        ['section_key' => 'gallery',   'sort_order' => 4],
+        ['section_key' => 'pricing',   'sort_order' => 5],
+        ['section_key' => 'arrival',   'sort_order' => 6],
+        ['section_key' => 'contact',   'sort_order' => 7],
     ];
 
     public function run(): void
@@ -32,7 +32,7 @@ class TemplateSeeder extends Seeder
                 'title' => 'Ihr Urlaub auf Rügen',
                 'subtitle' => 'Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.',
             ],
-            'ueber-uns' => [
+            'about' => [
                 'eyebrow' => 'Willkommen',
                 'title' => 'Ferienwohnung Heider',
                 'text_1' => 'Die Ferienwohnung befindet sich in einem Einfamilienhaus in ruhiger Umgebung in der Nähe vom Ostseebad Binz. Perfekt, um schnell mit dem Fahrrad in das nur 3 km entfernte Ostseebad zu radeln.',
@@ -57,7 +57,7 @@ class TemplateSeeder extends Seeder
                 'card_6_heading' => '',
                 'card_6_text' => '',
             ],
-            'ausstattung' => [
+            'amenities' => [
                 'eyebrow' => 'Was wir bieten',
                 'title' => 'Ausstattung',
                 'amenity_1_icon' => 'local_parking',
@@ -89,7 +89,7 @@ class TemplateSeeder extends Seeder
                 'amenity_14_icon' => 'chair',
                 'amenity_14_label' => 'Gemütliche Sitzecke',
             ],
-            'galerie' => [
+            'gallery' => [
                 'eyebrow' => 'Eindrücke',
                 'title' => 'Galerie',
             ],

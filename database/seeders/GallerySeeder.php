@@ -17,7 +17,7 @@ class GallerySeeder extends Seeder
         }
 
         /** @var TemplateSection|null $section */
-        $section = $template->sections()->where('section_key', 'galerie')->first();
+        $section = $template->sections()->where('section_key', 'gallery')->first();
         if (! $section) {
             return;
         }

@@ -13,7 +13,7 @@ use Illuminate\View\View;
 class HomeController extends Controller
 {
     private const ALL_SECTIONS = [
-        'hero', 'ueber-uns', 'ausstattung', 'galerie', 'preise', 'anreise', 'kontakt',
+        'hero', 'about', 'amenities', 'gallery', 'pricing', 'arrival', 'contact',
     ];
 
     public function preview(string $tenantSlug): View
@@ -40,23 +40,23 @@ class HomeController extends Controller
 
             $visibleSections = $sections->where('is_visible', true)->pluck('section_key')->toArray();
             $heroSection = $sections->firstWhere('section_key', 'hero');
-            $aboutUsSection = $sections->firstWhere('section_key', 'ueber-uns');
-            $amenitiesSection = $sections->firstWhere('section_key', 'ausstattung');
-            $gallerySection = $sections->firstWhere('section_key', 'galerie');
-            $anreiseSection = $sections->firstWhere('section_key', 'anreise');
-            $kontaktSection = $sections->firstWhere('section_key', 'kontakt');
+            $aboutSection = $sections->firstWhere('section_key', 'about');
+            $amenitiesSection = $sections->firstWhere('section_key', 'amenities');
+            $gallerySection = $sections->firstWhere('section_key', 'gallery');
+            $arrivalSection = $sections->firstWhere('section_key', 'arrival');
+            $contactSection = $sections->firstWhere('section_key', 'contact');
         } elseif ($activeTemplate !== null) {
             $activeTemplate->load('sections.content');
             $visibleSections = $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray();
             $heroSection = $activeTemplate->getSection('hero');
-            $aboutUsSection = $activeTemplate->getSection('ueber-uns');
-            $amenitiesSection = $activeTemplate->getSection('ausstattung');
-            $gallerySection = $activeTemplate->getSection('galerie');
-            $anreiseSection = $activeTemplate->getSection('anreise');
-            $kontaktSection = $activeTemplate->getSection('kontakt');
+            $aboutSection = $activeTemplate->getSection('about');
+            $amenitiesSection = $activeTemplate->getSection('amenities');
+            $gallerySection = $activeTemplate->getSection('gallery');
+            $arrivalSection = $activeTemplate->getSection('arrival');
+            $contactSection = $activeTemplate->getSection('contact');
         } else {
             $visibleSections = self::ALL_SECTIONS;
-            $heroSection = $aboutUsSection = $amenitiesSection = $gallerySection = $anreiseSection = $kontaktSection = null;
+            $heroSection = $aboutSection = $amenitiesSection = $gallerySection = $arrivalSection = $contactSection = null;
         }
 
         $galleryImages = $gallerySection
@@ -70,6 +70,6 @@ class HomeController extends Controller
                 ->get()
             : collect();
 
-        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection', 'aboutUsSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'anreiseSection', 'kontaktSection', 'pageGroups'));
+        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection', 'aboutSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'arrivalSection', 'contactSection', 'pageGroups'));
     }
 }

@@ -11,17 +11,17 @@ use Illuminate\View\View;
 class TemplateController extends Controller
 {
     private const SECTION_LABELS = [
-        'hero' => 'Hero (Hauptbild)',
-        'ueber-uns' => 'Die Wohnung',
-        'ausstattung' => 'Ausstattung',
-        'galerie' => 'Galerie',
-        'preise' => 'Preise & Verfügbarkeit',
-        'anreise' => 'Anreise / Karte',
-        'kontakt' => 'Kontakt & Anfrage',
+        'hero'      => 'Hero (Hauptbild)',
+        'about'     => 'Die Wohnung',
+        'amenities' => 'Ausstattung',
+        'gallery'   => 'Galerie',
+        'pricing'   => 'Preise & Verfügbarkeit',
+        'arrival'   => 'Anreise / Karte',
+        'contact'   => 'Kontakt & Anfrage',
     ];
 
     // Sections that have a dedicated edit page
-    private const EDITABLE_SECTIONS = ['hero', 'ueber-uns', 'ausstattung', 'galerie'];
+    private const EDITABLE_SECTIONS = ['hero', 'about', 'amenities', 'gallery'];
 
     public function index(): View
     {

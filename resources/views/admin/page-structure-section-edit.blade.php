@@ -64,7 +64,7 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       @endif
 
       {{-- ===== DIE WOHNUNG ===== --}}
-      @if ($section->section_key === 'ueber-uns')
+      @if ($section->section_key === 'about')
         <div class="section-edit-form">
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
@@ -131,7 +131,7 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       @endif
 
       {{-- ===== AUSSTATTUNG ===== --}}
-      @if ($section->section_key === 'ausstattung')
+      @if ($section->section_key === 'amenities')
         <div class="section-edit-form">
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
@@ -207,7 +207,7 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       @endif
 
       {{-- ===== ANREISE / KARTE ===== --}}
-      @if ($section->section_key === 'anreise')
+      @if ($section->section_key === 'arrival')
         <div class="section-edit-form">
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
           <div class="form-field">
@@ -318,7 +318,7 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       @endif
 
       {{-- ===== GALERIE (Sektionskopf) ===== --}}
-      @if ($section->section_key === 'galerie')
+      @if ($section->section_key === 'gallery')
         <div class="section-edit-form">
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
           <div class="form-field">
@@ -335,7 +335,7 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       @endif
 
       {{-- ===== KONTAKT & ANFRAGE ===== --}}
-      @if ($section->section_key === 'kontakt')
+      @if ($section->section_key === 'contact')
         <div class="section-edit-form">
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
@@ -408,7 +408,7 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
   </div>
 
   {{-- ===== GALERIE: Upload + Bild-Tabelle (außerhalb des PUT-Formulars) ===== --}}
-  @if ($section->section_key === 'galerie')
+  @if ($section->section_key === 'gallery')
     <div class="table-card" style="margin-top:1.5rem">
       <div class="table-card__header">
         <h2>Bilder hochladen</h2>
@@ -488,7 +488,7 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
   @endif
 
   {{-- Icon-Optionen als JSON für JS --}}
-  @if ($section->section_key === 'ausstattung')
+  @if ($section->section_key === 'amenities')
     <script id="icon-options-data" type="application/json">
       @json(array_keys($highlightIcons))
     </script>
@@ -568,7 +568,7 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
 </script>
 @endpush
 
-@if ($section->section_key === 'anreise')
+@if ($section->section_key === 'arrival')
 @push('head')
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 @endpush
