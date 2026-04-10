@@ -106,6 +106,19 @@
     border-top: 1px solid #f0f0f0;
     margin-top: $space-5;
   }
+
+  &__cols {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-5;
+  }
+
+  &__col {
+    flex: 1 1 300px;
+    display: flex;
+    flex-direction: column;
+    gap: $space-5;
+  }
 }
 
 // ── Amenity Editor ────────────────────────────────────────────────────────────
