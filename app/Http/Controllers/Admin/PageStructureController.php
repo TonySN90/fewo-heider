@@ -23,7 +23,7 @@ class PageStructureController extends Controller
         'kontakt' => 'Kontakt & Anfrage',
     ];
 
-    private const EDITABLE_SECTIONS = ['hero', 'ueber-uns', 'ausstattung', 'galerie', 'anreise'];
+    private const EDITABLE_SECTIONS = ['hero', 'ueber-uns', 'ausstattung', 'galerie', 'anreise', 'kontakt'];
 
     public function index(): View
     {

@@ -44,6 +44,7 @@ class HomeController extends Controller
             $amenitiesSection = $sections->firstWhere('section_key', 'ausstattung');
             $gallerySection = $sections->firstWhere('section_key', 'galerie');
             $anreiseSection = $sections->firstWhere('section_key', 'anreise');
+            $kontaktSection = $sections->firstWhere('section_key', 'kontakt');
         } elseif ($activeTemplate !== null) {
             $activeTemplate->load('sections.content');
             $visibleSections = $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray();
@@ -52,9 +53,10 @@ class HomeController extends Controller
             $amenitiesSection = $activeTemplate->getSection('ausstattung');
             $gallerySection = $activeTemplate->getSection('galerie');
             $anreiseSection = $activeTemplate->getSection('anreise');
+            $kontaktSection = $activeTemplate->getSection('kontakt');
         } else {
             $visibleSections = self::ALL_SECTIONS;
-            $heroSection = $aboutUsSection = $amenitiesSection = $gallerySection = $anreiseSection = null;
+            $heroSection = $aboutUsSection = $amenitiesSection = $gallerySection = $anreiseSection = $kontaktSection = null;
         }
 
         $galleryImages = $gallerySection
@@ -68,6 +70,6 @@ class HomeController extends Controller
                 ->get()
             : collect();
 
-        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection', 'aboutUsSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'anreiseSection', 'pageGroups'));
+        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection', 'aboutUsSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'anreiseSection', 'kontaktSection', 'pageGroups'));
     }
 }

@@ -334,6 +334,72 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
         </div>
       @endif
 
+      {{-- ===== KONTAKT & ANFRAGE ===== --}}
+      @if ($section->section_key === 'kontakt')
+        <div class="section-edit-form">
+
+          <h2 class="section-edit-form__heading">Sektionskopf</h2>
+          <div class="form-field">
+            <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
+            <input type="text" id="eyebrow" name="fields[eyebrow]"
+              value="{{ $section->field('eyebrow') }}" placeholder="Wir freuen uns auf Sie" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="title">Überschrift</label>
+            <input type="text" id="title" name="fields[title]"
+              value="{{ $section->field('title') }}" placeholder="Kontakt & Anfrage" maxlength="150" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Texte</h2>
+          <div class="form-field">
+            <label for="text_1">Absatz 1</label>
+            <textarea id="text_1" name="fields[text_1]" rows="3" maxlength="600">{{ $section->field('text_1') }}</textarea>
+          </div>
+          <div class="form-field">
+            <label for="text_2">Absatz 2 <span class="form-field__hint">(optional)</span></label>
+            <textarea id="text_2" name="fields[text_2]" rows="3" maxlength="600">{{ $section->field('text_2') }}</textarea>
+          </div>
+          <div class="form-field">
+            <label for="btn_label">Button-Beschriftung</label>
+            <input type="text" id="btn_label" name="fields[btn_label]"
+              value="{{ $section->field('btn_label') }}" placeholder="E-Mail schreiben" maxlength="80" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Kontaktkarte</h2>
+          <div class="form-field">
+            <label for="card_label">Bezeichnung <span class="form-field__hint">(z.B. „Ihre Ansprechpartnerin")</span></label>
+            <input type="text" id="card_label" name="fields[card_label]"
+              value="{{ $section->field('card_label') }}" placeholder="Ihre Ansprechpartnerin" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="card_name">Name</label>
+            <input type="text" id="card_name" name="fields[card_name]"
+              value="{{ $section->field('card_name') }}" placeholder="Max Mustermann" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="card_address">Adresse <span class="form-field__hint">(einzeilig)</span></label>
+            <input type="text" id="card_address" name="fields[card_address]"
+              value="{{ $section->field('card_address') }}" placeholder="Musterstraße 1, 12345 Musterstadt" maxlength="200" />
+          </div>
+          <div class="form-field">
+            <label for="phone">Telefon <span class="form-field__hint">(Anzeige, z.B. 030 123456)</span></label>
+            <input type="text" id="phone" name="fields[phone]"
+              value="{{ $section->field('phone') }}" placeholder="030 123456" maxlength="50" />
+          </div>
+          <div class="form-field">
+            <label for="phone_href">Telefon (tel:-Link) <span class="form-field__hint">(z.B. +4930123456)</span></label>
+            <input type="text" id="phone_href" name="fields[phone_href]"
+              value="{{ $section->field('phone_href') }}" placeholder="+4930123456" maxlength="50" />
+          </div>
+          <div class="form-field">
+            <label for="email">E-Mail</label>
+            <input type="email" id="email" name="fields[email]"
+              value="{{ $section->field('email') }}" placeholder="max.mustermann@beispiel.de" maxlength="150" />
+          </div>
+
+        </div>
+      @endif
+
       <div class="section-edit-form__actions">
         <a href="{{ route('admin.page-structure') }}" class="btn btn-cancel">Abbrechen</a>
         <button type="submit" class="btn btn-save">Speichern</button>

@@ -355,42 +355,63 @@
   @if (in_array('kontakt', $visibleSections))
   <section id="kontakt" class="contact section section--alt">
     <div class="container">
+      @php
+        $k = $kontaktSection;
+        $kPhone     = $k?->field('phone') ?? '';
+        $kPhoneHref = $k?->field('phone_href') ?? '';
+        $kEmail     = $k?->field('email') ?? '';
+        $kMailHref  = $kEmail ? 'mailto:' . $kEmail : '';
+      @endphp
+
       <div class="section__header">
-        <p class="section__eyebrow">Wir freuen uns auf Sie</p>
-        <h2 class="section__title">Kontakt & Anfrage</h2>
+        <p class="section__eyebrow">{{ $k?->field('eyebrow') ?: 'Wir freuen uns auf Sie' }}</p>
+        <h2 class="section__title">{{ $k?->field('title') ?: 'Kontakt & Anfrage' }}</h2>
         <div class="section__divider"></div>
       </div>
 
       <div class="contact__layout">
         <div class="contact__text">
-          <p>
-            Sie haben Fragen zur Ferienwohnung oder möchten einen Aufenthalt anfragen? Schreiben Sie uns einfach eine E-Mail – wir antworten schnell und unkompliziert.
-          </p>
-          <p>
-            Teilen Sie uns gerne Ihre gewünschten Reisedaten sowie die Anzahl der Personen mit, dann prüfen wir die Verfügbarkeit für Sie.
-          </p>
-          <a href="mailto:fewo.heider@gmail.com?subject=Anfrage%20Ferienwohnung%20Heider&body=Hallo%20Frau%20Heider%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20Ihre%20Ferienwohnung.%0A%0AReisezeitraum%3A%20%0AAnzahl%20Personen%3A%20%0A%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen" class="btn btn--primary btn--large">
-            <span class="material-symbols-rounded">mail</span> E-Mail schreiben
-          </a>
+          @if ($k?->field('text_1'))
+            <p>{{ $k->field('text_1') }}</p>
+          @endif
+          @if ($k?->field('text_2'))
+            <p>{{ $k->field('text_2') }}</p>
+          @endif
+          @if ($kEmail)
+            <a href="{{ $kMailHref }}" class="btn btn--primary btn--large">
+              <span class="material-symbols-rounded">mail</span>
+              {{ $k?->field('btn_label') ?: 'E-Mail schreiben' }}
+            </a>
+          @endif
         </div>
 
         <div class="contact__card">
           <div class="contact__card-inner">
-            <p class="contact__card-label">Ihre Ansprechpartnerin</p>
-            <h3 class="contact__card-name">Lolita Heider</h3>
+            @if ($k?->field('card_label'))
+              <p class="contact__card-label">{{ $k->field('card_label') }}</p>
+            @endif
+            @if ($k?->field('card_name'))
+              <h3 class="contact__card-name">{{ $k->field('card_name') }}</h3>
+            @endif
             <div class="contact__card-details">
-              <div class="contact__card-row">
-                <span class="material-symbols-rounded">location_on</span>
-                <span>Serams 8A, 18528 Zirkow/Serams</span>
-              </div>
-              <div class="contact__card-row">
-                <span class="material-symbols-rounded">call</span>
-                <a href="tel:+493839331283">038393 31283</a>
-              </div>
-              <div class="contact__card-row">
-                <span class="material-symbols-rounded">mail</span>
-                <a href="mailto:fewo.heider@gmail.com">fewo.heider@gmail.com</a>
-              </div>
+              @if ($k?->field('card_address'))
+                <div class="contact__card-row">
+                  <span class="material-symbols-rounded">location_on</span>
+                  <span>{{ $k->field('card_address') }}</span>
+                </div>
+              @endif
+              @if ($kPhone)
+                <div class="contact__card-row">
+                  <span class="material-symbols-rounded">call</span>
+                  <a href="tel:{{ $kPhoneHref }}">{{ $kPhone }}</a>
+                </div>
+              @endif
+              @if ($kEmail)
+                <div class="contact__card-row">
+                  <span class="material-symbols-rounded">mail</span>
+                  <a href="mailto:{{ $kEmail }}">{{ $kEmail }}</a>
+                </div>
+              @endif
             </div>
           </div>
         </div>
