@@ -70,7 +70,7 @@
 
 .pricing__table-wrap {
   @include card;
-  padding: $space-8;
+  padding: $space-5;
   border: 1px solid $color-border;
 }
 
@@ -204,7 +204,7 @@
 
 .pricing__calendar-wrap {
   @include card;
-  padding: $space-8;
+  padding: $space-5;
   border: 1px solid $color-border;
 }
 
