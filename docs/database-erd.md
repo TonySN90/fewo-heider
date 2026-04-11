@@ -236,6 +236,14 @@ erDiagram
         string color_border
         string color_footer_top
         string color_footer_bot
+        string dark_color_primary
+        string dark_color_primary_dark
+        string dark_color_secondary
+        string dark_color_bg
+        string dark_color_bg_alt
+        string dark_color_border
+        string dark_color_footer_top
+        string dark_color_footer_bot
         timestamps created_at
         timestamps updated_at
     }
