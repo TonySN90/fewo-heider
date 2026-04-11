@@ -11,3 +11,4 @@ dist/
 /bootstrap/cache/*
 !bootstrap/cache/.gitkeep
 auth.json
+CLAUDE.md
