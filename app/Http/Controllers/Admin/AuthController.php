@@ -12,7 +12,9 @@ class AuthController extends Controller
     public function showLogin()
     {
         if (Auth::check()) {
-            return redirect()->route('admin.dashboard');
+            return Auth::user()->hasRole('super-admin')
+                ? redirect()->route('admin.overview')
+                : redirect()->route('admin.dashboard');
         }
 
         $tenant = Tenant::where('domain', request()->getHost())
@@ -40,7 +42,11 @@ class AuthController extends Controller
                 }
             }
 
-            return redirect()->intended(route('admin.dashboard'));
+            $destination = $user->hasRole('super-admin')
+                ? route('admin.overview')
+                : route('admin.dashboard');
+
+            return redirect()->intended($destination);
         }
 
         return back()->withErrors([
