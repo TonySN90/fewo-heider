@@ -14,20 +14,20 @@
   transition: background-color $transition-normal, box-shadow $transition-normal;
 
   &.scrolled {
-    background-color: rgba($color-bg, 0.97);
+    background-color: var(--color-bg);
     box-shadow: $shadow-md;
     backdrop-filter: blur(8px);
 
     .header__logo-text {
-      color: $color-dark;
+      color: var(--color-dark);
     }
 
     .header__logo-sub {
-      color: $color-text-light;
+      color: var(--color-text-light);
     }
 
     .header__nav a:not(.nav__cta) {
-      color: $color-dark;
+      color: var(--color-dark);
 
       &:hover {
         color: var(--color-primary);
@@ -35,7 +35,7 @@
     }
 
     .header__hamburger span {
-      background-color: $color-dark;
+      background-color: var(--color-dark);
     }
   }
 }
@@ -138,6 +138,58 @@
   }
 }
 
+// Dark-Mode-Toggle
+.header__theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $color-white;
+  border-radius: 50%;
+  transition: background-color $transition-fast, color $transition-fast;
+  flex-shrink: 0;
+
+  .material-symbols-rounded {
+    font-size: 1.25rem;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  // Light-Mode: Mond sichtbar, Sonne ausgeblendet
+  &__icon--light { display: none; }
+  &__icon--dark  { display: inline-flex; }
+
+  // Scrolled-Header: dunkle Iconfarbe
+  #header.scrolled & {
+    color: var(--color-dark);
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+  }
+}
+
+// Dark-Mode: Sonne sichtbar, Mond ausgeblendet
+[data-theme="dark"] .header__theme-toggle {
+  &__icon--light { display: inline-flex; }
+  &__icon--dark  { display: none; }
+}
+
+// Controls-Wrapper (Toggle + Hamburger)
+.header__controls {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-shrink: 0;
+}
+
 // Hamburger
 .header__hamburger {
   display: none;
@@ -168,7 +220,7 @@
 
   &.open {
     span {
-      background-color: $color-dark;
+      background-color: var(--color-dark);
     }
 
     span:nth-child(1) {
@@ -194,7 +246,7 @@
     right: -100%;
     width: min(320px, 85vw);
     height: 100vh;
-    background-color: $color-bg;
+    background-color: var(--color-bg);
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
     padding: 100px $space-8 $space-8;
     transition: right $transition-normal;
@@ -217,7 +269,7 @@
 
     a:not(.nav__cta) {
       display: block;
-      color: $color-dark !important;
+      color: var(--color-dark) !important;
       padding: $space-4 0;
       font-size: $font-size-base;
 

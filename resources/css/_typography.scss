@@ -21,7 +21,7 @@
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $font-heading;
-  color: $color-dark;
+  color: var(--color-dark);
   line-height: $line-height-tight;
   font-weight: 700;
 }
@@ -42,7 +42,7 @@ p {
 
 strong {
   font-weight: 600;
-  color: $color-dark;
+  color: var(--color-dark);
 }
 
 em {

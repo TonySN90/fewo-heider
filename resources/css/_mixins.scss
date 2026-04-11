@@ -74,7 +74,7 @@
 @mixin section-heading {
   font-family: $font-heading;
   font-size: $font-size-4xl;
-  color: $color-dark;
+  color: var(--color-dark);
   line-height: $line-height-tight;
 
   @include respond-to('md') {
@@ -84,7 +84,7 @@
 
 // Card Base
 @mixin card {
-  background: $color-white;
+  background: var(--color-surface);
   border-radius: $border-radius;
   box-shadow: $shadow-md;
   overflow: hidden;

@@ -24,7 +24,7 @@
 .contact__text {
   p {
     font-size: $font-size-lg;
-    color: $color-text;
+    color: var(--color-text);
     margin-bottom: $space-6;
     line-height: $line-height-loose;
 

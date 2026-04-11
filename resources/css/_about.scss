@@ -24,7 +24,7 @@
 .about__text {
   p {
     font-size: $font-size-lg;
-    color: $color-text;
+    color: var(--color-text);
     margin-bottom: $space-6;
 
     @include respond-to('md') {
@@ -34,7 +34,7 @@
 
   .about__intro {
     font-size: $font-size-xl;
-    color: $color-dark;
+    color: var(--color-dark);
     font-style: italic;
     border-left: 3px solid var(--color-primary);
     padding-left: $space-6;
@@ -83,12 +83,12 @@
   font-size: $font-size-base;
   font-weight: 700;
   margin-bottom: $space-2;
-  color: $color-dark;
+  color: var(--color-dark);
 }
 
 .highlight-card p {
   font-size: $font-size-sm;
-  color: $color-text-light;
+  color: var(--color-text-light);
   margin: 0;
   line-height: $line-height-normal;
 }

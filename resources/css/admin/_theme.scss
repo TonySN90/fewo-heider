@@ -149,6 +149,23 @@
   }
 }
 
+.theme-editor__palette--dark {
+  padding-top: $space-8;
+  border-top: 1px solid $color-border;
+}
+
+.theme-preview--dark {
+  background-color: #1a2422;
+
+  .theme-preview__label {
+    color: rgba(255, 255, 255, 0.7);
+
+    &--dark {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+}
+
 // ── Outline-sm Button (für Farbeditor) ───────────────────────────────────
 
 .btn--outline-sm {

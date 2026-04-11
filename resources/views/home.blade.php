@@ -16,29 +16,35 @@
         <span class="header__logo-sub">Rügen · Serams</span>
       </a>
 
-      <button class="header__hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <div class="header__controls">
+        <button class="header__theme-toggle" id="themeToggle" aria-label="Dark Mode umschalten">
+          <span class="material-symbols-rounded header__theme-toggle__icon--light">light_mode</span>
+          <span class="material-symbols-rounded header__theme-toggle__icon--dark">dark_mode</span>
+        </button>
 
+        <button class="header__hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      @php
+        $navLabels = [
+          'about'     => ['href' => '#about',     'label' => 'Die Wohnung'],
+          'amenities' => ['href' => '#amenities', 'label' => 'Ausstattung'],
+          'gallery'   => ['href' => '#gallery',   'label' => 'Galerie'],
+          'pricing'   => ['href' => '#pricing',   'label' => 'Preise'],
+          'arrival'   => ['href' => '#arrival',   'label' => 'Anreise'],
+        ];
+      @endphp
       <nav class="header__nav" id="main-nav">
         <ul>
-          @if (in_array('about', $visibleSections))
-            <li><a href="#about">Die Wohnung</a></li>
-          @endif
-          @if (in_array('amenities', $visibleSections))
-            <li><a href="#amenities">Ausstattung</a></li>
-          @endif
-          @if (in_array('gallery', $visibleSections))
-            <li><a href="#gallery">Galerie</a></li>
-          @endif
-          @if (in_array('pricing', $visibleSections))
-            <li><a href="#pricing">Preise</a></li>
-          @endif
-          @if (in_array('arrival', $visibleSections))
-            <li><a href="#arrival">Anreise</a></li>
-          @endif
+          @foreach ($orderedSections as $sec)
+            @if (isset($navLabels[$sec->section_key]))
+              <li><a href="{{ $navLabels[$sec->section_key]['href'] }}">{{ $navLabels[$sec->section_key]['label'] }}</a></li>
+            @endif
+          @endforeach
           @foreach ($pageGroups as $group)
             <li><a href="{{ url('/' . $group->slug) }}">{{ $group->nav_label }}</a></li>
           @endforeach

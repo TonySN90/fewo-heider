@@ -125,6 +125,96 @@
         </div>
       </div>
 
+      {{-- Dark-Mode-Palette --}}
+      <div class="theme-editor__palette theme-editor__palette--dark">
+        <h3 class="theme-editor__palette-title">Dark-Mode-Palette</h3>
+        <p class="form-hint">Diese Farben werden aktiv wenn der Besucher den Dark-Mode aktiviert.</p>
+
+        <div class="theme-color-row theme-color-row--primary" style="margin-bottom: 1.5rem;">
+          <button type="button" class="btn btn--outline-sm" id="deriveDarkBtn">
+            <span class="material-symbols-rounded">dark_mode</span>
+            Dark-Palette ableiten
+          </button>
+        </div>
+
+        <div class="theme-editor__grid">
+
+          @php
+            $darkFields = [
+              'dark_color_primary'      => ['label' => 'Primärfarbe (Dark)', 'default' => '#5aab9b', 'hint' => 'Hauptfarbe im Dark-Mode'],
+              'dark_color_primary_dark' => ['label' => 'Primär Hover (Dark)', 'default' => '#4a8f82', 'hint' => 'Hover-Zustand im Dark-Mode'],
+              'dark_color_secondary'    => ['label' => 'Sekundär (Dark)', 'default' => '#6b9e8e', 'hint' => 'Sekundäre Akzente im Dark-Mode'],
+              'dark_color_bg'           => ['label' => 'Hintergrund (Dark)', 'default' => '#1a2422', 'hint' => 'Dunkler Seitenhintergrund'],
+              'dark_color_bg_alt'       => ['label' => 'Hintergrund alt (Dark)', 'default' => '#222e2b', 'hint' => 'Alternierender Hintergrund im Dark-Mode'],
+              'dark_color_border'       => ['label' => 'Rahmen (Dark)', 'default' => '#2e4440', 'hint' => 'Rahmenfarbe im Dark-Mode'],
+              'dark_color_footer_top'   => ['label' => 'Footer oben (Dark)', 'default' => '#111b19', 'hint' => 'Oberer Footer im Dark-Mode'],
+              'dark_color_footer_bot'   => ['label' => 'Footer unten (Dark)', 'default' => '#0a0f0e', 'hint' => 'Unterer Footer im Dark-Mode'],
+            ];
+          @endphp
+
+          @foreach($darkFields as $name => $meta)
+          <div class="theme-color-field">
+            <label>{{ $meta['label'] }}</label>
+            <p class="form-hint">{{ $meta['hint'] }}</p>
+            <div class="theme-color-row">
+              <input type="color"
+                     id="{{ $name }}"
+                     name="{{ $name }}"
+                     value="{{ $theme->$name ?? $meta['default'] }}"
+                     class="theme-color-input"
+                     data-derived-dark="{{ $name }}" />
+              <input type="text"
+                     id="{{ $name }}_text"
+                     value="{{ $theme->$name ?? $meta['default'] }}"
+                     class="theme-color-hex"
+                     maxlength="7"
+                     pattern="#[0-9a-fA-F]{6}"
+                     data-for-dark="{{ $name }}" />
+              <button type="button"
+                      class="btn btn--outline-sm btn--icon"
+                      title="Auf abgeleitet zurücksetzen"
+                      data-reset-dark="{{ $name }}"
+                      data-default="{{ $meta['default'] }}">
+                <span class="material-symbols-rounded">restart_alt</span>
+              </button>
+            </div>
+          </div>
+          @endforeach
+
+        </div>
+      </div>
+
+      {{-- Dark-Mode-Vorschau --}}
+      <div class="theme-editor__preview">
+        <h3 class="theme-editor__palette-title">Vorschau Dark-Mode</h3>
+        <div class="theme-preview theme-preview--dark" id="themePreviewDark">
+          <div class="theme-preview__section" id="dp-primary">
+            <span class="theme-preview__label">Primärfarbe</span>
+          </div>
+          <div class="theme-preview__section" id="dp-primary-dark">
+            <span class="theme-preview__label">Primär (Hover)</span>
+          </div>
+          <div class="theme-preview__section" id="dp-secondary">
+            <span class="theme-preview__label">Sekundär</span>
+          </div>
+          <div class="theme-preview__section" id="dp-bg">
+            <span class="theme-preview__label">Hintergrund</span>
+          </div>
+          <div class="theme-preview__section" id="dp-bg-alt">
+            <span class="theme-preview__label">Hintergrund alt</span>
+          </div>
+          <div class="theme-preview__section" id="dp-border">
+            <span class="theme-preview__label">Rahmen</span>
+          </div>
+          <div class="theme-preview__section" id="dp-footer-top">
+            <span class="theme-preview__label">Footer oben</span>
+          </div>
+          <div class="theme-preview__section" id="dp-footer-bot">
+            <span class="theme-preview__label">Footer unten</span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="form-actions">
@@ -182,6 +272,20 @@
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   }
 
+  function deriveFromPrimaryDark(hex) {
+    const [h, s, l] = hexToHsl(hex);
+    return {
+      dark_color_primary:      hslToHex(h, s * 0.9,  l + (1 - l) * 0.25),
+      dark_color_primary_dark: hslToHex(h, s * 0.85, l + (1 - l) * 0.15),
+      dark_color_secondary:    hslToHex(h, s * 0.6,  l + (1 - l) * 0.1),
+      dark_color_bg:           hslToHex(h, s * 0.5,  l * 0.2),
+      dark_color_bg_alt:       hslToHex(h, s * 0.5,  l * 0.27),
+      dark_color_border:       hslToHex(h, s * 0.45, l * 0.35),
+      dark_color_footer_top:   hslToHex(h, s * 0.5,  l * 0.15),
+      dark_color_footer_bot:   hslToHex(h, s * 0.4,  l * 0.09),
+    };
+  }
+
   function deriveFromPrimary(hex) {
     const [h, s, l] = hexToHsl(hex);
     return {
@@ -225,6 +329,30 @@
     const derived = deriveFromPrimary(primaryHex);
     Object.entries(derived).forEach(([name, hex]) => setColor(name, hex));
     updatePreview();
+  }
+
+  function updateDarkPreview() {
+    const map = {
+      'dp-primary':     'dark_color_primary',
+      'dp-primary-dark':'dark_color_primary_dark',
+      'dp-secondary':   'dark_color_secondary',
+      'dp-bg':          'dark_color_bg',
+      'dp-bg-alt':      'dark_color_bg_alt',
+      'dp-border':      'dark_color_border',
+      'dp-footer-top':  'dark_color_footer_top',
+      'dp-footer-bot':  'dark_color_footer_bot',
+    };
+    Object.entries(map).forEach(([id, field]) => {
+      const el  = document.getElementById(id);
+      const val = document.getElementById(field)?.value;
+      if (el && val) el.style.backgroundColor = val;
+    });
+  }
+
+  function applyDerivedDark(primaryHex) {
+    const derived = deriveFromPrimaryDark(primaryHex);
+    Object.entries(derived).forEach(([name, hex]) => setColor(name, hex));
+    updateDarkPreview();
   }
 
   // ── Event Listeners ───────────────────────────────────────────────────────
@@ -284,8 +412,47 @@
     });
   });
 
+  // "Dark-Palette ableiten"-Button
+  document.getElementById('deriveDarkBtn')?.addEventListener('click', function () {
+    const hex = primaryPicker?.value;
+    if (hex) applyDerivedDark(hex);
+  });
+
+  // Dark-Picker → Textfelder + Vorschau
+  document.querySelectorAll('[data-derived-dark]').forEach(picker => {
+    picker.addEventListener('input', function () {
+      const textField = document.getElementById(this.id + '_text');
+      if (textField) textField.value = this.value;
+      updateDarkPreview();
+    });
+  });
+
+  // Dark-Textfelder → Picker
+  document.querySelectorAll('[data-for-dark]').forEach(input => {
+    input.addEventListener('input', function () {
+      if (/^#[0-9a-fA-F]{6}$/.test(this.value)) {
+        const picker = document.getElementById(this.dataset.forDark);
+        if (picker) picker.value = this.value;
+        updateDarkPreview();
+      }
+    });
+  });
+
+  // Dark Reset-Buttons
+  document.querySelectorAll('[data-reset-dark]').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const field   = this.dataset.resetDark;
+      const primary = primaryPicker?.value;
+      if (!primary) return;
+      const derived = deriveFromPrimaryDark(primary);
+      if (derived[field]) setColor(field, derived[field]);
+      updateDarkPreview();
+    });
+  });
+
   // Initiale Vorschau
   updatePreview();
+  updateDarkPreview();
 })();
 </script>
 @endpush

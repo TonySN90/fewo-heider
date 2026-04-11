@@ -20,12 +20,12 @@
 .map-section__address {
   h3 {
     font-size: $font-size-2xl;
-    color: $color-dark;
+    color: var(--color-dark);
     margin-bottom: $space-5;
   }
 
   address {
-    background: $color-white;
+    background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: $border-radius;
     padding: $space-6;
@@ -35,7 +35,7 @@
     p {
       margin-bottom: $space-2;
       font-size: $font-size-base;
-      color: $color-text;
+      color: var(--color-text);
 
       &:last-child {
         margin-bottom: 0;
@@ -45,7 +45,7 @@
     .address__name {
       font-weight: 700;
       font-size: $font-size-lg;
-      color: $color-dark;
+      color: var(--color-dark);
     }
   }
 }
@@ -62,9 +62,9 @@
   align-items: center;
   gap: $space-3;
   font-size: $font-size-base;
-  color: $color-text;
+  color: var(--color-text);
   padding: $space-3 $space-5;
-  background: $color-white;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: $border-radius;
   transition: all $transition-fast;
@@ -87,7 +87,7 @@
 .address__hints {
   h4 {
     font-size: $font-size-base;
-    color: $color-dark;
+    color: var(--color-dark);
     margin-bottom: $space-3;
   }
 
@@ -101,7 +101,7 @@
       align-items: center;
       gap: $space-2;
       font-size: $font-size-sm;
-      color: $color-text;
+      color: var(--color-text);
       line-height: $line-height-normal;
 
       .material-symbols-rounded {

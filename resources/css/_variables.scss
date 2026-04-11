@@ -15,6 +15,25 @@
   --color-border:       #cfe0d8;
   --color-footer-top:   #2c4a42;
   --color-footer-bot:   #161f1d;
+  --color-dark:         #263238;
+  --color-text:         #3d4f52;
+  --color-text-light:   #6b8088;
+  --color-surface:      #ffffff;
+}
+
+[data-theme="dark"] {
+  --color-primary:      #5aab9b;
+  --color-primary-dark: #4a8f82;
+  --color-secondary:    #6b9e8e;
+  --color-bg:           #1a2422;
+  --color-bg-alt:       #222e2b;
+  --color-border:       #2e4440;
+  --color-footer-top:   #111b19;
+  --color-footer-bot:   #0a0f0e;
+  --color-dark:         #e8edef;
+  --color-text:         #c8d8db;
+  --color-text-light:   #8aaab0;
+  --color-surface:      #1e2d2a;
 }
 
 // Rügen Naturpalette – Ostsee-Blaugrün, Strandsand, Kreideküste, Schilf

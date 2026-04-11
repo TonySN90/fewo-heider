@@ -40,8 +40,28 @@
       @if($tenantTheme->color_footer_bot)--color-footer-bot: {{ $tenantTheme->color_footer_bot }};
       @endif
     }
+    [data-theme="dark"] {
+      @if($tenantTheme->dark_color_primary)--color-primary: {{ $tenantTheme->dark_color_primary }};
+      @endif
+      @if($tenantTheme->dark_color_primary_dark)--color-primary-dark: {{ $tenantTheme->dark_color_primary_dark }};
+      @endif
+      @if($tenantTheme->dark_color_secondary)--color-secondary: {{ $tenantTheme->dark_color_secondary }};
+      @endif
+      @if($tenantTheme->dark_color_bg)--color-bg: {{ $tenantTheme->dark_color_bg }};
+      @endif
+      @if($tenantTheme->dark_color_bg_alt)--color-bg-alt: {{ $tenantTheme->dark_color_bg_alt }};
+      @endif
+      @if($tenantTheme->dark_color_border)--color-border: {{ $tenantTheme->dark_color_border }};
+      @endif
+      @if($tenantTheme->dark_color_footer_top)--color-footer-top: {{ $tenantTheme->dark_color_footer_top }};
+      @endif
+      @if($tenantTheme->dark_color_footer_bot)--color-footer-bot: {{ $tenantTheme->dark_color_footer_bot }};
+      @endif
+    }
   </style>
   @endif
+  {{-- Anti-FOUC: Dark-Mode vor dem ersten Paint setzen --}}
+  <script>if(localStorage.getItem('theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}</script>
 </head>
 <body>
   @yield('content')

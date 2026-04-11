@@ -32,8 +32,16 @@ class ThemeController extends Controller
             'color_bg'           => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
             'color_bg_alt'       => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
             'color_border'       => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
-            'color_footer_top'   => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
-            'color_footer_bot'   => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'color_footer_top'        => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'color_footer_bot'        => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'dark_color_primary'      => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'dark_color_primary_dark' => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'dark_color_secondary'    => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'dark_color_bg'           => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'dark_color_bg_alt'       => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'dark_color_border'       => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'dark_color_footer_top'   => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'dark_color_footer_bot'   => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
         ]);
 
         // Leere Strings zu null

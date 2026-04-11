@@ -16,6 +16,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $color_border
  * @property string|null $color_footer_top
  * @property string|null $color_footer_bot
+ * @property string|null $dark_color_primary
+ * @property string|null $dark_color_primary_dark
+ * @property string|null $dark_color_secondary
+ * @property string|null $dark_color_bg
+ * @property string|null $dark_color_bg_alt
+ * @property string|null $dark_color_border
+ * @property string|null $dark_color_footer_top
+ * @property string|null $dark_color_footer_bot
  */
 class TenantTheme extends Model
 {
@@ -29,6 +37,14 @@ class TenantTheme extends Model
         'color_border',
         'color_footer_top',
         'color_footer_bot',
+        'dark_color_primary',
+        'dark_color_primary_dark',
+        'dark_color_secondary',
+        'dark_color_bg',
+        'dark_color_bg_alt',
+        'dark_color_border',
+        'dark_color_footer_top',
+        'dark_color_footer_bot',
     ];
 
     /** @return BelongsTo<Tenant, $this> */

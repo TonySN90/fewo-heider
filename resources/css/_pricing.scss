@@ -20,7 +20,7 @@
 .pricing__subtitle {
   font-family: $font-heading;
   font-size: $font-size-2xl;
-  color: $color-dark;
+  color: var(--color-dark);
   margin-bottom: $space-6;
 }
 
@@ -120,7 +120,7 @@
   td {
     padding: $space-3;
     font-size: $font-size-sm;
-    color: $color-text;
+    color: var(--color-text);
     vertical-align: middle;
   }
 
@@ -151,27 +151,22 @@
 
   &--blue {
     background-color: rgba($color-season-blue, 0.2);
-    color: #3a5f72;
   }
 
   &--green {
     background-color: rgba($color-season-green, 0.2);
-    color: #2a6644;
   }
 
   &--orange {
     background-color: rgba($color-season-orange, 0.2);
-    color: #8c3e25;
   }
 
   &--gold {
     background-color: rgba($color-season-gold, 0.2);
-    color: #7a5e18;
   }
 
   &--gray {
     background-color: rgba(#000, 0.07);
-    color: #555;
   }
 }
 
@@ -187,7 +182,7 @@
     align-items: center;
     gap: $space-2;
     font-size: $font-size-sm;
-    color: $color-text;
+    color: var(--color-text);
     margin: 0;
 
     .material-symbols-rounded {
@@ -219,7 +214,7 @@
   align-items: center;
   gap: $space-2;
   font-size: $font-size-sm;
-  color: $color-text;
+  color: var(--color-text);
 
   &::before {
     content: '';
@@ -250,7 +245,7 @@
     text-align: center;
     font-family: $font-heading;
     font-size: $font-size-lg;
-    color: $color-dark;
+    color: var(--color-dark);
     margin-bottom: $space-3;
     font-weight: 700;
   }
@@ -265,7 +260,7 @@
       text-align: center;
       font-size: $font-size-xs;
       font-weight: 600;
-      color: $color-text-light;
+      color: var(--color-text-light);
       padding: $space-1 0;
     }
   }
@@ -282,7 +277,7 @@
   @include flex-center;
   font-size: $font-size-xs;
   border-radius: 4px;
-  color: $color-text;
+  color: var(--color-text);
   font-weight: 500;
   position: relative;
 
@@ -304,6 +299,15 @@
 
     &:hover {
       background-color: rgba($color-footer-top, 0.2);
+    }
+
+    [data-theme="dark"] & {
+      background-color: rgba(255, 255, 255, 0.06);
+      color: var(--color-text-light);
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
     }
   }
 
@@ -368,6 +372,10 @@
   &--today {
     font-weight: 700;
     border: 2px solid var(--color-footer-top);
+
+    [data-theme="dark"] & {
+      border-color: var(--color-primary);
+    }
   }
 
   &--past {
