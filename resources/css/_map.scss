@@ -26,7 +26,7 @@
 
   address {
     background: $color-white;
-    border: 1px solid $color-border;
+    border: 1px solid var(--color-border);
     border-radius: $border-radius;
     padding: $space-6;
     margin-bottom: $space-6;
@@ -65,14 +65,14 @@
   color: $color-text;
   padding: $space-3 $space-5;
   background: $color-white;
-  border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
   border-radius: $border-radius;
   transition: all $transition-fast;
   text-decoration: none;
 
   &:hover {
-    border-color: $color-primary;
-    color: $color-primary;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
     box-shadow: $shadow-sm;
     transform: translateX(3px);
   }
@@ -81,7 +81,7 @@
 .contact-link__icon {
   font-size: 1.25rem;
   flex-shrink: 0;
-  color: $color-primary;
+  color: var(--color-primary);
 }
 
 .address__hints {
@@ -106,7 +106,7 @@
 
       .material-symbols-rounded {
         font-size: 1.1rem;
-        color: $color-primary;
+        color: var(--color-primary);
         flex-shrink: 0;
       }
     }
@@ -118,7 +118,7 @@
   border-radius: $border-radius;
   overflow: hidden;
   box-shadow: $shadow-lg;
-  border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
 }
 
 #map {
@@ -163,7 +163,7 @@
   }
 
   a {
-    color: $color-primary;
+    color: var(--color-primary);
     text-decoration: underline;
   }
 }

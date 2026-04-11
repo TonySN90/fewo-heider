@@ -107,6 +107,13 @@
             Seitenstruktur
           </a>
         </li>
+        <li>
+          <a href="{{ route('admin.theme') }}"
+             class="sidebar__link {{ request()->routeIs('admin.theme') ? 'sidebar__link--active' : '' }}">
+            <span class="material-symbols-rounded sidebar__icon">palette</span>
+            Theme
+          </a>
+        </li>
         @endcan
       </ul>
     </div>

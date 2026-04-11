@@ -1,7 +1,23 @@
 // ============================================================
-// FARBEN
+// FARBEN – CSS Custom Properties (überschreibbar per Tenant)
 // ============================================================
+
+// :root definiert die Default-Werte als Custom Properties.
+// Der Frontend-Layout kann diese per inline <style> pro Tenant überschreiben.
+// SCSS-Variablen referenzieren die Custom Properties für Stellen die kein rgba() brauchen.
+
+:root {
+  --color-primary:      #3d7a6e;
+  --color-primary-dark: #2e5f55;
+  --color-secondary:    #a8c5b5;
+  --color-bg-alt:       #edf3ef;
+  --color-border:       #cfe0d8;
+  --color-footer-top:   #2c4a42;
+  --color-footer-bot:   #161f1d;
+}
+
 // Rügen Naturpalette – Ostsee-Blaugrün, Strandsand, Kreideküste, Schilf
+// SCSS-Variablen für rgba()-Verwendungen (Custom Properties können nicht in rgba() verwendet werden)
 $color-primary:      #3d7a6e;   // Ostsee-Blaugrün – CTAs, Akzente
 $color-primary-dark: #2e5f55;   // Tiefes Meeresgrün – Hover
 $color-secondary:    #a8c5b5;   // Blasses Schilfgrün – sekundäre Akzente

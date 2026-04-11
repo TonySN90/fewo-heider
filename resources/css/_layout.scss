@@ -27,7 +27,7 @@
   }
 
   &--alt {
-    background-color: $color-bg-alt;
+    background-color: var(--color-bg-alt);
   }
 }
 
@@ -41,7 +41,7 @@
   right: 2rem;
   width: 44px;
   height: 44px;
-  background-color: $color-footer-top;
+  background-color: var(--color-footer-top);
   color: $color-white;
   border-radius: 50%;
   @include flex-center;

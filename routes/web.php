@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\OverviewController;
 use App\Http\Controllers\Admin\PageStructureController;
+use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\PricingNoteController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SeasonController;
@@ -127,6 +128,12 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
         Route::post('/templates/{template}/sections/{sectionKey}/gallery', [GalleryController::class, 'store'])->name('admin.gallery.store');
         Route::put('/templates/{template}/sections/{sectionKey}/gallery/{image}', [GalleryController::class, 'update'])->name('admin.gallery.update');
         Route::delete('/templates/{template}/sections/{sectionKey}/gallery/{image}', [GalleryController::class, 'destroy'])->name('admin.gallery.destroy');
+    });
+
+    // Theme (pro Instanz)
+    Route::middleware('permission:manage templates')->group(function () {
+        Route::get('/theme', [ThemeController::class, 'edit'])->name('admin.theme');
+        Route::put('/theme', [ThemeController::class, 'update'])->name('admin.theme.update');
     });
 
     // Seitenstruktur (pro Instanz)

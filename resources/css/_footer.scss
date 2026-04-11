@@ -11,7 +11,7 @@
 
 // Oberer Footer (Grün)
 .footer__top {
-  background-color: $color-footer-top;
+  background-color: var(--color-footer-top);
   padding: $space-16 0;
 
   @include respond-to('md') {
@@ -99,7 +99,7 @@
 
 // Unterer Footer (Fast Schwarz)
 .footer__bottom {
-  background-color: $color-footer-bot;
+  background-color: var(--color-footer-bot);
   padding: $space-5 0;
 }
 

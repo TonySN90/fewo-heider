@@ -18,6 +18,28 @@
   <script src="/fslightbox.js" defer></script>
 
   @vite(['resources/js/main.ts'])
+
+  @php $tenantTheme = current_tenant()?->theme; @endphp
+  @if($tenantTheme)
+  <style>
+    :root {
+      @if($tenantTheme->color_primary)--color-primary: {{ $tenantTheme->color_primary }};
+      @endif
+      @if($tenantTheme->color_primary_dark)--color-primary-dark: {{ $tenantTheme->color_primary_dark }};
+      @endif
+      @if($tenantTheme->color_secondary)--color-secondary: {{ $tenantTheme->color_secondary }};
+      @endif
+      @if($tenantTheme->color_bg_alt)--color-bg-alt: {{ $tenantTheme->color_bg_alt }};
+      @endif
+      @if($tenantTheme->color_border)--color-border: {{ $tenantTheme->color_border }};
+      @endif
+      @if($tenantTheme->color_footer_top)--color-footer-top: {{ $tenantTheme->color_footer_top }};
+      @endif
+      @if($tenantTheme->color_footer_bot)--color-footer-bot: {{ $tenantTheme->color_footer_bot }};
+      @endif
+    }
+  </style>
+  @endif
 </head>
 <body>
   @yield('content')

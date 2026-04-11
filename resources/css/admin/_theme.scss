@@ -1,0 +1,172 @@
+// ============================================================
+// THEME EDITOR
+// ============================================================
+
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.theme-editor {
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
+  padding: $space-8;
+}
+
+.theme-editor__primary {
+  padding-bottom: $space-8;
+  border-bottom: 1px solid $color-border;
+}
+
+.theme-editor__palette-title {
+  font-size: $font-size-sm;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-text-light;
+  margin-bottom: $space-5;
+}
+
+.theme-editor__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-6;
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── Einzelnes Farbfeld ────────────────────────────────────────────────────
+
+.theme-color-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.theme-color-row {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+
+  &--primary {
+    gap: $space-4;
+  }
+}
+
+.theme-color-input {
+  width: 40px;
+  height: 40px;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  padding: 2px;
+  cursor: pointer;
+  background: $color-white;
+  flex-shrink: 0;
+
+  &--large {
+    width: 56px;
+    height: 56px;
+    border-radius: $border-radius;
+  }
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+  }
+}
+
+.theme-color-hex {
+  font-family: monospace;
+  font-size: $font-size-sm;
+  width: 90px;
+  padding: $space-2 $space-3;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  color: $color-text;
+  background: $color-white;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+  }
+}
+
+// ── Vorschau ─────────────────────────────────────────────────────────────
+
+.theme-preview {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-radius: $border-radius;
+  overflow: hidden;
+  border: 1px solid $color-border;
+  height: 80px;
+
+  @include respond-to('md') {
+    grid-template-columns: repeat(4, 1fr);
+    height: auto;
+  }
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.theme-preview__section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-3;
+
+  @include respond-to('md') {
+    padding: $space-4;
+  }
+}
+
+.theme-preview__label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+
+  &--dark {
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+// ── Outline-sm Button (für Farbeditor) ───────────────────────────────────
+
+.btn--outline-sm {
+  @include btn-base;
+  font-size: $font-size-xs;
+  padding: $space-2 $space-3;
+  background: $color-white;
+  border: 1px solid $color-border;
+  color: $color-text;
+  gap: $space-1;
+
+  .material-symbols-rounded {
+    font-size: 1rem;
+  }
+
+  &:hover {
+    border-color: $color-primary;
+    color: $color-primary;
+  }
+
+  &.btn--icon {
+    padding: $space-2;
+    min-width: 0;
+  }
+}

@@ -43,7 +43,7 @@
 }
 
 .contact__card-inner {
-  background: linear-gradient(135deg, $color-primary 0%, #1f4a41 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-footer-top) 100%);
   border-radius: $border-radius-lg;
   padding: $space-10;
   color: $color-white;
