@@ -2,6 +2,7 @@
   --color-primary: #3d7a6e;
   --color-primary-dark: #2e5f55;
   --color-secondary: #a8c5b5;
+  --color-bg: #f7faf8;
   --color-bg-alt: #edf3ef;
   --color-border: #cfe0d8;
   --color-footer-top: #2c4a42;
@@ -27,7 +28,7 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   color: #3d4f52;
-  background-color: #f7faf8;
+  background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

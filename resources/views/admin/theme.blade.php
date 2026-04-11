@@ -54,7 +54,8 @@
             $fields = [
               'color_primary_dark' => ['label' => 'Primär (Hover)', 'default' => '#2e5f55', 'hint' => 'Hover-Zustand von Buttons und Links'],
               'color_secondary'    => ['label' => 'Sekundär', 'default' => '#a8c5b5', 'hint' => 'Sekundäre Akzente, Hover-Rahmen'],
-              'color_bg_alt'       => ['label' => 'Alt-Hintergrund', 'default' => '#edf3ef', 'hint' => 'Hintergrund section--alt'],
+              'color_bg'           => ['label' => 'Hintergrund (primär)', 'default' => '#f7faf8', 'hint' => 'Heller Hintergrund der normalen Sektionen'],
+              'color_bg_alt'       => ['label' => 'Hintergrund (sekundär)', 'default' => '#edf3ef', 'hint' => 'Etwas dunklerer Hintergrund der alternierenden Sektionen'],
               'color_border'       => ['label' => 'Rahmenfarbe', 'default' => '#cfe0d8', 'hint' => 'Rahmen von Karten und Elementen'],
               'color_footer_top'   => ['label' => 'Footer oben', 'default' => '#2c4a42', 'hint' => 'Hintergrund oberer Footer'],
               'color_footer_bot'   => ['label' => 'Footer unten', 'default' => '#161f1d', 'hint' => 'Hintergrund unterer Footer'],
@@ -106,8 +107,11 @@
           <div class="theme-preview__section theme-preview__section--secondary">
             <span class="theme-preview__label">Sekundär</span>
           </div>
+          <div class="theme-preview__section theme-preview__section--bg">
+            <span class="theme-preview__label theme-preview__label--dark">Hintergrund</span>
+          </div>
           <div class="theme-preview__section theme-preview__section--bg-alt">
-            <span class="theme-preview__label theme-preview__label--dark">Alt-Hintergrund</span>
+            <span class="theme-preview__label theme-preview__label--dark">Hintergrund alt</span>
           </div>
           <div class="theme-preview__section theme-preview__section--border">
             <span class="theme-preview__label theme-preview__label--dark">Rahmen</span>
@@ -181,12 +185,13 @@
   function deriveFromPrimary(hex) {
     const [h, s, l] = hexToHsl(hex);
     return {
-      color_primary_dark: hslToHex(h, s,       l * 0.75),
-      color_secondary:    hslToHex(h, s * 0.45, l + (1 - l) * 0.58),
-      color_bg_alt:       hslToHex(h, s * 0.28, l + (1 - l) * 0.86),
-      color_border:       hslToHex(h, s * 0.42, l + (1 - l) * 0.72),
-      color_footer_top:   hslToHex(h, s,         l * 0.60),
-      color_footer_bot:   hslToHex(h, s * 0.7,   l * 0.32),
+      color_primary_dark: hslToHex(h, s,        l * 0.75),
+      color_secondary:    hslToHex(h, s * 0.45,  l + (1 - l) * 0.58),
+      color_bg:           hslToHex(h, s * 0.12,  l + (1 - l) * 0.93),
+      color_bg_alt:       hslToHex(h, s * 0.28,  l + (1 - l) * 0.86),
+      color_border:       hslToHex(h, s * 0.42,  l + (1 - l) * 0.72),
+      color_footer_top:   hslToHex(h, s,          l * 0.60),
+      color_footer_bot:   hslToHex(h, s * 0.7,    l * 0.32),
     };
   }
 
@@ -204,6 +209,7 @@
       'primary':    document.getElementById('color_primary')?.value,
       'dark':       document.getElementById('color_primary_dark')?.value,
       'secondary':  document.getElementById('color_secondary')?.value,
+      'bg':         document.getElementById('color_bg')?.value,
       'bg-alt':     document.getElementById('color_bg_alt')?.value,
       'border':     document.getElementById('color_border')?.value,
       'footer-top': document.getElementById('color_footer_top')?.value,

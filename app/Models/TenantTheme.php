@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $color_primary
  * @property string|null $color_primary_dark
  * @property string|null $color_secondary
+ * @property string|null $color_bg
  * @property string|null $color_bg_alt
  * @property string|null $color_border
  * @property string|null $color_footer_top
@@ -23,6 +24,7 @@ class TenantTheme extends Model
         'color_primary',
         'color_primary_dark',
         'color_secondary',
+        'color_bg',
         'color_bg_alt',
         'color_border',
         'color_footer_top',

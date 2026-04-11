@@ -29,6 +29,8 @@
       @endif
       @if($tenantTheme->color_secondary)--color-secondary: {{ $tenantTheme->color_secondary }};
       @endif
+      @if($tenantTheme->color_bg)--color-bg: {{ $tenantTheme->color_bg }};
+      @endif
       @if($tenantTheme->color_bg_alt)--color-bg-alt: {{ $tenantTheme->color_bg_alt }};
       @endif
       @if($tenantTheme->color_border)--color-border: {{ $tenantTheme->color_border }};

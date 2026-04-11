@@ -67,14 +67,12 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       @if ($section->section_key === 'about')
         <div class="section-edit-form">
 
-          <div class="form-field form-field--inline">
-            <input type="hidden" name="fields[bg_alt]" value="" />
-            <label class="toggle">
-              <input type="checkbox" name="fields[bg_alt]" value="1"
-                {{ $section->field('bg_alt') === '1' ? 'checked' : '' }} />
-              <span class="toggle__slider"></span>
-            </label>
-            <span>Alternativer Hintergrund</span>
+          <div class="form-field">
+            <label for="bg_alt">Hintergrundfarbe</label>
+            <select id="bg_alt" name="fields[bg_alt]">
+              <option value="" {{ $section->field('bg_alt') !== '1' ? 'selected' : '' }}>Primär (hell)</option>
+              <option value="1" {{ $section->field('bg_alt') === '1' ? 'selected' : '' }}>Sekundär (dunkel)</option>
+            </select>
           </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
@@ -144,14 +142,12 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       @if ($section->section_key === 'amenities')
         <div class="section-edit-form">
 
-          <div class="form-field form-field--inline">
-            <input type="hidden" name="fields[bg_alt]" value="" />
-            <label class="toggle">
-              <input type="checkbox" name="fields[bg_alt]" value="1"
-                {{ $section->field('bg_alt') === '1' ? 'checked' : '' }} />
-              <span class="toggle__slider"></span>
-            </label>
-            <span>Alternativer Hintergrund</span>
+          <div class="form-field">
+            <label for="bg_alt">Hintergrundfarbe</label>
+            <select id="bg_alt" name="fields[bg_alt]">
+              <option value="" {{ $section->field('bg_alt') !== '1' ? 'selected' : '' }}>Primär (hell)</option>
+              <option value="1" {{ $section->field('bg_alt') === '1' ? 'selected' : '' }}>Sekundär (dunkel)</option>
+            </select>
           </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
@@ -229,14 +225,12 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       {{-- ===== ANREISE / KARTE ===== --}}
       @if ($section->section_key === 'arrival')
         <div class="section-edit-form">
-          <div class="form-field form-field--inline">
-            <input type="hidden" name="fields[bg_alt]" value="" />
-            <label class="toggle">
-              <input type="checkbox" name="fields[bg_alt]" value="1"
-                {{ $section->field('bg_alt') === '1' ? 'checked' : '' }} />
-              <span class="toggle__slider"></span>
-            </label>
-            <span>Alternativer Hintergrund</span>
+          <div class="form-field">
+            <label for="bg_alt">Hintergrundfarbe</label>
+            <select id="bg_alt" name="fields[bg_alt]">
+              <option value="" {{ $section->field('bg_alt') !== '1' ? 'selected' : '' }}>Primär (hell)</option>
+              <option value="1" {{ $section->field('bg_alt') === '1' ? 'selected' : '' }}>Sekundär (dunkel)</option>
+            </select>
           </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
@@ -350,14 +344,12 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       {{-- ===== GALERIE (Sektionskopf) ===== --}}
       @if ($section->section_key === 'gallery')
         <div class="section-edit-form">
-          <div class="form-field form-field--inline">
-            <input type="hidden" name="fields[bg_alt]" value="" />
-            <label class="toggle">
-              <input type="checkbox" name="fields[bg_alt]" value="1"
-                {{ $section->field('bg_alt') === '1' ? 'checked' : '' }} />
-              <span class="toggle__slider"></span>
-            </label>
-            <span>Alternativer Hintergrund</span>
+          <div class="form-field">
+            <label for="bg_alt">Hintergrundfarbe</label>
+            <select id="bg_alt" name="fields[bg_alt]">
+              <option value="" {{ $section->field('bg_alt') !== '1' ? 'selected' : '' }}>Primär (hell)</option>
+              <option value="1" {{ $section->field('bg_alt') === '1' ? 'selected' : '' }}>Sekundär (dunkel)</option>
+            </select>
           </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
@@ -378,14 +370,12 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       @if ($section->section_key === 'contact')
         <div class="section-edit-form">
 
-          <div class="form-field form-field--inline">
-            <input type="hidden" name="fields[bg_alt]" value="" />
-            <label class="toggle">
-              <input type="checkbox" name="fields[bg_alt]" value="1"
-                {{ $section->field('bg_alt') === '1' ? 'checked' : '' }} />
-              <span class="toggle__slider"></span>
-            </label>
-            <span>Alternativer Hintergrund</span>
+          <div class="form-field">
+            <label for="bg_alt">Hintergrundfarbe</label>
+            <select id="bg_alt" name="fields[bg_alt]">
+              <option value="" {{ $section->field('bg_alt') !== '1' ? 'selected' : '' }}>Primär (hell)</option>
+              <option value="1" {{ $section->field('bg_alt') === '1' ? 'selected' : '' }}>Sekundär (dunkel)</option>
+            </select>
           </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>

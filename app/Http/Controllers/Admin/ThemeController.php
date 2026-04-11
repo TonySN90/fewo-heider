@@ -29,6 +29,7 @@ class ThemeController extends Controller
             'color_primary'      => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
             'color_primary_dark' => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
             'color_secondary'    => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'color_bg'           => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
             'color_bg_alt'       => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
             'color_border'       => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
             'color_footer_top'   => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
