@@ -224,6 +224,22 @@ erDiagram
         timestamps updated_at
     }
 
+    %% ─── Farbtheme ───────────────────────────────────────────────────────────
+    tenant_themes {
+        bigint id PK
+        bigint tenant_id FK
+        string color_primary
+        string color_primary_dark
+        string color_secondary
+        string color_bg
+        string color_bg_alt
+        string color_border
+        string color_footer_top
+        string color_footer_bot
+        timestamps created_at
+        timestamps updated_at
+    }
+
     %% ─── Sonstiges ───────────────────────────────────────────────────────────
     icons {
         bigint id PK
@@ -251,6 +267,7 @@ erDiagram
 
     %% Tenants & Templates
     tenants }o--o| templates : "verwendet"
+    tenants ||--o| tenant_themes : "hat"
     tenants ||--o{ bookings : "hat"
     tenants ||--o{ seasons : "hat"
     tenants ||--o{ pricing_notes : "hat"
