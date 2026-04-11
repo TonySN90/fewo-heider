@@ -272,7 +272,7 @@ em {
   transform: translateY(0);
 }
 .scroll-top:hover {
-  background-color: #223d36;
+  background-color: var(--color-primary-dark);
   transform: translateY(-2px);
 }
 
@@ -927,16 +927,16 @@ em {
   justify-content: center;
   width: 32px;
   height: 32px;
-  border: 1px solid #cfe0d8;
+  border: 1px solid var(--color-border);
   border-radius: 50%;
-  background: #edf3ef;
-  color: #3d7a6e;
+  background: var(--color-bg-alt);
+  color: var(--color-primary);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 }
 .cal-nav__btn:hover:not(:disabled) {
-  background: #3d7a6e;
-  border-color: #3d7a6e;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
   color: #ffffff;
 }
 .cal-nav__btn:disabled {
@@ -953,7 +953,7 @@ em {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   overflow: hidden;
   padding: 1.25rem;
-  border: 1px solid #cfe0d8;
+  border: 1px solid var(--color-border);
 }
 
 .pricing__table-scroll {
@@ -969,7 +969,7 @@ em {
   margin-bottom: 0;
 }
 .pricing__table thead tr {
-  background-color: #3d7a6e;
+  background-color: var(--color-primary);
 }
 .pricing__table th {
   padding: 0.75rem;
@@ -988,7 +988,7 @@ em {
 }
 .pricing__table tbody tr {
   height: 5rem;
-  border-bottom: 1px solid #cfe0d8;
+  border-bottom: 1px solid var(--color-border);
   transition: background-color 150ms ease;
 }
 .pricing__table tbody tr:last-child {
@@ -1006,7 +1006,7 @@ em {
 .pricing__table .price {
   font-weight: 700;
   font-size: 1.125rem;
-  color: #3d7a6e;
+  color: var(--color-primary);
 }
 @media (max-width: 480px) {
   .pricing__table {
@@ -1025,7 +1025,7 @@ em {
   font-weight: 600;
   white-space: nowrap;
   background-color: rgba(61, 122, 110, 0.12);
-  color: #2e5f55;
+  color: var(--color-primary-dark);
 }
 .season-badge--blue {
   background-color: rgba(144, 168, 184, 0.2);
@@ -1049,7 +1049,7 @@ em {
 }
 
 .pricing__notes {
-  border-top: 1px solid #cfe0d8;
+  border-top: 1px solid var(--color-border);
   padding-top: 1rem;
   display: flex;
   flex-direction: column;
@@ -1065,7 +1065,7 @@ em {
 }
 .pricing__notes p .material-symbols-rounded {
   font-size: 1.1rem;
-  color: #2c4a42;
+  color: var(--color-footer-top);
   flex-shrink: 0;
 }
 
@@ -1075,7 +1075,7 @@ em {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   overflow: hidden;
   padding: 1.25rem;
-  border: 1px solid #cfe0d8;
+  border: 1px solid var(--color-border);
 }
 
 .calendar-legend {
@@ -1100,10 +1100,10 @@ em {
 }
 .legend-item--free::before {
   background-color: rgba(44, 74, 66, 0.15);
-  border: 1px solid #2c4a42;
+  border: 1px solid var(--color-footer-top);
 }
 .legend-item--booked::before {
-  background-color: #3d7a6e;
+  background-color: var(--color-primary);
 }
 
 .booking-calendar {
@@ -1164,13 +1164,13 @@ em {
 }
 .cal-day--free {
   background-color: rgba(44, 74, 66, 0.1);
-  color: #2c4a42;
+  color: var(--color-footer-top);
 }
 .cal-day--free:hover {
   background-color: rgba(44, 74, 66, 0.2);
 }
 .cal-day--booked {
-  background-color: #3d7a6e;
+  background-color: var(--color-primary);
   color: #ffffff;
   font-weight: 600;
 }
@@ -1182,7 +1182,7 @@ em {
   background: rgba(0, 0, 0, 0.05);
 }
 .cal-day--check-in {
-  background: linear-gradient(to bottom right, rgba(44, 74, 66, 0.1) 50%, #3d7a6e 50%);
+  background: linear-gradient(to bottom right, rgba(44, 74, 66, 0.1) 50%, var(--color-primary) 50%);
 }
 .cal-day--check-in::after {
   display: none;
@@ -1196,7 +1196,7 @@ em {
   clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
 }
 .cal-day--check-out {
-  background: linear-gradient(to top right, #3d7a6e 50%, rgba(44, 74, 66, 0.1) 50%);
+  background: linear-gradient(to top right, var(--color-primary) 50%, rgba(44, 74, 66, 0.1) 50%);
 }
 .cal-day--check-out::after {
   display: none;
@@ -1211,7 +1211,7 @@ em {
 }
 .cal-day--today {
   font-weight: 700;
-  border: 2px solid #2c4a42;
+  border: 2px solid var(--color-footer-top);
 }
 .cal-day--past {
   opacity: 0.35;

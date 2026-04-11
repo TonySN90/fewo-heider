@@ -1,15 +1,10 @@
 @use '../variables' as *;
 
 .form-card {
-  max-width: 700px;
   background: $color-white;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   padding: $space-8;
-
-  &--wide {
-    max-width: 960px;
-  }
 }
 
 .form-section {

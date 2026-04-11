@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<div class="form-card form-card--wide">
+<div class="form-card">
   <form method="POST" action="{{ route('admin.theme.update') }}" id="themeForm">
     @csrf
     @method('PUT')
