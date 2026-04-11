@@ -412,21 +412,29 @@
     <div class="footer__top">
       <div class="container footer__top-inner">
         <div class="footer__brand">
-          <p class="footer__brand-name">Ferienwohnung Heider</p>
-          <p class="footer__brand-sub">Rügen · Serams · Ostseebad Binz</p>
+          @if ($footerSection?->field('brand_type') === 'logo' && $footerSection?->field('brand_logo'))
+            @php
+              $logoLight = $footerSection->field('brand_logo');
+              $logoDark  = $footerSection->field('brand_logo_dark') ?: $logoLight;
+              $logoAlt   = $footerSection->field('brand_name', 'Logo');
+            @endphp
+            <img src="{{ Storage::url($logoLight) }}" alt="{{ $logoAlt }}"
+                 class="footer__brand-logo footer__brand-logo--light" />
+            <img src="{{ Storage::url($logoDark) }}" alt="{{ $logoAlt }}"
+                 class="footer__brand-logo footer__brand-logo--dark" />
+          @else
+            <p class="footer__brand-name">{{ $footerSection?->field('brand_name', 'Ferienwohnung Heider') ?? 'Ferienwohnung Heider' }}</p>
+            <p class="footer__brand-sub">{{ $footerSection?->field('brand_sub', 'Rügen · Serams · Ostseebad Binz') ?? 'Rügen · Serams · Ostseebad Binz' }}</p>
+          @endif
         </div>
         <div class="footer__nav">
           <h4>Navigation</h4>
           <ul>
-            @if (in_array('about', $visibleSections))
-              <li><a href="#about">Die Wohnung</a></li>
-            @endif
-            @if (in_array('gallery', $visibleSections))
-              <li><a href="#gallery">Galerie</a></li>
-            @endif
-            @if (in_array('pricing', $visibleSections))
-              <li><a href="#pricing">Preise</a></li>
-            @endif
+            @foreach ($orderedSections as $sec)
+              @if (isset($navLabels[$sec->section_key]))
+                <li><a href="{{ $navLabels[$sec->section_key]['href'] }}">{{ $navLabels[$sec->section_key]['label'] }}</a></li>
+              @endif
+            @endforeach
             @if (in_array('contact', $visibleSections))
               <li><a href="#contact">Kontakt</a></li>
             @endif
@@ -435,10 +443,18 @@
         <div class="footer__contact">
           <h4>Kontakt</h4>
           <address>
-            <p>Lolita Heider</p>
-            <p>Serams 8A, 18528 Zirkow/Serams</p>
-            <p><a href="tel:+493839331283">038393 31283</a></p>
-            <p><a href="mailto:fewo.heider@gmail.com">fewo.heider@gmail.com</a></p>
+            @if ($footerSection?->field('contact_name'))
+              <p>{{ $footerSection->field('contact_name') }}</p>
+            @endif
+            @if ($footerSection?->field('contact_street'))
+              <p>{{ $footerSection->field('contact_street') }}</p>
+            @endif
+            @if ($footerSection?->field('contact_phone'))
+              <p><a href="tel:{{ $footerSection->field('contact_phone_href') }}">{{ $footerSection->field('contact_phone') }}</a></p>
+            @endif
+            @if ($footerSection?->field('contact_email'))
+              <p><a href="mailto:{{ $footerSection->field('contact_email') }}">{{ $footerSection->field('contact_email') }}</a></p>
+            @endif
           </address>
         </div>
       </div>
@@ -446,7 +462,7 @@
 
     <div class="footer__bottom">
       <div class="container footer__bottom-inner">
-        <p>© 2026 Ferienwohnung Heider – Alle Rechte vorbehalten</p>
+        <p>{{ $footerSection?->field('copyright', '© ' . date('Y') . ' Ferienwohnung Heider – Alle Rechte vorbehalten') ?? ('© ' . date('Y') . ' Ferienwohnung Heider – Alle Rechte vorbehalten') }}</p>
         <nav class="footer__legal">
           <a href="{{ url('/impressum') }}">Impressum</a>
           <a href="{{ url('/datenschutz') }}">Datenschutz</a>

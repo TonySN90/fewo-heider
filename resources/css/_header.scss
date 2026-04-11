@@ -163,8 +163,13 @@
   }
 
   // Light-Mode: Mond sichtbar, Sonne ausgeblendet
-  &__icon--light { display: none; }
-  &__icon--dark  { display: inline-flex; }
+  &__icon--light { display: none;
+    font-size: 1.75rem !important;
+  }
+
+  &__icon--dark  { display: inline-flex;
+    font-size: 1.75rem !important;
+  }
 
   // Scrolled-Header: dunkle Iconfarbe
   #header.scrolled & {
@@ -186,7 +191,7 @@
 .header__controls {
   display: flex;
   align-items: center;
-  gap: $space-2;
+  gap: $space-3;
   flex-shrink: 0;
 }
 

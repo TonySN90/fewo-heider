@@ -27,9 +27,10 @@
         </thead>
         <tbody id="sections-tbody">
           @foreach ($sections as $section)
-            <tr data-id="{{ $section->id }}" {{ $section->section_key === 'hero' ? 'data-fixed="true"' : '' }}>
+            @php $isFixed = in_array($section->section_key, ['hero', 'footer']); @endphp
+            <tr data-id="{{ $section->id }}" {{ $isFixed ? 'data-fixed="true"' : '' }}>
               <td>
-                @if ($section->section_key !== 'hero')
+                @if (!$isFixed)
                   <span class="drag-handle" title="Verschieben">
                     <span class="material-symbols-rounded">drag_indicator</span>
                   </span>

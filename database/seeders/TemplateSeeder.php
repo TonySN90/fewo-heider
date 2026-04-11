@@ -17,6 +17,7 @@ class TemplateSeeder extends Seeder
         ['section_key' => 'pricing',   'sort_order' => 5],
         ['section_key' => 'arrival',   'sort_order' => 6],
         ['section_key' => 'contact',   'sort_order' => 7],
+        ['section_key' => 'footer',    'sort_order' => 99],
     ];
 
     public function run(): void
@@ -92,6 +93,16 @@ class TemplateSeeder extends Seeder
             'gallery' => [
                 'eyebrow' => 'Eindrücke',
                 'title' => 'Galerie',
+            ],
+            'footer' => [
+                'brand_name'         => 'Ferienwohnung Mustermann',
+                'brand_sub'          => 'Ostsee · Musterort · Musterregion',
+                'contact_name'       => 'Max Mustermann',
+                'contact_street'     => 'Musterstraße 1, 12345 Musterstadt',
+                'contact_phone'      => '01234 56789',
+                'contact_phone_href' => '+4912345678',
+                'contact_email'      => 'info@mustermann-fewo.de',
+                'copyright'          => '© 2026 Ferienwohnung Mustermann – Alle Rechte vorbehalten',
             ],
         ];
 

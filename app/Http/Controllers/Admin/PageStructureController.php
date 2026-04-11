@@ -21,9 +21,10 @@ class PageStructureController extends Controller
         'pricing'   => 'Preise & Buchungen',
         'arrival'   => 'Anreise / Karte',
         'contact'   => 'Kontakt & Anfrage',
+        'footer'    => 'Footer',
     ];
 
-    private const EDITABLE_SECTIONS = ['hero', 'about', 'amenities', 'gallery', 'arrival', 'contact'];
+    private const EDITABLE_SECTIONS = ['hero', 'about', 'amenities', 'gallery', 'arrival', 'contact', 'footer'];
 
     public function index(): View
     {
@@ -158,6 +159,60 @@ class PageStructureController extends Controller
 
             TemplateSectionContent::updateOrCreate(
                 ['template_section_id' => $section->id, 'field_key' => 'cover_image'],
+                ['value' => $path]
+            );
+        }
+
+        // Footer-Logos: löschen
+        foreach (['brand_logo', 'brand_logo_dark'] as $logoKey) {
+            if (isset($fields["{$logoKey}_delete"]) && $fields["{$logoKey}_delete"] === '1') {
+                $existing = TemplateSectionContent::where('template_section_id', $section->id)
+                    ->where('field_key', $logoKey)->first();
+                if ($existing) {
+                    Storage::disk('public')->delete($existing->value);
+                    $existing->delete();
+                }
+                unset($fields["{$logoKey}_delete"]);
+            }
+        }
+
+        // Footer-Logos: hochladen
+        foreach (['brand_logo', 'brand_logo_dark'] as $logoKey) {
+            if (!$request->hasFile($logoKey)) continue;
+
+            $request->validate([
+                $logoKey => ['file', 'image', 'max:5120', 'mimes:jpg,jpeg,png,webp,svg'],
+            ]);
+            $file = $request->file($logoKey);
+            $ext = strtolower($file->getClientOriginalExtension());
+
+            Storage::disk('public')->makeDirectory('logos');
+
+            if ($ext === 'svg') {
+                $filename = (string) Str::uuid().'.svg';
+                $path = 'logos/'.$filename;
+                Storage::disk('public')->put($path, file_get_contents($file->getRealPath()));
+            } else {
+                $filename = (string) Str::uuid().'.webp';
+                $path = 'logos/'.$filename;
+                $image = new \Imagick($file->getRealPath());
+                $image->setImageFormat('webp');
+                if ($image->getImageWidth() > 600) {
+                    $image->resizeImage(600, 0, \Imagick::FILTER_LANCZOS, 1);
+                }
+                $image->setImageCompressionQuality(90);
+                $image->writeImage(Storage::disk('public')->path($path));
+                $image->destroy();
+            }
+
+            $existing = TemplateSectionContent::where('template_section_id', $section->id)
+                ->where('field_key', $logoKey)->first();
+            if ($existing) {
+                Storage::disk('public')->delete($existing->value);
+            }
+
+            TemplateSectionContent::updateOrCreate(
+                ['template_section_id' => $section->id, 'field_key' => $logoKey],
                 ['value' => $path]
             );
         }

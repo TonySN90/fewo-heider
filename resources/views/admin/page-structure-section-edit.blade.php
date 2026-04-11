@@ -446,6 +446,182 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
         </div>
       @endif
 
+      {{-- ===== FOOTER ===== --}}
+      @if ($section->section_key === 'footer')
+        <div class="section-edit-form">
+
+          <div class="section-edit-form__cols">
+
+            {{-- Linke Spalte: Brand --}}
+            <div class="section-edit-form__col">
+              <h2 class="section-edit-form__heading">Brand</h2>
+
+              <div class="form-field">
+                <label for="brand_type">Darstellung</label>
+                <select id="brand_type" name="fields[brand_type]">
+                  <option value="text" {{ $section->field('brand_type', 'text') !== 'logo' ? 'selected' : '' }}>Name (Text)</option>
+                  <option value="logo" {{ $section->field('brand_type') === 'logo' ? 'selected' : '' }}>Logo (Bild)</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="brand_name">Name <span class="form-field__hint">(wird angezeigt wenn „Name (Text)" gewählt)</span></label>
+                <input type="text" id="brand_name" name="fields[brand_name]"
+                  value="{{ $section->field('brand_name', 'Ferienwohnung Heider') }}" maxlength="100" />
+              </div>
+              <div class="form-field">
+                <label for="brand_sub">Subzeile <span class="form-field__hint">(z.B. „Insel · Ort · Region")</span></label>
+                <input type="text" id="brand_sub" name="fields[brand_sub]"
+                  value="{{ $section->field('brand_sub', 'Rügen · Serams · Ostseebad Binz') }}" maxlength="150" />
+              </div>
+
+              @php $brandLogo = $section->field('brand_logo'); @endphp
+              <div class="form-field">
+                <label>Logo – Light Mode <span class="form-field__hint">(PNG, WebP, SVG – max. 5 MB)</span></label>
+                <div class="upload-zone {{ $brandLogo ? 'upload-zone--has-preview' : '' }}"
+                     id="upload-zone-light"
+                     ondragover="uploadZoneDrag(this, true)" ondragleave="uploadZoneDrag(this, false)">
+                  @if ($brandLogo)
+                    <div class="upload-preview">
+                      <img src="{{ Storage::url($brandLogo) }}" alt="Logo Light" class="upload-preview__img" />
+                      <button type="button" class="upload-preview__remove"
+                              onclick="removeUpload('brand_logo', 'upload-zone-light')"
+                              title="Logo entfernen">
+                        <span class="material-symbols-rounded">close</span>
+                      </button>
+                    </div>
+                  @else
+                    <span class="material-symbols-rounded upload-zone__icon">add_photo_alternate</span>
+                    <span class="upload-zone__label">Klicken oder Bild hierher ziehen</span>
+                    <span class="upload-zone__hint">PNG, WebP, SVG – max. 5 MB</span>
+                  @endif
+                  <input type="file" name="brand_logo" accept="image/png,image/webp,image/svg+xml"
+                         onchange="previewUpload(this, 'upload-zone-light', false)" />
+                </div>
+                <input type="hidden" name="fields[brand_logo_delete]" id="brand_logo_delete" value="0" />
+                @error('brand_logo')
+                  <span style="color:red;font-size:0.85rem">{{ $message }}</span>
+                @enderror
+              </div>
+
+              @php $brandLogoDark = $section->field('brand_logo_dark'); @endphp
+              <div class="form-field">
+                <label>Logo – Dark Mode <span class="form-field__hint">(optional – falls leer, wird Light-Logo verwendet)</span></label>
+                <div class="upload-zone {{ $brandLogoDark ? 'upload-zone--has-preview' : '' }}"
+                     id="upload-zone-dark"
+                     ondragover="uploadZoneDrag(this, true)" ondragleave="uploadZoneDrag(this, false)">
+                  @if ($brandLogoDark)
+                    <div class="upload-preview">
+                      <img src="{{ Storage::url($brandLogoDark) }}" alt="Logo Dark"
+                           class="upload-preview__img upload-preview__img--dark-bg" />
+                      <button type="button" class="upload-preview__remove"
+                              onclick="removeUpload('brand_logo_dark', 'upload-zone-dark')"
+                              title="Logo entfernen">
+                        <span class="material-symbols-rounded">close</span>
+                      </button>
+                    </div>
+                  @else
+                    <span class="material-symbols-rounded upload-zone__icon">add_photo_alternate</span>
+                    <span class="upload-zone__label">Klicken oder Bild hierher ziehen</span>
+                    <span class="upload-zone__hint">PNG, WebP, SVG – dunkler Hintergrund empfohlen</span>
+                  @endif
+                  <input type="file" name="brand_logo_dark" accept="image/png,image/webp,image/svg+xml"
+                         onchange="previewUpload(this, 'upload-zone-dark', true)" />
+                </div>
+                <input type="hidden" name="fields[brand_logo_dark_delete]" id="brand_logo_dark_delete" value="0" />
+                @error('brand_logo_dark')
+                  <span style="color:red;font-size:0.85rem">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <script>
+              function uploadZoneDrag(zone, active) {
+                zone.classList.toggle('upload-zone--dragover', active);
+              }
+
+              function previewUpload(input, zoneId, darkBg) {
+                const file = input.files[0];
+                if (!file) return;
+                const zone = document.getElementById(zoneId);
+                const reader = new FileReader();
+                reader.onload = e => {
+                  zone.classList.add('upload-zone--has-preview');
+                  zone.innerHTML = `
+                    <div class="upload-preview">
+                      <img src="${e.target.result}"
+                           class="upload-preview__img${darkBg ? ' upload-preview__img--dark-bg' : ''}" />
+                      <button type="button" class="upload-preview__remove"
+                              onclick="removeUpload('${input.name}', '${zoneId}')"
+                              title="Logo entfernen">
+                        <span class="material-symbols-rounded">close</span>
+                      </button>
+                    </div>`;
+                  zone.appendChild(input);
+                };
+                reader.readAsDataURL(file);
+              }
+
+              function removeUpload(fieldName, zoneId) {
+                const zone = document.getElementById(zoneId);
+                const isDark = fieldName.includes('dark');
+                const deleteInput = document.getElementById(fieldName + '_delete');
+                if (deleteInput) deleteInput.value = '1';
+                zone.classList.remove('upload-zone--has-preview');
+                zone.innerHTML = `
+                  <span class="material-symbols-rounded upload-zone__icon">add_photo_alternate</span>
+                  <span class="upload-zone__label">Klicken oder Bild hierher ziehen</span>
+                  <span class="upload-zone__hint">${isDark ? 'PNG, WebP, SVG – dunkler Hintergrund empfohlen' : 'PNG, WebP, SVG – max. 5 MB'}</span>
+                  <input type="file" name="${fieldName}" accept="image/png,image/webp,image/svg+xml"
+                         onchange="previewUpload(this, '${zoneId}', ${isDark})"
+                         ondragover="uploadZoneDrag(document.getElementById('${zoneId}'), true)"
+                         ondragleave="uploadZoneDrag(document.getElementById('${zoneId}'), false)" />`;
+              }
+              </script>
+            </div>
+
+            {{-- Rechte Spalte: Kontaktdaten --}}
+            <div class="section-edit-form__col">
+              <h2 class="section-edit-form__heading">Kontaktdaten</h2>
+
+              <div class="form-field">
+                <label for="contact_name">Name</label>
+                <input type="text" id="contact_name" name="fields[contact_name]"
+                  value="{{ $section->field('contact_name') }}" maxlength="100" />
+              </div>
+              <div class="form-field">
+                <label for="contact_street">Adresse</label>
+                <input type="text" id="contact_street" name="fields[contact_street]"
+                  value="{{ $section->field('contact_street') }}" maxlength="200" />
+              </div>
+              <div class="form-field">
+                <label for="contact_phone">Telefon <span class="form-field__hint">(Anzeige)</span></label>
+                <input type="text" id="contact_phone" name="fields[contact_phone]"
+                  value="{{ $section->field('contact_phone') }}" placeholder="012345 67890" maxlength="50" />
+              </div>
+              <div class="form-field">
+                <label for="contact_phone_href">Telefon <span class="form-field__hint">(tel:-Link, z.B. +4912345678)</span></label>
+                <input type="text" id="contact_phone_href" name="fields[contact_phone_href]"
+                  value="{{ $section->field('contact_phone_href') }}" placeholder="+4912345678" maxlength="50" />
+              </div>
+              <div class="form-field">
+                <label for="contact_email">E-Mail</label>
+                <input type="email" id="contact_email" name="fields[contact_email]"
+                  value="{{ $section->field('contact_email') }}" maxlength="150" />
+              </div>
+            </div>
+
+          </div>
+
+          <h2 class="section-edit-form__heading">Footer unten</h2>
+          <div class="form-field">
+            <label for="copyright">Copyright-Text</label>
+            <input type="text" id="copyright" name="fields[copyright]"
+              value="{{ $section->field('copyright', '© ' . date('Y') . ' Ferienwohnung Heider – Alle Rechte vorbehalten') }}" maxlength="200" />
+          </div>
+
+        </div>
+      @endif
+
       <div class="section-edit-form__actions">
         <a href="{{ route('admin.page-structure') }}" class="btn btn-cancel">Abbrechen</a>
         <button type="submit" class="btn btn-save">Speichern</button>

@@ -46,6 +46,7 @@ class HomeController extends Controller
             $gallerySection = $sections->firstWhere('section_key', 'gallery');
             $arrivalSection = $sections->firstWhere('section_key', 'arrival');
             $contactSection = $sections->firstWhere('section_key', 'contact');
+            $footerSection  = $sections->firstWhere('section_key', 'footer');
         } elseif ($activeTemplate !== null) {
             $activeTemplate->load('sections.content');
             $visibleSections = $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray();
@@ -56,10 +57,11 @@ class HomeController extends Controller
             $gallerySection = $activeTemplate->getSection('gallery');
             $arrivalSection = $activeTemplate->getSection('arrival');
             $contactSection = $activeTemplate->getSection('contact');
+            $footerSection  = $activeTemplate->getSection('footer');
         } else {
             $visibleSections = self::ALL_SECTIONS;
             $orderedSections  = collect(array_map(fn($k) => (object)['section_key' => $k], self::ALL_SECTIONS));
-            $heroSection = $aboutSection = $amenitiesSection = $gallerySection = $arrivalSection = $contactSection = null;
+            $heroSection = $aboutSection = $amenitiesSection = $gallerySection = $arrivalSection = $contactSection = $footerSection = null;
         }
 
         $galleryImages = $gallerySection
@@ -73,6 +75,6 @@ class HomeController extends Controller
                 ->get()
             : collect();
 
-        return view('home', compact('activeTemplate', 'visibleSections', 'orderedSections', 'heroSection', 'aboutSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'arrivalSection', 'contactSection', 'pageGroups'));
+        return view('home', compact('activeTemplate', 'visibleSections', 'orderedSections', 'heroSection', 'aboutSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'arrivalSection', 'contactSection', 'footerSection', 'pageGroups'));
     }
 }

@@ -449,9 +449,11 @@ em {
 }
 .header__theme-toggle__icon--light {
   display: none;
+  font-size: 1.75rem !important;
 }
 .header__theme-toggle__icon--dark {
   display: inline-flex;
+  font-size: 1.75rem !important;
 }
 #header.scrolled .header__theme-toggle {
   color: var(--color-dark);
@@ -470,7 +472,7 @@ em {
 .header__controls {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   flex-shrink: 0;
 }
 
@@ -1605,6 +1607,21 @@ em {
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.65);
   letter-spacing: 0.05em;
+}
+
+.footer__brand-logo {
+  max-width: 75%;
+  object-fit: contain;
+  display: block;
+}
+.footer__brand-logo--dark {
+  display: none;
+}
+[data-theme=dark] .footer__brand-logo--light {
+  display: none;
+}
+[data-theme=dark] .footer__brand-logo--dark {
+  display: block;
 }
 
 .footer__nav h4,

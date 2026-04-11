@@ -47,6 +47,19 @@
   letter-spacing: 0.05em;
 }
 
+.footer__brand-logo {
+  max-width: 75%;
+  object-fit: contain;
+  display: block;
+
+  &--dark { display: none; }
+
+  [data-theme="dark"] & {
+    &--light { display: none; }
+    &--dark  { display: block; }
+  }
+}
+
 .footer__nav,
 .footer__contact {
   h4 {
