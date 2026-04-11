@@ -39,6 +39,7 @@ class HomeController extends Controller
                 ->get();
 
             $visibleSections = $sections->where('is_visible', true)->pluck('section_key')->toArray();
+            $orderedSections  = $sections->where('is_visible', true)->values();
             $heroSection = $sections->firstWhere('section_key', 'hero');
             $aboutSection = $sections->firstWhere('section_key', 'about');
             $amenitiesSection = $sections->firstWhere('section_key', 'amenities');
@@ -48,6 +49,7 @@ class HomeController extends Controller
         } elseif ($activeTemplate !== null) {
             $activeTemplate->load('sections.content');
             $visibleSections = $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray();
+            $orderedSections  = $activeTemplate->sections->where('is_visible', true)->values();
             $heroSection = $activeTemplate->getSection('hero');
             $aboutSection = $activeTemplate->getSection('about');
             $amenitiesSection = $activeTemplate->getSection('amenities');
@@ -56,6 +58,7 @@ class HomeController extends Controller
             $contactSection = $activeTemplate->getSection('contact');
         } else {
             $visibleSections = self::ALL_SECTIONS;
+            $orderedSections  = collect(array_map(fn($k) => (object)['section_key' => $k], self::ALL_SECTIONS));
             $heroSection = $aboutSection = $amenitiesSection = $gallerySection = $arrivalSection = $contactSection = null;
         }
 
@@ -70,6 +73,6 @@ class HomeController extends Controller
                 ->get()
             : collect();
 
-        return view('home', compact('activeTemplate', 'visibleSections', 'heroSection', 'aboutSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'arrivalSection', 'contactSection', 'pageGroups'));
+        return view('home', compact('activeTemplate', 'visibleSections', 'orderedSections', 'heroSection', 'aboutSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'arrivalSection', 'contactSection', 'pageGroups'));
     }
 }

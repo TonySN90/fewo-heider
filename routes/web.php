@@ -140,6 +140,7 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
     Route::middleware('permission:manage templates')->group(function () {
         Route::get('/page-structure', [PageStructureController::class, 'index'])->name('admin.page-structure');
         Route::put('/page-structure/sections', [PageStructureController::class, 'updateSections'])->name('admin.page-structure.sections');
+        Route::post('/page-structure/sections/reorder', [PageStructureController::class, 'reorderSections'])->name('admin.page-structure.sections.reorder');
         Route::get('/page-structure/sections/{sectionKey}/edit', [PageStructureController::class, 'edit'])->name('admin.page-structure.edit');
         Route::put('/page-structure/sections/{sectionKey}', [PageStructureController::class, 'update'])->name('admin.page-structure.update');
 

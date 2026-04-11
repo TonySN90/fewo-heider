@@ -19,16 +19,22 @@
       <table>
         <thead>
           <tr>
-            <th>#</th>
+            <th style="width:2.5rem"></th>
             <th>Sektion</th>
             <th>Sichtbar</th>
             <th></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="sections-tbody">
           @foreach ($sections as $section)
-            <tr>
-              <td>{{ $section->sort_order }}</td>
+            <tr data-id="{{ $section->id }}" {{ $section->section_key === 'hero' ? 'data-fixed="true"' : '' }}>
+              <td>
+                @if ($section->section_key !== 'hero')
+                  <span class="drag-handle" title="Verschieben">
+                    <span class="material-symbols-rounded">drag_indicator</span>
+                  </span>
+                @endif
+              </td>
               <td>{{ $sectionLabels[$section->section_key] ?? $section->section_key }}</td>
               <td>
                 <input type="hidden" name="sections[{{ $section->section_key }}]" value="0" />
@@ -57,6 +63,75 @@
         <button type="submit" class="btn btn-save">Sektionen speichern</button>
       </div>
     </form>
+
+    <script>
+    (function () {
+      const tbody = document.getElementById('sections-tbody');
+      const reorderUrl = '{{ route('admin.page-structure.sections.reorder') }}';
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+      let dragRow = null;
+
+      tbody.querySelectorAll('tr[data-id]').forEach(row => {
+        const handle = row.querySelector('.drag-handle');
+        if (!handle) return;
+
+        handle.addEventListener('mousedown', () => row.setAttribute('draggable', 'true'));
+        handle.addEventListener('mouseup',   () => row.setAttribute('draggable', 'false'));
+
+        row.addEventListener('dragstart', e => {
+          dragRow = row;
+          row.classList.add('row--dragging');
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', '');
+        });
+
+        row.addEventListener('dragend', () => {
+          row.setAttribute('draggable', 'false');
+          row.classList.remove('row--dragging');
+          clearDropIndicators();
+          dragRow = null;
+          saveSectionOrder();
+        });
+      });
+
+      function clearDropIndicators() {
+        tbody.querySelectorAll('.row--drop-before, .row--drop-after').forEach(r => {
+          r.classList.remove('row--drop-before', 'row--drop-after');
+        });
+      }
+
+      tbody.addEventListener('dragover', e => {
+        e.preventDefault();
+        const target = e.target.closest('tr[data-id]');
+        if (!target || target === dragRow || target.dataset.fixed) return;
+        const rect = target.getBoundingClientRect();
+        const before = e.clientY < rect.top + rect.height / 2;
+        clearDropIndicators();
+        if (before) {
+          // Linie unterhalb der Zeile VOR dem Ziel anzeigen
+          const prev = target.previousElementSibling;
+          if (prev && prev !== dragRow) prev.classList.add('row--drop-after');
+          else target.classList.add('row--drop-before');
+          tbody.insertBefore(dragRow, target);
+        } else {
+          target.classList.add('row--drop-after');
+          target.after(dragRow);
+        }
+      });
+
+      tbody.addEventListener('dragleave', e => {
+        if (!tbody.contains(e.relatedTarget)) clearDropIndicators();
+      });
+
+      async function saveSectionOrder() {
+        const ids = [...tbody.querySelectorAll('tr[data-id]')].map(r => r.dataset.id);
+        const body = new FormData();
+        body.append('_token', csrfToken);
+        ids.forEach(id => body.append('ids[]', id));
+        await fetch(reorderUrl, { method: 'POST', body });
+      }
+    })();
+    </script>
   </details>
 
   {{-- ===== SEITENGRUPPEN ===== --}}

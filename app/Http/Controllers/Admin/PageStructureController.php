@@ -68,6 +68,27 @@ class PageStructureController extends Controller
         return back()->with('success', 'Seitenstruktur gespeichert.');
     }
 
+    public function reorderSections(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $tenant = current_tenant();
+        $template = $tenant?->template;
+
+        abort_unless($tenant && $template, 404);
+
+        $ids = $request->validate([
+            'ids'   => ['required', 'array'],
+            'ids.*' => ['integer'],
+        ])['ids'];
+
+        foreach ($ids as $order => $id) {
+            $template->sectionsForTenant($tenant->id)
+                ->where('id', $id)
+                ->update(['sort_order' => $order + 1]);
+        }
+
+        return response()->json(['ok' => true]);
+    }
+
     public function edit(string $sectionKey): View
     {
         $tenant = current_tenant();
