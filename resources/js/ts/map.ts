@@ -3,6 +3,7 @@
 // ============================================================
 
 import L from 'leaflet';
+import { hasFunctionalConsent } from './cookie';
 
 // Leaflet Icon-Fix für Vite (Standard-Icons werden durch Module-Bundler verschoben)
 delete (L.Icon.Default.prototype as unknown as Record<string, unknown>)['_getIconUrl'];
@@ -14,9 +15,34 @@ L.Icon.Default.mergeOptions({
 
 const ZOOM = 13;
 
+function showMapPlaceholder(mapEl: HTMLElement): void {
+  mapEl.style.display = 'flex';
+  mapEl.style.alignItems = 'center';
+  mapEl.style.justifyContent = 'center';
+  mapEl.style.flexDirection = 'column';
+  mapEl.style.gap = '0.75rem';
+  mapEl.style.fontSize = '0.9rem';
+  mapEl.style.textAlign = 'center';
+  mapEl.style.padding = '2rem';
+  mapEl.innerHTML = `
+    <span class="material-symbols-rounded" style="font-size:2.5rem">map</span>
+    <p style="margin:0">Die Karte wird von Mapbox bereitgestellt und erfordert Ihre Zustimmung.</p>
+    <button
+      type="button"
+      onclick="showCookiePreferences()"
+      style="padding:0.5rem 1.25rem;cursor:pointer;border:1px solid currentColor;border-radius:4px;background:transparent"
+    >Cookie-Einstellungen öffnen</button>
+  `;
+}
+
 export function initMap(): void {
   const mapEl = document.getElementById('map');
   if (!mapEl) return;
+
+  if (!hasFunctionalConsent()) {
+    showMapPlaceholder(mapEl);
+    return;
+  }
 
   const LAT = parseFloat(mapEl.dataset.lat ?? '53.618577') || 53.618577;
   const LNG = parseFloat(mapEl.dataset.lng ?? '11.469308') || 11.469308;
