@@ -40,6 +40,7 @@ class HomeController extends Controller
 
             $visibleSections = $sections->where('is_visible', true)->pluck('section_key')->toArray();
             $orderedSections  = $sections->where('is_visible', true)->values();
+            $headerSection = $sections->firstWhere('section_key', 'header');
             $heroSection = $sections->firstWhere('section_key', 'hero');
             $aboutSection = $sections->firstWhere('section_key', 'about');
             $amenitiesSection = $sections->firstWhere('section_key', 'amenities');
@@ -51,6 +52,7 @@ class HomeController extends Controller
             $activeTemplate->load('sections.content');
             $visibleSections = $activeTemplate->sections->where('is_visible', true)->pluck('section_key')->toArray();
             $orderedSections  = $activeTemplate->sections->where('is_visible', true)->values();
+            $headerSection = $activeTemplate->getSection('header');
             $heroSection = $activeTemplate->getSection('hero');
             $aboutSection = $activeTemplate->getSection('about');
             $amenitiesSection = $activeTemplate->getSection('amenities');
@@ -61,7 +63,7 @@ class HomeController extends Controller
         } else {
             $visibleSections = self::ALL_SECTIONS;
             $orderedSections  = collect(array_map(fn($k) => (object)['section_key' => $k], self::ALL_SECTIONS));
-            $heroSection = $aboutSection = $amenitiesSection = $gallerySection = $arrivalSection = $contactSection = $footerSection = null;
+            $headerSection = $heroSection = $aboutSection = $amenitiesSection = $gallerySection = $arrivalSection = $contactSection = $footerSection = null;
         }
 
         $galleryImages = $gallerySection
@@ -75,6 +77,6 @@ class HomeController extends Controller
                 ->get()
             : collect();
 
-        return view('home', compact('activeTemplate', 'visibleSections', 'orderedSections', 'heroSection', 'aboutSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'arrivalSection', 'contactSection', 'footerSection', 'pageGroups'));
+        return view('home', compact('activeTemplate', 'visibleSections', 'orderedSections', 'headerSection', 'heroSection', 'aboutSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'arrivalSection', 'contactSection', 'footerSection', 'pageGroups'));
     }
 }

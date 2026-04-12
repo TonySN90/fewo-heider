@@ -14,6 +14,7 @@ use Illuminate\View\View;
 class PageStructureController extends Controller
 {
     private const SECTION_LABELS = [
+        'header'    => 'Header / Navigation',
         'hero'      => 'Hero (Hauptbild)',
         'about'     => 'Die Wohnung',
         'amenities' => 'Ausstattung',
@@ -24,7 +25,7 @@ class PageStructureController extends Controller
         'footer'    => 'Footer',
     ];
 
-    private const EDITABLE_SECTIONS = ['hero', 'about', 'amenities', 'gallery', 'arrival', 'contact', 'footer'];
+    private const EDITABLE_SECTIONS = ['header', 'hero', 'about', 'amenities', 'gallery', 'arrival', 'contact', 'footer'];
 
     public function index(): View
     {
@@ -163,7 +164,7 @@ class PageStructureController extends Controller
             );
         }
 
-        // Footer-Logos: löschen
+        // Header/Footer-Logos: löschen
         foreach (['brand_logo', 'brand_logo_dark'] as $logoKey) {
             if (isset($fields["{$logoKey}_delete"]) && $fields["{$logoKey}_delete"] === '1') {
                 $existing = TemplateSectionContent::where('template_section_id', $section->id)

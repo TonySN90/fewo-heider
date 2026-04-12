@@ -96,7 +96,7 @@ erDiagram
     template_sections {
         bigint id PK
         bigint template_id FK
-        string section_key "hero|about|amenities|gallery|pricing|arrival|contact"
+        string section_key "header|hero|about|amenities|gallery|pricing|arrival|contact|footer"
         boolean is_visible
         tinyint sort_order
         bigint tenant_id FK
@@ -107,7 +107,7 @@ erDiagram
     template_section_content {
         bigint id PK
         bigint template_section_id FK
-        string field_key "z.B. eyebrow|title|bg_alt|map_lat|map_lng|..."
+        string field_key "z.B. eyebrow|title|bg_alt|brand_name|brand_type|brand_logo|brand_logo_dark|..."
         text value
         timestamps created_at
         timestamps updated_at

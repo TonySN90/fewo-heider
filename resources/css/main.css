@@ -360,6 +360,22 @@ em {
   transition: color 300ms ease;
 }
 
+.header__logo-img {
+  max-height: 44px;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
+}
+.header__logo-img--dark {
+  display: none;
+}
+[data-theme=dark] .header__logo-img--light {
+  display: none;
+}
+[data-theme=dark] .header__logo-img--dark {
+  display: block;
+}
+
 .header__nav ul {
   display: flex;
   align-items: center;

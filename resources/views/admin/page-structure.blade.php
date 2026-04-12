@@ -27,7 +27,7 @@
         </thead>
         <tbody id="sections-tbody">
           @foreach ($sections as $section)
-            @php $isFixed = in_array($section->section_key, ['hero', 'footer']); @endphp
+            @php $isFixed = in_array($section->section_key, ['header', 'hero', 'footer']); @endphp
             <tr data-id="{{ $section->id }}" {{ $isFixed ? 'data-fixed="true"' : '' }}>
               <td>
                 @if (!$isFixed)

@@ -74,6 +74,20 @@
   transition: color $transition-normal;
 }
 
+.header__logo-img {
+  max-height: 44px;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
+
+  &--dark { display: none; }
+
+  [data-theme="dark"] & {
+    &--light { display: none; }
+    &--dark  { display: block; }
+  }
+}
+
 // Navigation
 .header__nav {
   ul {

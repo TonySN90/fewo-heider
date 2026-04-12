@@ -446,6 +446,91 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
         </div>
       @endif
 
+      {{-- ===== HEADER ===== --}}
+      @if ($section->section_key === 'header')
+        <div class="section-edit-form">
+
+          <div class="form-field">
+            <label for="header_brand_type">Darstellung</label>
+            <select id="header_brand_type" name="fields[brand_type]">
+              <option value="text" {{ $section->field('brand_type', 'text') !== 'logo' ? 'selected' : '' }}>Name (Text)</option>
+              <option value="logo" {{ $section->field('brand_type') === 'logo' ? 'selected' : '' }}>Logo (Bild)</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="header_brand_name">Name <span class="form-field__hint">(wird angezeigt wenn „Name (Text)" gewählt)</span></label>
+            <input type="text" id="header_brand_name" name="fields[brand_name]"
+              value="{{ $section->field('brand_name', 'Ferienwohnung Heider') }}" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="header_brand_sub">Unterzeile <span class="form-field__hint">(z.B. „Insel · Ort")</span></label>
+            <input type="text" id="header_brand_sub" name="fields[brand_sub]"
+              value="{{ $section->field('brand_sub', 'Rügen · Serams') }}" maxlength="100" />
+          </div>
+
+          @php $hLogo = $section->field('brand_logo'); @endphp
+          <div class="form-field">
+            <label>Logo – Light Mode <span class="form-field__hint">(PNG, WebP, SVG – max. 5 MB)</span></label>
+            <div class="upload-zone {{ $hLogo ? 'upload-zone--has-preview' : '' }}"
+                 id="upload-zone-light"
+                 ondragover="uploadZoneDrag(this, true)" ondragleave="uploadZoneDrag(this, false)">
+              @if ($hLogo)
+                <div class="upload-preview">
+                  <img src="{{ Storage::url($hLogo) }}" alt="Logo Light" class="upload-preview__img" />
+                  <button type="button" class="upload-preview__remove"
+                          onclick="removeUpload('brand_logo', 'upload-zone-light')"
+                          title="Logo entfernen">
+                    <span class="material-symbols-rounded">close</span>
+                  </button>
+                </div>
+              @else
+                <span class="material-symbols-rounded upload-zone__icon">add_photo_alternate</span>
+                <span class="upload-zone__label">Klicken oder Bild hierher ziehen</span>
+                <span class="upload-zone__hint">PNG, WebP, SVG – max. 5 MB</span>
+              @endif
+              <input type="file" name="brand_logo" accept="image/png,image/webp,image/svg+xml"
+                     onchange="previewUpload(this, 'upload-zone-light', false)" />
+            </div>
+            <input type="hidden" name="fields[brand_logo_delete]" id="brand_logo_delete" value="0" />
+            @error('brand_logo')
+              <span style="color:red;font-size:0.85rem">{{ $message }}</span>
+            @enderror
+          </div>
+
+          @php $hLogoDark = $section->field('brand_logo_dark'); @endphp
+          <div class="form-field">
+            <label>Logo – Dark Mode <span class="form-field__hint">(optional – falls leer, wird Light-Logo verwendet)</span></label>
+            <div class="upload-zone {{ $hLogoDark ? 'upload-zone--has-preview' : '' }}"
+                 id="upload-zone-dark"
+                 ondragover="uploadZoneDrag(this, true)" ondragleave="uploadZoneDrag(this, false)">
+              @if ($hLogoDark)
+                <div class="upload-preview">
+                  <img src="{{ Storage::url($hLogoDark) }}" alt="Logo Dark"
+                       class="upload-preview__img upload-preview__img--dark-bg" />
+                  <button type="button" class="upload-preview__remove"
+                          onclick="removeUpload('brand_logo_dark', 'upload-zone-dark')"
+                          title="Logo entfernen">
+                    <span class="material-symbols-rounded">close</span>
+                  </button>
+                </div>
+              @else
+                <span class="material-symbols-rounded upload-zone__icon">add_photo_alternate</span>
+                <span class="upload-zone__label">Klicken oder Bild hierher ziehen</span>
+                <span class="upload-zone__hint">PNG, WebP, SVG – dunkler Hintergrund empfohlen</span>
+              @endif
+              <input type="file" name="brand_logo_dark" accept="image/png,image/webp,image/svg+xml"
+                     onchange="previewUpload(this, 'upload-zone-dark', true)" />
+            </div>
+            <input type="hidden" name="fields[brand_logo_dark_delete]" id="brand_logo_dark_delete" value="0" />
+            @error('brand_logo_dark')
+              <span style="color:red;font-size:0.85rem">{{ $message }}</span>
+            @enderror
+          </div>
+
+        </div>
+      @endif
+
       {{-- ===== FOOTER ===== --}}
       @if ($section->section_key === 'footer')
         <div class="section-edit-form">

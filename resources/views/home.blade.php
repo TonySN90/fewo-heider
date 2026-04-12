@@ -12,8 +12,20 @@
   <header id="header">
     <div class="header__inner container">
       <a href="#hero" class="header__logo">
-        <span class="header__logo-text">Ferienwohnung<strong> Heider</strong></span>
-        <span class="header__logo-sub">Rügen · Serams</span>
+        @if ($headerSection?->field('brand_type') === 'logo' && $headerSection?->field('brand_logo'))
+          @php
+            $hLogoLight = $headerSection->field('brand_logo');
+            $hLogoDark  = $headerSection->field('brand_logo_dark') ?: $hLogoLight;
+            $hLogoAlt   = $headerSection->field('brand_name', 'Logo');
+          @endphp
+          <img src="{{ Storage::url($hLogoLight) }}" alt="{{ $hLogoAlt }}"
+               class="header__logo-img header__logo-img--light" />
+          <img src="{{ Storage::url($hLogoDark) }}" alt="{{ $hLogoAlt }}"
+               class="header__logo-img header__logo-img--dark" />
+        @else
+          <span class="header__logo-text">{{ $headerSection?->field('brand_name', 'Ferienwohnung Heider') ?? 'Ferienwohnung Heider' }}</span>
+          <span class="header__logo-sub">{{ $headerSection?->field('brand_sub', 'Rügen · Serams') ?? 'Rügen · Serams' }}</span>
+        @endif
       </a>
 
       <div class="header__controls">

@@ -47,7 +47,7 @@ $icons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
 
   @if ($seasons->isEmpty())
     <div class="card">
-      <p style="color:#aaa;text-align:center">Noch keine Saisonen vorhanden. Lege die erste Saison an.</p>
+      <p style="color:#aaa;text-align:center;padding:20px;">Noch keine Saisonen vorhanden. Lege die erste Saison an.</p>
     </div>
   @else
     {{-- ── Tab-Navigation ── --}}
