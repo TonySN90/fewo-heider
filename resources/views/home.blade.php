@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('meta')
-  <meta name="description" content="Ferienwohnung Heider auf Rügen – gemütliche 30 m² Wohnung nahe Ostseebad Binz. Jetzt anfragen!" />
+  <meta name="description" content="{{ $tenant?->name ?? 'Ferienwohnung' }} – Jetzt anfragen!" />
 @endsection
 
-@section('title', 'Ferienwohnung Heider – Rügen')
+@section('title', $tenant?->name ?? 'Meine Website')
 
 @php
   $isEn = app()->getLocale() === 'en';
@@ -428,7 +428,13 @@
               <div class="map-section__map">
                 <div id="map"
                   data-lat="{{ $arrivalSection?->field('map_lat') ?: '54.3835' }}"
-                  data-lng="{{ $arrivalSection?->field('map_lng') ?: '13.5632' }}"></div>
+                  data-lng="{{ $arrivalSection?->field('map_lng') ?: '13.5632' }}"
+                  data-name="{{ $arrivalSection?->field('brand_name') ?: ($tenant?->name ?? 'Musterferienwohnung') }}"
+                  data-street="{{ $arrivalSection?->field('street') ?: 'Musterstraße 1' }}"
+                  data-city="{{ $arrivalSection?->field('city') ?: '12345 Musterstadt' }}"
+                  data-phone="{{ $arrivalSection?->field('phone') ?: '01234 56789' }}"
+                  data-phone-href="{{ $arrivalSection?->field('phone_href') ?: '+4912345678' }}"
+                  data-email="{{ $arrivalSection?->field('email') ?: 'info@mustermann-fewo.de' }}"></div>
               </div>
             </div>
           </div>

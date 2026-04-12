@@ -4,7 +4,7 @@
   <meta name="description" content="Rügen für die ganze Familie – Dinosaurierland, Rasender Roland, Karls Erlebnis-Dorf, Strände und mehr." />
 @endsection
 
-@section('title', 'Rügen für die ganze Familie – Ferienwohnung Heider')
+@section('title', 'Rügen für die ganze Familie')
 
 @section('nav')
   <a href="{{ url('/') }}">Startseite</a>
@@ -170,7 +170,7 @@
 @endsection
 
 @section('footer')
-  <p>© 2026 Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <p>© {{ date('Y') }} Musterferienwohnung</p>
   <nav class="footer__legal">
     <a href="{{ url('/impressum') }}">Impressum</a>
     <a href="{{ url('/datenschutz') }}">Datenschutz</a>

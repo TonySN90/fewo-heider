@@ -6,7 +6,7 @@
   @endif
 @endsection
 
-@section('title', $group->nav_label . ' – Ferienwohnung Heider')
+@section('title', $group->nav_label)
 
 @section('nav')
   <a href="{{ url('/') }}">Die Wohnung</a>
@@ -54,7 +54,7 @@
 
 <div class="teaser">
   <h2>Ihr Ausgangspunkt für all das</h2>
-  <p>Unsere Ferienwohnung in Zirkow/Serams liegt zentral – ideal für Tagesausflüge in alle Richtungen der Insel.</p>
+  <p>Unsere Unterkunft liegt zentral – ideal als Ausgangspunkt für Ausflüge in alle Richtungen.</p>
   <a href="{{ url('/#kontakt') }}" class="btn btn--white">
     <span class="material-symbols-rounded">mail</span> Jetzt anfragen
   </a>
@@ -63,7 +63,7 @@
 @endsection
 
 @section('footer')
-  <p>© {{ date('Y') }} Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <p>© {{ date('Y') }} Musterferienwohnung</p>
   <nav class="footer__legal">
     <a href="{{ url('/impressum') }}">Impressum</a>
     <a href="{{ url('/datenschutz') }}">Datenschutz</a>

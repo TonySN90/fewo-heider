@@ -13,8 +13,8 @@ class PageSeeder extends Seeder
 {
     public function run(): void
     {
-        $tenant = Tenant::where('domain', 'fewo-heider.de')
-            ->orWhere('slug', 'fewo-heider')
+        $tenant = Tenant::where('domain', 'muster-fewo.de')
+            ->orWhere('slug', 'muster-fewo')
             ->first();
 
         if (! $tenant) {

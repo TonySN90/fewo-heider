@@ -4,7 +4,7 @@
   <meta name="description" content="Rügen erleben – Wandern, Radfahren, Ausflugsziele, Sehenswürdigkeiten, Schlösser & Parks und Familienaktivitäten auf der schönsten Insel Deutschlands." />
 @endsection
 
-@section('title', 'Rügen erleben – Ferienwohnung Heider')
+@section('title', 'Rügen erleben')
 
 @section('nav')
   <a href="{{ url('/#ueber-uns') }}">Die Wohnung</a>
@@ -46,7 +46,7 @@
 
 <div class="teaser">
   <h2>Ihr Ausgangspunkt für all das</h2>
-  <p>Unsere Ferienwohnung in Zirkow/Serams liegt zentral – ideal für Tagesausflüge in alle Richtungen der Insel.</p>
+  <p>Unsere Unterkunft liegt zentral auf der Insel – ideal für Tagesausflüge in alle Richtungen.</p>
   <a href="{{ url('/#kontakt') }}" class="btn btn--white">
     <span class="material-symbols-rounded">mail</span> Jetzt anfragen
   </a>
@@ -55,7 +55,7 @@
 @endsection
 
 @section('footer')
-  <p>© 2026 Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <p>© {{ date('Y') }} Musterferienwohnung</p>
   <nav class="footer__legal">
     <a href="{{ url('/impressum') }}">Impressum</a>
     <a href="{{ url('/datenschutz') }}">Datenschutz</a>

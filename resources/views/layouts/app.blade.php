@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   @yield('meta')
-  <title>@yield('title', 'Ferienwohnung Heider – Rügen')</title>
+  <title>@yield('title', 'Meine Website')</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />

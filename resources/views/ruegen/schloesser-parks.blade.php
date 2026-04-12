@@ -4,7 +4,7 @@
   <meta name="description" content="Schlösser & Parks auf Rügen – Jagdschloss Granitz, Putbus, Schlosspark Ralswiek und weitere fürstliche Anlagen." />
 @endsection
 
-@section('title', 'Schlösser & Parks auf Rügen – Ferienwohnung Heider')
+@section('title', 'Schlösser & Parks auf Rügen')
 
 @section('nav')
   <a href="{{ url('/') }}">Startseite</a>
@@ -148,7 +148,7 @@
 @endsection
 
 @section('footer')
-  <p>© 2026 Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <p>© {{ date('Y') }} Musterferienwohnung</p>
   <nav class="footer__legal">
     <a href="{{ url('/impressum') }}">Impressum</a>
     <a href="{{ url('/datenschutz') }}">Datenschutz</a>

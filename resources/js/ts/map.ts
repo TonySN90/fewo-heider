@@ -45,13 +45,20 @@ export function initMap(): void {
   const marker = L.marker([LAT, LNG]).addTo(map);
 
   // Popup
+  const popupName    = mapEl.dataset.name    ?? 'Musterferienwohnung';
+  const popupStreet  = mapEl.dataset.street  ?? 'Musterstraße 1';
+  const popupCity    = mapEl.dataset.city    ?? '12345 Musterstadt';
+  const popupPhone   = mapEl.dataset.phone   ?? '01234 56789';
+  const popupPhoneHref = mapEl.dataset.phoneHref ?? '+4912345678';
+  const popupEmail   = mapEl.dataset.email   ?? 'info@mustermann-fewo.de';
+
   marker.bindPopup(`
     <div class="map-popup">
-      <h4>🏠 Ferienwohnung Heider</h4>
-      <p>Serams 8A</p>
-      <p>18528 Zirkow/Serams</p>
-      <p><a href="tel:+493839331283">📞 038393 31283</a></p>
-      <p><a href="mailto:fewo.heider@gmail.com">✉️ fewo.heider@gmail.com</a></p>
+      <h4>🏠 ${popupName}</h4>
+      <p>${popupStreet}</p>
+      <p>${popupCity}</p>
+      <p><a href="tel:${popupPhoneHref}">📞 ${popupPhone}</a></p>
+      <p><a href="mailto:${popupEmail}">✉️ ${popupEmail}</a></p>
     </div>
   `, {
     maxWidth: 250,

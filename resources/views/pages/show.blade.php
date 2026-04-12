@@ -1,6 +1,6 @@
 @extends('layouts.pages')
 
-@section('title', $page->title . ' – ' . $group->nav_label . ' – Ferienwohnung Heider')
+@section('title', $page->title . ' – ' . $group->nav_label)
 
 @section('nav')
   <a href="{{ url('/') }}">Startseite</a>
@@ -50,7 +50,7 @@
 
 <div class="cta-strip">
   <h2>{{ $page->title }} auf Rügen erleben</h2>
-  <p>Buchen Sie Ihre Ferienwohnung in Zirkow/Serams – ideal als Ausgangspunkt.</p>
+  <p>Buchen Sie Ihre Unterkunft – ideal als Ausgangspunkt.</p>
   <a href="{{ url('/#kontakt') }}" class="btn btn--white">
     <span class="material-symbols-rounded">mail</span> Jetzt anfragen
   </a>
@@ -60,7 +60,7 @@
 @endsection
 
 @section('footer')
-  <p>© {{ date('Y') }} Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <p>© {{ date('Y') }} Musterferienwohnung</p>
   <nav class="footer__legal">
     <a href="{{ url('/impressum') }}">Impressum</a>
     <a href="{{ url('/datenschutz') }}">Datenschutz</a>

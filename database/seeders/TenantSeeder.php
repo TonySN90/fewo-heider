@@ -12,12 +12,12 @@ class TenantSeeder extends Seeder
 {
     public function run(): void
     {
-        $template = Template::where('slug', 'fresh_green')->first();
+        $template = Template::where('slug', 'fewo-01')->first();
 
         $tenant = Tenant::firstOrCreate(
-            ['domain' => 'fewo-heider.de'],
+            ['domain' => 'muster-fewo.de'],
             [
-                'name' => 'Ferienwohnung Heider',
+                'name' => 'Musterferienwohnung',
                 'template_id' => $template?->id,
                 'is_active' => true,
             ]

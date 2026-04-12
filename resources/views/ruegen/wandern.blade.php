@@ -4,7 +4,7 @@
   <meta name="description" content="Wandern auf Rügen – die schönsten Wanderwege entlang der Kreideküste, durch Buchenwälder und am Hochufer des Nationalparks Jasmund." />
 @endsection
 
-@section('title', 'Wandern auf Rügen – Ferienwohnung Heider')
+@section('title', 'Wandern auf Rügen')
 
 @section('nav')
   <a href="{{ url('/') }}">Startseite</a>
@@ -32,7 +32,7 @@
     <div class="content__intro">
       <h2>Die schönsten Wanderwege der Insel</h2>
       <div class="divider"></div>
-      <p>Von der dramatischen Kreideküste bis in stille Buchenwälder – Rügen bietet Wanderungen für alle Schwierigkeitsgrade und jede Jahreszeit. Viele Wege starten direkt von unserer Ferienwohnung in Zirkow/Serams.</p>
+      <p>Von der dramatischen Kreideküste bis in stille Buchenwälder – Rügen bietet Wanderungen für alle Schwierigkeitsgrade und jede Jahreszeit.</p>
     </div>
 
     <div class="cards">
@@ -133,14 +133,14 @@
 
     <div class="tip-box">
       <p class="tip-box__title"><span class="material-symbols-rounded" style="color:var(--primary);font-size:1.1rem;">lightbulb</span> Tipp vom Gastgeber</p>
-      <p>Unsere Ferienwohnung in Zirkow/Serams liegt nur wenige Kilometer vom Schmachter See entfernt. Fahrräder können in Binz ausgeliehen werden – kombinieren Sie Rad und Wandern für perfekte Tagestouren.</p>
+      <p>Unsere Unterkunft liegt nur wenige Kilometer vom Schmachter See entfernt. Fahrräder können in Binz ausgeliehen werden – kombinieren Sie Rad und Wandern für perfekte Tagestouren.</p>
     </div>
   </div>
 </section>
 
 <div class="cta-strip">
   <h2>Ihr Ausgangspunkt für Wanderabenteuer</h2>
-  <p>Buchen Sie Ihre Ferienwohnung in Zirkow/Serams – zentral und naturnah.</p>
+  <p>Buchen Sie Ihre Unterkunft – zentral und naturnah.</p>
   <a href="{{ url('/#kontakt') }}" class="btn btn--white"><span class="material-symbols-rounded">mail</span> Jetzt anfragen</a>
   <a href="{{ url('/ruegen-erleben') }}" class="btn btn--outline">Alle Kategorien</a>
 </div>
@@ -148,7 +148,7 @@
 @endsection
 
 @section('footer')
-  <p>© 2026 Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <p>© {{ date('Y') }} Musterferienwohnung</p>
   <nav class="footer__legal">
     <a href="{{ url('/impressum') }}">Impressum</a>
     <a href="{{ url('/datenschutz') }}">Datenschutz</a>

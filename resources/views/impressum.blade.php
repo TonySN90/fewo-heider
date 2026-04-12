@@ -1,6 +1,6 @@
 @extends('layouts.pages')
 
-@section('title', 'Impressum – Ferienwohnung Heider')
+@section('title', 'Impressum')
 
 @section('nav')
   <a href="{{ url('/') }}">Startseite</a>
@@ -18,16 +18,16 @@
 <div class="container legal-content">
   <h2>Angaben gemäß § 5 TMG</h2>
   <p>
-    <strong>Lolita Heider</strong><br />
-    Serams 8A<br />
-    18528 Zirkow/Serams<br />
+    <strong>Max Mustermann</strong><br />
+    Musterstraße 1<br />
+    12345 Musterstadt<br />
     Deutschland
   </p>
 
   <h2>Kontakt</h2>
   <p>
-    Telefon: <a href="tel:+493839331283">038393 31283</a><br />
-    E-Mail: <a href="mailto:fewo.heider@gmail.com">fewo.heider@gmail.com</a>
+    Telefon: <a href="tel:+4912345678">01234 56789</a><br />
+    E-Mail: <a href="mailto:info@mustermann-fewo.de">info@mustermann-fewo.de</a>
   </p>
 
   <h2>Umsatzsteuer-ID</h2>
@@ -57,5 +57,5 @@
 @endsection
 
 @section('footer')
-  <p>© 2026 Ferienwohnung Heider &nbsp;|&nbsp; <a href="{{ url('/datenschutz') }}">Datenschutz</a></p>
+  <p>© {{ date('Y') }} Musterferienwohnung &nbsp;|&nbsp; <a href="{{ url('/datenschutz') }}">Datenschutz</a></p>
 @endsection

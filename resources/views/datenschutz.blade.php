@@ -1,6 +1,6 @@
 @extends('layouts.pages')
 
-@section('title', 'Datenschutzerklärung – Ferienwohnung Heider')
+@section('title', 'Datenschutzerklärung')
 
 @section('nav')
   <a href="{{ url('/') }}">Startseite</a>
@@ -49,11 +49,11 @@
   <h3>Hinweis zur verantwortlichen Stelle</h3>
   <p>
     Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br /><br />
-    Lolita Heider<br />
-    Serams 8A<br />
-    18528 Zirkow/Serams<br /><br />
-    Telefon: <a href="tel:+493839331283">038393 31283</a><br />
-    E-Mail: <a href="mailto:fewo.heider@gmail.com">fewo.heider@gmail.com</a>
+    Max Mustermann<br />
+    Musterstraße 1<br />
+    12345 Musterstadt<br /><br />
+    Telefon: <a href="tel:+4912345678">01234 56789</a><br />
+    E-Mail: <a href="mailto:info@mustermann-fewo.de">info@mustermann-fewo.de</a>
   </p>
 
   <h3>Speicherdauer</h3>
@@ -93,5 +93,5 @@
 @endsection
 
 @section('footer')
-  <p>© 2026 Ferienwohnung Heider &nbsp;|&nbsp; <a href="{{ url('/impressum') }}">Impressum</a></p>
+  <p>© {{ date('Y') }} Musterferienwohnung &nbsp;|&nbsp; <a href="{{ url('/impressum') }}">Impressum</a></p>
 @endsection

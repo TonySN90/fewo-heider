@@ -57,7 +57,7 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
           <div class="form-field">
             <label for="title">Überschrift</label>
             <input type="text" id="title" name="fields[title]"
-              value="{{ $section->field('title', 'Ferienwohnung Heider') }}" maxlength="150" />
+              value="{{ $section->field('title', 'Musterferienwohnung') }}" maxlength="150" />
           </div>
 
           {{-- Abschnitt: Texte --}}

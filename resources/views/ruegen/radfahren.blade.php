@@ -4,7 +4,7 @@
   <meta name="description" content="Radfahren auf Rügen – die schönsten Radrouten, vom Rügen-Rundweg bis zum Ostseeküstenradweg." />
 @endsection
 
-@section('title', 'Radfahren auf Rügen – Ferienwohnung Heider')
+@section('title', 'Radfahren auf Rügen')
 
 @section('nav')
   <a href="{{ url('/') }}">Startseite</a>
@@ -120,7 +120,7 @@
 
 <div class="cta-strip">
   <h2>Rügen auf zwei Rädern</h2>
-  <p>Buchen Sie Ihre Unterkunft in Zirkow/Serams – ideal als Ausgangspunkt für alle Radtouren.</p>
+  <p>Buchen Sie Ihre Unterkunft – ideal als Ausgangspunkt für alle Radtouren.</p>
   <a href="{{ url('/#kontakt') }}" class="btn btn--white"><span class="material-symbols-rounded">mail</span> Jetzt anfragen</a>
   <a href="{{ url('/ruegen-erleben') }}" class="btn btn--outline">Alle Kategorien</a>
 </div>
@@ -128,7 +128,7 @@
 @endsection
 
 @section('footer')
-  <p>© 2026 Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <p>© {{ date('Y') }} Musterferienwohnung</p>
   <nav class="footer__legal">
     <a href="{{ url('/impressum') }}">Impressum</a>
     <a href="{{ url('/datenschutz') }}">Datenschutz</a>

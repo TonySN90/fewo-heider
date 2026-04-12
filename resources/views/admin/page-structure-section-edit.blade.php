@@ -377,12 +377,12 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
 
           <h2 class="section-edit-form__heading">Kontakt</h2>
           <div class="form-field">
-            <label for="phone">Telefon <span class="form-field__hint">(z.B. 038393 31283)</span></label>
+            <label for="phone">Telefon <span class="form-field__hint">(z.B. 01234 56789)</span></label>
             <input type="text" id="phone" name="fields[phone]"
               value="{{ $section->field('phone') }}" placeholder="030 123456" maxlength="50" />
           </div>
           <div class="form-field">
-            <label for="phone_href">Telefon (tel:-Link) <span class="form-field__hint">(z.B. +493839331283)</span></label>
+            <label for="phone_href">Telefon (tel:-Link) <span class="form-field__hint">(z.B. +4912345678)</span></label>
             <input type="text" id="phone_href" name="fields[phone_href]"
               value="{{ $section->field('phone_href') }}" placeholder="+4930123456" maxlength="50" />
           </div>

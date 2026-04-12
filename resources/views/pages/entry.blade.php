@@ -1,6 +1,6 @@
 @extends('layouts.pages')
 
-@section('title', $entry->title . ' – ' . $page->title . ' – Ferienwohnung Heider')
+@section('title', $entry->title . ' – ' . $page->title)
 
 @section('nav')
   <a href="{{ url('/') }}">Startseite</a>
@@ -60,5 +60,5 @@
 @endsection
 
 @section('footer')
-  <p>© {{ date('Y') }} Ferienwohnung Heider</p>
+  <p>© {{ date('Y') }} Musterferienwohnung</p>
 @endsection

@@ -4,7 +4,7 @@
   <meta name="description" content="Sehenswürdigkeiten auf Rügen – Königsstuhl, Kreidefelsen, Störtebeker Festspiele, Kap Arkona und mehr." />
 @endsection
 
-@section('title', 'Sehenswürdigkeiten auf Rügen – Ferienwohnung Heider')
+@section('title', 'Sehenswürdigkeiten auf Rügen')
 
 @section('nav')
   <a href="{{ url('/') }}">Startseite</a>
@@ -128,7 +128,7 @@
 @endsection
 
 @section('footer')
-  <p>© 2026 Ferienwohnung Heider · Serams 8A · 18528 Zirkow/Serams</p>
+  <p>© {{ date('Y') }} Musterferienwohnung</p>
   <nav class="footer__legal">
     <a href="{{ url('/impressum') }}">Impressum</a>
     <a href="{{ url('/datenschutz') }}">Datenschutz</a>

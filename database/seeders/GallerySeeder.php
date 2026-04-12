@@ -11,7 +11,7 @@ class GallerySeeder extends Seeder
 {
     public function run(): void
     {
-        $template = Template::where('slug', 'fresh_green')->first();
+        $template = Template::where('slug', 'fewo-01')->first();
         if (! $template) {
             return;
         }

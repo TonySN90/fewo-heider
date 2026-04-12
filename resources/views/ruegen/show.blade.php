@@ -1,6 +1,6 @@
 @extends('layouts.pages')
 
-@section('title', $page->title . ' auf Rügen – Ferienwohnung Heider')
+@section('title', $page->title . ' auf Rügen')
 
 @section('nav')
   <a href="{{ url('/') }}">Startseite</a>
@@ -43,5 +43,5 @@
 @endsection
 
 @section('footer')
-  <p>© {{ date('Y') }} Ferienwohnung Heider</p>
+  <p>© {{ date('Y') }} Musterferienwohnung</p>
 @endsection
