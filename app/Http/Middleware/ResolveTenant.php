@@ -62,6 +62,10 @@ class ResolveTenant
 
         // Öffentliche Route ohne passende Domain
         if (! $request->is('admin*')) {
+            // Root-URL ohne Tenant → Plattform-Landingpage durchlassen
+            if ($request->is('/')) {
+                return $next($request);
+            }
             abort(404);
         }
 

@@ -28,6 +28,11 @@ class HomeController extends Controller
     {
         $tenant = current_tenant();
 
+        // Kein Tenant → Plattform-Landingpage
+        if ($tenant === null) {
+            return view('landing');
+        }
+
         $activeTemplate = $tenant !== null && $tenant->template_id !== null
             ? Template::find($tenant->template_id)
             : null;
