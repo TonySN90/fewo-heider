@@ -26,6 +26,7 @@ erDiagram
     sessions {
         string id PK
         bigint user_id FK
+        bigint tenant_id FK "nullable"
         string ip_address
         text user_agent
         longtext payload
@@ -261,6 +262,7 @@ erDiagram
 
     %% Auth
     users ||--o{ sessions : "hat"
+    tenants ||--o{ sessions : "hat"
     users }o--o{ tenants : "tenant_user"
     tenant_user }|--|| tenants : ""
     tenant_user }|--|| users : ""

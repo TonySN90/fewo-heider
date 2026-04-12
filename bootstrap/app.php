@@ -3,6 +3,7 @@
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\ResolveTenant;
 use App\Http\Middleware\SetLocale;
+use App\Http\Middleware\SetTenantOnSession;
 use App\Http\Middleware\TenantSEOMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -26,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => PermissionMiddleware::class,
             'resolve.tenant' => ResolveTenant::class,
             'tenant.seo' => TenantSEOMiddleware::class,
+            'set.tenant.session' => SetTenantOnSession::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

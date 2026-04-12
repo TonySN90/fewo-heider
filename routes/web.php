@@ -34,7 +34,7 @@ Route::get('/preview/{tenantSlug}', [HomeController::class, 'preview'])
     ->where('tenantSlug', '^[a-z0-9\-]+$');
 
 // Öffentliche Routen (Domain-basiertes Tenant-Resolving)
-Route::middleware(['resolve.tenant', 'tenant.seo'])->group(function () {
+Route::middleware(['resolve.tenant', 'tenant.seo', 'set.tenant.session'])->group(function () {
     Route::get('/', [HomeController::class, 'index']);
     // Dynamische Seitengruppen-Routen (Gruppe → Kategorie → Eintrag)
     Route::get('/{groupSlug}', [PageController::class, 'groupIndex'])
