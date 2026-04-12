@@ -134,6 +134,20 @@
             <li><a href="#contact" class="nav__cta">{{ $ui['nav_contact'] }}</a></li>
           @endif
         </ul>
+
+        <div class="header__nav-utils">
+          <div class="header__lang-switcher">
+            <a href="{{ route('locale.set', 'de') }}"
+               class="header__lang-btn {{ app()->getLocale() === 'de' ? 'active' : '' }}">DE</a>
+            <span class="header__lang-sep">|</span>
+            <a href="{{ route('locale.set', 'en') }}"
+               class="header__lang-btn {{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
+          </div>
+          <button class="header__theme-toggle" aria-label="Dark Mode umschalten">
+            <span class="material-symbols-rounded header__theme-toggle__icon--light">light_mode</span>
+            <span class="material-symbols-rounded header__theme-toggle__icon--dark">dark_mode</span>
+          </button>
+        </div>
       </nav>
     </div>
   </header>

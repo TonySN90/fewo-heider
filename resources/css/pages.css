@@ -202,13 +202,13 @@ p:last-child {
 .site-nav__burger.open span:nth-child(3) {
   transform: rotate(-45deg) translate(1px, 1px);
 }
-@media (max-width: 1090px) {
+@media (max-width: 1280px) {
   .site-nav__burger {
     display: flex;
   }
 }
 
-@media (max-width: 1090px) {
+@media (max-width: 1280px) {
   .site-nav__links {
     position: fixed;
     top: 0;
