@@ -311,6 +311,32 @@
                           </div>
                         </div>
                       </div>
+
+                      {{-- ── SEO ── --}}
+                      <form method="POST"
+                            action="{{ route('admin.pages.seo.update', $page) }}"
+                            style="padding:0 1.5rem 1.5rem"
+                            data-ajax-seo>
+                        @csrf @method('PUT')
+                        <div class="modal-page-settings__label" style="font-size:.75rem;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">SEO (optional)</div>
+                        <div class="modal-form-grid">
+                          <div class="modal-form-grid__full">
+                            <label>SEO-Titel <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(leer = Seitenname, max. 70 Zeichen)</span></label>
+                            <input type="text" name="seo_title"
+                                   value="{{ $page->seo?->title ?? '' }}"
+                                   maxlength="70"
+                                   placeholder="{{ $page->title }}" />
+                          </div>
+                          <div class="modal-form-grid__full">
+                            <label>SEO-Beschreibung <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(max. 160 Zeichen)</span></label>
+                            <textarea name="seo_description" rows="2" maxlength="160"
+                                      placeholder="{{ $page->description ?? '' }}">{{ $page->seo?->description ?? '' }}</textarea>
+                          </div>
+                        </div>
+                        <div style="margin-top:.75rem">
+                          <button type="submit" class="btn btn-save btn--sm">SEO speichern</button>
+                        </div>
+                      </form>
                     </template>
 
                     {{-- Modal: Kategorie löschen --}}
@@ -375,6 +401,32 @@
               </div>
             </div>
           </div>
+
+          {{-- ── SEO ── --}}
+          <form method="POST"
+                action="{{ route('admin.pages.groups.seo.update', $group) }}"
+                style="padding:0 1.5rem 1.5rem"
+                data-ajax-seo>
+            @csrf @method('PUT')
+            <div class="modal-page-settings__label" style="font-size:.75rem;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">SEO (optional)</div>
+            <div class="modal-form-grid">
+              <div class="modal-form-grid__full">
+                <label>SEO-Titel <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(leer = Seitenname, max. 70 Zeichen)</span></label>
+                <input type="text" name="seo_title"
+                       value="{{ $group->seo?->title ?? '' }}"
+                       maxlength="70"
+                       placeholder="{{ $group->title }}" />
+              </div>
+              <div class="modal-form-grid__full">
+                <label>SEO-Beschreibung <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(max. 160 Zeichen)</span></label>
+                <textarea name="seo_description" rows="2" maxlength="160"
+                          placeholder="{{ $group->description ?? '' }}">{{ $group->seo?->description ?? '' }}</textarea>
+              </div>
+            </div>
+            <div style="margin-top:.75rem">
+              <button type="submit" class="btn btn-save btn--sm">SEO speichern</button>
+            </div>
+          </form>
         </template>
 
         {{-- Modal: Gruppe löschen --}}

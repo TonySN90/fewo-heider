@@ -75,6 +75,18 @@
         </div>
       </div>
 
+      <div class="form-section">
+        <h3>SEO</h3>
+        <p class="form-hint">Diese Felder werden für Suchmaschinen-Tags (Title, Description, Open Graph) verwendet.</p>
+        <div class="form-grid">
+          <div class="form-group form-group--full">
+            <label>SEO-Beschreibung <span class="form-hint">(Meta-Description, max. 160 Zeichen)</span></label>
+            <textarea name="seo_description" rows="3" maxlength="160">{{ old('seo_description', $tenant->seo_description ?? '') }}</textarea>
+            @error('seo_description')<span class="form-error">{{ $message }}</span>@enderror
+          </div>
+        </div>
+      </div>
+
       <div class="form-actions">
         <a href="{{ route('admin.tenants') }}" class="btn btn-cancel">Abbrechen</a>
         <button type="submit" class="btn btn-save">Speichern</button>

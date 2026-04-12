@@ -99,6 +99,23 @@ class PageController extends Controller
             ->with('success', 'Gruppe gelöscht.');
     }
 
+    public function updateGroupSeo(Request $request, PageGroup $group): JsonResponse
+    {
+        $this->authorizeGroup($group);
+
+        $data = $request->validate([
+            'seo_title'       => ['nullable', 'string', 'max:70'],
+            'seo_description' => ['nullable', 'string', 'max:160'],
+        ]);
+
+        $group->seo()->update([
+            'title'       => $data['seo_title'] ?: null,
+            'description' => $data['seo_description'] ?: null,
+        ]);
+
+        return response()->json(['ok' => true]);
+    }
+
     // ── Kategorien ───────────────────────────────────────────────────────────
 
     public function store(Request $request): RedirectResponse
@@ -209,6 +226,23 @@ class PageController extends Controller
             ->with('success', 'Kategorie gelöscht.');
     }
 
+    public function updatePageSeo(Request $request, Page $page): JsonResponse
+    {
+        $this->authorizePage($page);
+
+        $data = $request->validate([
+            'seo_title'       => ['nullable', 'string', 'max:70'],
+            'seo_description' => ['nullable', 'string', 'max:160'],
+        ]);
+
+        $page->seo()->update([
+            'title'       => $data['seo_title'] ?: null,
+            'description' => $data['seo_description'] ?: null,
+        ]);
+
+        return response()->json(['ok' => true]);
+    }
+
     // ── Einträge ──────────────────────────────────────────────────────────────
 
     public function entries(Page $page): View
@@ -270,6 +304,24 @@ class PageController extends Controller
 
         return redirect()->route('admin.pages.entry.edit', [$page, $entry])
             ->with('success', 'Eintrag angelegt.');
+    }
+
+    public function updateEntrySeo(Request $request, Page $page, PageEntry $entry): RedirectResponse
+    {
+        $this->authorizePage($page);
+        abort_if($entry->page_id !== $page->id, 403);
+
+        $data = $request->validate([
+            'seo_title'       => ['nullable', 'string', 'max:70'],
+            'seo_description' => ['nullable', 'string', 'max:160'],
+        ]);
+
+        $entry->seo()->update([
+            'title'       => $data['seo_title'] ?: null,
+            'description' => $data['seo_description'] ?: null,
+        ]);
+
+        return back()->with('success', 'SEO gespeichert.');
     }
 
     public function updateEntry(Request $request, Page $page, PageEntry $entry): RedirectResponse

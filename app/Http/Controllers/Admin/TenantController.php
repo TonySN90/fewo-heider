@@ -75,6 +75,7 @@ class TenantController extends Controller
             'is_active' => ['boolean'],
             'user_ids' => ['nullable', 'array'],
             'user_ids.*' => ['exists:users,id'],
+            'seo_description' => ['nullable', 'string', 'max:160'],
         ]);
 
         $tenant->update([
@@ -83,6 +84,7 @@ class TenantController extends Controller
             'domain' => $data['domain'] ?? null,
             'template_id' => $data['template_id'] ?? null,
             'is_active' => $request->boolean('is_active'),
+            'seo_description' => $data['seo_description'] ?? null,
         ]);
 
         $tenant->users()->sync($data['user_ids'] ?? []);

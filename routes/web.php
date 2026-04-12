@@ -34,7 +34,7 @@ Route::get('/preview/{tenantSlug}', [HomeController::class, 'preview'])
     ->where('tenantSlug', '^[a-z0-9\-]+$');
 
 // Öffentliche Routen (Domain-basiertes Tenant-Resolving)
-Route::middleware('resolve.tenant')->group(function () {
+Route::middleware(['resolve.tenant', 'tenant.seo'])->group(function () {
     Route::get('/', [HomeController::class, 'index']);
     // Dynamische Seitengruppen-Routen (Gruppe → Kategorie → Eintrag)
     Route::get('/{groupSlug}', [PageController::class, 'groupIndex'])
@@ -157,16 +157,19 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
         // Seitengruppen
         Route::post('/page-structure/groups', [App\Http\Controllers\Admin\PageController::class, 'storeGroup'])->name('admin.pages.groups.store');
         Route::put('/page-structure/groups/{group}', [App\Http\Controllers\Admin\PageController::class, 'updateGroup'])->name('admin.pages.groups.update');
+        Route::put('/page-structure/groups/{group}/seo', [App\Http\Controllers\Admin\PageController::class, 'updateGroupSeo'])->name('admin.pages.groups.seo.update');
         Route::delete('/page-structure/groups/{group}', [App\Http\Controllers\Admin\PageController::class, 'destroyGroup'])->name('admin.pages.groups.destroy');
 
         // Kategorien + Einträge + Blöcke
         Route::post('/page-structure/pages', [App\Http\Controllers\Admin\PageController::class, 'store'])->name('admin.pages.store');
         Route::put('/page-structure/pages/{page}', [App\Http\Controllers\Admin\PageController::class, 'update'])->name('admin.pages.update');
+        Route::put('/page-structure/pages/{page}/seo', [App\Http\Controllers\Admin\PageController::class, 'updatePageSeo'])->name('admin.pages.seo.update');
         Route::delete('/page-structure/pages/{page}', [App\Http\Controllers\Admin\PageController::class, 'destroy'])->name('admin.pages.destroy');
         Route::get('/page-structure/pages/{page}/entries', [App\Http\Controllers\Admin\PageController::class, 'entries'])->name('admin.pages.entries');
         Route::post('/page-structure/pages/{page}/entries', [App\Http\Controllers\Admin\PageController::class, 'storeEntry'])->name('admin.pages.entries.store');
         Route::get('/page-structure/pages/{page}/entries/{entry}/edit', [App\Http\Controllers\Admin\PageController::class, 'editEntry'])->name('admin.pages.entry.edit');
         Route::put('/page-structure/pages/{page}/entries/{entry}', [App\Http\Controllers\Admin\PageController::class, 'updateEntry'])->name('admin.pages.entries.update');
+        Route::put('/page-structure/pages/{page}/entries/{entry}/seo', [App\Http\Controllers\Admin\PageController::class, 'updateEntrySeo'])->name('admin.pages.entries.seo.update');
         Route::delete('/page-structure/pages/{page}/entries/{entry}', [App\Http\Controllers\Admin\PageController::class, 'destroyEntry'])->name('admin.pages.entries.destroy');
         Route::post('/page-structure/pages/{page}/entries/{entry}/blocks', [App\Http\Controllers\Admin\PageController::class, 'storeBlock'])->name('admin.pages.blocks.store');
         Route::post('/page-structure/pages/{page}/entries/{entry}/blocks/reorder', [App\Http\Controllers\Admin\PageController::class, 'reorderBlocks'])->name('admin.pages.blocks.reorder');

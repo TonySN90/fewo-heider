@@ -1,11 +1,5 @@
 @extends('layouts.app')
 
-@section('meta')
-  <meta name="description" content="{{ $tenant?->name ?? 'Ferienwohnung' }} – Jetzt anfragen!" />
-@endsection
-
-@section('title', $tenant?->name ?? 'Meine Website')
-
 @php
   $isEn = app()->getLocale() === 'en';
   $ui = $isEn ? [

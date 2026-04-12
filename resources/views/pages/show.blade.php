@@ -1,7 +1,5 @@
 @extends('layouts.pages')
 
-@section('title', $page->title . ' – ' . $group->nav_label)
-
 @section('nav')
   <a href="{{ url('/') }}">Startseite</a>
   <a href="{{ route('pages.group', $group->slug) }}">{{ $group->nav_label }}</a>

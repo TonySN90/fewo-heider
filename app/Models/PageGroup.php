@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class PageGroup extends Model
 {
+    use HasSEO;
+
     protected $fillable = [
         'tenant_id', 'title', 'nav_label', 'slug', 'description', 'is_visible', 'sort_order',
     ];
@@ -36,5 +40,13 @@ class PageGroup extends Model
     public function pages(): HasMany
     {
         return $this->hasMany(Page::class)->orderBy('sort_order');
+    }
+
+    public function getDynamicSEOData(): SEOData
+    {
+        return new SEOData(
+            title: $this->title,
+            description: $this->description,
+        );
     }
 }

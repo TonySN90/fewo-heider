@@ -1,13 +1,5 @@
 @extends('layouts.pages')
 
-@section('meta')
-  @if ($group->description)
-    <meta name="description" content="{{ $group->description }}" />
-  @endif
-@endsection
-
-@section('title', $group->nav_label)
-
 @section('nav')
   <a href="{{ url('/') }}">Die Wohnung</a>
   <a href="{{ url('/#preise') }}">Preise</a>

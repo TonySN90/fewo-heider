@@ -8,7 +8,10 @@ use App\Models\Template;
 use App\Models\TemplateSection;
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use RalphJSmit\Laravel\SEO\SchemaCollection;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class HomeController extends Controller
 {
@@ -81,6 +84,29 @@ class HomeController extends Controller
                 ->orderBy('sort_order')
                 ->get()
             : collect();
+
+        $jsonLd = [
+            '@context' => 'https://schema.org',
+            '@type'    => 'LodgingBusiness',
+            'name'     => $arrivalSection?->field('address_name') ?? $tenant->name,
+            'address'  => [
+                '@type'           => 'PostalAddress',
+                'streetAddress'   => $arrivalSection?->field('address_street') ?? '',
+                'addressLocality' => $arrivalSection?->field('address_city') ?? '',
+                'addressCountry'  => 'DE',
+            ],
+            'telephone' => $arrivalSection?->field('phone') ?? '',
+            'email'     => $arrivalSection?->field('email') ?? '',
+            'url'       => url('/'),
+        ];
+
+        $schema = SchemaCollection::initialize();
+        $schema->push($jsonLd);
+
+        $seoData = $tenant->getDynamicSEOData();
+        $seoData->schema = $schema;
+
+        seo()->for($seoData);
 
         return view('home', compact('activeTemplate', 'visibleSections', 'orderedSections', 'headerSection', 'heroSection', 'aboutSection', 'amenitiesSection', 'gallerySection', 'galleryImages', 'arrivalSection', 'contactSection', 'footerSection', 'pageGroups'));
     }

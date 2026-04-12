@@ -168,6 +168,36 @@
   </div>
   @endif
 
+  {{-- SEO --}}
+  <div class="table-card" style="margin-top:1.5rem">
+    <div class="table-card__header"><h2>SEO</h2></div>
+    <form method="POST"
+          action="{{ route('admin.pages.entries.seo.update', [$page, $entry]) }}"
+          style="padding:1.5rem">
+      @csrf @method('PUT')
+      @if (session('success') && str_contains(session('success'), 'SEO'))
+        <div class="alert alert--success" style="margin-bottom:1rem">{{ session('success') }}</div>
+      @endif
+      <div class="modal-form-grid">
+        <div class="modal-form-grid__full">
+          <label>SEO-Titel <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(leer = Eintragstitel, max. 70 Zeichen)</span></label>
+          <input type="text" name="seo_title"
+                 value="{{ old('seo_title', $entry->seo?->title ?? '') }}"
+                 maxlength="70"
+                 placeholder="{{ $entry->title }}" />
+        </div>
+        <div class="modal-form-grid__full">
+          <label>SEO-Beschreibung <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(leer = erster Textblock, max. 160 Zeichen)</span></label>
+          <textarea name="seo_description" rows="3" maxlength="160"
+                    placeholder="Automatisch aus erstem Textblock">{{ old('seo_description', $entry->seo?->description ?? '') }}</textarea>
+        </div>
+      </div>
+      <div style="margin-top:1rem">
+        <button type="submit" class="btn btn-save">SEO speichern</button>
+      </div>
+    </form>
+  </div>
+
 @endsection
 
 @push('scripts')

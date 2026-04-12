@@ -17,6 +17,8 @@ class PageController extends Controller
 
         $pages = $group->pages()->where('is_visible', true)->get();
 
+        seo()->for($group);
+
         return view('pages.group', compact('group', 'pages'));
     }
 
@@ -34,6 +36,8 @@ class PageController extends Controller
             ->firstOrFail();
 
         $page->load('entries.blocks');
+
+        seo()->for($page);
 
         return view('pages.show', compact('group', 'page'));
     }
@@ -53,6 +57,8 @@ class PageController extends Controller
 
         $entry = $page->entries()->where('slug', $entrySlug)->firstOrFail();
         $entry->load('blocks');
+
+        seo()->for($entry);
 
         return view('pages.entry', compact('group', 'page', 'entry'));
     }
