@@ -95,11 +95,11 @@ erDiagram
 
     template_sections {
         bigint id PK
+        bigint tenant_id FK "nullable – cascadeOnDelete; NULL = globale Mustervorlage"
         bigint template_id FK
         string section_key "header|hero|about|amenities|gallery|pricing|arrival|contact|footer"
         boolean is_visible
         tinyint sort_order
-        bigint tenant_id FK
         timestamps created_at
         timestamps updated_at
     }
@@ -190,11 +190,9 @@ erDiagram
     seasons {
         bigint id PK
         bigint tenant_id FK
+        smallint year
         string name
-        date from
-        date to
-        smallint price_per_night
-        tinyint min_nights
+        boolean is_active
         tinyint sort_order
         timestamps created_at
         timestamps updated_at
@@ -284,6 +282,7 @@ erDiagram
 
     %% Templates
     templates ||--o{ template_sections : "hat"
+    tenants ||--o{ template_sections : "Tenant-Kopie"
     template_sections ||--o{ template_section_content : "hat"
     template_sections ||--o{ gallery_images : "hat"
 
