@@ -27,30 +27,48 @@
         </thead>
         <tbody id="sections-tbody">
           @foreach ($sections as $section)
-            @php $isFixed = in_array($section->section_key, ['header', 'hero', 'footer']); @endphp
-            <tr data-id="{{ $section->id }}" {{ $isFixed ? 'data-fixed="true"' : '' }}>
+            @php
+              $isFixed  = in_array($section->section_key, ['header', 'hero', 'footer']);
+              $isLocked = in_array($section->section_key, $lockedSections);
+            @endphp
+            <tr data-id="{{ $section->id }}" {{ $isFixed ? 'data-fixed="true"' : '' }} {{ $isLocked ? 'data-fixed="true"' : '' }}>
               <td>
-                @if (!$isFixed)
+                @if (!$isFixed && !$isLocked)
                   <span class="drag-handle" title="Verschieben">
                     <span class="material-symbols-rounded">drag_indicator</span>
                   </span>
                 @endif
               </td>
-              <td>{{ $sectionLabels[$section->section_key] ?? $section->section_key }}</td>
               <td>
-                <input type="hidden" name="sections[{{ $section->section_key }}]" value="0" />
-                <label class="toggle">
-                  <input
-                    type="checkbox"
-                    name="sections[{{ $section->section_key }}]"
-                    value="1"
-                    {{ $section->is_visible ? 'checked' : '' }}
-                  />
-                  <span class="toggle__slider"></span>
-                </label>
+                {{ $sectionLabels[$section->section_key] ?? $section->section_key }}
+                @if ($isLocked)
+                  <span class="season-badge season-badge--gray" style="margin-left:.5rem" title="Vom Plattform-Administrator deaktiviert">
+                    <span class="material-symbols-rounded" style="font-size:1rem;vertical-align:middle">lock</span>
+                    gesperrt
+                  </span>
+                @endif
               </td>
               <td>
-                @if (in_array($section->section_key, $editableSections))
+                @if ($isLocked)
+                  <label class="toggle toggle--disabled" title="Vom Plattform-Administrator deaktiviert">
+                    <input type="checkbox" disabled />
+                    <span class="toggle__slider"></span>
+                  </label>
+                @else
+                  <input type="hidden" name="sections[{{ $section->section_key }}]" value="0" />
+                  <label class="toggle">
+                    <input
+                      type="checkbox"
+                      name="sections[{{ $section->section_key }}]"
+                      value="1"
+                      {{ $section->is_visible ? 'checked' : '' }}
+                    />
+                    <span class="toggle__slider"></span>
+                  </label>
+                @endif
+              </td>
+              <td>
+                @if (!$isLocked && in_array($section->section_key, $editableSections))
                   <a href="{{ route('admin.page-structure.edit', $section->section_key) }}" class="btn btn-edit">
                     <span class="material-symbols-rounded">edit</span>
                   </a>

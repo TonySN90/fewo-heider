@@ -35,6 +35,13 @@ class PageStructureController extends Controller
         abort_unless($tenant && $template, 404, 'Kein Template zugeordnet.');
 
         $sections = $template->sectionsForTenant($tenant->id)->get();
+
+        // Vom Plattform-Admin global gesperrte Sektionen (tenant_id IS NULL, is_visible = false)
+        $lockedSections = $template->sections()
+            ->where('is_visible', false)
+            ->pluck('section_key')
+            ->toArray();
+
         $groups = PageGroup::where('tenant_id', $tenant->id)
             ->orderBy('sort_order')
             ->with(['pages' => fn ($q) => $q->orderBy('sort_order')->with(['entries' => fn ($eq) => $eq->orderBy('sort_order')->limit(1)->with('blocks')])])
@@ -45,6 +52,7 @@ class PageStructureController extends Controller
             'sections' => $sections,
             'sectionLabels' => self::SECTION_LABELS,
             'editableSections' => self::EDITABLE_SECTIONS,
+            'lockedSections' => $lockedSections,
             'groups' => $groups,
         ]);
     }

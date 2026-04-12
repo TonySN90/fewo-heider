@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Template;
+use App\Models\TemplateSection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -61,8 +62,20 @@ class TemplateController extends Controller
         ]);
 
         foreach ($data['sections'] as $key => $visible) {
+            $isVisible = (bool) $visible;
+
+            // Globale Mustersektion aktualisieren
             $template->sections()->where('section_key', $key)
-                ->update(['is_visible' => (bool) $visible]);
+                ->update(['is_visible' => $isVisible]);
+
+            // Beim Deaktivieren: alle Tenant-Kopien ebenfalls sperren
+            // Beim Aktivieren: Tenant-Kopien bleiben unberührt – der Client schaltet selbst ein
+            if (! $isVisible) {
+                TemplateSection::where('template_id', $template->id)
+                    ->where('section_key', $key)
+                    ->whereNotNull('tenant_id')
+                    ->update(['is_visible' => false]);
+            }
         }
 
         return back()->with('success', 'Sektionen wurden aktualisiert.');

@@ -63,7 +63,7 @@
                   <tr>
                     <th>#</th>
                     <th>Sektion</th>
-                    <th>Sichtbar</th>
+                    <th>Aktiv</th>
                     <th></th>
                   </tr>
                 </thead>

@@ -2016,6 +2016,13 @@ tr.row--drop-after td {
   outline: 2px solid #3d7a6e;
   outline-offset: 2px;
 }
+.toggle--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.toggle--disabled .toggle__slider {
+  cursor: not-allowed;
+}
 
 .coord-picker-wrap {
   display: flex;
