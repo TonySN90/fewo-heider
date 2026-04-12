@@ -206,6 +206,211 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
         </div>
       @endif
 
+      {{-- ===== HEADER ===== --}}
+      @if ($section->section_key === 'header')
+        <div class="section-edit-form">
+
+          <div class="form-field">
+            <label for="header_brand_type">Darstellung</label>
+            <select id="header_brand_type" name="fields[brand_type]">
+              <option value="text" {{ $section->field('brand_type', 'text') !== 'logo' ? 'selected' : '' }}>Name (Text)</option>
+              <option value="logo" {{ $section->field('brand_type') === 'logo' ? 'selected' : '' }}>Logo (Bild)</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="header_brand_name">Name <span class="form-field__hint">(wird angezeigt wenn „Name (Text)" gewählt)</span></label>
+            <input type="text" id="header_brand_name" name="fields[brand_name]"
+              value="{{ $section->field('brand_name', 'Musterferienwohnung') }}" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="header_brand_sub">Unterzeile <span class="form-field__hint">(z.B. „Ort · Region")</span></label>
+            <input type="text" id="header_brand_sub" name="fields[brand_sub]"
+              value="{{ $section->field('brand_sub') }}" maxlength="100" />
+          </div>
+
+        </div>
+      @endif
+
+      {{-- ===== ANREISE ===== --}}
+      @if ($section->section_key === 'arrival')
+        <div class="section-edit-form">
+
+          <h2 class="section-edit-form__heading">Sektionskopf</h2>
+          <div class="form-field">
+            <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
+            <input type="text" id="eyebrow" name="fields[eyebrow]"
+              value="{{ $section->field('eyebrow') }}" placeholder="So finden Sie uns" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="title">Überschrift</label>
+            <input type="text" id="title" name="fields[title]"
+              value="{{ $section->field('title') }}" placeholder="Anreise" maxlength="150" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Adresse</h2>
+          <div class="form-field">
+            <label for="address_name">Name</label>
+            <input type="text" id="address_name" name="fields[address_name]"
+              value="{{ $section->field('address_name') }}" placeholder="Max Mustermann" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="address_street">Straße &amp; Hausnummer</label>
+            <input type="text" id="address_street" name="fields[address_street]"
+              value="{{ $section->field('address_street') }}" placeholder="Musterstraße 1" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="address_city">PLZ &amp; Ort</label>
+            <input type="text" id="address_city" name="fields[address_city]"
+              value="{{ $section->field('address_city') }}" placeholder="12345 Musterstadt" maxlength="100" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Kontakt</h2>
+          <div class="form-field">
+            <label for="phone">Telefon <span class="form-field__hint">(z.B. 01234 56789)</span></label>
+            <input type="text" id="phone" name="fields[phone]"
+              value="{{ $section->field('phone') }}" placeholder="01234 56789" maxlength="50" />
+          </div>
+          <div class="form-field">
+            <label for="phone_href">Telefon (tel:-Link) <span class="form-field__hint">(z.B. +4912345678)</span></label>
+            <input type="text" id="phone_href" name="fields[phone_href]"
+              value="{{ $section->field('phone_href') }}" placeholder="+4912345678" maxlength="50" />
+          </div>
+          <div class="form-field">
+            <label for="email">E-Mail</label>
+            <input type="email" id="email" name="fields[email]"
+              value="{{ $section->field('email') }}" placeholder="info@mustermann-fewo.de" maxlength="150" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Kartenposition</h2>
+          <div class="form-field">
+            <label for="map_lat">Breitengrad (Lat)</label>
+            <input type="text" id="map_lat" name="fields[map_lat]"
+              value="{{ $section->field('map_lat') }}" placeholder="54.3835" maxlength="20" />
+          </div>
+          <div class="form-field">
+            <label for="map_lng">Längengrad (Lng)</label>
+            <input type="text" id="map_lng" name="fields[map_lng]"
+              value="{{ $section->field('map_lng') }}" placeholder="13.5632" maxlength="20" />
+          </div>
+
+        </div>
+      @endif
+
+      {{-- ===== KONTAKT ===== --}}
+      @if ($section->section_key === 'contact')
+        <div class="section-edit-form">
+
+          <h2 class="section-edit-form__heading">Sektionskopf</h2>
+          <div class="form-field">
+            <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
+            <input type="text" id="eyebrow" name="fields[eyebrow]"
+              value="{{ $section->field('eyebrow') }}" placeholder="Wir freuen uns auf Sie" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="title">Überschrift</label>
+            <input type="text" id="title" name="fields[title]"
+              value="{{ $section->field('title') }}" placeholder="Kontakt & Anfrage" maxlength="150" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Texte</h2>
+          <div class="form-field">
+            <label for="text_1">Absatz 1</label>
+            <textarea id="text_1" name="fields[text_1]" rows="3" maxlength="600">{{ $section->field('text_1') }}</textarea>
+          </div>
+          <div class="form-field">
+            <label for="text_2">Absatz 2 <span class="form-field__hint">(optional)</span></label>
+            <textarea id="text_2" name="fields[text_2]" rows="3" maxlength="600">{{ $section->field('text_2') }}</textarea>
+          </div>
+          <div class="form-field">
+            <label for="btn_label">Button-Beschriftung</label>
+            <input type="text" id="btn_label" name="fields[btn_label]"
+              value="{{ $section->field('btn_label') }}" placeholder="E-Mail schreiben" maxlength="80" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Kontaktkarte</h2>
+          <div class="form-field">
+            <label for="card_name">Name</label>
+            <input type="text" id="card_name" name="fields[card_name]"
+              value="{{ $section->field('card_name') }}" placeholder="Max Mustermann" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="card_address">Adresse <span class="form-field__hint">(einzeilig)</span></label>
+            <input type="text" id="card_address" name="fields[card_address]"
+              value="{{ $section->field('card_address') }}" placeholder="Musterstraße 1, 12345 Musterstadt" maxlength="200" />
+          </div>
+          <div class="form-field">
+            <label for="phone">Telefon <span class="form-field__hint">(Anzeige, z.B. 01234 56789)</span></label>
+            <input type="text" id="phone" name="fields[phone]"
+              value="{{ $section->field('phone') }}" placeholder="01234 56789" maxlength="50" />
+          </div>
+          <div class="form-field">
+            <label for="phone_href">Telefon (tel:-Link) <span class="form-field__hint">(z.B. +4912345678)</span></label>
+            <input type="text" id="phone_href" name="fields[phone_href]"
+              value="{{ $section->field('phone_href') }}" placeholder="+4912345678" maxlength="50" />
+          </div>
+          <div class="form-field">
+            <label for="email">E-Mail</label>
+            <input type="email" id="email" name="fields[email]"
+              value="{{ $section->field('email') }}" placeholder="info@mustermann-fewo.de" maxlength="150" />
+          </div>
+
+        </div>
+      @endif
+
+      {{-- ===== FOOTER ===== --}}
+      @if ($section->section_key === 'footer')
+        <div class="section-edit-form">
+
+          <h2 class="section-edit-form__heading">Brand</h2>
+          <div class="form-field">
+            <label for="brand_name">Name <span class="form-field__hint">(Text im Footer)</span></label>
+            <input type="text" id="brand_name" name="fields[brand_name]"
+              value="{{ $section->field('brand_name', 'Musterferienwohnung') }}" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="brand_sub">Subzeile <span class="form-field__hint">(z.B. „Ort · Region")</span></label>
+            <input type="text" id="brand_sub" name="fields[brand_sub]"
+              value="{{ $section->field('brand_sub') }}" maxlength="150" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Kontaktdaten</h2>
+          <div class="form-field">
+            <label for="contact_name">Name</label>
+            <input type="text" id="contact_name" name="fields[contact_name]"
+              value="{{ $section->field('contact_name') }}" placeholder="Max Mustermann" maxlength="100" />
+          </div>
+          <div class="form-field">
+            <label for="contact_street">Adresse</label>
+            <input type="text" id="contact_street" name="fields[contact_street]"
+              value="{{ $section->field('contact_street') }}" placeholder="Musterstraße 1, 12345 Musterstadt" maxlength="200" />
+          </div>
+          <div class="form-field">
+            <label for="contact_phone">Telefon <span class="form-field__hint">(Anzeige)</span></label>
+            <input type="text" id="contact_phone" name="fields[contact_phone]"
+              value="{{ $section->field('contact_phone') }}" placeholder="01234 56789" maxlength="50" />
+          </div>
+          <div class="form-field">
+            <label for="contact_phone_href">Telefon (tel:-Link) <span class="form-field__hint">(z.B. +4912345678)</span></label>
+            <input type="text" id="contact_phone_href" name="fields[contact_phone_href]"
+              value="{{ $section->field('contact_phone_href') }}" placeholder="+4912345678" maxlength="50" />
+          </div>
+          <div class="form-field">
+            <label for="contact_email">E-Mail</label>
+            <input type="email" id="contact_email" name="fields[contact_email]"
+              value="{{ $section->field('contact_email') }}" placeholder="info@mustermann-fewo.de" maxlength="150" />
+          </div>
+
+          <h2 class="section-edit-form__heading">Footer unten</h2>
+          <div class="form-field">
+            <label for="copyright">Copyright-Text</label>
+            <input type="text" id="copyright" name="fields[copyright]"
+              value="{{ $section->field('copyright', '© ' . date('Y') . ' – Alle Rechte vorbehalten') }}" maxlength="200" />
+          </div>
+
+        </div>
+      @endif
+
       <div class="section-edit-form__actions">
         <a href="{{ route('admin.templates') }}" class="btn btn-cancel">Abbrechen</a>
         <button type="submit" class="btn btn-save">Speichern</button>

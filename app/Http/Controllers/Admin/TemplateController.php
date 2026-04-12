@@ -11,6 +11,7 @@ use Illuminate\View\View;
 class TemplateController extends Controller
 {
     private const SECTION_LABELS = [
+        'header'    => 'Header / Navigation',
         'hero'      => 'Hero (Hauptbild)',
         'about'     => 'Die Wohnung',
         'amenities' => 'Ausstattung',
@@ -18,14 +19,14 @@ class TemplateController extends Controller
         'pricing'   => 'Preise & Verfügbarkeit',
         'arrival'   => 'Anreise / Karte',
         'contact'   => 'Kontakt & Anfrage',
+        'footer'    => 'Footer',
     ];
 
-    // Sections that have a dedicated edit page
-    private const EDITABLE_SECTIONS = ['hero', 'about', 'amenities', 'gallery'];
+    private const EDITABLE_SECTIONS = ['header', 'hero', 'about', 'amenities', 'gallery', 'arrival', 'contact', 'footer'];
 
     public function index(): View
     {
-        $templates = Template::with(['sections' => fn ($q) => $q->orderBy('sort_order')])->get();
+        $templates = Template::with(['sections' => fn ($q) => $q->whereNull('tenant_id')->orderBy('sort_order')])->get();
 
         return view('admin.templates', [
             'templates' => $templates,
