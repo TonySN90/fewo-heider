@@ -41,6 +41,7 @@ export function initMap(): void {
 
   if (!hasFunctionalConsent()) {
     showMapPlaceholder(mapEl);
+    window.addEventListener('functional-consent-granted', () => initMap(), { once: true });
     return;
   }
 

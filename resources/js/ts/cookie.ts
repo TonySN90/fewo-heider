@@ -29,6 +29,16 @@ export function initCookieConsent(): void {
         readOnly: false,
       },
     },
+    onConsent: () => {
+      if (CookieConsent.acceptedCategory('functional')) {
+        window.dispatchEvent(new Event('functional-consent-granted'));
+      }
+    },
+    onChange: ({ changedCategories }) => {
+      if (changedCategories.includes('functional') && CookieConsent.acceptedCategory('functional')) {
+        window.dispatchEvent(new Event('functional-consent-granted'));
+      }
+    },
     language: {
       default: document.documentElement.lang === 'en' ? 'en' : 'de',
       translations: {
