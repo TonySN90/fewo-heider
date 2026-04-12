@@ -24,8 +24,8 @@ class TemplateSeeder extends Seeder
     public function run(): void
     {
         $template = Template::firstOrCreate(
-            ['slug' => 'fresh_green'],
-            ['name' => 'Fresh Green', 'is_active' => true]
+            ['slug' => 'fewo-01'],
+            ['name' => 'FEWO-01', 'is_active' => true]
         );
 
         $defaults = [
