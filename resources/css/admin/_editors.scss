@@ -1,5 +1,53 @@
 @use '../variables' as *;
 
+// ── Mehrsprachigkeit (EN-Felder) ──────────────────────────────────────────────
+
+.lang-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #7a8499;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0 5px;
+  border-radius: 3px;
+  margin-right: $space-1;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+}
+
+// Feldgruppe: DE + EN als visuelle Einheit
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid #e2e6f0;
+  border-radius: $border-radius-sm;
+  overflow: hidden;
+
+  .form-field {
+    padding: $space-3 $space-4;
+    gap: $space-2;
+    background: #f8f9fb;
+    border-bottom: 1px solid #e2e6f0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &--lang-en {
+      background: #f0f1f4;
+      border-top: 1px solid #e2e4ea;
+      padding-left: $space-4;
+    }
+
+    input[type="text"],
+    textarea {
+      background: #fff;
+    }
+  }
+}
+
 // ── Block Editor ──────────────────────────────────────────────────────────────
 
 .block-editor {

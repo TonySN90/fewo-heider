@@ -18,8 +18,14 @@ use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\Admin\UserPermissionController;
 use App\Http\Controllers\Api\AmenityController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
+
+// Sprachschalter (kein Tenant-Kontext nötig)
+Route::get('/locale/{locale}', [LocaleController::class, 'set'])
+    ->name('locale.set')
+    ->where('locale', 'de|en');
 
 // Slug-basierte Preview-Route (für lokale Entwicklung, kein Domain-Lookup nötig)
 // Muss VOR der resolve.tenant-Gruppe stehen, damit kein Domain-Lookup stattfindet

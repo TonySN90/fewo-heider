@@ -485,6 +485,58 @@ em {
   display: none;
 }
 
+.header__lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.header__lang-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 0.25rem;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: color 150ms ease, background 150ms ease;
+}
+.header__lang-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+.header__lang-btn.active {
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+}
+#header.scrolled .header__lang-btn {
+  color: var(--color-text-light);
+}
+#header.scrolled .header__lang-btn:hover {
+  color: var(--color-dark);
+  background: rgba(0, 0, 0, 0.06);
+}
+#header.scrolled .header__lang-btn.active {
+  color: var(--color-dark);
+  border-color: var(--color-border);
+}
+
+.header__lang-sep {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.75rem;
+}
+#header.scrolled .header__lang-sep {
+  color: var(--color-border);
+}
+
 .header__controls {
   display: flex;
   align-items: center;

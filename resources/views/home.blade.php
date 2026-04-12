@@ -6,6 +6,77 @@
 
 @section('title', 'Ferienwohnung Heider – Rügen')
 
+@php
+  $isEn = app()->getLocale() === 'en';
+  $ui = $isEn ? [
+    'gallery_btn'           => 'View Gallery',
+    'contact_btn'           => 'Enquire Now',
+    'nav_about'             => 'The Apartment',
+    'nav_amenities'         => 'Amenities',
+    'nav_gallery'           => 'Gallery',
+    'nav_pricing'           => 'Prices',
+    'nav_arrival'           => 'Getting Here',
+    'nav_contact'           => 'Enquire',
+    'nav_contact_footer'    => 'Contact',
+    'pricing_eyebrow'       => 'Overview',
+    'pricing_title'         => 'Prices & Availability',
+    'pricing_table'         => 'Price Table',
+    'pricing_plan'          => 'Availability Calendar',
+    'col_season'            => 'Season',
+    'col_period'            => 'Period',
+    'col_night'             => 'per Night',
+    'col_minstay'           => 'Min. Stay',
+    'legend_free'           => 'Available',
+    'legend_booked'         => 'Booked',
+    'footer_nav'            => 'Navigation',
+    'footer_contact'        => 'Contact',
+    'gallery_all'           => 'View all :count photos',
+    'impressum'             => 'Imprint',
+    'datenschutz'           => 'Privacy Policy',
+    'arrival_accommodation' => 'Your Accommodation',
+    'arrival_tips'          => 'Travel Tips',
+    'scroll_down'           => 'Scroll down',
+    'scroll_top'            => 'Scroll to top',
+  ] : [
+    'gallery_btn'           => 'Galerie ansehen',
+    'contact_btn'           => 'Jetzt anfragen',
+    'nav_about'             => 'Die Wohnung',
+    'nav_amenities'         => 'Ausstattung',
+    'nav_gallery'           => 'Galerie',
+    'nav_pricing'           => 'Preise',
+    'nav_arrival'           => 'Anreise',
+    'nav_contact'           => 'Anfragen',
+    'nav_contact_footer'    => 'Kontakt',
+    'pricing_eyebrow'       => 'Übersicht',
+    'pricing_title'         => 'Preise & Verfügbarkeit',
+    'pricing_table'         => 'Preistabelle',
+    'pricing_plan'          => 'Belegungsplan',
+    'col_season'            => 'Saison',
+    'col_period'            => 'Zeitraum',
+    'col_night'             => 'pro Nacht',
+    'col_minstay'           => 'Mindestaufenthalt',
+    'legend_free'           => 'Frei',
+    'legend_booked'         => 'Belegt',
+    'footer_nav'            => 'Navigation',
+    'footer_contact'        => 'Kontakt',
+    'gallery_all'           => 'Alle :count Bilder anschauen',
+    'impressum'             => 'Impressum',
+    'datenschutz'           => 'Datenschutz',
+    'arrival_accommodation' => 'Ihre Unterkunft',
+    'arrival_tips'          => 'Anreise-Tipps',
+    'scroll_down'           => 'Nach unten scrollen',
+    'scroll_top'            => 'Nach oben scrollen',
+  ];
+
+  $navLabels = [
+    'about'     => ['href' => '#about',     'label' => $ui['nav_about']],
+    'amenities' => ['href' => '#amenities', 'label' => $ui['nav_amenities']],
+    'gallery'   => ['href' => '#gallery',   'label' => $ui['nav_gallery']],
+    'pricing'   => ['href' => '#pricing',   'label' => $ui['nav_pricing']],
+    'arrival'   => ['href' => '#arrival',   'label' => $ui['nav_arrival']],
+  ];
+@endphp
+
 @section('content')
 
   <!-- ===== HEADER / NAVIGATION ===== -->
@@ -16,19 +87,27 @@
           @php
             $hLogoLight = $headerSection->field('brand_logo');
             $hLogoDark  = $headerSection->field('brand_logo_dark') ?: $hLogoLight;
-            $hLogoAlt   = $headerSection->field('brand_name', 'Logo');
+            $hLogoAlt   = $headerSection->t('brand_name', 'Logo');
           @endphp
           <img src="{{ Storage::url($hLogoLight) }}" alt="{{ $hLogoAlt }}"
                class="header__logo-img header__logo-img--light" />
           <img src="{{ Storage::url($hLogoDark) }}" alt="{{ $hLogoAlt }}"
                class="header__logo-img header__logo-img--dark" />
         @else
-          <span class="header__logo-text">{{ $headerSection?->field('brand_name', 'Ferienwohnung Heider') ?? 'Ferienwohnung Heider' }}</span>
-          <span class="header__logo-sub">{{ $headerSection?->field('brand_sub', 'Rügen · Serams') ?? 'Rügen · Serams' }}</span>
+          <span class="header__logo-text">{{ $headerSection?->t('brand_name', 'Ferienwohnung') }}</span>
+          <span class="header__logo-sub">{{ $headerSection?->t('brand_sub') }}</span>
         @endif
       </a>
 
       <div class="header__controls">
+        <div class="header__lang-switcher">
+          <a href="{{ route('locale.set', 'de') }}"
+             class="header__lang-btn {{ app()->getLocale() === 'de' ? 'active' : '' }}">DE</a>
+          <span class="header__lang-sep">|</span>
+          <a href="{{ route('locale.set', 'en') }}"
+             class="header__lang-btn {{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
+        </div>
+
         <button class="header__theme-toggle" id="themeToggle" aria-label="Dark Mode umschalten">
           <span class="material-symbols-rounded header__theme-toggle__icon--light">light_mode</span>
           <span class="material-symbols-rounded header__theme-toggle__icon--dark">dark_mode</span>
@@ -41,15 +120,6 @@
         </button>
       </div>
 
-      @php
-        $navLabels = [
-          'about'     => ['href' => '#about',     'label' => 'Die Wohnung'],
-          'amenities' => ['href' => '#amenities', 'label' => 'Ausstattung'],
-          'gallery'   => ['href' => '#gallery',   'label' => 'Galerie'],
-          'pricing'   => ['href' => '#pricing',   'label' => 'Preise'],
-          'arrival'   => ['href' => '#arrival',   'label' => 'Anreise'],
-        ];
-      @endphp
       <nav class="header__nav" id="main-nav">
         <ul>
           @foreach ($orderedSections as $sec)
@@ -61,7 +131,7 @@
             <li><a href="{{ url('/' . $group->slug) }}">{{ $group->nav_label }}</a></li>
           @endforeach
           @if (in_array('contact', $visibleSections))
-            <li><a href="#contact" class="nav__cta">Anfragen</a></li>
+            <li><a href="#contact" class="nav__cta">{{ $ui['nav_contact'] }}</a></li>
           @endif
         </ul>
       </nav>
@@ -77,19 +147,19 @@
           <div class="hero__bg" @if($heroSection?->field('cover_image')) style="background-image:url('{{ Storage::url($heroSection->field('cover_image')) }}')" @endif></div>
           <div class="hero__overlay"></div>
           <div class="hero__content container">
-            <p class="hero__eyebrow">{{ $heroSection?->field('eyebrow', 'Willkommen') ?? 'Willkommen' }}</p>
-            <h1 class="hero__title">{{ $heroSection?->field('title', 'Ihr Urlaub auf Rügen') ?? 'Ihr Urlaub auf Rügen' }}</h1>
-            <p class="hero__subtitle">{{ $heroSection?->field('subtitle', 'Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.') ?? 'Ferienwohnung Heider in ruhiger Lage – nur 3 km vom Ostseebad Binz entfernt.' }}</p>
+            <p class="hero__eyebrow">{{ $heroSection?->t('eyebrow', 'Willkommen') }}</p>
+            <h1 class="hero__title">{{ $heroSection?->t('title', 'Ihr Urlaub am Meer') }}</h1>
+            <p class="hero__subtitle">{{ $heroSection?->t('subtitle') }}</p>
             <div class="hero__actions">
               @if (in_array('gallery', $visibleSections))
-                <a href="#gallery" class="btn btn--primary">Galerie ansehen</a>
+                <a href="#gallery" class="btn btn--primary">{{ $ui['gallery_btn'] }}</a>
               @endif
               @if (in_array('contact', $visibleSections))
-                <a href="#contact" class="btn btn--outline">Jetzt anfragen</a>
+                <a href="#contact" class="btn btn--outline">{{ $ui['contact_btn'] }}</a>
               @endif
             </div>
           </div>
-          <a href="#about" class="hero__scroll" aria-label="Nach unten scrollen">
+          <a href="#about" class="hero__scroll" aria-label="{{ $ui['scroll_down'] }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </a>
         </section>
@@ -100,31 +170,31 @@
         <section id="about" class="about section{{ $u?->field('bg_alt') === '1' ? ' section--alt' : '' }}">
           <div class="container">
             <div class="section__header">
-              <p class="section__eyebrow">{{ $u?->field('eyebrow', 'Willkommen') ?? 'Willkommen' }}</p>
-              <h2 class="section__title">{{ $u?->field('title', 'Ferienwohnung Heider') ?? 'Ferienwohnung Heider' }}</h2>
+              <p class="section__eyebrow">{{ $u?->t('eyebrow', 'Willkommen') }}</p>
+              <h2 class="section__title">{{ $u?->t('title', 'Ferienwohnung') }}</h2>
               <div class="section__divider"></div>
             </div>
             <div class="about__grid">
               <div class="about__text">
-                @if ($u?->field('text_1'))
-                  <p class="about__intro">{{ $u->field('text_1') }}</p>
+                @if ($u?->t('text_1'))
+                  <p class="about__intro">{{ $u->t('text_1') }}</p>
                 @endif
-                @if ($u?->field('text_2'))
-                  <p>{{ $u->field('text_2') }}</p>
+                @if ($u?->t('text_2'))
+                  <p>{{ $u->t('text_2') }}</p>
                 @endif
-                @if ($u?->field('text_3'))
-                  <p>{{ $u->field('text_3') }}</p>
+                @if ($u?->t('text_3'))
+                  <p>{{ $u->t('text_3') }}</p>
                 @endif
                 @if (in_array('contact', $visibleSections))
-                  <a href="#contact" class="btn btn--primary">Jetzt anfragen</a>
+                  <a href="#contact" class="btn btn--primary">{{ $ui['contact_btn'] }}</a>
                 @endif
               </div>
               <div class="about__highlights">
                 @for ($i = 1; $i <= 6; $i++)
                   @php
                     $icon    = $u?->field("card_{$i}_icon");
-                    $heading = $u?->field("card_{$i}_heading");
-                    $text    = $u?->field("card_{$i}_text");
+                    $heading = $u?->t("card_{$i}_heading");
+                    $text    = $u?->t("card_{$i}_text");
                   @endphp
                   @if ($icon && $heading)
                     <div class="highlight-card">
@@ -145,20 +215,20 @@
         <section id="amenities" class="amenities section{{ $am?->field('bg_alt') === '1' ? ' section--alt' : '' }}">
           <div class="container">
             <div class="section__header">
-              <p class="section__eyebrow">{{ $am?->field('eyebrow', 'Was wir bieten') ?? 'Was wir bieten' }}</p>
-              <h2 class="section__title">{{ $am?->field('title', 'Ausstattung') ?? 'Ausstattung' }}</h2>
+              <p class="section__eyebrow">{{ $am?->t('eyebrow', 'Was wir bieten') }}</p>
+              <h2 class="section__title">{{ $am?->t('title', 'Ausstattung') }}</h2>
               <div class="section__divider"></div>
             </div>
             <div class="amenities__grid">
               @if ($am)
                 @for ($i = 1; $i <= 50; $i++)
-                  @php $icon = $am->field("amenity_{$i}_icon"); $label = $am->field("amenity_{$i}_label"); @endphp
+                  @php $icon = $am->field("amenity_{$i}_icon"); $label = $am->t("amenity_{$i}_label"); @endphp
                   @if ($icon && $label)
                     <div class="amenity-item">
                       <span class="amenity-item__icon material-symbols-rounded">{{ $icon }}</span>
                       <span class="amenity-item__label">{{ $label }}</span>
                     </div>
-                  @elseif (!$icon && !$label)
+                  @elseif (!$icon && !$am->field("amenity_{$i}_label"))
                     @break
                   @endif
                 @endfor
@@ -191,8 +261,8 @@
         <section id="gallery" class="gallery section{{ $gallerySection?->field('bg_alt') === '1' ? ' section--alt' : '' }}">
           <div class="container">
             <div class="section__header">
-              <p class="section__eyebrow">{{ $gallerySection?->field('eyebrow', 'Eindrücke') ?? 'Eindrücke' }}</p>
-              <h2 class="section__title">{{ $gallerySection?->field('title', 'Galerie') ?? 'Galerie' }}</h2>
+              <p class="section__eyebrow">{{ $gallerySection?->t('eyebrow', 'Eindrücke') }}</p>
+              <h2 class="section__title">{{ $gallerySection?->t('title', 'Galerie') }}</h2>
               <div class="section__divider"></div>
             </div>
             <div class="gallery__grid" id="gallery-grid">
@@ -215,7 +285,7 @@
                         class="btn btn--outline gallery__show-all"
                         onclick="fsLightboxInstances['gallery'].open(0)">
                   <span class="material-symbols-rounded">photo_library</span>
-                  Alle {{ $galleryImages->count() }} Bilder anschauen
+                  {{ str_replace(':count', $galleryImages->count(), $ui['gallery_all']) }}
                 </button>
               </div>
             @endif
@@ -227,21 +297,21 @@
         <section id="pricing" class="pricing section section--alt">
           <div class="container">
             <div class="section__header">
-              <p class="section__eyebrow">Übersicht</p>
-              <h2 class="section__title">Preise & Verfügbarkeit</h2>
+              <p class="section__eyebrow">{{ $ui['pricing_eyebrow'] }}</p>
+              <h2 class="section__title">{{ $ui['pricing_title'] }}</h2>
               <div class="section__divider"></div>
             </div>
             <div class="pricing__layout">
               <div class="pricing__table-wrap">
-                <h3 class="pricing__subtitle">Preistabelle <span id="pricing-year">{{ now()->year }}</span></h3>
+                <h3 class="pricing__subtitle">{{ $ui['pricing_table'] }} <span id="pricing-year">{{ now()->year }}</span></h3>
                 <div class="pricing__table-scroll">
                 <table class="pricing__table">
                   <thead>
                     <tr>
-                      <th>Saison</th>
-                      <th>Zeitraum</th>
-                      <th>pro Nacht</th>
-                      <th>Mindestaufenthalt</th>
+                      <th>{{ $ui['col_season'] }}</th>
+                      <th>{{ $ui['col_period'] }}</th>
+                      <th>{{ $ui['col_night'] }}</th>
+                      <th>{{ $ui['col_minstay'] }}</th>
                     </tr>
                   </thead>
                   <tbody id="seasons-tbody">
@@ -257,7 +327,7 @@
               </div>
               <div class="pricing__calendar-wrap">
                 <div class="pricing__subtitle-row">
-                  <h3 class="pricing__subtitle">Belegungsplan</h3>
+                  <h3 class="pricing__subtitle">{{ $ui['pricing_plan'] }}</h3>
                   <div class="cal-nav">
                     <button id="cal-prev" class="cal-nav__btn" aria-label="Vorheriger Monat">
                       <span class="material-symbols-rounded">chevron_left</span>
@@ -268,8 +338,8 @@
                   </div>
                 </div>
                 <div class="calendar-legend">
-                  <span class="legend-item legend-item--free">Frei</span>
-                  <span class="legend-item legend-item--booked">Belegt</span>
+                  <span class="legend-item legend-item--free">{{ $ui['legend_free'] }}</span>
+                  <span class="legend-item legend-item--booked">{{ $ui['legend_booked'] }}</span>
                 </div>
                 <div id="booking-calendar" class="booking-calendar"></div>
               </div>
@@ -282,13 +352,13 @@
         <section id="arrival" class="map-section section{{ $arrivalSection?->field('bg_alt') === '1' ? ' section--alt' : '' }}">
           <div class="container">
             <div class="section__header">
-              <p class="section__eyebrow">{{ $arrivalSection?->field('eyebrow') }}</p>
-              <h2 class="section__title">{{ $arrivalSection?->field('title') }}</h2>
+              <p class="section__eyebrow">{{ $arrivalSection?->t('eyebrow') }}</p>
+              <h2 class="section__title">{{ $arrivalSection?->t('title') }}</h2>
               <div class="section__divider"></div>
             </div>
             <div class="map-section__layout">
               <div class="map-section__address">
-                <h3>{{ $arrivalSection?->field('address_subtitle') ?: 'Ihre Unterkunft' }}</h3>
+                <h3>{{ $arrivalSection?->t('address_subtitle') ?: $ui['arrival_accommodation'] }}</h3>
                 <address>
                   <p class="address__name">{{ $arrivalSection?->field('address_name') }}</p>
                   <p>{{ $arrivalSection?->field('address_street') }}</p>
@@ -319,7 +389,7 @@
                   $arrivalHints = [];
                   for ($i = 1; $i <= 5; $i++) {
                     $icon = $arrivalSection?->field("hint_{$i}_icon");
-                    $text = $arrivalSection?->field("hint_{$i}_text");
+                    $text = $arrivalSection?->t("hint_{$i}_text");
                     if ($icon || $text) {
                       $arrivalHints[] = ['icon' => $icon, 'text' => $text];
                     }
@@ -327,7 +397,7 @@
                 @endphp
                 @if (!empty($arrivalHints))
                   <div class="address__hints">
-                    <h4>{{ $arrivalSection?->field('hints_title', 'Anreise-Tipps') ?? 'Anreise-Tipps' }}</h4>
+                    <h4>{{ $arrivalSection?->t('hints_title') ?: $ui['arrival_tips'] }}</h4>
                     <ul>
                       @foreach ($arrivalHints as $hint)
                         <li>
@@ -362,38 +432,38 @@
         <section id="contact" class="contact section{{ $contactSection?->field('bg_alt') === '1' ? ' section--alt' : '' }}">
           <div class="container">
             <div class="section__header">
-              <p class="section__eyebrow">{{ $k?->field('eyebrow') ?: 'Wir freuen uns auf Sie' }}</p>
-              <h2 class="section__title">{{ $k?->field('title') ?: 'Kontakt & Anfrage' }}</h2>
+              <p class="section__eyebrow">{{ $k?->t('eyebrow') ?: ($isEn ? 'We look forward to your visit' : 'Wir freuen uns auf Sie') }}</p>
+              <h2 class="section__title">{{ $k?->t('title') ?: ($isEn ? 'Contact & Enquiry' : 'Kontakt & Anfrage') }}</h2>
               <div class="section__divider"></div>
             </div>
             <div class="contact__layout">
               <div class="contact__text">
-                @if ($k?->field('text_1'))
-                  <p>{{ $k->field('text_1') }}</p>
+                @if ($k?->t('text_1'))
+                  <p>{{ $k->t('text_1') }}</p>
                 @endif
-                @if ($k?->field('text_2'))
-                  <p>{{ $k->field('text_2') }}</p>
+                @if ($k?->t('text_2'))
+                  <p>{{ $k->t('text_2') }}</p>
                 @endif
                 @if ($kEmail)
                   <a href="{{ $kMailHref }}" class="btn btn--primary btn--large">
                     <span class="material-symbols-rounded">mail</span>
-                    {{ $k?->field('btn_label') ?: 'E-Mail schreiben' }}
+                    {{ $k?->t('btn_label') ?: ($isEn ? 'Send Email' : 'E-Mail schreiben') }}
                   </a>
                 @endif
               </div>
               <div class="contact__card">
                 <div class="contact__card-inner">
-                  @if ($k?->field('card_label'))
-                    <p class="contact__card-label">{{ $k->field('card_label') }}</p>
+                  @if ($k?->t('card_label'))
+                    <p class="contact__card-label">{{ $k->t('card_label') }}</p>
                   @endif
                   @if ($k?->field('card_name'))
                     <h3 class="contact__card-name">{{ $k->field('card_name') }}</h3>
                   @endif
                   <div class="contact__card-details">
-                    @if ($k?->field('card_address'))
+                    @if ($k?->t('card_address'))
                       <div class="contact__card-row">
                         <span class="material-symbols-rounded">location_on</span>
-                        <span>{{ $k->field('card_address') }}</span>
+                        <span>{{ $k->t('card_address') }}</span>
                       </div>
                     @endif
                     @if ($kPhone)
@@ -428,19 +498,19 @@
             @php
               $logoLight = $footerSection->field('brand_logo');
               $logoDark  = $footerSection->field('brand_logo_dark') ?: $logoLight;
-              $logoAlt   = $footerSection->field('brand_name', 'Logo');
+              $logoAlt   = $footerSection->t('brand_name', 'Logo');
             @endphp
             <img src="{{ Storage::url($logoLight) }}" alt="{{ $logoAlt }}"
                  class="footer__brand-logo footer__brand-logo--light" />
             <img src="{{ Storage::url($logoDark) }}" alt="{{ $logoAlt }}"
                  class="footer__brand-logo footer__brand-logo--dark" />
           @else
-            <p class="footer__brand-name">{{ $footerSection?->field('brand_name', 'Ferienwohnung Heider') ?? 'Ferienwohnung Heider' }}</p>
-            <p class="footer__brand-sub">{{ $footerSection?->field('brand_sub', 'Rügen · Serams · Ostseebad Binz') ?? 'Rügen · Serams · Ostseebad Binz' }}</p>
+            <p class="footer__brand-name">{{ $footerSection?->t('brand_name', 'Ferienwohnung') }}</p>
+            <p class="footer__brand-sub">{{ $footerSection?->t('brand_sub') }}</p>
           @endif
         </div>
         <div class="footer__nav">
-          <h4>Navigation</h4>
+          <h4>{{ $ui['footer_nav'] }}</h4>
           <ul>
             @foreach ($orderedSections as $sec)
               @if (isset($navLabels[$sec->section_key]))
@@ -448,12 +518,12 @@
               @endif
             @endforeach
             @if (in_array('contact', $visibleSections))
-              <li><a href="#contact">Kontakt</a></li>
+              <li><a href="#contact">{{ $ui['nav_contact_footer'] }}</a></li>
             @endif
           </ul>
         </div>
         <div class="footer__contact">
-          <h4>Kontakt</h4>
+          <h4>{{ $ui['footer_contact'] }}</h4>
           <address>
             @if ($footerSection?->field('contact_name'))
               <p>{{ $footerSection->field('contact_name') }}</p>
@@ -474,17 +544,17 @@
 
     <div class="footer__bottom">
       <div class="container footer__bottom-inner">
-        <p>{{ $footerSection?->field('copyright', '© ' . date('Y') . ' Ferienwohnung Heider – Alle Rechte vorbehalten') ?? ('© ' . date('Y') . ' Ferienwohnung Heider – Alle Rechte vorbehalten') }}</p>
+        <p>{{ $footerSection?->t('copyright', '© ' . date('Y') . ' – ' . ($isEn ? 'All rights reserved' : 'Alle Rechte vorbehalten')) }}</p>
         <nav class="footer__legal">
-          <a href="{{ url('/impressum') }}">Impressum</a>
-          <a href="{{ url('/datenschutz') }}">Datenschutz</a>
+          <a href="{{ url('/impressum') }}">{{ $ui['impressum'] }}</a>
+          <a href="{{ url('/datenschutz') }}">{{ $ui['datenschutz'] }}</a>
         </nav>
       </div>
     </div>
   </footer>
 
   <!-- ===== SCROLL-TO-TOP ===== -->
-  <button id="scroll-top" class="scroll-top" aria-label="Nach oben scrollen">
+  <button id="scroll-top" class="scroll-top" aria-label="{{ $ui['scroll_top'] }}">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
   </button>
 

@@ -43,4 +43,20 @@ class TemplateSection extends Model
 
         return $item !== null ? ($item->value ?? $default) : $default;
     }
+
+    /** Gibt den englischen Feldwert zurück; fällt auf den deutschen Wert zurück, wenn kein EN-Wert vorhanden. */
+    public function fieldEn(string $key, string $default = ''): string
+    {
+        $en = $this->field($key.'_en');
+
+        return $en !== '' ? $en : $this->field($key, $default);
+    }
+
+    /** Gibt den Feldwert in der aktuellen App-Locale zurück (DE oder EN). */
+    public function t(string $key, string $default = ''): string
+    {
+        return app()->getLocale() === 'en'
+            ? $this->fieldEn($key, $default)
+            : $this->field($key, $default);
+    }
 }

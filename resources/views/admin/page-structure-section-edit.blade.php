@@ -27,19 +27,39 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
       {{-- ===== HERO ===== --}}
       @if ($section->section_key === 'hero')
         <div class="section-edit-form">
-          <div class="form-field">
-            <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
-            <input type="text" id="eyebrow" name="fields[eyebrow]"
-              value="{{ $section->field('eyebrow', 'Willkommen') }}" maxlength="100" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
+              <input type="text" id="eyebrow" name="fields[eyebrow]"
+                value="{{ $section->field('eyebrow', 'Willkommen') }}" maxlength="100" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="eyebrow_en"><span class="lang-badge">EN</span> Eyebrow-Text</label>
+              <input type="text" id="eyebrow_en" name="fields[eyebrow_en]"
+                value="{{ $section->field('eyebrow_en') }}" maxlength="100" />
+            </div>
           </div>
-          <div class="form-field">
-            <label for="title">Hauptüberschrift</label>
-            <input type="text" id="title" name="fields[title]"
-              value="{{ $section->field('title', 'Ihr Urlaub auf Rügen') }}" maxlength="150" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="title">Hauptüberschrift</label>
+              <input type="text" id="title" name="fields[title]"
+                value="{{ $section->field('title', 'Ihr Urlaub am Meer') }}" maxlength="150" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="title_en"><span class="lang-badge">EN</span> Hauptüberschrift</label>
+              <input type="text" id="title_en" name="fields[title_en]"
+                value="{{ $section->field('title_en') }}" maxlength="150" />
+            </div>
           </div>
-          <div class="form-field">
-            <label for="subtitle">Untertitel</label>
-            <textarea id="subtitle" name="fields[subtitle]" rows="3" maxlength="300">{{ $section->field('subtitle') }}</textarea>
+          <div class="field-group">
+            <div class="form-field">
+              <label for="subtitle">Untertitel</label>
+              <textarea id="subtitle" name="fields[subtitle]" rows="3" maxlength="300">{{ $section->field('subtitle') }}</textarea>
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="subtitle_en"><span class="lang-badge">EN</span> Untertitel</label>
+              <textarea id="subtitle_en" name="fields[subtitle_en]" rows="3" maxlength="300">{{ $section->field('subtitle_en') }}</textarea>
+            </div>
           </div>
           <div class="form-field">
             <label>Hintergrundbild <span class="form-field__hint">(JPG, PNG, WebP – max. 20 MB, wird automatisch in WebP konvertiert)</span></label>
@@ -76,29 +96,61 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
           </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
-          <div class="form-field">
-            <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
-            <input type="text" id="eyebrow" name="fields[eyebrow]"
-              value="{{ $section->field('eyebrow', 'Willkommen') }}" maxlength="100" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
+              <input type="text" id="eyebrow" name="fields[eyebrow]"
+                value="{{ $section->field('eyebrow', 'Willkommen') }}" maxlength="100" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="eyebrow_en"><span class="lang-badge">EN</span> Eyebrow-Text</label>
+              <input type="text" id="eyebrow_en" name="fields[eyebrow_en]"
+                value="{{ $section->field('eyebrow_en') }}" maxlength="100" />
+            </div>
           </div>
-          <div class="form-field">
-            <label for="title">Überschrift</label>
-            <input type="text" id="title" name="fields[title]"
-              value="{{ $section->field('title', 'Ferienwohnung Heider') }}" maxlength="150" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="title">Überschrift</label>
+              <input type="text" id="title" name="fields[title]"
+                value="{{ $section->field('title', 'Ferienwohnung') }}" maxlength="150" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="title_en"><span class="lang-badge">EN</span> Überschrift</label>
+              <input type="text" id="title_en" name="fields[title_en]"
+                value="{{ $section->field('title_en') }}" maxlength="150" />
+            </div>
           </div>
 
           <h2 class="section-edit-form__heading">Beschreibungstexte</h2>
-          <div class="form-field">
-            <label for="text_1">Absatz 1 <span class="form-field__hint">(Intro-Text)</span></label>
-            <textarea id="text_1" name="fields[text_1]" rows="3" maxlength="600">{{ $section->field('text_1') }}</textarea>
+          <div class="field-group">
+            <div class="form-field">
+              <label for="text_1">Absatz 1 <span class="form-field__hint">(Intro-Text)</span></label>
+              <textarea id="text_1" name="fields[text_1]" rows="3" maxlength="600">{{ $section->field('text_1') }}</textarea>
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="text_1_en"><span class="lang-badge">EN</span> Absatz 1</label>
+              <textarea id="text_1_en" name="fields[text_1_en]" rows="3" maxlength="600">{{ $section->field('text_1_en') }}</textarea>
+            </div>
           </div>
-          <div class="form-field">
-            <label for="text_2">Absatz 2</label>
-            <textarea id="text_2" name="fields[text_2]" rows="3" maxlength="600">{{ $section->field('text_2') }}</textarea>
+          <div class="field-group">
+            <div class="form-field">
+              <label for="text_2">Absatz 2</label>
+              <textarea id="text_2" name="fields[text_2]" rows="3" maxlength="600">{{ $section->field('text_2') }}</textarea>
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="text_2_en"><span class="lang-badge">EN</span> Absatz 2</label>
+              <textarea id="text_2_en" name="fields[text_2_en]" rows="3" maxlength="600">{{ $section->field('text_2_en') }}</textarea>
+            </div>
           </div>
-          <div class="form-field">
-            <label for="text_3">Absatz 3</label>
-            <textarea id="text_3" name="fields[text_3]" rows="3" maxlength="600">{{ $section->field('text_3') }}</textarea>
+          <div class="field-group">
+            <div class="form-field">
+              <label for="text_3">Absatz 3</label>
+              <textarea id="text_3" name="fields[text_3]" rows="3" maxlength="600">{{ $section->field('text_3') }}</textarea>
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="text_3_en"><span class="lang-badge">EN</span> Absatz 3</label>
+              <textarea id="text_3_en" name="fields[text_3_en]" rows="3" maxlength="600">{{ $section->field('text_3_en') }}</textarea>
+            </div>
           </div>
 
           <h2 class="section-edit-form__heading">Highlight-Cards <span class="form-field__hint">(leer lassen = nicht anzeigen)</span></h2>
@@ -121,15 +173,29 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
                     </span>
                   </div>
                 </div>
-                <div class="form-field">
-                  <label>Überschrift</label>
-                  <input type="text" name="fields[card_{{ $i }}_heading]"
-                    value="{{ $section->field("card_{$i}_heading") }}" maxlength="80" />
+                <div class="field-group">
+                  <div class="form-field">
+                    <label>Überschrift</label>
+                    <input type="text" name="fields[card_{{ $i }}_heading]"
+                      value="{{ $section->field("card_{$i}_heading") }}" maxlength="80" />
+                  </div>
+                  <div class="form-field form-field--lang-en">
+                    <label><span class="lang-badge">EN</span> Überschrift</label>
+                    <input type="text" name="fields[card_{{ $i }}_heading_en]"
+                      value="{{ $section->field("card_{$i}_heading_en") }}" maxlength="80" />
+                  </div>
                 </div>
-                <div class="form-field">
-                  <label>Text</label>
-                  <input type="text" name="fields[card_{{ $i }}_text]"
-                    value="{{ $section->field("card_{$i}_text") }}" maxlength="120" />
+                <div class="field-group">
+                  <div class="form-field">
+                    <label>Text</label>
+                    <input type="text" name="fields[card_{{ $i }}_text]"
+                      value="{{ $section->field("card_{$i}_text") }}" maxlength="120" />
+                  </div>
+                  <div class="form-field form-field--lang-en">
+                    <label><span class="lang-badge">EN</span> Text</label>
+                    <input type="text" name="fields[card_{{ $i }}_text_en]"
+                      value="{{ $section->field("card_{$i}_text_en") }}" maxlength="120" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -151,15 +217,29 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
           </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
-          <div class="form-field">
-            <label for="eyebrow">Eyebrow-Text</label>
-            <input type="text" id="eyebrow" name="fields[eyebrow]"
-              value="{{ $section->field('eyebrow', 'Was wir bieten') }}" maxlength="100" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="eyebrow">Eyebrow-Text</label>
+              <input type="text" id="eyebrow" name="fields[eyebrow]"
+                value="{{ $section->field('eyebrow', 'Was wir bieten') }}" maxlength="100" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="eyebrow_en"><span class="lang-badge">EN</span> Eyebrow-Text</label>
+              <input type="text" id="eyebrow_en" name="fields[eyebrow_en]"
+                value="{{ $section->field('eyebrow_en') }}" maxlength="100" />
+            </div>
           </div>
-          <div class="form-field">
-            <label for="title">Überschrift</label>
-            <input type="text" id="title" name="fields[title]"
-              value="{{ $section->field('title', 'Ausstattung') }}" maxlength="150" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="title">Überschrift</label>
+              <input type="text" id="title" name="fields[title]"
+                value="{{ $section->field('title', 'Ausstattung') }}" maxlength="150" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="title_en"><span class="lang-badge">EN</span> Überschrift</label>
+              <input type="text" id="title_en" name="fields[title_en]"
+                value="{{ $section->field('title_en') }}" maxlength="150" />
+            </div>
           </div>
 
           <h2 class="section-edit-form__heading">
@@ -200,10 +280,17 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
                       </span>
                     </div>
                   </div>
-                  <div class="form-field">
-                    <label>Bezeichnung</label>
-                    <input type="text" name="fields[amenity_{{ $item['index'] }}_label]"
-                      value="{{ $item['label'] }}" maxlength="100" />
+                  <div class="field-group">
+                    <div class="form-field">
+                      <label>Bezeichnung</label>
+                      <input type="text" name="fields[amenity_{{ $item['index'] }}_label]"
+                        value="{{ $item['label'] }}" maxlength="100" />
+                    </div>
+                    <div class="form-field form-field--lang-en">
+                      <label><span class="lang-badge">EN</span> Bezeichnung</label>
+                      <input type="text" name="fields[amenity_{{ $item['index'] }}_label_en]"
+                        value="{{ $section->field('amenity_' . $item['index'] . '_label_en') }}" maxlength="100" />
+                    </div>
                   </div>
                 </div>
                 <button type="button" class="btn btn-delete amenity-editor__remove" onclick="removeAmenity(this)">
@@ -234,22 +321,43 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
           </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
-          <div class="form-field">
-            <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
-            <input type="text" id="eyebrow" name="fields[eyebrow]"
-              value="{{ $section->field('eyebrow') }}" placeholder="So finden Sie uns" maxlength="100" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
+              <input type="text" id="eyebrow" name="fields[eyebrow]"
+                value="{{ $section->field('eyebrow') }}" placeholder="So finden Sie uns" maxlength="100" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="eyebrow_en"><span class="lang-badge">EN</span> Eyebrow-Text</label>
+              <input type="text" id="eyebrow_en" name="fields[eyebrow_en]"
+                value="{{ $section->field('eyebrow_en') }}" maxlength="100" />
+            </div>
           </div>
-          <div class="form-field">
-            <label for="title">Überschrift</label>
-            <input type="text" id="title" name="fields[title]"
-              value="{{ $section->field('title') }}" placeholder="Anreise" maxlength="150" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="title">Überschrift</label>
+              <input type="text" id="title" name="fields[title]"
+                value="{{ $section->field('title') }}" placeholder="Anreise" maxlength="150" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="title_en"><span class="lang-badge">EN</span> Überschrift</label>
+              <input type="text" id="title_en" name="fields[title_en]"
+                value="{{ $section->field('title_en') }}" maxlength="150" />
+            </div>
           </div>
 
           <h2 class="section-edit-form__heading">Adresse</h2>
-          <div class="form-field">
-            <label for="address_subtitle">Abschnittsüberschrift</label>
-            <input type="text" id="address_subtitle" name="fields[address_subtitle]"
-              value="{{ $section->field('address_subtitle') }}" placeholder="Ihre Unterkunft" maxlength="100" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="address_subtitle">Abschnittsüberschrift</label>
+              <input type="text" id="address_subtitle" name="fields[address_subtitle]"
+                value="{{ $section->field('address_subtitle') }}" placeholder="Ihre Unterkunft" maxlength="100" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="address_subtitle_en"><span class="lang-badge">EN</span> Abschnittsüberschrift</label>
+              <input type="text" id="address_subtitle_en" name="fields[address_subtitle_en]"
+                value="{{ $section->field('address_subtitle_en') }}" maxlength="100" />
+            </div>
           </div>
           <div class="form-field">
             <label for="address_name">Name</label>
@@ -285,10 +393,17 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
           </div>
 
           <h2 class="section-edit-form__heading">Anreise-Tipps <span class="form-field__hint">(leer lassen = nicht anzeigen)</span></h2>
-          <div class="form-field">
-            <label for="hints_title">Abschnittsüberschrift</label>
-            <input type="text" id="hints_title" name="fields[hints_title]"
-              value="{{ $section->field('hints_title') }}" placeholder="Anreise-Tipps" maxlength="100" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="hints_title">Abschnittsüberschrift</label>
+              <input type="text" id="hints_title" name="fields[hints_title]"
+                value="{{ $section->field('hints_title') }}" placeholder="Anreise-Tipps" maxlength="100" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="hints_title_en"><span class="lang-badge">EN</span> Abschnittsüberschrift</label>
+              <input type="text" id="hints_title_en" name="fields[hints_title_en]"
+                value="{{ $section->field('hints_title_en') }}" maxlength="100" />
+            </div>
           </div>
           @for ($i = 1; $i <= 5; $i++)
             <div class="highlight-card-editor">
@@ -309,10 +424,17 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
                     </span>
                   </div>
                 </div>
-                <div class="form-field">
-                  <label>Text</label>
-                  <input type="text" name="fields[hint_{{ $i }}_text]"
-                    value="{{ $section->field("hint_{$i}_text") }}" maxlength="200" />
+                <div class="field-group">
+                  <div class="form-field">
+                    <label>Text</label>
+                    <input type="text" name="fields[hint_{{ $i }}_text]"
+                      value="{{ $section->field("hint_{$i}_text") }}" maxlength="200" />
+                  </div>
+                  <div class="form-field form-field--lang-en">
+                    <label><span class="lang-badge">EN</span> Text</label>
+                    <input type="text" name="fields[hint_{{ $i }}_text_en]"
+                      value="{{ $section->field("hint_{$i}_text_en") }}" maxlength="200" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -353,15 +475,29 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
           </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
-          <div class="form-field">
-            <label for="eyebrow">Eyebrow-Text</label>
-            <input type="text" id="eyebrow" name="fields[eyebrow]"
-              value="{{ $section->field('eyebrow', 'Eindrücke') }}" maxlength="100" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="eyebrow">Eyebrow-Text</label>
+              <input type="text" id="eyebrow" name="fields[eyebrow]"
+                value="{{ $section->field('eyebrow', 'Eindrücke') }}" maxlength="100" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="eyebrow_en"><span class="lang-badge">EN</span> Eyebrow-Text</label>
+              <input type="text" id="eyebrow_en" name="fields[eyebrow_en]"
+                value="{{ $section->field('eyebrow_en') }}" maxlength="100" />
+            </div>
           </div>
-          <div class="form-field">
-            <label for="title">Überschrift</label>
-            <input type="text" id="title" name="fields[title]"
-              value="{{ $section->field('title', 'Galerie') }}" maxlength="150" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="title">Überschrift</label>
+              <input type="text" id="title" name="fields[title]"
+                value="{{ $section->field('title', 'Galerie') }}" maxlength="150" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="title_en"><span class="lang-badge">EN</span> Überschrift</label>
+              <input type="text" id="title_en" name="fields[title_en]"
+                value="{{ $section->field('title_en') }}" maxlength="150" />
+            </div>
           </div>
         </div>
       @endif
@@ -379,41 +515,81 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
           </div>
 
           <h2 class="section-edit-form__heading">Sektionskopf</h2>
-          <div class="form-field">
-            <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
-            <input type="text" id="eyebrow" name="fields[eyebrow]"
-              value="{{ $section->field('eyebrow') }}" placeholder="Wir freuen uns auf Sie" maxlength="100" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="eyebrow">Eyebrow-Text <span class="form-field__hint">(kleiner Text über der Überschrift)</span></label>
+              <input type="text" id="eyebrow" name="fields[eyebrow]"
+                value="{{ $section->field('eyebrow') }}" placeholder="Wir freuen uns auf Sie" maxlength="100" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="eyebrow_en"><span class="lang-badge">EN</span> Eyebrow-Text</label>
+              <input type="text" id="eyebrow_en" name="fields[eyebrow_en]"
+                value="{{ $section->field('eyebrow_en') }}" maxlength="100" />
+            </div>
           </div>
-          <div class="form-field">
-            <label for="title">Überschrift</label>
-            <input type="text" id="title" name="fields[title]"
-              value="{{ $section->field('title') }}" placeholder="Kontakt & Anfrage" maxlength="150" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="title">Überschrift</label>
+              <input type="text" id="title" name="fields[title]"
+                value="{{ $section->field('title') }}" placeholder="Kontakt & Anfrage" maxlength="150" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="title_en"><span class="lang-badge">EN</span> Überschrift</label>
+              <input type="text" id="title_en" name="fields[title_en]"
+                value="{{ $section->field('title_en') }}" maxlength="150" />
+            </div>
           </div>
 
           <div class="section-edit-form__cols">
             <div class="section-edit-form__col">
               <h2 class="section-edit-form__heading">Texte</h2>
-              <div class="form-field">
-                <label for="text_1">Absatz 1</label>
-                <textarea id="text_1" name="fields[text_1]" rows="3" maxlength="600">{{ $section->field('text_1') }}</textarea>
+              <div class="field-group">
+                <div class="form-field">
+                  <label for="text_1">Absatz 1</label>
+                  <textarea id="text_1" name="fields[text_1]" rows="3" maxlength="600">{{ $section->field('text_1') }}</textarea>
+                </div>
+                <div class="form-field form-field--lang-en">
+                  <label for="text_1_en"><span class="lang-badge">EN</span> Absatz 1</label>
+                  <textarea id="text_1_en" name="fields[text_1_en]" rows="3" maxlength="600">{{ $section->field('text_1_en') }}</textarea>
+                </div>
               </div>
-              <div class="form-field">
-                <label for="text_2">Absatz 2 <span class="form-field__hint">(optional)</span></label>
-                <textarea id="text_2" name="fields[text_2]" rows="3" maxlength="600">{{ $section->field('text_2') }}</textarea>
+              <div class="field-group">
+                <div class="form-field">
+                  <label for="text_2">Absatz 2 <span class="form-field__hint">(optional)</span></label>
+                  <textarea id="text_2" name="fields[text_2]" rows="3" maxlength="600">{{ $section->field('text_2') }}</textarea>
+                </div>
+                <div class="form-field form-field--lang-en">
+                  <label for="text_2_en"><span class="lang-badge">EN</span> Absatz 2</label>
+                  <textarea id="text_2_en" name="fields[text_2_en]" rows="3" maxlength="600">{{ $section->field('text_2_en') }}</textarea>
+                </div>
               </div>
-              <div class="form-field">
-                <label for="btn_label">Button-Beschriftung</label>
-                <input type="text" id="btn_label" name="fields[btn_label]"
-                  value="{{ $section->field('btn_label') }}" placeholder="E-Mail schreiben" maxlength="80" />
+              <div class="field-group">
+                <div class="form-field">
+                  <label for="btn_label">Button-Beschriftung</label>
+                  <input type="text" id="btn_label" name="fields[btn_label]"
+                    value="{{ $section->field('btn_label') }}" placeholder="E-Mail schreiben" maxlength="80" />
+                </div>
+                <div class="form-field form-field--lang-en">
+                  <label for="btn_label_en"><span class="lang-badge">EN</span> Button-Beschriftung</label>
+                  <input type="text" id="btn_label_en" name="fields[btn_label_en]"
+                    value="{{ $section->field('btn_label_en') }}" maxlength="80" />
+                </div>
               </div>
             </div>
 
             <div class="section-edit-form__col">
               <h2 class="section-edit-form__heading">Kontaktkarte</h2>
-              <div class="form-field">
-                <label for="card_label">Bezeichnung <span class="form-field__hint">(z.B. „Ihre Ansprechpartnerin")</span></label>
-                <input type="text" id="card_label" name="fields[card_label]"
-                  value="{{ $section->field('card_label') }}" placeholder="Ihre Ansprechpartnerin" maxlength="100" />
+              <div class="field-group">
+                <div class="form-field">
+                  <label for="card_label">Bezeichnung <span class="form-field__hint">(z.B. „Ihre Ansprechpartnerin")</span></label>
+                  <input type="text" id="card_label" name="fields[card_label]"
+                    value="{{ $section->field('card_label') }}" placeholder="Ihre Ansprechpartnerin" maxlength="100" />
+                </div>
+                <div class="form-field form-field--lang-en">
+                  <label for="card_label_en"><span class="lang-badge">EN</span> Bezeichnung</label>
+                  <input type="text" id="card_label_en" name="fields[card_label_en]"
+                    value="{{ $section->field('card_label_en') }}" maxlength="100" />
+                </div>
               </div>
               <div class="form-field">
                 <label for="card_name">Name</label>
@@ -458,15 +634,29 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
             </select>
           </div>
 
-          <div class="form-field">
-            <label for="header_brand_name">Name <span class="form-field__hint">(wird angezeigt wenn „Name (Text)" gewählt)</span></label>
-            <input type="text" id="header_brand_name" name="fields[brand_name]"
-              value="{{ $section->field('brand_name', 'Ferienwohnung Heider') }}" maxlength="100" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="header_brand_name">Name <span class="form-field__hint">(wird angezeigt wenn „Name (Text)" gewählt)</span></label>
+              <input type="text" id="header_brand_name" name="fields[brand_name]"
+                value="{{ $section->field('brand_name', 'Ferienwohnung Mustermann') }}" maxlength="100" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="header_brand_name_en"><span class="lang-badge">EN</span> Name</label>
+              <input type="text" id="header_brand_name_en" name="fields[brand_name_en]"
+                value="{{ $section->field('brand_name_en') }}" maxlength="100" />
+            </div>
           </div>
-          <div class="form-field">
-            <label for="header_brand_sub">Unterzeile <span class="form-field__hint">(z.B. „Insel · Ort")</span></label>
-            <input type="text" id="header_brand_sub" name="fields[brand_sub]"
-              value="{{ $section->field('brand_sub', 'Rügen · Serams') }}" maxlength="100" />
+          <div class="field-group">
+            <div class="form-field">
+              <label for="header_brand_sub">Unterzeile <span class="form-field__hint">(z.B. „Insel · Ort")</span></label>
+              <input type="text" id="header_brand_sub" name="fields[brand_sub]"
+                value="{{ $section->field('brand_sub') }}" maxlength="100" />
+            </div>
+            <div class="form-field form-field--lang-en">
+              <label for="header_brand_sub_en"><span class="lang-badge">EN</span> Unterzeile</label>
+              <input type="text" id="header_brand_sub_en" name="fields[brand_sub_en]"
+                value="{{ $section->field('brand_sub_en') }}" maxlength="100" />
+            </div>
           </div>
 
           @php $hLogo = $section->field('brand_logo'); @endphp
@@ -549,15 +739,29 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
                 </select>
               </div>
 
-              <div class="form-field">
-                <label for="brand_name">Name <span class="form-field__hint">(wird angezeigt wenn „Name (Text)" gewählt)</span></label>
-                <input type="text" id="brand_name" name="fields[brand_name]"
-                  value="{{ $section->field('brand_name', 'Ferienwohnung Heider') }}" maxlength="100" />
+              <div class="field-group">
+                <div class="form-field">
+                  <label for="brand_name">Name <span class="form-field__hint">(wird angezeigt wenn „Name (Text)" gewählt)</span></label>
+                  <input type="text" id="brand_name" name="fields[brand_name]"
+                    value="{{ $section->field('brand_name', 'Ferienwohnung Mustermann') }}" maxlength="100" />
+                </div>
+                <div class="form-field form-field--lang-en">
+                  <label for="brand_name_en"><span class="lang-badge">EN</span> Name</label>
+                  <input type="text" id="brand_name_en" name="fields[brand_name_en]"
+                    value="{{ $section->field('brand_name_en') }}" maxlength="100" />
+                </div>
               </div>
-              <div class="form-field">
-                <label for="brand_sub">Subzeile <span class="form-field__hint">(z.B. „Insel · Ort · Region")</span></label>
-                <input type="text" id="brand_sub" name="fields[brand_sub]"
-                  value="{{ $section->field('brand_sub', 'Rügen · Serams · Ostseebad Binz') }}" maxlength="150" />
+              <div class="field-group">
+                <div class="form-field">
+                  <label for="brand_sub">Subzeile <span class="form-field__hint">(z.B. „Insel · Ort · Region")</span></label>
+                  <input type="text" id="brand_sub" name="fields[brand_sub]"
+                    value="{{ $section->field('brand_sub') }}" maxlength="150" />
+                </div>
+                <div class="form-field form-field--lang-en">
+                  <label for="brand_sub_en"><span class="lang-badge">EN</span> Subzeile</label>
+                  <input type="text" id="brand_sub_en" name="fields[brand_sub_en]"
+                    value="{{ $section->field('brand_sub_en') }}" maxlength="150" />
+                </div>
               </div>
 
               @php $brandLogo = $section->field('brand_logo'); @endphp
@@ -701,7 +905,12 @@ $highlightIcons = array_merge(['' => '– kein Icon –'], Icon::forSelect());
           <div class="form-field">
             <label for="copyright">Copyright-Text</label>
             <input type="text" id="copyright" name="fields[copyright]"
-              value="{{ $section->field('copyright', '© ' . date('Y') . ' Ferienwohnung Heider – Alle Rechte vorbehalten') }}" maxlength="200" />
+              value="{{ $section->field('copyright', '© ' . date('Y') . ' – Alle Rechte vorbehalten') }}" maxlength="200" />
+          </div>
+          <div class="form-field form-field--lang-en">
+            <label for="copyright_en"><span class="lang-badge">EN</span> Copyright-Text</label>
+            <input type="text" id="copyright_en" name="fields[copyright_en]"
+              value="{{ $section->field('copyright_en') }}" maxlength="200" />
           </div>
 
         </div>
