@@ -77,9 +77,20 @@
     }
   }
 
-  &:focus-visible {
-    outline: 3px solid $color-primary;
-    outline-offset: 2px;
+  &:focus-within {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px rgba($color-primary, 0.25);
+  }
+
+  > a[data-fslightbox] {
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
   }
 }
 

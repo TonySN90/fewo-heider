@@ -348,7 +348,8 @@
             <div class="gallery__grid" id="gallery-grid">
               @foreach ($visibleImgs as $img)
                 <div class="gallery-item">
-                  <a href="{{ $img->url() }}" data-fslightbox="gallery" data-caption="{{ $img->caption }}">
+                  <a href="{{ $img->url() }}" data-fslightbox="gallery" data-caption="{{ $img->caption }}"
+                     aria-label="{{ $img->caption ? $img->caption . ' – Bild vergrößern' : 'Bild vergrößern' }}">
                     <img src="{{ $img->url() }}" alt="{{ $img->caption ?? 'Galerie-Bild' }}" loading="lazy" />
                   </a>
                   <div class="gallery-item__overlay"><span>{{ $img->caption }}</span></div>

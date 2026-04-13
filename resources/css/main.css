@@ -1377,9 +1377,16 @@ em {
 .gallery-item:hover .gallery-item__overlay {
   opacity: 1;
 }
-.gallery-item:focus-visible {
-  outline: 3px solid #3d7a6e;
-  outline-offset: 2px;
+.gallery-item:focus-within {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(61, 122, 110, 0.25);
+}
+.gallery-item > a[data-fslightbox]:focus {
+  outline: none;
+}
+.gallery-item > a[data-fslightbox]:focus-visible {
+  outline: none;
 }
 
 .gallery__footer {
