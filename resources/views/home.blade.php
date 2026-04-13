@@ -73,6 +73,8 @@
 
 @section('content')
 
+  <a href="#main-content" class="skip-link">Navigation überspringen</a>
+
   <!-- ===== HEADER / NAVIGATION ===== -->
   <header id="header">
     <div class="header__inner container">
@@ -126,6 +128,12 @@
               </button>
               <button class="a11y__spacing-toggle" aria-label="Zeilenabstand umschalten" aria-pressed="false" title="Größerer Zeilenabstand">
                 <span class="material-symbols-rounded">format_line_spacing</span>
+              </button>
+              <button class="a11y__links-toggle" aria-label="Links hervorheben" aria-pressed="false" title="Links hervorheben">
+                <span class="material-symbols-rounded">link</span>
+              </button>
+              <button class="a11y__motion-toggle" aria-label="Animationen reduzieren" aria-pressed="false" title="Animationen reduzieren">
+                <span class="material-symbols-rounded">animation</span>
               </button>
             </div>
           </div>
@@ -196,6 +204,12 @@
                 <button class="a11y__spacing-toggle" aria-label="Zeilenabstand umschalten" aria-pressed="false" title="Größerer Zeilenabstand">
                   <span class="material-symbols-rounded">format_line_spacing</span>
                 </button>
+                <button class="a11y__links-toggle" aria-label="Links hervorheben" aria-pressed="false" title="Links hervorheben">
+                  <span class="material-symbols-rounded">link</span>
+                </button>
+                <button class="a11y__motion-toggle" aria-label="Animationen reduzieren" aria-pressed="false" title="Animationen reduzieren">
+                  <span class="material-symbols-rounded">animation</span>
+                </button>
               </div>
             </div>
           </div>
@@ -209,7 +223,7 @@
     @switch($sec->section_key)
 
       @case('hero')
-        <section id="hero" class="hero">
+        <section id="hero" class="hero" tabindex="-1"><span id="main-content" style="position:absolute;top:-80px;"></span>
           <div class="hero__bg" @if($heroSection?->field('cover_image')) style="background-image:url('{{ Storage::url($heroSection->field('cover_image')) }}')" @endif></div>
           <div class="hero__overlay"></div>
           <div class="hero__content container">

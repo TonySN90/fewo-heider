@@ -250,6 +250,45 @@ select {
   outline: 2px solid #000000;
 }
 
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 0.75rem 2rem;
+  background: #000000;
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: 0 0 10px 10px;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: top 150ms ease;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #ffffff;
+  outline-offset: -4px;
+}
+
+[data-a11y-links] a:not([class*=btn]):not(.nav__cta):not(.skip-link):not([class*=header__]) {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+[data-a11y-motion] *,
+[data-a11y-motion] *::before,
+[data-a11y-motion] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
 [data-a11y-spacing] p, [data-a11y-spacing] li, [data-a11y-spacing] td, [data-a11y-spacing] th, [data-a11y-spacing] label, [data-a11y-spacing] span, [data-a11y-spacing] a {
   line-height: 2 !important;
   letter-spacing: 0.02em;

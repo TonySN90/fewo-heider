@@ -66,6 +66,7 @@ export function initNavigation(): void {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
       if (!href || href === '#') return;
+      if (link.classList.contains('skip-link')) return;
 
       const target = document.querySelector<HTMLElement>(href);
       if (!target) return;

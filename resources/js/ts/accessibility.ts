@@ -67,6 +67,28 @@ export function initAccessibility(): void {
     updateButtons();
   }
 
+  // ── Links hervorheben ──────────────────────────────────────
+  const LINKS_KEY = 'a11y-highlight-links';
+  let highlightLinks = localStorage.getItem(LINKS_KEY) === '1';
+
+  function applyLinks(active: boolean): void {
+    document.documentElement.toggleAttribute('data-a11y-links', active);
+    localStorage.setItem(LINKS_KEY, active ? '1' : '0');
+    highlightLinks = active;
+    updateButtons();
+  }
+
+  // ── Animationen reduzieren ─────────────────────────────────
+  const MOTION_KEY = 'a11y-reduce-motion';
+  let reduceMotion = localStorage.getItem(MOTION_KEY) === '1';
+
+  function applyMotion(active: boolean): void {
+    document.documentElement.toggleAttribute('data-a11y-motion', active);
+    localStorage.setItem(MOTION_KEY, active ? '1' : '0');
+    reduceMotion = active;
+    updateButtons();
+  }
+
   // ── Buttons aktualisieren ──────────────────────────────────
   function updateButtons(): void {
     document.querySelectorAll<HTMLButtonElement>('.a11y__font-decrease').forEach((btn) => {
@@ -86,12 +108,22 @@ export function initAccessibility(): void {
       btn.classList.toggle('active', wideSpacing);
       btn.setAttribute('aria-pressed', String(wideSpacing));
     });
+    document.querySelectorAll<HTMLButtonElement>('.a11y__links-toggle').forEach((btn) => {
+      btn.classList.toggle('active', highlightLinks);
+      btn.setAttribute('aria-pressed', String(highlightLinks));
+    });
+    document.querySelectorAll<HTMLButtonElement>('.a11y__motion-toggle').forEach((btn) => {
+      btn.classList.toggle('active', reduceMotion);
+      btn.setAttribute('aria-pressed', String(reduceMotion));
+    });
   }
 
   // ── Initial anwenden ───────────────────────────────────────
   applyFontSize(currentStep);
   applyContrast(highContrast);
   applySpacing(wideSpacing);
+  applyLinks(highlightLinks);
+  applyMotion(reduceMotion);
 
   // ── Toggle-Button für Dropdown ─────────────────────────────
   document.querySelectorAll<HTMLButtonElement>('.header__a11y-toggle').forEach((btn) => {
@@ -148,6 +180,22 @@ export function initAccessibility(): void {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       applySpacing(!wideSpacing);
+    });
+  });
+
+  // ── Links hervorheben Button ───────────────────────────────
+  document.querySelectorAll<HTMLButtonElement>('.a11y__links-toggle').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      applyLinks(!highlightLinks);
+    });
+  });
+
+  // ── Animationen reduzieren Button ─────────────────────────
+  document.querySelectorAll<HTMLButtonElement>('.a11y__motion-toggle').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      applyMotion(!reduceMotion);
     });
   });
 }
