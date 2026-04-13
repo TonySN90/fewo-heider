@@ -1,25 +1,35 @@
-import EasyMDE from 'easymde';
-import 'easymde/dist/easymde.min.css';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 
-const editorConfig: EasyMDE.Options = {
-  spellChecker: false,
-  autosave: { enabled: false, uniqueId: '' },
-  minHeight: '420px',
-  toolbar: [
-    'heading-2', 'heading-3', '|',
-    'bold', 'italic', '|',
-    'unordered-list', 'ordered-list', '|',
-    'link', 'horizontal-rule', '|',
-    'preview', 'guide',
-  ],
-  status: false,
-};
+function initEditor(containerId: string, inputId: string): void {
+  const container = document.getElementById(containerId);
+  const input     = document.getElementById(inputId) as HTMLInputElement | null;
+  if (!container || !input) return;
 
-const datenschutzEl = document.getElementById('editor-datenschutz') as HTMLTextAreaElement | null;
-const impressumEl   = document.getElementById('editor-impressum')   as HTMLTextAreaElement | null;
+  const quill = new Quill(container, {
+    theme: 'snow',
+    modules: {
+      toolbar: [
+        [{ header: [2, 3, false] }],
+        ['bold', 'italic', 'underline'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link', 'clean'],
+      ],
+    },
+  });
 
-if (datenschutzEl) new EasyMDE({ element: datenschutzEl, ...editorConfig });
-if (impressumEl)   new EasyMDE({ element: impressumEl,   ...editorConfig });
+  // Bestehenden HTML-Inhalt aus data-Attribut laden
+  const existing = container.dataset['content'] ?? '';
+  if (existing) quill.root.innerHTML = existing;
+
+  // Vor Submit: HTML-Inhalt des Editors in hidden input schreiben
+  input.closest('form')?.addEventListener('submit', () => {
+    input.value = quill.root.innerHTML;
+  });
+}
+
+initEditor('editor-datenschutz', 'content-datenschutz');
+initEditor('editor-impressum',   'content-impressum');
 
 // ── Tab-Switching ────────────────────────────────────────────────────────────
 const tabs   = document.querySelectorAll<HTMLButtonElement>('.legal-tabs__tab');

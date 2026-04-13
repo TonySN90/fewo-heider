@@ -125,7 +125,8 @@ select:focus {
   background: #2e5f55;
 }
 
-.btn-add {
+.btn-add,
+.btn-save {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -2728,24 +2729,31 @@ tr.row--drop-after td {
   }
 }
 
-.legal-textarea {
-  width: 100%;
-  min-height: 480px;
-  padding: 1rem;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 0.875rem;
-  line-height: 1.8;
+.legal-editor {
   border: 1px solid #e5e7eb;
   border-radius: 6px;
-  resize: vertical;
-  background: #fafafa;
-  color: #3d4f52;
-  transition: border-color 0.15s;
+  overflow: hidden;
+  margin-bottom: 1rem;
 }
-.legal-textarea:focus {
-  outline: none;
-  border-color: #3d7a6e;
-  background: #ffffff;
+.legal-editor .ql-toolbar {
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-family: inherit;
+}
+.legal-editor .ql-container {
+  border: none;
+  font-size: 1rem;
+  font-family: inherit;
+}
+.legal-editor .ql-editor {
+  min-height: 420px;
+  line-height: 1.6;
+  color: #3d4f52;
+}
+.legal-editor .ql-editor.ql-blank::before {
+  color: #adb5bd;
+  font-style: italic;
 }
 
 .legal-hint {

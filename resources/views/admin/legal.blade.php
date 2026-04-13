@@ -32,19 +32,20 @@
     <div class="legal-tabs__panel-inner">
       <p class="legal-hint">
         Dieser Text wird auf der öffentlichen Seite <code>/datenschutz</code> angezeigt.
-        Formatierung mit Markdown möglich (Überschriften, Fettdruck, Links).
+        Texte können direkt aus dem Browser oder Word eingefügt werden.
       </p>
       <form method="POST" action="{{ route('admin.legal.update') }}">
         @csrf
         @method('PUT')
         <input type="hidden" name="type" value="datenschutz" />
-        <textarea
+        <div
           id="editor-datenschutz"
-          name="content"
-          class="legal-textarea"
-        >{{ old('content', $datenschutz?->content) }}</textarea>
+          class="legal-editor"
+          data-content="{{ old('content', $datenschutz?->content) }}"
+        ></div>
+        <input type="hidden" id="content-datenschutz" name="content" />
         <div class="form-actions">
-          <button type="submit" class="btn btn--primary">
+          <button type="submit" class="btn btn-save">
             <span class="material-symbols-rounded">save</span>
             Datenschutz speichern
           </button>
@@ -58,19 +59,20 @@
     <div class="legal-tabs__panel-inner">
       <p class="legal-hint">
         Dieser Text wird auf der öffentlichen Seite <code>/impressum</code> angezeigt.
-        Formatierung mit Markdown möglich (Überschriften, Fettdruck, Links).
+        Texte können direkt aus dem Browser oder Word eingefügt werden.
       </p>
       <form method="POST" action="{{ route('admin.legal.update') }}">
         @csrf
         @method('PUT')
         <input type="hidden" name="type" value="impressum" />
-        <textarea
+        <div
           id="editor-impressum"
-          name="content"
-          class="legal-textarea"
-        >{{ old('content', $impressum?->content) }}</textarea>
+          class="legal-editor"
+          data-content="{{ old('content', $impressum?->content) }}"
+        ></div>
+        <input type="hidden" id="content-impressum" name="content" />
         <div class="form-actions">
-          <button type="submit" class="btn btn--primary">
+          <button type="submit" class="btn btn-save">
             <span class="material-symbols-rounded">save</span>
             Impressum speichern
           </button>

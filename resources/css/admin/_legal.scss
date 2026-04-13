@@ -66,26 +66,37 @@
   }
 }
 
-// ── Textarea für Legal-Texte ──────────────────────────────────────────────────
+// ── Quill-Editor für Legal-Texte ─────────────────────────────────────────────
 
-.legal-textarea {
-  width: 100%;
-  min-height: 480px;
-  padding: $space-4;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: $font-size-sm;
-  line-height: $line-height-loose;
+.legal-editor {
   border: 1px solid #e5e7eb;
   border-radius: $border-radius-sm;
-  resize: vertical;
-  background: #fafafa;
-  color: $color-text;
-  transition: border-color 0.15s;
+  overflow: hidden;
+  margin-bottom: $space-4;
 
-  &:focus {
-    outline: none;
-    border-color: $color-primary;
-    background: $color-white;
+  // Quill überschreibt den Border selbst – wir steuern ihn über den Container
+  .ql-toolbar {
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+    font-family: inherit;
+  }
+
+  .ql-container {
+    border: none;
+    font-size: $font-size-base;
+    font-family: inherit;
+  }
+
+  .ql-editor {
+    min-height: 420px;
+    line-height: $line-height-normal;
+    color: $color-text;
+
+    &.ql-blank::before {
+      color: #adb5bd;
+      font-style: italic;
+    }
   }
 }
 
