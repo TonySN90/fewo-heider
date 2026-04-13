@@ -89,6 +89,13 @@
       color: $color-white;
       padding-left: $space-2;
     }
+
+    &:focus-visible {
+      outline: 2px solid #000000;
+      outline-offset: 3px;
+      box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
+      border-radius: 2px;
+    }
   }
 }
 
@@ -106,6 +113,13 @@
     a:hover {
       color: $color-white;
       text-decoration: underline;
+    }
+
+    a:focus-visible {
+      outline: 2px solid #000000;
+      outline-offset: 3px;
+      box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
+      border-radius: 2px;
     }
   }
 }
@@ -139,6 +153,13 @@
 
     &:hover {
       color: $color-secondary;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #000000;
+      outline-offset: 3px;
+      box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
+      border-radius: 2px;
     }
   }
 }

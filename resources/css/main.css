@@ -92,6 +92,17 @@ select {
   font-size: inherit;
 }
 
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+  border-radius: 3px;
+  box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
+}
+
 [data-a11y-contrast] section,
 [data-a11y-contrast] .section,
 [data-a11y-contrast] main,
@@ -643,6 +654,12 @@ em {
 .header__nav a:hover::after, .header__nav a.active::after {
   width: 100%;
 }
+.header__nav a:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 4px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 5px #ffffff, 0 0 0 7px #000000;
+}
 .header__nav .nav__cta {
   display: inline-flex;
   align-items: center;
@@ -693,6 +710,12 @@ em {
 }
 .header__theme-toggle:hover {
   background-color: rgba(255, 255, 255, 0.15);
+}
+.header__theme-toggle:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
 }
 .header__theme-toggle__icon--light {
   display: none;
@@ -752,6 +775,12 @@ em {
 .header__lang-toggle:hover {
   background: rgba(255, 255, 255, 0.15);
 }
+.header__lang-toggle:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
+}
 #header.scrolled .header__lang-toggle {
   color: var(--color-dark);
 }
@@ -777,10 +806,8 @@ em {
 }
 
 .header__lang-option {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  display: block;
+  padding: 1rem 1.5rem;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--color-text);
@@ -836,6 +863,12 @@ em {
   border-radius: 2px;
   transition: transform 300ms ease, opacity 300ms ease;
   transform-origin: left center;
+}
+.header__hamburger:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 5px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 6px #ffffff, 0 0 0 8px #000000;
 }
 .header__hamburger.open span {
   background-color: var(--color-dark);
@@ -920,6 +953,12 @@ em {
 .header__a11y-toggle:hover {
   background-color: rgba(255, 255, 255, 0.15);
 }
+.header__a11y-toggle:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
+}
 #header.scrolled .header__a11y-toggle {
   color: var(--color-dark);
 }
@@ -1002,6 +1041,17 @@ em {
   background: var(--color-primary);
   color: #ffffff;
   border-color: var(--color-primary);
+}
+.a11y__font-decrease:focus-visible,
+.a11y__font-reset:focus-visible,
+.a11y__font-increase:focus-visible,
+.a11y__contrast-toggle:focus-visible,
+.a11y__spacing-toggle:focus-visible,
+.a11y__links-toggle:focus-visible,
+.a11y__motion-toggle:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 5px #000000;
 }
 .a11y__font-decrease:disabled,
 .a11y__font-reset:disabled,
@@ -1446,9 +1496,9 @@ em {
   opacity: 1;
 }
 .gallery-item:focus-within {
-  outline: 3px solid var(--color-primary);
+  outline: 2px solid #000000;
   outline-offset: 3px;
-  box-shadow: 0 0 0 6px rgba(61, 122, 110, 0.25);
+  box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
 }
 .gallery-item > a[data-fslightbox]:focus {
   outline: none;
@@ -1524,6 +1574,11 @@ em {
   background: var(--color-primary);
   border-color: var(--color-primary);
   color: #ffffff;
+}
+.cal-nav__btn:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
 }
 .cal-nav__btn:disabled {
   opacity: 0.35;
@@ -2164,6 +2219,12 @@ em {
   color: #ffffff;
   padding-left: 0.5rem;
 }
+.footer__nav a:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
+  border-radius: 2px;
+}
 
 .footer__contact address {
   display: flex;
@@ -2177,6 +2238,12 @@ em {
 .footer__contact address a:hover {
   color: #ffffff;
   text-decoration: underline;
+}
+.footer__contact address a:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
+  border-radius: 2px;
 }
 
 .footer__bottom {
@@ -2208,6 +2275,12 @@ em {
 }
 .footer__legal a:hover {
   color: #a8c5b5;
+}
+.footer__legal a:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #000000;
+  border-radius: 2px;
 }
 
 /*# sourceMappingURL=main.css.map */

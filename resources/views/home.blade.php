@@ -126,9 +126,7 @@
           <div class="header__lang-dropdown" role="menu">
             @foreach (config('app.available_locales') as $code => $label)
               <a href="{{ route('locale.set', $code) }}" role="menuitem"
-                 class="header__lang-option {{ app()->getLocale() === $code ? 'active' : '' }}">
-                {{ $label }}
-              </a>
+                 class="header__lang-option {{ app()->getLocale() === $code ? 'active' : '' }}">{{ $label }}</a>
             @endforeach
           </div>
         </div>
