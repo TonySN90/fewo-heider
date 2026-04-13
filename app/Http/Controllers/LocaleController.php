@@ -9,7 +9,8 @@ class LocaleController extends Controller
 {
     public function set(Request $request, string $locale): RedirectResponse
     {
-        $locale = in_array($locale, ['de', 'en']) ? $locale : 'de';
+        $available = array_keys(config('app.available_locales', ['de' => 'Deutsch']));
+        $locale = in_array($locale, $available) ? $locale : $available[0];
 
         return redirect()
             ->back(fallback: '/')

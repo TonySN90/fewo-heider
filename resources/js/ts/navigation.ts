@@ -104,6 +104,29 @@ export function initNavigation(): void {
 
   sections.forEach((section) => observer.observe(section));
 
+  // ── Sprach-Dropdown ───────────────────────────────────────
+  document.querySelectorAll<HTMLButtonElement>('.header__lang-toggle').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const dropdown = btn.closest('.header__lang-switcher')?.querySelector('.header__lang-dropdown');
+      const isOpen = dropdown?.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(isOpen ?? false));
+      btn.querySelector<HTMLElement>('.header__lang-chevron')?.classList.toggle('open', isOpen ?? false);
+    });
+  });
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.header__lang-dropdown.open').forEach((d) => {
+      d.classList.remove('open');
+      d.closest('.header__lang-switcher')
+        ?.querySelector('.header__lang-toggle')
+        ?.setAttribute('aria-expanded', 'false');
+      d.closest('.header__lang-switcher')
+        ?.querySelector('.header__lang-chevron')
+        ?.classList.remove('open');
+    });
+  });
+
   // ── Scroll-to-Top Button ───────────────────────────────────
   if (scrollTopBtn) {
     scrollTopBtn.addEventListener('click', () => {

@@ -36,6 +36,7 @@
 
     .header__hamburger span {
       background-color: var(--color-dark);
+      padding: 0 $space-2;
     }
   }
 }
@@ -178,11 +179,11 @@
 
   // Light-Mode: Mond sichtbar, Sonne ausgeblendet
   &__icon--light { display: none;
-    font-size: 1.75rem !important;
+    font-size: 1.70rem !important;
   }
 
   &__icon--dark  { display: inline-flex;
-    font-size: 1.75rem !important;
+    font-size: 1.7rem !important;
   }
 
   // Scrolled-Header: dunkle Iconfarbe
@@ -203,60 +204,93 @@
 
 // Sprachschalter
 .header__lang-switcher {
-  display: flex;
-  align-items: center;
-  gap: $space-1;
+  position: relative;
   flex-shrink: 0;
 }
 
-.header__lang-btn {
+.header__lang-toggle {
   display: flex;
   align-items: center;
-  justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  padding: 0 $space-1;
+  gap: $space-1;
+  height: 36px;
+  padding: 0;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: $font-size-xs;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-decoration: none;
+  cursor: pointer;
+  color: $color-white;
   border-radius: $border-radius-sm;
-  transition: color $transition-fast, background $transition-fast;
+  transition: background-color $transition-fast, color $transition-fast;
 
-  &:hover {
-    color: $color-white;
-    background: rgba(255, 255, 255, 0.12);
+  .material-symbols-rounded {
+    font-size: 1.50rem;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
   }
 
-  &.active {
-    color: $color-white;
-    border: 1.5px solid rgba(255, 255, 255, 0.5);
+  .header__lang-current {
+    font-size: $font-size-sm;
+    letter-spacing: 0.04em;
+  }
+
+  .header__lang-chevron {
+    font-size: 1.25rem !important;
+    transition: transform $transition-fast;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
   }
 
   #header.scrolled & {
-    color: var(--color-text-light);
+    color: var(--color-dark);
 
     &:hover {
-      color: var(--color-dark);
-      background: rgba(0, 0, 0, 0.06);
-    }
-
-    &.active {
-      color: var(--color-dark);
-      border-color: var(--color-border);
+      background: rgba(0, 0, 0, 0.08);
     }
   }
 }
 
-.header__lang-sep {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: $font-size-xs;
+.header__lang-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $border-radius;
+  box-shadow: $shadow-lg;
+  min-width: 140px;
+  z-index: 1100;
+  overflow: hidden;
 
-  #header.scrolled & {
-    color: var(--color-border);
+  &.open {
+    display: block;
+  }
+}
+
+.header__lang-option {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-4;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    background: var(--color-bg-alt);
+    color: var(--color-primary);
+  }
+
+  &.active {
+    color: var(--color-primary);
+    font-weight: 700;
+    background: var(--color-bg-alt);
   }
 }
 
@@ -283,7 +317,7 @@
   justify-content: space-between;
   width: 28px;
   height: 20px;
-  padding: 0;
+  margin: 0.5rem;
   background: none;
   border: none;
   cursor: pointer;
@@ -424,7 +458,7 @@
   border-radius: $border-radius;
   box-shadow: $shadow-lg;
   padding: $space-4;
-  min-width: 160px;
+  min-width: 220px;
   z-index: 1100;
 
   &.open {
@@ -455,12 +489,16 @@
 .a11y__font-reset,
 .a11y__font-increase,
 .a11y__contrast-toggle,
-.a11y__spacing-toggle {
+.a11y__spacing-toggle,
+.a11y__links-toggle,
+.a11y__motion-toggle {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  gap: 3px;
+  width: 56px;
+  padding: $space-2 $space-1;
   background: var(--color-bg-alt);
   border: 1px solid var(--color-border);
   border-radius: $border-radius-sm;
@@ -490,6 +528,14 @@
   }
 }
 
+.a11y__btn-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
 // Sidebar-Utils: Lang + Theme – nur unter 600px sichtbar
 .header__nav-utils {
   display: none;
@@ -502,27 +548,19 @@
     padding-top: $space-4;
     border-top: 1px solid var(--color-border);
 
-    // Lang-Buttons im Sidebar-Kontext (dunkle Farben)
-    .header__lang-switcher {
-      display: flex;
-    }
-
-    .header__lang-btn {
-      color: var(--color-text-light);
+    // Lang-Toggle im Sidebar-Kontext (dunkle Farben)
+    .header__lang-toggle {
+      color: var(--color-dark);
 
       &:hover {
-        color: var(--color-dark);
         background: rgba(0, 0, 0, 0.06);
-      }
-
-      &.active {
-        color: var(--color-dark);
-        border-color: var(--color-border);
       }
     }
 
-    .header__lang-sep {
-      color: var(--color-border);
+    // Lang-Dropdown im Sidebar-Kontext: nach links öffnen
+    .header__lang-dropdown {
+      right: auto;
+      left: 0;
     }
 
     // Theme-Toggle im Sidebar-Kontext

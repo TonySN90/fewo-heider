@@ -97,11 +97,20 @@
 
       <div class="header__controls">
         <div class="header__lang-switcher">
-          <a href="{{ route('locale.set', 'de') }}"
-             class="header__lang-btn {{ app()->getLocale() === 'de' ? 'active' : '' }}">DE</a>
-          <span class="header__lang-sep">|</span>
-          <a href="{{ route('locale.set', 'en') }}"
-             class="header__lang-btn {{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
+          <button class="header__lang-toggle" aria-haspopup="true" aria-expanded="false"
+                  aria-label="Sprache wählen">
+            <span class="material-symbols-rounded">language</span>
+            <span class="header__lang-current">{{ strtoupper(app()->getLocale()) }}</span>
+            <span class="material-symbols-rounded header__lang-chevron">expand_more</span>
+          </button>
+          <div class="header__lang-dropdown" role="menu">
+            @foreach (config('app.available_locales') as $code => $label)
+              <a href="{{ route('locale.set', $code) }}" role="menuitem"
+                 class="header__lang-option {{ app()->getLocale() === $code ? 'active' : '' }}">
+                {{ $label }}
+              </a>
+            @endforeach
+          </div>
         </div>
 
         <div class="header__a11y">
@@ -111,29 +120,36 @@
           <div class="header__a11y-dropdown" role="menu">
             <span class="header__a11y-label">Schriftgröße</span>
             <div class="header__a11y-row">
-              <button class="a11y__font-decrease" aria-label="Schrift verkleinern" title="Schrift verkleinern">
+              <button class="a11y__font-decrease" aria-label="Schrift verkleinern">
                 <span class="material-symbols-rounded">text_decrease</span>
+                <span class="a11y__btn-label">Kleiner</span>
               </button>
-              <button class="a11y__font-reset" aria-label="Schriftgröße zurücksetzen" title="Standard">
+              <button class="a11y__font-reset" aria-label="Schriftgröße zurücksetzen">
                 <span class="material-symbols-rounded">restart_alt</span>
+                <span class="a11y__btn-label">Reset</span>
               </button>
-              <button class="a11y__font-increase" aria-label="Schrift vergrößern" title="Schrift vergrößern">
+              <button class="a11y__font-increase" aria-label="Schrift vergrößern">
                 <span class="material-symbols-rounded">text_increase</span>
+                <span class="a11y__btn-label">Größer</span>
               </button>
             </div>
             <span class="header__a11y-label header__a11y-label--mt">Darstellung</span>
             <div class="header__a11y-row">
-              <button class="a11y__contrast-toggle" aria-label="Hohen Kontrast umschalten" aria-pressed="false" title="Hoher Kontrast">
+              <button class="a11y__contrast-toggle" aria-label="Hohen Kontrast umschalten" aria-pressed="false">
                 <span class="material-symbols-rounded">contrast</span>
+                <span class="a11y__btn-label">Kontrast</span>
               </button>
-              <button class="a11y__spacing-toggle" aria-label="Zeilenabstand umschalten" aria-pressed="false" title="Größerer Zeilenabstand">
+              <button class="a11y__spacing-toggle" aria-label="Zeilenabstand umschalten" aria-pressed="false">
                 <span class="material-symbols-rounded">format_line_spacing</span>
+                <span class="a11y__btn-label">Abstand</span>
               </button>
-              <button class="a11y__links-toggle" aria-label="Links hervorheben" aria-pressed="false" title="Links hervorheben">
+              <button class="a11y__links-toggle" aria-label="Links hervorheben" aria-pressed="false">
                 <span class="material-symbols-rounded">link</span>
+                <span class="a11y__btn-label">Links</span>
               </button>
-              <button class="a11y__motion-toggle" aria-label="Animationen reduzieren" aria-pressed="false" title="Animationen reduzieren">
+              <button class="a11y__motion-toggle" aria-label="Animationen reduzieren" aria-pressed="false">
                 <span class="material-symbols-rounded">animation</span>
+                <span class="a11y__btn-label">Ruhig</span>
               </button>
             </div>
           </div>
@@ -168,11 +184,22 @@
 
         <div class="header__nav-utils">
           <div class="header__lang-switcher">
-            <a href="{{ route('locale.set', 'de') }}"
-               class="header__lang-btn {{ app()->getLocale() === 'de' ? 'active' : '' }}">DE</a>
-            <span class="header__lang-sep">|</span>
-            <a href="{{ route('locale.set', 'en') }}"
-               class="header__lang-btn {{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
+            <button class="header__lang-toggle" aria-haspopup="true" aria-expanded="false"
+                    aria-label="Sprache wählen">
+              <span class="material-symbols-rounded">language</span>
+              <span class="header__lang-current">{{ strtoupper(app()->getLocale()) }}</span>
+              <span class="material-symbols-rounded header__lang-chevron">expand_more</span>
+            </button>
+            <div class="header__lang-dropdown" role="menu">
+              <a href="{{ route('locale.set', 'de') }}" role="menuitem"
+                 class="header__lang-option {{ app()->getLocale() === 'de' ? 'active' : '' }}">
+                <span>🇩🇪</span> Deutsch
+              </a>
+              <a href="{{ route('locale.set', 'en') }}" role="menuitem"
+                 class="header__lang-option {{ app()->getLocale() === 'en' ? 'active' : '' }}">
+                <span>🇬🇧</span> English
+              </a>
+            </div>
           </div>
           <button class="header__theme-toggle" aria-label="Dark Mode umschalten">
             <span class="material-symbols-rounded header__theme-toggle__icon--light">light_mode</span>
@@ -186,29 +213,36 @@
             <div class="header__a11y-dropdown" role="menu">
               <span class="header__a11y-label">Schriftgröße</span>
               <div class="header__a11y-row">
-                <button class="a11y__font-decrease" aria-label="Schrift verkleinern" title="Schrift verkleinern">
+                <button class="a11y__font-decrease" aria-label="Schrift verkleinern">
                   <span class="material-symbols-rounded">text_decrease</span>
+                  <span class="a11y__btn-label">Kleiner</span>
                 </button>
-                <button class="a11y__font-reset" aria-label="Schriftgröße zurücksetzen" title="Standard">
+                <button class="a11y__font-reset" aria-label="Schriftgröße zurücksetzen">
                   <span class="material-symbols-rounded">restart_alt</span>
+                  <span class="a11y__btn-label">Reset</span>
                 </button>
-                <button class="a11y__font-increase" aria-label="Schrift vergrößern" title="Schrift vergrößern">
+                <button class="a11y__font-increase" aria-label="Schrift vergrößern">
                   <span class="material-symbols-rounded">text_increase</span>
+                  <span class="a11y__btn-label">Größer</span>
                 </button>
               </div>
               <span class="header__a11y-label header__a11y-label--mt">Darstellung</span>
               <div class="header__a11y-row">
-                <button class="a11y__contrast-toggle" aria-label="Hohen Kontrast umschalten" aria-pressed="false" title="Hoher Kontrast">
+                <button class="a11y__contrast-toggle" aria-label="Hohen Kontrast umschalten" aria-pressed="false">
                   <span class="material-symbols-rounded">contrast</span>
+                  <span class="a11y__btn-label">Kontrast</span>
                 </button>
-                <button class="a11y__spacing-toggle" aria-label="Zeilenabstand umschalten" aria-pressed="false" title="Größerer Zeilenabstand">
+                <button class="a11y__spacing-toggle" aria-label="Zeilenabstand umschalten" aria-pressed="false">
                   <span class="material-symbols-rounded">format_line_spacing</span>
+                  <span class="a11y__btn-label">Abstand</span>
                 </button>
-                <button class="a11y__links-toggle" aria-label="Links hervorheben" aria-pressed="false" title="Links hervorheben">
+                <button class="a11y__links-toggle" aria-label="Links hervorheben" aria-pressed="false">
                   <span class="material-symbols-rounded">link</span>
+                  <span class="a11y__btn-label">Links</span>
                 </button>
-                <button class="a11y__motion-toggle" aria-label="Animationen reduzieren" aria-pressed="false" title="Animationen reduzieren">
+                <button class="a11y__motion-toggle" aria-label="Animationen reduzieren" aria-pressed="false">
                   <span class="material-symbols-rounded">animation</span>
+                  <span class="a11y__btn-label">Ruhig</span>
                 </button>
               </div>
             </div>

@@ -52,8 +52,7 @@
     .header__nav a:not(.nav__cta),
     .header__theme-toggle,
     .header__a11y-toggle,
-    .header__lang-btn,
-    .header__lang-sep {
+    .header__lang-toggle {
       color: #000000 !important;
     }
 
@@ -102,6 +101,27 @@
     color: #ffffff !important;
   }
 
+  // ── Sprach-Dropdown ───────────────────────────────────────
+  .header__lang-dropdown {
+    background: #ffffff !important;
+    border-color: #000000 !important;
+  }
+
+  .header__lang-option {
+    color: #000000 !important;
+
+    &:hover {
+      background: #f2f2f2 !important;
+      color: #000000 !important;
+    }
+
+    &.active {
+      background: #f2f2f2 !important;
+      color: #000000 !important;
+      font-weight: 700;
+    }
+  }
+
   // ── Preistabelle thead ────────────────────────────────────
   .pricing__table thead tr {
     background-color: #000000 !important;
@@ -130,7 +150,9 @@
   .a11y__font-reset,
   .a11y__font-increase,
   .a11y__contrast-toggle,
-  .a11y__spacing-toggle {
+  .a11y__spacing-toggle,
+  .a11y__links-toggle,
+  .a11y__motion-toggle {
     background-color: #f2f2f2 !important;
     color: #000000 !important;
     border-color: #000000 !important;
