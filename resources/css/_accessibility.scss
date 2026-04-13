@@ -1,0 +1,179 @@
+// ============================================================
+// ACCESSIBILITY – Globale Darstellungs-Modifikatoren
+// ============================================================
+
+@use 'variables' as *;
+
+// ── Hoher Kontrast ─────────────────────────────────────────
+// Custom Properties (--color-bg, --color-text, --color-primary etc.) werden
+// per JS via style.setProperty() auf <html> gesetzt und überschreiben damit
+// auch Tenant-Inline-Styles. Dieses CSS behandelt nur Stellen, die nicht
+// über Custom Properties laufen: hardcodierte SCSS-$color-Variablen,
+// Hintergrundbilder und spezifische Komponenten.
+
+[data-a11y-contrast] {
+  // ── Hintergründe ──────────────────────────────────────────
+  section,
+  .section,
+  main,
+  article,
+  aside {
+    background-color: #ffffff !important;
+    background-image: none !important;
+  }
+
+  .hero__bg,
+  .hero__overlay {
+    display: none !important;
+  }
+
+  .hero {
+    background-color: #ffffff !important;
+  }
+
+  // Hero-Texte: hardcodierte $color-white überschreiben
+  .hero__content,
+  .hero__title,
+  .hero__subtitle,
+  .hero__eyebrow {
+    color: #000000 !important;
+  }
+
+  .hero__title em {
+    color: #004d42 !important;
+  }
+
+  // Header oben (vor .scrolled): weiße Links und Logo auf dunkel setzen
+  #header:not(.scrolled) {
+    background-color: #ffffff !important;
+
+    .header__logo-text,
+    .header__logo-sub,
+    .header__nav a:not(.nav__cta),
+    .header__theme-toggle,
+    .header__a11y-toggle,
+    .header__lang-btn,
+    .header__lang-sep {
+      color: #000000 !important;
+    }
+
+    .header__hamburger span {
+      background-color: #000000 !important;
+    }
+  }
+
+  // ── Footer: dunkel mit weißem Text ────────────────────────
+  footer,
+  .footer,
+  [class*="footer__"] {
+    background-color: #000000 !important;
+
+    h1, h2, h3, h4, h5, h6,
+    p, li, span, a, td, label {
+      color: #ffffff !important;
+      border-color: rgba(255,255,255,0.3) !important;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  // ── Amenity-Icons & Highlight-Card-Icons ──────────────────
+  .amenity-item__icon,
+  .highlight-card__icon .material-symbols-rounded {
+    color: #000000 !important;
+  }
+
+  // ── Contact-Card ─────────────────────────────────────────
+  .contact__card-inner {
+    background: #000000 !important;
+    box-shadow: none !important;
+
+    &::before,
+    &::after {
+      display: none !important;
+    }
+  }
+
+  .contact__card-label,
+  .contact__card-name,
+  .contact__card-row {
+    color: #ffffff !important;
+  }
+
+  // ── Preistabelle thead ────────────────────────────────────
+  .pricing__table thead tr {
+    background-color: #000000 !important;
+  }
+
+  .pricing__table th {
+    color: #ffffff !important;
+  }
+
+  // ── Buttons (.btn, nav__cta) ──────────────────────────────
+  .btn,
+  .nav__cta {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+
+    // Icons innerhalb von Buttons weiß
+    .material-symbols-rounded {
+      color: #ffffff !important;
+    }
+  }
+
+  // ── A11y-Dropdown-Buttons: aus allg. Overrides heraushalten ─
+  .a11y__font-decrease,
+  .a11y__font-reset,
+  .a11y__font-increase,
+  .a11y__contrast-toggle,
+  .a11y__spacing-toggle {
+    background-color: #f2f2f2 !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+
+    .material-symbols-rounded {
+      color: #000000 !important;
+    }
+
+    &.active {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+
+      .material-symbols-rounded {
+        color: #ffffff !important;
+      }
+    }
+
+    &:disabled {
+      opacity: 0.35 !important;
+    }
+  }
+
+  // ── Fokus-Outline ─────────────────────────────────────────
+  *:focus-visible {
+    outline: 3px solid #000000 !important;
+    outline-offset: 2px;
+  }
+
+  // ── Bilder ────────────────────────────────────────────────
+  img {
+    outline: 2px solid #000000;
+  }
+}
+
+// ── Vergrößerter Zeilenabstand ─────────────────────────────
+[data-a11y-spacing] {
+  p, li, td, th, label, span, a {
+    line-height: 2 !important;
+    letter-spacing: 0.02em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.6 !important;
+  }
+}

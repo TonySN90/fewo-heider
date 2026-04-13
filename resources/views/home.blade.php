@@ -102,6 +102,35 @@
              class="header__lang-btn {{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
         </div>
 
+        <div class="header__a11y">
+          <button class="header__a11y-toggle" aria-label="Barrierefreiheit" aria-expanded="false" aria-haspopup="true">
+            <span class="material-symbols-rounded">accessibility_new</span>
+          </button>
+          <div class="header__a11y-dropdown" role="menu">
+            <span class="header__a11y-label">Schriftgröße</span>
+            <div class="header__a11y-row">
+              <button class="a11y__font-decrease" aria-label="Schrift verkleinern" title="Schrift verkleinern">
+                <span class="material-symbols-rounded">text_decrease</span>
+              </button>
+              <button class="a11y__font-reset" aria-label="Schriftgröße zurücksetzen" title="Standard">
+                <span class="material-symbols-rounded">restart_alt</span>
+              </button>
+              <button class="a11y__font-increase" aria-label="Schrift vergrößern" title="Schrift vergrößern">
+                <span class="material-symbols-rounded">text_increase</span>
+              </button>
+            </div>
+            <span class="header__a11y-label header__a11y-label--mt">Darstellung</span>
+            <div class="header__a11y-row">
+              <button class="a11y__contrast-toggle" aria-label="Hohen Kontrast umschalten" aria-pressed="false" title="Hoher Kontrast">
+                <span class="material-symbols-rounded">contrast</span>
+              </button>
+              <button class="a11y__spacing-toggle" aria-label="Zeilenabstand umschalten" aria-pressed="false" title="Größerer Zeilenabstand">
+                <span class="material-symbols-rounded">format_line_spacing</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
         <button class="header__theme-toggle" id="themeToggle" aria-label="Dark Mode umschalten">
           <span class="material-symbols-rounded header__theme-toggle__icon--light">light_mode</span>
           <span class="material-symbols-rounded header__theme-toggle__icon--dark">dark_mode</span>
@@ -141,6 +170,35 @@
             <span class="material-symbols-rounded header__theme-toggle__icon--light">light_mode</span>
             <span class="material-symbols-rounded header__theme-toggle__icon--dark">dark_mode</span>
           </button>
+
+          <div class="header__a11y">
+            <button class="header__a11y-toggle" aria-label="Barrierefreiheit" aria-expanded="false" aria-haspopup="true">
+              <span class="material-symbols-rounded">accessibility_new</span>
+            </button>
+            <div class="header__a11y-dropdown" role="menu">
+              <span class="header__a11y-label">Schriftgröße</span>
+              <div class="header__a11y-row">
+                <button class="a11y__font-decrease" aria-label="Schrift verkleinern" title="Schrift verkleinern">
+                  <span class="material-symbols-rounded">text_decrease</span>
+                </button>
+                <button class="a11y__font-reset" aria-label="Schriftgröße zurücksetzen" title="Standard">
+                  <span class="material-symbols-rounded">restart_alt</span>
+                </button>
+                <button class="a11y__font-increase" aria-label="Schrift vergrößern" title="Schrift vergrößern">
+                  <span class="material-symbols-rounded">text_increase</span>
+                </button>
+              </div>
+              <span class="header__a11y-label header__a11y-label--mt">Darstellung</span>
+              <div class="header__a11y-row">
+                <button class="a11y__contrast-toggle" aria-label="Hohen Kontrast umschalten" aria-pressed="false" title="Hoher Kontrast">
+                  <span class="material-symbols-rounded">contrast</span>
+                </button>
+                <button class="a11y__spacing-toggle" aria-label="Zeilenabstand umschalten" aria-pressed="false" title="Größerer Zeilenabstand">
+                  <span class="material-symbols-rounded">format_line_spacing</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </nav>
     </div>

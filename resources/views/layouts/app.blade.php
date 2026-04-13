@@ -61,6 +61,8 @@
   @endif
   {{-- Anti-FOUC: Dark-Mode vor dem ersten Paint setzen --}}
   <script>if(localStorage.getItem('theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}</script>
+  {{-- Anti-FOUC: Barrierefreiheits-Einstellungen vor dem ersten Paint setzen --}}
+  <script>(function(){var h=document.documentElement;var s=parseInt(localStorage.getItem('a11y-font-size-step')||'0',10);var z=[12,14,16,18,20];if(s>=-2&&s<=2){h.style.fontSize=z[s+2]+'px';}if(localStorage.getItem('a11y-high-contrast')==='1'){h.toggleAttribute('data-a11y-contrast',true);var cp={'--color-bg':'#ffffff','--color-bg-alt':'#f2f2f2','--color-surface':'#ffffff','--color-text':'#000000','--color-text-light':'#000000','--color-dark':'#000000','--color-border':'#000000','--color-primary':'#004d42','--color-primary-dark':'#003830','--color-secondary':'#004d42','--color-footer-top':'#000000','--color-footer-bot':'#000000'};Object.keys(cp).forEach(function(k){h.style.setProperty(k,cp[k]);});}if(localStorage.getItem('a11y-line-spacing')==='1'){h.toggleAttribute('data-a11y-spacing',true);}}());</script>
 </head>
 <body>
   @yield('content')

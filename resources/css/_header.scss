@@ -377,6 +377,119 @@
   }
 }
 
+// ── Barrierefreiheits-Dropdown ─────────────────────────────
+.header__a11y {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.header__a11y-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $color-white;
+  border-radius: 50%;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  .material-symbols-rounded {
+    font-size: 1.75rem;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  #header.scrolled & {
+    color: var(--color-dark);
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+  }
+}
+
+.header__a11y-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $border-radius;
+  box-shadow: $shadow-lg;
+  padding: $space-4;
+  min-width: 160px;
+  z-index: 1100;
+
+  &.open {
+    display: block;
+  }
+}
+
+.header__a11y-label {
+  display: block;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  margin-bottom: $space-3;
+
+  &--mt {
+    margin-top: $space-4;
+  }
+}
+
+.header__a11y-row {
+  display: flex;
+  gap: $space-2;
+}
+
+.a11y__font-decrease,
+.a11y__font-reset,
+.a11y__font-increase,
+.a11y__contrast-toggle,
+.a11y__spacing-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
+
+  .material-symbols-rounded {
+    font-size: 1.25rem;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--color-primary);
+    color: $color-white;
+    border-color: var(--color-primary);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  &.active {
+    background: var(--color-primary);
+    color: $color-white;
+    border-color: var(--color-primary);
+  }
+}
+
 // Sidebar-Utils: Lang + Theme – nur unter 600px sichtbar
 .header__nav-utils {
   display: none;
@@ -414,6 +527,15 @@
 
     // Theme-Toggle im Sidebar-Kontext
     .header__theme-toggle {
+      color: var(--color-dark);
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.06);
+      }
+    }
+
+    // A11y-Toggle im Sidebar-Kontext
+    .header__a11y-toggle {
       color: var(--color-dark);
 
       &:hover {

@@ -12,8 +12,10 @@ import { initGallery } from './ts/gallery';
 import { initCalendar } from './ts/calendar';
 import { initMap } from './ts/map';
 import { initSeasons } from './ts/seasons';
+import { initAccessibility } from './ts/accessibility';
 
 document.addEventListener('DOMContentLoaded', () => {
+  initAccessibility();
   initCookieConsent();
   initThemeToggle();
   initNavigation();
