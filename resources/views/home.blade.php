@@ -31,6 +31,16 @@
     'arrival_tips'          => 'Travel Tips',
     'scroll_down'           => 'Scroll down',
     'scroll_top'            => 'Scroll to top',
+    'a11y_label'            => 'Accessibility',
+    'a11y_font_size'        => 'Font size',
+    'a11y_appearance'       => 'Appearance',
+    'a11y_smaller'          => 'Smaller',
+    'a11y_reset'            => 'Reset',
+    'a11y_larger'           => 'Larger',
+    'a11y_contrast'         => 'Contrast',
+    'a11y_spacing'          => 'Spacing',
+    'a11y_links'            => 'Links',
+    'a11y_motion'           => 'Motion',
   ] : [
     'gallery_btn'           => 'Galerie ansehen',
     'contact_btn'           => 'Jetzt anfragen',
@@ -60,6 +70,16 @@
     'arrival_tips'          => 'Anreise-Tipps',
     'scroll_down'           => 'Nach unten scrollen',
     'scroll_top'            => 'Nach oben scrollen',
+    'a11y_label'            => 'Barrierefreiheit',
+    'a11y_font_size'        => 'Schriftgröße',
+    'a11y_appearance'       => 'Darstellung',
+    'a11y_smaller'          => 'Kleiner',
+    'a11y_reset'            => 'Reset',
+    'a11y_larger'           => 'Größer',
+    'a11y_contrast'         => 'Kontrast',
+    'a11y_spacing'          => 'Abstand',
+    'a11y_links'            => 'Links',
+    'a11y_motion'           => 'Ruhig',
   ];
 
   $navLabels = [
@@ -114,42 +134,42 @@
         </div>
 
         <div class="header__a11y">
-          <button class="header__a11y-toggle" aria-label="Barrierefreiheit" aria-expanded="false" aria-haspopup="true">
+          <button class="header__a11y-toggle" aria-label="{{ $ui['a11y_label'] }}" aria-expanded="false" aria-haspopup="true">
             <span class="material-symbols-rounded">accessibility_new</span>
           </button>
           <div class="header__a11y-dropdown" role="menu">
-            <span class="header__a11y-label">Schriftgröße</span>
+            <span class="header__a11y-label">{{ $ui['a11y_font_size'] }}</span>
             <div class="header__a11y-row">
-              <button class="a11y__font-decrease" aria-label="Schrift verkleinern">
+              <button class="a11y__font-decrease" aria-label="{{ $ui['a11y_smaller'] }}">
                 <span class="material-symbols-rounded">text_decrease</span>
-                <span class="a11y__btn-label">Kleiner</span>
+                <span class="a11y__btn-label">{{ $ui['a11y_smaller'] }}</span>
               </button>
-              <button class="a11y__font-reset" aria-label="Schriftgröße zurücksetzen">
+              <button class="a11y__font-reset" aria-label="{{ $ui['a11y_reset'] }}">
                 <span class="material-symbols-rounded">restart_alt</span>
-                <span class="a11y__btn-label">Reset</span>
+                <span class="a11y__btn-label">{{ $ui['a11y_reset'] }}</span>
               </button>
-              <button class="a11y__font-increase" aria-label="Schrift vergrößern">
+              <button class="a11y__font-increase" aria-label="{{ $ui['a11y_larger'] }}">
                 <span class="material-symbols-rounded">text_increase</span>
-                <span class="a11y__btn-label">Größer</span>
+                <span class="a11y__btn-label">{{ $ui['a11y_larger'] }}</span>
               </button>
             </div>
-            <span class="header__a11y-label header__a11y-label--mt">Darstellung</span>
+            <span class="header__a11y-label header__a11y-label--mt">{{ $ui['a11y_appearance'] }}</span>
             <div class="header__a11y-row">
-              <button class="a11y__contrast-toggle" aria-label="Hohen Kontrast umschalten" aria-pressed="false">
+              <button class="a11y__contrast-toggle" aria-label="{{ $ui['a11y_contrast'] }}" aria-pressed="false">
                 <span class="material-symbols-rounded">contrast</span>
-                <span class="a11y__btn-label">Kontrast</span>
+                <span class="a11y__btn-label">{{ $ui['a11y_contrast'] }}</span>
               </button>
-              <button class="a11y__spacing-toggle" aria-label="Zeilenabstand umschalten" aria-pressed="false">
+              <button class="a11y__spacing-toggle" aria-label="{{ $ui['a11y_spacing'] }}" aria-pressed="false">
                 <span class="material-symbols-rounded">format_line_spacing</span>
-                <span class="a11y__btn-label">Abstand</span>
+                <span class="a11y__btn-label">{{ $ui['a11y_spacing'] }}</span>
               </button>
-              <button class="a11y__links-toggle" aria-label="Links hervorheben" aria-pressed="false">
+              <button class="a11y__links-toggle" aria-label="{{ $ui['a11y_links'] }}" aria-pressed="false">
                 <span class="material-symbols-rounded">link</span>
-                <span class="a11y__btn-label">Links</span>
+                <span class="a11y__btn-label">{{ $ui['a11y_links'] }}</span>
               </button>
-              <button class="a11y__motion-toggle" aria-label="Animationen reduzieren" aria-pressed="false">
+              <button class="a11y__motion-toggle" aria-label="{{ $ui['a11y_motion'] }}" aria-pressed="false">
                 <span class="material-symbols-rounded">animation</span>
-                <span class="a11y__btn-label">Ruhig</span>
+                <span class="a11y__btn-label">{{ $ui['a11y_motion'] }}</span>
               </button>
             </div>
           </div>
@@ -207,42 +227,42 @@
           </button>
 
           <div class="header__a11y">
-            <button class="header__a11y-toggle" aria-label="Barrierefreiheit" aria-expanded="false" aria-haspopup="true">
+            <button class="header__a11y-toggle" aria-label="{{ $ui['a11y_label'] }}" aria-expanded="false" aria-haspopup="true">
               <span class="material-symbols-rounded">accessibility_new</span>
             </button>
             <div class="header__a11y-dropdown" role="menu">
-              <span class="header__a11y-label">Schriftgröße</span>
+              <span class="header__a11y-label">{{ $ui['a11y_font_size'] }}</span>
               <div class="header__a11y-row">
-                <button class="a11y__font-decrease" aria-label="Schrift verkleinern">
+                <button class="a11y__font-decrease" aria-label="{{ $ui['a11y_smaller'] }}">
                   <span class="material-symbols-rounded">text_decrease</span>
-                  <span class="a11y__btn-label">Kleiner</span>
+                  <span class="a11y__btn-label">{{ $ui['a11y_smaller'] }}</span>
                 </button>
-                <button class="a11y__font-reset" aria-label="Schriftgröße zurücksetzen">
+                <button class="a11y__font-reset" aria-label="{{ $ui['a11y_reset'] }}">
                   <span class="material-symbols-rounded">restart_alt</span>
-                  <span class="a11y__btn-label">Reset</span>
+                  <span class="a11y__btn-label">{{ $ui['a11y_reset'] }}</span>
                 </button>
-                <button class="a11y__font-increase" aria-label="Schrift vergrößern">
+                <button class="a11y__font-increase" aria-label="{{ $ui['a11y_larger'] }}">
                   <span class="material-symbols-rounded">text_increase</span>
-                  <span class="a11y__btn-label">Größer</span>
+                  <span class="a11y__btn-label">{{ $ui['a11y_larger'] }}</span>
                 </button>
               </div>
-              <span class="header__a11y-label header__a11y-label--mt">Darstellung</span>
+              <span class="header__a11y-label header__a11y-label--mt">{{ $ui['a11y_appearance'] }}</span>
               <div class="header__a11y-row">
-                <button class="a11y__contrast-toggle" aria-label="Hohen Kontrast umschalten" aria-pressed="false">
+                <button class="a11y__contrast-toggle" aria-label="{{ $ui['a11y_contrast'] }}" aria-pressed="false">
                   <span class="material-symbols-rounded">contrast</span>
-                  <span class="a11y__btn-label">Kontrast</span>
+                  <span class="a11y__btn-label">{{ $ui['a11y_contrast'] }}</span>
                 </button>
-                <button class="a11y__spacing-toggle" aria-label="Zeilenabstand umschalten" aria-pressed="false">
+                <button class="a11y__spacing-toggle" aria-label="{{ $ui['a11y_spacing'] }}" aria-pressed="false">
                   <span class="material-symbols-rounded">format_line_spacing</span>
-                  <span class="a11y__btn-label">Abstand</span>
+                  <span class="a11y__btn-label">{{ $ui['a11y_spacing'] }}</span>
                 </button>
-                <button class="a11y__links-toggle" aria-label="Links hervorheben" aria-pressed="false">
+                <button class="a11y__links-toggle" aria-label="{{ $ui['a11y_links'] }}" aria-pressed="false">
                   <span class="material-symbols-rounded">link</span>
-                  <span class="a11y__btn-label">Links</span>
+                  <span class="a11y__btn-label">{{ $ui['a11y_links'] }}</span>
                 </button>
-                <button class="a11y__motion-toggle" aria-label="Animationen reduzieren" aria-pressed="false">
+                <button class="a11y__motion-toggle" aria-label="{{ $ui['a11y_motion'] }}" aria-pressed="false">
                   <span class="material-symbols-rounded">animation</span>
-                  <span class="a11y__btn-label">Ruhig</span>
+                  <span class="a11y__btn-label">{{ $ui['a11y_motion'] }}</span>
                 </button>
               </div>
             </div>
