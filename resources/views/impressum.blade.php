@@ -2,11 +2,11 @@
 
 @section('title', 'Impressum')
 
-@section('nav')
-  <a href="{{ url('/') }}">Startseite</a>
-  <a href="{{ url('/ruegen-erleben') }}">Rügen erleben</a>
-  <a href="{{ url('/#kontakt') }}">Anfragen</a>
-@endsection
+@push('header-nav-links')
+  <li><a href="{{ url('/') }}">Startseite</a></li>
+  <li><a href="{{ url('/ruegen-erleben') }}">Rügen erleben</a></li>
+  <li><a href="{{ url('/#kontakt') }}" class="nav__cta">{{ ui_labels()['nav_contact'] }}</a></li>
+@endpush
 
 @section('content')
 

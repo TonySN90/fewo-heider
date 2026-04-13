@@ -6,12 +6,12 @@
 
 @section('title', 'Rügen erleben')
 
-@section('nav')
-  <a href="{{ url('/#ueber-uns') }}">Die Wohnung</a>
-  <a href="{{ url('/#preise') }}">Preise</a>
-  <a href="{{ url('/ruegen-erleben') }}" class="active">Rügen erleben</a>
-  <a href="{{ url('/#kontakt') }}">Anfragen</a>
-@endsection
+@push('header-nav-links')
+  <li><a href="{{ url('/') }}">Startseite</a></li>
+  <li><a href="{{ url('/#preise') }}">Preise</a></li>
+  <li><a href="{{ url('/ruegen-erleben') }}" class="active">Rügen erleben</a></li>
+  <li><a href="{{ url('/#kontakt') }}" class="nav__cta">{{ ui_labels()['nav_contact'] }}</a></li>
+@endpush
 
 @section('content')
 

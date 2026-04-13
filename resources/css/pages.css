@@ -362,7 +362,7 @@ p:last-child {
 .page-header {
   background: linear-gradient(135deg, #2e5f55, #263238);
   color: #ffffff;
-  padding: 3rem 1.5rem;
+  padding: 6rem 1.5rem;
   text-align: center;
 }
 .page-header a {

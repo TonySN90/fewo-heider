@@ -7,9 +7,9 @@
 
 .footer {
   font-family: $font-body;
+  padding: 0;
 }
 
-// Oberer Footer (Grün)
 .footer__top {
   background-color: var(--color-footer-top);
   padding: $space-16 0;
