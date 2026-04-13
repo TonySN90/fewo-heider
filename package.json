@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "easymde": "^2.20.0",
     "fslightbox": "^3.7.5",
     "leaflet": "^1.9.4",
     "vanilla-cookieconsent": "^3.1.0"

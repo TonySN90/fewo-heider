@@ -115,6 +115,13 @@
             Theme
           </a>
         </li>
+        <li>
+          <a href="{{ route('admin.legal') }}"
+             class="sidebar__link {{ request()->routeIs('admin.legal*') ? 'sidebar__link--active' : '' }}">
+            <span class="material-symbols-rounded sidebar__icon">description</span>
+            Datenschutz
+          </a>
+        </li>
         @endcan
       </ul>
     </div>
@@ -140,6 +147,15 @@
              class="sidebar__link {{ request()->routeIs('admin.users*') ? 'sidebar__link--active' : '' }}">
             <span class="material-symbols-rounded sidebar__icon">group</span>
             Benutzer
+          </a>
+        </li>
+        @endhasanyrole
+        @hasanyrole('admin|super-admin')
+        <li>
+          <a href="{{ route('admin.database') }}"
+             class="sidebar__link {{ request()->routeIs('admin.database*') ? 'sidebar__link--active' : '' }}">
+            <span class="material-symbols-rounded sidebar__icon">database</span>
+            Export / Import
           </a>
         </li>
         @endhasanyrole

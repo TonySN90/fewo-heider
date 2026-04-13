@@ -1,0 +1,105 @@
+@use '../variables' as *;
+
+// ── Legal-Seite: Tab-Navigation (analog zu .seasons-tabs) ────────────────────
+
+.legal-tabs {
+  background: $color-white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-sm;
+  margin-bottom: $space-8;
+  overflow: hidden;
+
+  &__bar {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 2px solid #f0f0f0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  &__tab {
+    position: relative;
+    padding: 0.9rem 1.4rem;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: #6b7280;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s, border-color 0.15s;
+
+    .material-symbols-rounded {
+      font-size: 1.1rem;
+    }
+
+    &:hover {
+      color: $color-primary;
+    }
+
+    &.is-active {
+      color: $color-primary;
+      border-bottom-color: $color-primary;
+    }
+  }
+
+  &__panel {
+    display: none;
+
+    &.is-active {
+      display: block;
+    }
+  }
+
+  &__panel-inner {
+    padding: $space-6 $space-8;
+
+    @media (max-width: 640px) {
+      padding: $space-4;
+    }
+  }
+}
+
+// ── Textarea für Legal-Texte ──────────────────────────────────────────────────
+
+.legal-textarea {
+  width: 100%;
+  min-height: 480px;
+  padding: $space-4;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: $font-size-sm;
+  line-height: $line-height-loose;
+  border: 1px solid #e5e7eb;
+  border-radius: $border-radius-sm;
+  resize: vertical;
+  background: #fafafa;
+  color: $color-text;
+  transition: border-color 0.15s;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    background: $color-white;
+  }
+}
+
+// ── Hint-Text unter dem Tab ───────────────────────────────────────────────────
+
+.legal-hint {
+  font-size: $font-size-sm;
+  color: #6b7280;
+  margin-bottom: $space-4;
+
+  code {
+    background: #f3f4f6;
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+}

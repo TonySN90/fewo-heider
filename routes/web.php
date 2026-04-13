@@ -15,7 +15,10 @@ use App\Http\Controllers\Admin\SeasonPriceController;
 use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\TemplateSectionController;
 use App\Http\Controllers\Admin\TenantController;
+use App\Http\Controllers\Admin\DatabaseController;
+use App\Http\Controllers\Admin\LegalController;
 use App\Http\Controllers\Admin\UserPermissionController;
+use App\Http\Controllers\PublicLegalController;
 use App\Http\Controllers\Api\AmenityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
@@ -49,8 +52,8 @@ Route::middleware(['resolve.tenant', 'tenant.seo', 'set.tenant.session'])->group
     Route::get('/ruegen/{pageSlug}/{entrySlug}', fn (string $pageSlug, string $entrySlug) => redirect("/ruegen-erleben/{$pageSlug}/{$entrySlug}", 301))->name('ruegen.entry');
     Route::get('/ruegen/{pageSlug}', fn (string $pageSlug) => redirect("/ruegen-erleben/{$pageSlug}", 301))->name('ruegen.page');
     Route::redirect('/ruegen-erleben.html', '/ruegen-erleben', 301);
-    Route::get('/impressum', fn () => view('impressum'));
-    Route::get('/datenschutz', fn () => view('datenschutz'));
+    Route::get('/impressum', [PublicLegalController::class, 'impressum'])->name('impressum');
+    Route::get('/datenschutz', [PublicLegalController::class, 'datenschutz'])->name('datenschutz');
 
     // 301-Redirects für alte .html-URLs (SEO / Bookmarks)
     Route::redirect('/impressum.html', '/impressum', 301);
@@ -136,10 +139,13 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
         Route::delete('/templates/{template}/sections/{sectionKey}/gallery/{image}', [GalleryController::class, 'destroy'])->name('admin.gallery.destroy');
     });
 
-    // Theme (pro Instanz)
+    // Theme & Legal (pro Instanz)
     Route::middleware('permission:manage templates')->group(function () {
         Route::get('/theme', [ThemeController::class, 'edit'])->name('admin.theme');
         Route::put('/theme', [ThemeController::class, 'update'])->name('admin.theme.update');
+
+        Route::get('/legal', [LegalController::class, 'edit'])->name('admin.legal');
+        Route::put('/legal', [LegalController::class, 'update'])->name('admin.legal.update');
     });
 
     // Seitenstruktur (pro Instanz)
@@ -179,6 +185,13 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
 
     // Admin-Übersicht (nur Super-Admin, kein Tenant-Kontext nötig)
     Route::middleware('role:super-admin')->get('/overview', [OverviewController::class, 'index'])->name('admin.overview');
+
+    // Datenbank Export / Import
+    Route::middleware('role:super-admin|admin')->group(function () {
+        Route::get('/database', [DatabaseController::class, 'index'])->name('admin.database');
+        Route::post('/database/export', [DatabaseController::class, 'export'])->name('admin.database.export');
+        Route::post('/database/import', [DatabaseController::class, 'import'])->name('admin.database.import');
+    });
 
     // Instanzen-Verwaltung (nur Super-Admin)
     Route::middleware('role:super-admin')->group(function () {
