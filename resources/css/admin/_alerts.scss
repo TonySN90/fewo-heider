@@ -32,6 +32,18 @@
     color: #1e40af;
   }
 
+  &--warning {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    color: #92400e;
+  }
+
+  &--error {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+  }
+
   &--cards      { border-left: 4px solid #3d7a6e; }
   &--place-list { border-left: 4px solid #5a6e9a; }
   &--feature    { border-left: 4px solid #7a5e18; }

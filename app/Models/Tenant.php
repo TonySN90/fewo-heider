@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Storage;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
@@ -45,6 +46,12 @@ class Tenant extends Model
     public function theme(): HasOne
     {
         return $this->hasOne(TenantTheme::class);
+    }
+
+    /** @return HasMany<LegalPage, $this> */
+    public function legalPages(): HasMany
+    {
+        return $this->hasMany(LegalPage::class);
     }
 
     public function getDynamicSEOData(): SEOData
