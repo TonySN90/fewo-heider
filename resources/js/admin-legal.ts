@@ -18,35 +18,46 @@ function initEditor(containerId: string, inputId: string): void {
     },
   });
 
-  // Bestehenden HTML-Inhalt aus data-Attribut laden
   const existing = container.dataset['content'] ?? '';
   if (existing) quill.root.innerHTML = existing;
 
-  // Vor Submit: HTML-Inhalt des Editors in hidden input schreiben
   input.closest('form')?.addEventListener('submit', () => {
     input.value = quill.root.innerHTML;
   });
 }
 
-initEditor('editor-datenschutz', 'content-datenschutz');
-initEditor('editor-impressum',   'content-impressum');
+initEditor('editor-datenschutz-de', 'content-datenschutz-de');
+initEditor('editor-datenschutz-en', 'content-datenschutz-en');
+initEditor('editor-impressum-de',   'content-impressum-de');
+initEditor('editor-impressum-en',   'content-impressum-en');
 
-// ── Tab-Switching ────────────────────────────────────────────────────────────
-const tabs   = document.querySelectorAll<HTMLButtonElement>('.legal-tabs__tab');
-const panels = document.querySelectorAll<HTMLElement>('.legal-tabs__panel');
+// ── Typ-Tabs (Datenschutz / Impressum) ──────────────────────────────────────
+const typeTabs   = document.querySelectorAll<HTMLButtonElement>('.legal-tabs__tab');
+const typePanels = document.querySelectorAll<HTMLElement>('.legal-tabs__panel');
 
-tabs.forEach(tab => {
+typeTabs.forEach(tab => {
   tab.addEventListener('click', () => {
     const target = tab.dataset['tab'];
-
-    tabs.forEach(t => {
-      t.classList.remove('is-active');
-      t.setAttribute('aria-selected', 'false');
-    });
-    panels.forEach(p => p.classList.remove('is-active'));
-
+    typeTabs.forEach(t => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
+    typePanels.forEach(p => p.classList.remove('is-active'));
     tab.classList.add('is-active');
     tab.setAttribute('aria-selected', 'true');
     if (target) document.getElementById(target)?.classList.add('is-active');
+  });
+});
+
+// ── Sprach-Tabs (DE / EN) – pro Typ-Panel unabhängig ────────────────────────
+document.querySelectorAll<HTMLElement>('.legal-lang-tabs').forEach(langTabGroup => {
+  const tabs   = langTabGroup.querySelectorAll<HTMLButtonElement>('.legal-lang-tabs__tab');
+  const panels = langTabGroup.querySelectorAll<HTMLElement>('.legal-lang-tabs__panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset['langTab'];
+      tabs.forEach(t => t.classList.remove('is-active'));
+      panels.forEach(p => p.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      if (target) document.getElementById(target)?.classList.add('is-active');
+    });
   });
 });

@@ -66,6 +66,51 @@
   }
 }
 
+// ── Sprach-Tabs (DE / EN) innerhalb eines Typ-Panels ─────────────────────────
+
+.legal-lang-tabs {
+  &__bar {
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    padding: $space-4 $space-8 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__tab {
+    padding: 0.35rem 0.85rem;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #9ca3af;
+    background: #f3f4f6;
+    border: 1.5px solid #e5e7eb;
+    border-bottom: none;
+    border-radius: $border-radius-sm $border-radius-sm 0 0;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+
+    &:hover {
+      color: $color-primary;
+      background: #edf3ef;
+    }
+
+    &.is-active {
+      color: $color-primary;
+      background: $color-white;
+      border-color: #e5e7eb;
+    }
+  }
+
+  &__panel {
+    display: none;
+
+    &.is-active {
+      display: block;
+    }
+  }
+}
+
 // ── Quill-Editor für Legal-Texte ─────────────────────────────────────────────
 
 .legal-editor {

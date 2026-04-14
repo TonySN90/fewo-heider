@@ -19,6 +19,7 @@ class LegalPage extends Model
     protected $fillable = [
         'tenant_id',
         'type',
+        'locale',
         'content',
     ];
 }

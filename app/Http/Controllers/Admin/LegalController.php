@@ -15,10 +15,14 @@ class LegalController extends Controller
         $tenant = current_tenant();
         abort_unless($tenant, 404);
 
-        $datenschutz = LegalPage::firstWhere('type', 'datenschutz');
-        $impressum   = LegalPage::firstWhere('type', 'impressum');
+        $pages = LegalPage::get()->groupBy(fn ($p) => $p->type . '_' . $p->locale);
 
-        return view('admin.legal', compact('datenschutz', 'impressum'));
+        return view('admin.legal', [
+            'datenschutz_de' => $pages->get('datenschutz_de')?->first(),
+            'datenschutz_en' => $pages->get('datenschutz_en')?->first(),
+            'impressum_de'   => $pages->get('impressum_de')?->first(),
+            'impressum_en'   => $pages->get('impressum_en')?->first(),
+        ]);
     }
 
     public function update(Request $request): RedirectResponse
@@ -28,16 +32,18 @@ class LegalController extends Controller
 
         $data = $request->validate([
             'type'    => ['required', 'in:datenschutz,impressum'],
+            'locale'  => ['required', 'in:de,en'],
             'content' => ['nullable', 'string'],
         ]);
 
         LegalPage::updateOrCreate(
-            ['tenant_id' => $tenant->id, 'type' => $data['type']],
+            ['tenant_id' => $tenant->id, 'type' => $data['type'], 'locale' => $data['locale']],
             ['content' => $data['content'] ?? ''],
         );
 
         $label = $data['type'] === 'datenschutz' ? 'Datenschutzerklärung' : 'Impressum';
+        $lang  = $data['locale'] === 'de' ? 'DE' : 'EN';
 
-        return back()->with('success', "{$label} gespeichert.");
+        return back()->with('success', "{$label} ({$lang}) gespeichert.");
     }
 }

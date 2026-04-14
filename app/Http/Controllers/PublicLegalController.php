@@ -9,14 +9,16 @@ class PublicLegalController extends Controller
 {
     public function impressum(): View
     {
-        $content = LegalPage::firstWhere('type', 'impressum')?->content;
+        $locale  = app()->getLocale();
+        $content = LegalPage::where('type', 'impressum')->where('locale', $locale)->first()?->content;
 
         return view('impressum', compact('content'));
     }
 
     public function datenschutz(): View
     {
-        $content = LegalPage::firstWhere('type', 'datenschutz')?->content;
+        $locale  = app()->getLocale();
+        $content = LegalPage::where('type', 'datenschutz')->where('locale', $locale)->first()?->content;
 
         return view('datenschutz', compact('content'));
     }
