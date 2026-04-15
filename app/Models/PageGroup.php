@@ -42,11 +42,25 @@ class PageGroup extends Model
         return $this->hasMany(Page::class)->orderBy('sort_order');
     }
 
+    public function localizedTitle(): string
+    {
+        return app()->getLocale() === 'en' && $this->title_en
+            ? $this->title_en
+            : $this->title;
+    }
+
+    public function localizedDescription(): ?string
+    {
+        return app()->getLocale() === 'en' && $this->description_en
+            ? $this->description_en
+            : $this->description;
+    }
+
     public function getDynamicSEOData(): SEOData
     {
         return new SEOData(
-            title: $this->title,
-            description: $this->description,
+            title: $this->localizedTitle(),
+            description: $this->localizedDescription(),
         );
     }
 }

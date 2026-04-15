@@ -14,11 +14,11 @@
     <div class="breadcrumb">
       <a href="{{ url('/') }}">Startseite</a> <span>/</span>
       <a href="{{ route('pages.group', $group->slug) }}">{{ $group->nav_label }}</a> <span>/</span>
-      <span>{{ $page->title }}</span>
+      <span>{{ $page->localizedTitle() }}</span>
     </div>
-    <h1>{{ $page->title }}</h1>
-    @if ($page->description)
-      <p>{{ $page->description }}</p>
+    <h1>{{ $page->localizedTitle() }}</h1>
+    @if ($page->localizedDescription())
+      <p>{{ $page->localizedDescription() }}</p>
     @endif
   </div>
 </div>
@@ -47,7 +47,7 @@
 @endif
 
 <div class="cta-strip">
-  <h2>{{ $page->title }} auf Rügen erleben</h2>
+  <h2>{{ $page->localizedTitle() }} auf Rügen erleben</h2>
   <p>Buchen Sie Ihre Unterkunft – ideal als Ausgangspunkt.</p>
   <a href="{{ url('/#kontakt') }}" class="btn btn--white">
     <span class="material-symbols-rounded">mail</span> Jetzt anfragen

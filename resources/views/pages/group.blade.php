@@ -13,9 +13,9 @@
   <a href="{{ url('/') }}" class="page-header__back">
     <span class="material-symbols-rounded" style="font-size:1rem;">arrow_back</span> Zurück zur Startseite
   </a>
-  <h1>{{ $group->title }}</h1>
-  @if ($group->description)
-    <p>{{ $group->description }}</p>
+  <h1>{{ $group->localizedTitle() }}</h1>
+  @if ($group->localizedDescription())
+    <p>{{ $group->localizedDescription() }}</p>
   @endif
 </header>
 
@@ -30,9 +30,9 @@
             </div>
           @endif
           <div class="category-card__body">
-            <h2 class="category-card__title">{{ $page->title }}</h2>
-            @if ($page->description)
-              <p class="category-card__desc">{{ $page->description }}</p>
+            <h2 class="category-card__title">{{ $page->localizedTitle() }}</h2>
+            @if ($page->localizedDescription())
+              <p class="category-card__desc">{{ $page->localizedDescription() }}</p>
             @endif
             <span class="category-card__link">Mehr entdecken <span class="material-symbols-rounded" style="font-size:1rem;">arrow_forward</span></span>
           </div>
