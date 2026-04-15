@@ -14,7 +14,7 @@ class Page extends Model
 {
     use HasSEO;
 
-    protected $fillable = ['tenant_id', 'page_group_id', 'title', 'slug', 'description', 'cover_image', 'is_visible', 'sort_order', 'layout'];
+    protected $fillable = ['tenant_id', 'page_group_id', 'title', 'title_en', 'slug', 'description', 'description_en', 'cover_image', 'is_visible', 'sort_order', 'layout'];
 
     protected $casts = ['is_visible' => 'boolean'];
 

@@ -14,7 +14,7 @@ class PageGroup extends Model
     use HasSEO;
 
     protected $fillable = [
-        'tenant_id', 'title', 'nav_label', 'slug', 'description', 'is_visible', 'sort_order',
+        'tenant_id', 'title', 'title_en', 'nav_label', 'slug', 'description', 'description_en', 'is_visible', 'sort_order',
     ];
 
     protected $casts = ['is_visible' => 'boolean'];

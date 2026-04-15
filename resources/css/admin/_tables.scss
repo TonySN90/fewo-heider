@@ -192,7 +192,7 @@ tr:last-child td {
   }
 
   &__body {
-    padding: 1.75rem;
+    padding: 0;
   }
 
   &__actions {
@@ -295,10 +295,79 @@ tr:last-child td {
   }
 }
 
+// ── Modal: Speichern-Bar (sticky Footer) ─────────────────────────────────────
+.modal-save-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $space-3;
+  padding: 0.875rem 1.5rem;
+  background: $color-white;
+  border-top: 1px solid #e8f0ed;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+}
+
+.modal-save-indicator {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #3d7a6e;
+
+  &--ok    { color: #3d7a6e; }
+  &--error { color: #e53935; }
+}
+
+// ── Sprach-Toggle ────────────────────────────────────────────────────────────
+.modal-lang-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5rem 1.25rem;
+  background: #f4f7f6;
+  border-bottom: 1px solid #e2ece8;
+}
+
+.lang-toggle-btn {
+  padding: 0.28rem 0.85rem;
+  border: 1.5px solid #c9d9d5;
+  background: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: #7a9a94;
+  cursor: pointer;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+
+  &:first-child {
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+  }
+
+  &:last-child {
+    border-radius: 0 4px 4px 0;
+  }
+
+  &--active {
+    background: #3d7a6e;
+    border-color: #3d7a6e;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 1px 3px rgba(61, 122, 110, 0.35);
+  }
+
+  &:hover:not(&--active) {
+    border-color: #3d7a6e;
+    color: #3d7a6e;
+    background: #f0f8f6;
+  }
+}
+
 .modal-page-hero {
   position: relative;
   height: 200px;
-  margin-bottom: $space-5;
   border-radius: $border-radius-sm;
   overflow: hidden;
   background: linear-gradient(135deg, #2e4a3e 0%, #3d7a6e 100%);
@@ -385,14 +454,34 @@ tr:last-child td {
   }
 }
 
+.modal-seo-section {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #e8f0ed;
+  background: #f8faf9;
+
+  &__label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #aaa;
+    margin-bottom: 0.75rem;
+
+    span {
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+  }
+}
+
 .modal-page-settings {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: $space-4;
-  padding: $space-4 0;
-  border-top: 1px solid #f0f0f0;
-  margin-top: $space-2;
+  padding: $space-4 1.5rem;
+  border-top: 1px solid #e8f0ed;
 
   &__group {
     display: flex;

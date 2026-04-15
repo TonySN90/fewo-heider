@@ -57,10 +57,12 @@ class PageController extends Controller
         $this->authorizeGroup($group);
 
         $data = $request->validate([
-            'title'       => ['required', 'string', 'max:150'],
-            'nav_label'   => ['nullable', 'string', 'max:150'],
-            'description' => ['nullable', 'string', 'max:500'],
-            'is_visible'  => ['nullable', 'boolean'],
+            'title'          => ['required', 'string', 'max:150'],
+            'title_en'       => ['nullable', 'string', 'max:150'],
+            'nav_label'      => ['nullable', 'string', 'max:150'],
+            'description'    => ['nullable', 'string', 'max:500'],
+            'description_en' => ['nullable', 'string', 'max:500'],
+            'is_visible'     => ['nullable', 'boolean'],
         ]);
 
         $newSlug = Str::slug($data['title']);
@@ -76,9 +78,11 @@ class PageController extends Controller
             'title' => $data['title'],
             'slug'  => $newSlug,
         ];
-        if ($request->has('nav_label'))   $update['nav_label']   = ($data['nav_label'] ?? null) ?: $data['title'];
-        if ($request->has('description')) $update['description'] = $data['description'] ?? null;
-        if ($request->has('is_visible'))  $update['is_visible']  = $request->boolean('is_visible');
+        if ($request->has('title_en'))       $update['title_en']       = $data['title_en'] ?? null;
+        if ($request->has('nav_label'))      $update['nav_label']      = ($data['nav_label'] ?? null) ?: $data['title'];
+        if ($request->has('description'))    $update['description']    = $data['description'] ?? null;
+        if ($request->has('description_en')) $update['description_en'] = $data['description_en'] ?? null;
+        if ($request->has('is_visible'))     $update['is_visible']     = $request->boolean('is_visible');
 
         $group->update($update);
 
@@ -167,19 +171,25 @@ class PageController extends Controller
         $this->authorizePage($page);
 
         $data = $request->validate([
-            'title'         => ['required', 'string', 'max:150'],
-            'description'   => ['nullable', 'string', 'max:500'],
-            'cover_image'   => ['nullable', 'image', 'max:4096'],
-            'is_visible'    => ['nullable', 'boolean'],
-            'layout'        => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
-            'intro_heading' => ['nullable', 'string', 'max:200'],
-            'intro_text'    => ['nullable', 'string', 'max:2000'],
+            'title'            => ['required', 'string', 'max:150'],
+            'title_en'         => ['nullable', 'string', 'max:150'],
+            'description'      => ['nullable', 'string', 'max:500'],
+            'description_en'   => ['nullable', 'string', 'max:500'],
+            'cover_image'      => ['nullable', 'image', 'max:4096'],
+            'is_visible'       => ['nullable', 'boolean'],
+            'layout'           => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
+            'intro_heading'    => ['nullable', 'string', 'max:200'],
+            'intro_text'       => ['nullable', 'string', 'max:2000'],
+            'intro_heading_en' => ['nullable', 'string', 'max:200'],
+            'intro_text_en'    => ['nullable', 'string', 'max:2000'],
         ]);
 
         $update = ['title' => $data['title']];
-        if ($request->has('description'))  $update['description'] = $data['description'] ?? null;
-        if ($request->has('layout'))       $update['layout']      = $data['layout'] ?? $page->layout;
-        if ($request->has('is_visible'))   $update['is_visible']  = $request->boolean('is_visible');
+        if ($request->has('title_en'))       $update['title_en']       = $data['title_en'] ?? null;
+        if ($request->has('description'))    $update['description']    = $data['description'] ?? null;
+        if ($request->has('description_en')) $update['description_en'] = $data['description_en'] ?? null;
+        if ($request->has('layout'))         $update['layout']         = $data['layout'] ?? $page->layout;
+        if ($request->has('is_visible'))     $update['is_visible']     = $request->boolean('is_visible');
         if ($request->hasFile('cover_image')) {
             $update['cover_image'] = $request->file('cover_image')->store('pages', 'public');
         }
@@ -187,7 +197,7 @@ class PageController extends Controller
         $page->update($update);
 
         // Intro-Blöcke nur updaten wenn die Felder gesendet wurden
-        if ($request->has('intro_heading') || $request->has('intro_text')) {
+        if ($request->has('intro_heading') || $request->has('intro_text') || $request->has('intro_heading_en') || $request->has('intro_text_en')) {
             $introEntry = $page->entries()->orderBy('sort_order')->first();
             if ($introEntry) {
                 if ($request->has('intro_heading')) {
@@ -204,6 +214,22 @@ class PageController extends Controller
                         $textBlock->update(['content' => $data['intro_text'] ?? '']);
                     } elseif (!empty($data['intro_text'])) {
                         $introEntry->blocks()->create(['type' => 'text', 'content' => $data['intro_text'], 'sort_order' => 1]);
+                    }
+                }
+                if ($request->has('intro_heading_en')) {
+                    $headingEnBlock = $introEntry->blocks()->where('type', 'heading_en')->first();
+                    if ($headingEnBlock) {
+                        $headingEnBlock->update(['content' => $data['intro_heading_en'] ?? '']);
+                    } elseif (!empty($data['intro_heading_en'])) {
+                        $introEntry->blocks()->create(['type' => 'heading_en', 'content' => $data['intro_heading_en'], 'sort_order' => 2]);
+                    }
+                }
+                if ($request->has('intro_text_en')) {
+                    $textEnBlock = $introEntry->blocks()->where('type', 'text_en')->first();
+                    if ($textEnBlock) {
+                        $textEnBlock->update(['content' => $data['intro_text_en'] ?? '']);
+                    } elseif (!empty($data['intro_text_en'])) {
+                        $introEntry->blocks()->create(['type' => 'text_en', 'content' => $data['intro_text_en'], 'sort_order' => 3]);
                     }
                 }
             }

@@ -257,55 +257,25 @@
   function initModalPageEdit(templateId) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
 
-    // ── Inline-Save für contenteditable [data-field] Elemente ────────────────
-    modalBody.querySelectorAll('[data-field]').forEach(el => {
+    // ── Enter-Taste in einzeiligen contenteditable-Feldern abfangen ──────────
+    modalBody.querySelectorAll('[data-field][contenteditable]').forEach(el => {
       const isMultiline = el.dataset.multiline === 'true';
-
       el.addEventListener('keydown', e => {
         if (e.key === 'Enter' && !isMultiline) { e.preventDefault(); el.blur(); }
       });
+    });
 
-      el.addEventListener('blur', async () => {
-        const text  = (el.innerText || el.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
-        const url   = el.dataset.url;
-        const field = el.dataset.field;
-        if (!url) return;
-
-        // Summary der zugehörigen page-group aktualisieren
-        if (field === 'title' && templateId) {
-          const trigger = document.querySelector(`[onclick*="${templateId}"]`);
-          const summary = trigger?.closest('details')?.querySelector('.page-group__summary');
-          const strong = summary?.querySelector('strong');
-          if (strong) strong.textContent = text;
-        }
-
-        const body = new FormData();
-        body.append('_method', 'PUT');
-        body.append('_token', csrfToken);
-        body.append(field, text);
-
-        // title ist required — immer mitsenden
-        if (field !== 'title') {
-          const titleEl = modalBody.querySelector('[data-field="title"]');
-          const titleVal = titleEl
-            ? (titleEl.value !== undefined ? titleEl.value : (titleEl.innerText || titleEl.textContent || '')).trim()
-            : '';
-          body.append('title', titleVal);
-        }
-
-        try {
-          const res = await fetch(url, { method: 'POST', body, headers: { 'Accept': 'application/json' } });
-          if (res.ok) {
-            el.classList.add('preview-editable--saved');
-            setTimeout(() => el.classList.remove('preview-editable--saved'), 1200);
-          } else {
-            el.classList.add('preview-editable--error');
-            setTimeout(() => el.classList.remove('preview-editable--error'), 2000);
-          }
-        } catch {
-          el.classList.add('preview-editable--error');
-          setTimeout(() => el.classList.remove('preview-editable--error'), 2000);
-        }
+    // ── Sprach-Toggle ─────────────────────────────────────────────────────────
+    modalBody.querySelectorAll('.lang-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        modalBody.querySelectorAll('.lang-toggle-btn').forEach(b =>
+          b.classList.toggle('lang-toggle-btn--active', b === btn)
+        );
+        // Nur Felder umschalten, nicht die Toggle-Buttons selbst
+        modalBody.querySelectorAll('[data-lang]:not(.lang-toggle-btn)').forEach(el => {
+          el.style.display = el.dataset.lang === lang ? '' : 'none';
+        });
       });
     });
 
@@ -341,74 +311,109 @@
       });
     }
 
-    // ── Settings: input/select/checkbox per change/blur speichern ───────────
+    // ── Settings: select/checkbox sofort speichern (Layout, Sichtbarkeit) ────
     const settings = modalBody.querySelector('.modal-page-settings');
     if (settings) {
       const settingsUrl = settings.dataset.url;
 
-      async function saveField(field, value, indicatorEl) {
-        // Pflichtfeld title immer mitsenden
-        const titleEl = modalBody.querySelector('[data-field="title"]');
-        const titleVal = titleEl
-          ? (titleEl.value !== undefined ? titleEl.value : (titleEl.innerText || titleEl.textContent || '')).trim()
-          : '';
-
+      async function saveSettingsField(field, value) {
+        const titleEl  = modalBody.querySelector('[data-field="title"]');
+        const titleVal = (titleEl?.innerText || titleEl?.textContent || '').trim();
         const body = new FormData();
         body.append('_method', 'PUT');
         body.append('_token', csrfToken);
-        if (field !== 'title') body.append('title', titleVal);
-        // nav_label_sync schreibt auf nav_label
-        body.append(field === 'nav_label_sync' ? 'nav_label' : field, value);
-
+        body.append('title', titleVal);
+        body.append(field, value);
         try {
-          const res = await fetch(settingsUrl, { method: 'POST', body, headers: { 'Accept': 'application/json' } });
-          if (indicatorEl) {
-            indicatorEl.classList.add(res.ok ? 'preview-editable--saved' : 'preview-editable--error');
-            setTimeout(() => {
-              indicatorEl.classList.remove('preview-editable--saved', 'preview-editable--error');
-            }, 1200);
-          }
+          await fetch(settingsUrl, { method: 'POST', body, headers: { 'Accept': 'application/json' } });
         } catch { /* silent */ }
       }
 
-      // <input type="text"> — blur speichert
-      settings.querySelectorAll('input[data-field]').forEach(input => {
-        if (input.type === 'checkbox') return;
+      // <input type="text"> — blur speichert (z.B. nav_label)
+      settings.querySelectorAll('input[type="text"][data-field], input:not([type])[data-field]').forEach(input => {
         input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
         input.addEventListener('blur', function () {
-          // Summary der zugehörigen page-group aktualisieren
-          if (templateId) {
-            const trigger = document.querySelector(`[onclick*="${templateId}"]`);
-            const summary = trigger?.closest('details')?.querySelector('.page-group__summary');
-            if (summary) {
-              if (this.dataset.field === 'title') {
-                const strong = summary.querySelector('strong');
-                if (strong) strong.textContent = this.value.trim();
-              } else if (this.dataset.field === 'nav_label') {
-                const meta = summary.querySelector('.page-group__meta');
-                if (meta) {
-                  const slug = meta.textContent.match(/\/\S+$/)?.[0] ?? '';
-                  meta.textContent = `Nav: \u201e${this.value.trim()}\u201c \u00a0\u00b7\u00a0 ${slug}`;
-                }
-              }
-            }
-          }
-          saveField(this.dataset.field, this.value.trim(), this);
+          saveSettingsField(this.dataset.field, this.value.trim());
         });
       });
 
-      // <select> — change speichert
       settings.querySelectorAll('select[data-field]').forEach(sel => {
         sel.addEventListener('change', function () {
-          saveField(this.dataset.field, this.value, this);
+          saveSettingsField(this.dataset.field, this.value);
         });
       });
 
-      // <input type="checkbox"> — change speichert
       settings.querySelectorAll('input[type="checkbox"][data-field]').forEach(cb => {
         cb.addEventListener('change', function () {
-          saveField(this.dataset.field, this.checked ? '1' : '0');
+          saveSettingsField(this.dataset.field, this.checked ? '1' : '0');
         });
+      });
+    }
+
+    // ── Speichern-Button: alle Felder (Inhalt + SEO) auf einmal senden ────────
+    const saveBar       = modalBody.querySelector('.modal-save-bar');
+    const saveBtn       = modalBody.querySelector('.modal-page-save-btn');
+    const saveIndicator = modalBody.querySelector('.modal-save-indicator');
+    if (saveBtn && saveBar) {
+      saveBtn.addEventListener('click', async () => {
+        const url = saveBar.dataset.url;
+
+        // ── Hauptfelder (contenteditable) ──
+        const body = new FormData();
+        body.append('_method', 'PUT');
+        body.append('_token', csrfToken);
+        modalBody.querySelectorAll('[data-field][contenteditable]').forEach(el => {
+          const val = (el.innerText || el.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
+          body.append(el.dataset.field, val);
+        });
+
+        // ── SEO-Felder mitsenden (falls vorhanden) ──
+        const seoForm   = modalBody.querySelector('[data-ajax-seo]');
+        const seoUrl    = seoForm?.action ?? null;
+        const seoTitle  = seoForm?.querySelector('[name="seo_title"]')?.value ?? null;
+        const seoDesc   = seoForm?.querySelector('[name="seo_description"]')?.value ?? null;
+
+        // Summary in der Listenansicht live aktualisieren
+        if (templateId) {
+          const titleEl = modalBody.querySelector('[data-field="title"]:not([style*="display:none"]):not([style*="display: none"])') ??
+                          modalBody.querySelector('[data-field="title"]');
+          const newTitle = (titleEl?.innerText || titleEl?.textContent || '').trim();
+          if (newTitle) {
+            const trigger = document.querySelector(`[onclick*="${templateId}"]`);
+            const strong  = trigger?.closest('tr')?.querySelector('td strong') ??
+                            trigger?.closest('details')?.querySelector('.page-group__summary strong');
+            if (strong) strong.textContent = newTitle;
+          }
+        }
+
+        const showIndicator = (ok) => {
+          if (!saveIndicator) return;
+          saveIndicator.textContent = ok ? '✓ Gespeichert' : '✗ Fehler';
+          saveIndicator.className   = 'modal-save-indicator modal-save-indicator--' + (ok ? 'ok' : 'error');
+          setTimeout(() => {
+            saveIndicator.textContent = '';
+            saveIndicator.className   = 'modal-save-indicator';
+          }, 2000);
+        };
+
+        try {
+          const res = await fetch(url, { method: 'POST', body, headers: { 'Accept': 'application/json' } });
+
+          // SEO parallel speichern wenn vorhanden
+          if (seoUrl && (seoTitle !== null || seoDesc !== null)) {
+            const seoBody = new FormData();
+            seoBody.append('_method', 'PUT');
+            seoBody.append('_token', csrfToken);
+            if (seoTitle !== null) seoBody.append('seo_title', seoTitle);
+            if (seoDesc  !== null) seoBody.append('seo_description', seoDesc);
+            fetch(seoUrl, { method: 'POST', body: seoBody, headers: { 'Accept': 'application/json' } })
+              .catch(() => {});
+          }
+
+          showIndicator(res.ok);
+        } catch {
+          showIndicator(false);
+        }
       });
     }
   }

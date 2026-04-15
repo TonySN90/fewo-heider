@@ -242,11 +242,19 @@
                     {{-- Modal: Kategorie bearbeiten --}}
                     <template id="edit-page-tpl-{{ $page->id }}">
                       @php
-                        $introEntry   = $page->entries->first();
-                        $introHeading = $introEntry?->blocks->firstWhere('type', 'heading')?->content ?? '';
-                        $introText    = $introEntry?->blocks->firstWhere('type', 'text')?->content ?? '';
-                        $updateUrl    = route('admin.pages.update', $page);
+                        $introEntry      = $page->entries->first();
+                        $introHeading    = $introEntry?->blocks->firstWhere('type', 'heading')?->content ?? '';
+                        $introText       = $introEntry?->blocks->firstWhere('type', 'text')?->content ?? '';
+                        $introHeadingEn  = $introEntry?->blocks->firstWhere('type', 'heading_en')?->content ?? '';
+                        $introTextEn     = $introEntry?->blocks->firstWhere('type', 'text_en')?->content ?? '';
+                        $updateUrl       = route('admin.pages.update', $page);
                       @endphp
+
+                      {{-- ── Sprach-Toggle ── --}}
+                      <div class="modal-lang-toggle">
+                        <button type="button" class="lang-toggle-btn lang-toggle-btn--active" data-lang="de">DE</button>
+                        <button type="button" class="lang-toggle-btn" data-lang="en">EN</button>
+                      </div>
 
                       {{-- ── Hero: direkt editierbar ── --}}
                       <div class="modal-page-hero"
@@ -260,12 +268,25 @@
                           <h2 class="modal-page-hero__title"
                               contenteditable="true"
                               data-field="title"
-                              data-url="{{ $updateUrl }}">{{ $page->title }}</h2>
+                              data-lang="de"
+                              data-placeholder="Titel eingeben …">{{ $page->title }}</h2>
+                          <h2 class="modal-page-hero__title"
+                              contenteditable="true"
+                              data-field="title_en"
+                              data-lang="en"
+                              style="display:none"
+                              data-placeholder="Enter title …">{{ $page->title_en }}</h2>
                           <p class="modal-page-hero__desc"
                              contenteditable="true"
                              data-field="description"
-                             data-url="{{ $updateUrl }}"
+                             data-lang="de"
                              data-placeholder="Untertitel eingeben …">{{ $page->description }}</p>
+                          <p class="modal-page-hero__desc"
+                             contenteditable="true"
+                             data-field="description_en"
+                             data-lang="en"
+                             style="display:none"
+                             data-placeholder="Enter subtitle …">{{ $page->description_en }}</p>
                         </div>
                         <input type="file" class="modal-page-hero__upload" accept="image/*"
                                style="display:none" data-url="{{ $updateUrl }}" />
@@ -277,15 +298,28 @@
                         <h3 class="modal-intro-preview__heading"
                             contenteditable="true"
                             data-field="intro_heading"
-                            data-url="{{ $updateUrl }}"
+                            data-lang="de"
                             data-placeholder="Überschrift eingeben …">{{ $introHeading }}</h3>
+                        <h3 class="modal-intro-preview__heading"
+                            contenteditable="true"
+                            data-field="intro_heading_en"
+                            data-lang="en"
+                            style="display:none"
+                            data-placeholder="Enter heading …">{{ $introHeadingEn }}</h3>
                         <div class="modal-intro-preview__divider"></div>
                         <p class="modal-intro-preview__text"
                            contenteditable="true"
                            data-field="intro_text"
+                           data-lang="de"
                            data-multiline="true"
-                           data-url="{{ $updateUrl }}"
                            data-placeholder="Einleitungstext eingeben …">{{ $introText }}</p>
+                        <p class="modal-intro-preview__text"
+                           contenteditable="true"
+                           data-field="intro_text_en"
+                           data-lang="en"
+                           data-multiline="true"
+                           style="display:none"
+                           data-placeholder="Enter intro text …">{{ $introTextEn }}</p>
                       </div>
 
                       {{-- ── Einstellungen (AJAX on change) ── --}}
@@ -313,12 +347,11 @@
                       </div>
 
                       {{-- ── SEO ── --}}
-                      <form method="POST"
+                      <form class="modal-seo-section" method="POST"
                             action="{{ route('admin.pages.seo.update', $page) }}"
-                            style="padding:0 1.5rem 1.5rem"
                             data-ajax-seo>
                         @csrf @method('PUT')
-                        <div class="modal-page-settings__label" style="font-size:.75rem;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">SEO (optional)</div>
+                        <p class="modal-seo-section__label">SEO <span>(optional)</span></p>
                         <div class="modal-form-grid">
                           <div class="modal-form-grid__full">
                             <label>SEO-Titel <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(leer = Seitenname, max. 70 Zeichen)</span></label>
@@ -333,10 +366,13 @@
                                       placeholder="{{ $page->description ?? '' }}">{{ $page->seo?->description ?? '' }}</textarea>
                           </div>
                         </div>
-                        <div style="margin-top:.75rem">
-                          <button type="submit" class="btn btn-save btn--sm">SEO speichern</button>
-                        </div>
                       </form>
+
+                      {{-- ── Speichern-Button ── --}}
+                      <div class="modal-save-bar" data-url="{{ $updateUrl }}">
+                        <span class="modal-save-indicator"></span>
+                        <button type="button" class="btn btn-save modal-page-save-btn">Speichern</button>
+                      </div>
                     </template>
 
                     {{-- Modal: Kategorie löschen --}}
@@ -362,30 +398,47 @@
         <template id="edit-group-tpl-{{ $group->id }}">
           @php $groupUpdateUrl = route('admin.pages.groups.update', $group); @endphp
 
-          {{-- ── Hero: nav_label + description direkt editierbar ── --}}
-          <div class="modal-page-hero"
-               data-url="{{ $groupUpdateUrl }}">
+          {{-- ── Sprach-Toggle ── --}}
+          <div class="modal-lang-toggle">
+            <button type="button" class="lang-toggle-btn lang-toggle-btn--active" data-lang="de">DE</button>
+            <button type="button" class="lang-toggle-btn" data-lang="en">EN</button>
+          </div>
+
+          {{-- ── Hero: Titel + Beschreibung direkt editierbar ── --}}
+          <div class="modal-page-hero">
             <div class="modal-page-hero__overlay"></div>
             <div class="modal-page-hero__content">
               <h2 class="modal-page-hero__title"
                   contenteditable="true"
                   data-field="title"
-                  data-url="{{ $groupUpdateUrl }}">{{ $group->title }}</h2>
+                  data-lang="de"
+                  data-placeholder="Titel eingeben …">{{ $group->title }}</h2>
+              <h2 class="modal-page-hero__title"
+                  contenteditable="true"
+                  data-field="title_en"
+                  data-lang="en"
+                  style="display:none"
+                  data-placeholder="Enter title …">{{ $group->title_en }}</h2>
               <p class="modal-page-hero__desc"
                  contenteditable="true"
                  data-field="description"
-                 data-url="{{ $groupUpdateUrl }}"
+                 data-lang="de"
                  data-placeholder="Untertitel eingeben …">{{ $group->description }}</p>
+              <p class="modal-page-hero__desc"
+                 contenteditable="true"
+                 data-field="description_en"
+                 data-lang="en"
+                 style="display:none"
+                 data-placeholder="Enter subtitle …">{{ $group->description_en }}</p>
             </div>
           </div>
 
-          {{-- ── Einstellungen ── --}}
+          {{-- ── Einstellungen (sofort gespeichert) ── --}}
           <div class="modal-page-settings" data-url="{{ $groupUpdateUrl }}">
             <div class="modal-page-settings__group">
               <label>Navigation</label>
               <input type="text"
                      data-field="nav_label"
-                     data-url="{{ $groupUpdateUrl }}"
                      value="{{ $group->nav_label }}"
                      maxlength="150"
                      placeholder="Navigationsbezeichnung" />
@@ -403,30 +456,30 @@
           </div>
 
           {{-- ── SEO ── --}}
-          <form method="POST"
-                action="{{ route('admin.pages.groups.seo.update', $group) }}"
-                style="padding:0 1.5rem 1.5rem"
-                data-ajax-seo>
+          <form class="modal-seo-section" data-ajax-seo
+                action="{{ route('admin.pages.groups.seo.update', $group) }}">
             @csrf @method('PUT')
-            <div class="modal-page-settings__label" style="font-size:.75rem;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">SEO (optional)</div>
             <div class="modal-form-grid">
               <div class="modal-form-grid__full">
-                <label>SEO-Titel <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(leer = Seitenname, max. 70 Zeichen)</span></label>
+                <label>SEO-Titel <span class="form-field__hint">(leer = Seitenname, max. 70 Zeichen)</span></label>
                 <input type="text" name="seo_title"
                        value="{{ $group->seo?->title ?? '' }}"
                        maxlength="70"
                        placeholder="{{ $group->title }}" />
               </div>
               <div class="modal-form-grid__full">
-                <label>SEO-Beschreibung <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(max. 160 Zeichen)</span></label>
+                <label>SEO-Beschreibung <span class="form-field__hint">(max. 160 Zeichen)</span></label>
                 <textarea name="seo_description" rows="2" maxlength="160"
                           placeholder="{{ $group->description ?? '' }}">{{ $group->seo?->description ?? '' }}</textarea>
               </div>
             </div>
-            <div style="margin-top:.75rem">
-              <button type="submit" class="btn btn-save btn--sm">SEO speichern</button>
-            </div>
           </form>
+
+          {{-- ── Speichern-Button ── --}}
+          <div class="modal-save-bar" data-url="{{ $groupUpdateUrl }}">
+            <span class="modal-save-indicator"></span>
+            <button type="button" class="btn btn-save modal-page-save-btn">Speichern</button>
+          </div>
         </template>
 
         {{-- Modal: Gruppe löschen --}}

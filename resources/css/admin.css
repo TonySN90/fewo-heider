@@ -831,7 +831,7 @@ tr:last-child td {
   color: #263238;
 }
 .modal__body {
-  padding: 1.75rem;
+  padding: 0;
 }
 .modal__actions {
   display: flex;
@@ -925,10 +925,76 @@ tr:last-child td {
   line-height: 1.4;
 }
 
+.modal-save-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  background: #ffffff;
+  border-top: 1px solid #e8f0ed;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+}
+
+.modal-save-indicator {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #3d7a6e;
+}
+.modal-save-indicator--ok {
+  color: #3d7a6e;
+}
+.modal-save-indicator--error {
+  color: #e53935;
+}
+
+.modal-lang-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5rem 1.25rem;
+  background: #f4f7f6;
+  border-bottom: 1px solid #e2ece8;
+}
+
+.lang-toggle-btn {
+  padding: 0.28rem 0.85rem;
+  border: 1.5px solid #c9d9d5;
+  background: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: #7a9a94;
+  cursor: pointer;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.lang-toggle-btn:first-child {
+  border-radius: 4px 0 0 4px;
+  border-right: none;
+}
+.lang-toggle-btn:last-child {
+  border-radius: 0 4px 4px 0;
+}
+.lang-toggle-btn--active {
+  background: #3d7a6e;
+  border-color: #3d7a6e;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 1px 3px rgba(61, 122, 110, 0.35);
+}
+.lang-toggle-btn:hover:not(.lang-toggle-btn--active) {
+  border-color: #3d7a6e;
+  color: #3d7a6e;
+  background: #f0f8f6;
+}
+
 .modal-page-hero {
   position: relative;
   height: 200px;
-  margin-bottom: 1.25rem;
   border-radius: 6px;
   overflow: hidden;
   background: linear-gradient(135deg, #2e4a3e 0%, #3d7a6e 100%);
@@ -1033,14 +1099,32 @@ tr:last-child td {
   outline-color: #e53935 !important;
 }
 
+.modal-seo-section {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #e8f0ed;
+  background: #f8faf9;
+}
+.modal-seo-section__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #aaa;
+  margin-bottom: 0.75rem;
+}
+.modal-seo-section__label span {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
 .modal-page-settings {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
-  padding: 1rem 0;
-  border-top: 1px solid #f0f0f0;
-  margin-top: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e8f0ed;
 }
 .modal-page-settings__group {
   display: flex;
