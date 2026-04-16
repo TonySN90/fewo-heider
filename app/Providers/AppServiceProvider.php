@@ -23,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('layouts.admin', AdminLayoutComposer::class);
-        View::composer('partials.header', HeaderComposer::class);
+        View::composer('*', HeaderComposer::class);
     }
 }

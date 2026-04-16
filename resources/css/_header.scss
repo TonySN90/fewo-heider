@@ -89,46 +89,50 @@
   }
 }
 
-// Navigation
+// Navigation – immer als Sidebar (kein Desktop-Inline-Modus)
 .header__nav {
-  ul {
-    display: flex;
-    align-items: center;
-    gap: $space-6;
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: min(320px, 85vw);
+  height: 100vh;
+  background-color: var(--color-bg);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
+  padding: 100px $space-8 $space-8;
+  transition: right $transition-normal;
+  overflow-y: auto;
+  z-index: 1000;
 
-    @include respond-to('lg') {
-      gap: $space-4;
-    }
+  &.open {
+    right: 0;
   }
 
-  a {
-    font-size: $font-size-sm;
+  ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  li {
+    width: 100%;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  a:not(.nav__cta) {
+    display: block;
+    color: var(--color-dark) !important;
+    padding: $space-4 0;
+    font-size: $font-size-base;
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.9);
-    transition: color $transition-fast;
-    padding: $space-2 0;
-    position: relative;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--color-secondary);
-      transition: width $transition-normal;
-    }
+    transition: color $transition-fast, padding-left $transition-fast;
 
     &:hover,
     &.active {
-      color: var(--color-secondary);
-
-      &::after {
-        width: 100%;
-      }
+      color: var(--color-primary) !important;
+      padding-left: $space-3;
     }
 
     &:focus-visible {
@@ -145,7 +149,9 @@
     color: $color-white !important;
     border-color: var(--color-primary);
     font-size: $font-size-sm;
-    padding: $space-2 $space-5;
+    margin-top: $space-6;
+    width: 100%;
+    justify-content: center;
     box-shadow: $shadow-btn;
 
     &::after {
@@ -331,7 +337,7 @@
 
 // Hamburger
 .header__hamburger {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 28px;
@@ -342,10 +348,6 @@
   cursor: pointer;
   flex-shrink: 0;
   z-index: 1001;
-
-  @include respond-to('nav') {
-    display: flex;
-  }
 
   span {
     display: block;
@@ -384,58 +386,6 @@
   }
 }
 
-// Mobile Nav
-@include respond-to('nav') {
-  .header__nav {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: min(320px, 85vw);
-    height: 100vh;
-    background-color: var(--color-bg);
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
-    padding: 100px $space-8 $space-8;
-    transition: right $transition-normal;
-    overflow-y: auto;
-
-    &.open {
-      right: 0;
-    }
-
-    ul {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0;
-    }
-
-    li {
-      width: 100%;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    a:not(.nav__cta) {
-      display: block;
-      color: var(--color-dark) !important;
-      padding: $space-4 0;
-      font-size: $font-size-base;
-
-      &::after {
-        display: none;
-      }
-
-      &:hover {
-        color: var(--color-primary) !important;
-        padding-left: $space-3;
-      }
-    }
-
-    .nav__cta {
-      margin-top: $space-6;
-      width: 100%;
-      justify-content: center;
-    }
-  }
-}
 
 // ── Barrierefreiheits-Dropdown ─────────────────────────────
 .header__a11y {

@@ -1,10 +1,27 @@
 @extends('layouts.pages')
 
 @push('header-nav-links')
-  <li><a href="{{ url('/') }}">Startseite</a></li>
-  <li><a href="{{ url('/#preise') }}">Preise</a></li>
-  <li><a href="{{ url('/' . $group->slug) }}" class="active">{{ $group->nav_label }}</a></li>
-  <li><a href="{{ url('/#kontakt') }}" class="nav__cta">{{ ui_labels()['nav_contact'] }}</a></li>
+  @php
+    $ui = ui_labels();
+    $navLabels = [
+      'about'     => ['href' => url('/#about'),     'label' => $ui['nav_about']],
+      'amenities' => ['href' => url('/#amenities'), 'label' => $ui['nav_amenities']],
+      'gallery'   => ['href' => url('/#gallery'),   'label' => $ui['nav_gallery']],
+      'pricing'   => ['href' => url('/#pricing'),   'label' => $ui['nav_pricing']],
+      'arrival'   => ['href' => url('/#arrival'),   'label' => $ui['nav_arrival']],
+    ];
+  @endphp
+  @foreach ($orderedSections as $sec)
+    @if (isset($navLabels[$sec->section_key]))
+      <li><a href="{{ $navLabels[$sec->section_key]['href'] }}">{{ $navLabels[$sec->section_key]['label'] }}</a></li>
+    @endif
+  @endforeach
+  @foreach ($pageGroups as $pg)
+    <li><a href="{{ url('/' . $pg->slug) }}" {{ $pg->slug === $group->slug ? 'class=active' : '' }}>{{ $pg->nav_label }}</a></li>
+  @endforeach
+  @if (in_array('contact', $visibleSections))
+    <li><a href="{{ url('/#kontakt') }}" class="nav__cta">{{ $ui['nav_contact'] }}</a></li>
+  @endif
 @endpush
 
 @section('content')

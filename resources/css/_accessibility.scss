@@ -78,6 +78,19 @@
     }
   }
 
+  // ── Page-Header (Unterseiten) – dunkel mit weißem Text ────
+  .page-header {
+    background: #000000 !important;
+
+    h1, p, a {
+      color: #ffffff !important;
+    }
+
+    .page-header__eyebrow {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+  }
+
   // ── Amenity-Icons & Highlight-Card-Icons ──────────────────
   .amenity-item__icon,
   .highlight-card__icon .material-symbols-rounded {
