@@ -233,7 +233,7 @@
             };
           @endphp
           <div class="route__diff-edit">
-            <select id="route-diff">
+            <select id="route-diff" class="route-diff-select route-diff-select--{{ $diffClass }}">
               <option value="leicht"  @selected($routeDiff === 'leicht')>leicht</option>
               <option value="moderat" @selected($routeDiff === 'moderat')>moderat</option>
               <option value="schwer"  @selected($routeDiff === 'schwer')>schwer</option>
@@ -681,6 +681,13 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => el.classList.remove('preview-editable--error'), 2000);
       }
     });
+  });
+
+  // ── Route: Diff-Select live einfärben ───────────────────────────────────────
+  const routeDiffSelect = document.getElementById('route-diff');
+  const diffClassMap = { leicht: 'diff--easy', moderat: 'diff--medium', schwer: 'diff--hard' };
+  routeDiffSelect?.addEventListener('change', () => {
+    routeDiffSelect.className = `route-diff-select route-diff-select--${diffClassMap[routeDiffSelect.value] ?? 'diff--easy'}`;
   });
 
   // ── Route: Enter-Taste auf einzeiligen contenteditable-Elementen ────────────

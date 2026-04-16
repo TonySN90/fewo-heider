@@ -1679,7 +1679,7 @@ tr.row--drop-after td {
 .entry-preview .route--edit .route__diff-edit {
   margin-top: 0.75rem;
 }
-.entry-preview .route--edit .route__diff-edit select {
+.entry-preview .route--edit .route__diff-edit .route-diff-select {
   width: auto;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1687,12 +1687,27 @@ tr.row--drop-after td {
   letter-spacing: 0.05em;
   padding: 0.2rem 0.65rem;
   border-radius: 50px;
-  border: 1px solid #cfe0d8;
-  background: var(--color-bg-alt, #f5f5f3);
+  border: 1px solid transparent;
   cursor: pointer;
+  transition: background 0.2s, color 0.2s;
 }
-.entry-preview .route--edit .route__diff-edit select:focus {
+.entry-preview .route--edit .route__diff-edit .route-diff-select:focus {
   outline: 2px solid #3d7a6e;
+}
+.entry-preview .route--edit .route__diff-edit .route-diff-select--diff--easy {
+  background: rgba(106, 177, 135, 0.15);
+  color: #2a6644;
+  border-color: rgba(106, 177, 135, 0.3);
+}
+.entry-preview .route--edit .route__diff-edit .route-diff-select--diff--medium {
+  background: rgba(201, 168, 76, 0.15);
+  color: #7a5e18;
+  border-color: rgba(201, 168, 76, 0.3);
+}
+.entry-preview .route--edit .route__diff-edit .route-diff-select--diff--hard {
+  background: rgba(200, 80, 60, 0.12);
+  color: #7a2010;
+  border-color: rgba(200, 80, 60, 0.25);
 }
 .entry-preview .route-edit-actions {
   display: flex;
