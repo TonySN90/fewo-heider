@@ -28,5 +28,11 @@
 @endsection
 
 @section('footer')
-  <p>© {{ date('Y') }} Musterferienwohnung &nbsp;|&nbsp; <a href="{{ url('/datenschutz') }}">Datenschutz</a></p>
+  <div class="footer__bottom-inner">
+    <p>© {{ date('Y') }} Ferienwohnung Heider</p>
+    <nav class="footer__legal">
+      <a href="{{ url('/impressum') }}">Impressum</a>
+      <a href="{{ url('/datenschutz') }}">Datenschutz</a>
+    </nav>
+  </div>
 @endsection

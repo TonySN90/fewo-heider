@@ -1602,6 +1602,130 @@ tr.row--drop-after td {
   display: flex;
   gap: 0.5rem;
 }
+.entry-preview .route--edit {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: auto auto;
+  gap: 1rem;
+  align-items: start;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #cfe0d8;
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+.entry-preview .route__img {
+  grid-row: 1/3;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: 6px;
+  position: relative;
+  background: #f0f0ee;
+}
+.entry-preview .route__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.entry-preview .route__img--clickable {
+  cursor: pointer;
+}
+.entry-preview .route__img--clickable .card__img-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  color: #fff;
+}
+.entry-preview .route__img--clickable .card__img-overlay .material-symbols-rounded {
+  font-size: 2rem;
+}
+.entry-preview .route__img--clickable:hover .card__img-overlay {
+  opacity: 1;
+}
+.entry-preview .route__body .route-edit-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.entry-preview .route__body .route-edit-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: #6b8088;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.entry-preview .route__body .route-edit-fields label input[type=text],
+.entry-preview .route__body .route-edit-fields label textarea {
+  font-size: 1rem;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  color: #263238;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cfe0d8;
+  border-radius: 6px;
+  background: #ffffff;
+  resize: vertical;
+}
+.entry-preview .route__body .route-edit-fields label input[type=text]:focus,
+.entry-preview .route__body .route-edit-fields label textarea:focus {
+  outline: 2px solid #3d7a6e;
+  border-color: #3d7a6e;
+}
+.entry-preview .route__body .route-edit-fields label #route-desc {
+  height: 180px;
+}
+.entry-preview .route__stats-edit {
+  padding-top: 1rem;
+  border-top: 1px solid #cfe0d8;
+}
+.entry-preview .route__stats-edit .route-stats-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.entry-preview .route__stats-edit .route-stats-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: #6b8088;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.entry-preview .route__stats-edit .route-stats-fields label input[type=text],
+.entry-preview .route__stats-edit .route-stats-fields label select {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #263238;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #cfe0d8;
+  border-radius: 6px;
+  background: #ffffff;
+  min-width: 130px;
+}
+.entry-preview .route__stats-edit .route-stats-fields label input[type=text]:focus,
+.entry-preview .route__stats-edit .route-stats-fields label select:focus {
+  outline: 2px solid #3d7a6e;
+  border-color: #3d7a6e;
+}
+.entry-preview .route__stats-edit .btn-save--saved {
+  background: #4caf50;
+}
 .entry-preview .preview-editable {
   border-radius: 3px;
   outline: 2px solid transparent;

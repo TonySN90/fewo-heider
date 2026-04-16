@@ -168,6 +168,119 @@
   </div>
   @endif
 
+  {{-- Route-Vorschau mit Inline-Editing (nur bei route-Layout) --}}
+  @if ($page->layout === 'route')
+  @php
+    $routeTextBlocks = $entry->blocks->where('type', 'text')->values();
+    $routeDescBlock  = $routeTextBlocks->first();
+    $routeStatsBlock = $routeTextBlocks->skip(1)->first();
+    $routeLength = ''; $routeDiff = ''; $routeDuration = '';
+    if ($routeStatsBlock) {
+      foreach (array_map('trim', explode('·', $routeStatsBlock->content)) as $part) {
+        if (str_contains(strtolower($part), 'schwierigkeit')) {
+          $routeDiff = trim(explode(':', $part, 2)[1] ?? '');
+        } elseif (str_contains(strtolower($part), 'nge') || str_contains(strtolower($part), 'gesamtl')) {
+          $routeLength = trim(explode(':', $part, 2)[1] ?? '');
+        } elseif (str_contains(strtolower($part), 'dauer')) {
+          $routeDuration = trim(explode(':', $part, 2)[1] ?? '');
+        }
+      }
+    }
+  @endphp
+  <div class="alert alert--cards">
+    <span class="material-symbols-rounded alert__icon--cards">route</span>
+    <div>
+      <strong>Route bearbeiten</strong>
+      <ul class="alert__list">
+        <li><b>Titel</b> — direkt in der Vorschau anklicken</li>
+        <li><b>Beschreibung</b> — direkt in der Vorschau anklicken</li>
+        <li><b>Streckendaten</b> — Felder ausfüllen und speichern</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="table-card" style="margin-top:1.5rem">
+    <div class="table-card__header">
+      <h2>Vorschau</h2>
+      <span style="font-size:.8rem;color:#aaa">
+        <span class="material-symbols-rounded" style="font-size:.9rem;vertical-align:middle">edit</span>
+        Klicke direkt in die Vorschau zum Bearbeiten
+      </span>
+    </div>
+    <div class="entry-preview">
+      <div class="route route--edit">
+
+        {{-- Bild-Upload --}}
+        <div class="route__img route__img--clickable" id="preview-img-wrap"
+             onclick="document.getElementById('preview-img-upload').click()"
+             title="Klicken um Bild zu ändern">
+          @if ($entry->cover_image)
+            <img id="preview-img" src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" />
+          @else
+            <div id="preview-img-placeholder" class="card__img-placeholder">
+              <span class="material-symbols-rounded">add_photo_alternate</span>
+              <span>Bild hochladen</span>
+            </div>
+          @endif
+          <div class="card__img-overlay">
+            <span class="material-symbols-rounded">photo_camera</span>
+          </div>
+        </div>
+        <input type="file" id="preview-img-upload"
+               accept="image/*" style="display:none"
+               data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}" />
+
+        <div class="route__body">
+          {{-- Alle Felder als klassisches Formular --}}
+          <div class="route-edit-fields">
+            <label>
+              <span>Titel</span>
+              <input type="text" id="route-title" value="{{ $entry->title }}" maxlength="200" />
+            </label>
+            <label>
+              <span>Beschreibung</span>
+              <textarea id="route-desc" rows="4">{{ $routeDescBlock?->content }}</textarea>
+            </label>
+          </div>
+        </div>
+
+        {{-- Streckendaten + Speichern --}}
+        <div class="route__stats-edit">
+          <div class="route-stats-fields">
+            <label>
+              <span>Gesamtlänge</span>
+              <input type="text" id="route-length" value="{{ $routeLength }}" placeholder="z.B. 38 km" />
+            </label>
+            <label>
+              <span>Schwierigkeit</span>
+              <select id="route-diff">
+                <option value="leicht"  @selected($routeDiff === 'leicht')>leicht</option>
+                <option value="moderat" @selected($routeDiff === 'moderat')>moderat</option>
+                <option value="schwer"  @selected($routeDiff === 'schwer')>schwer</option>
+              </select>
+            </label>
+            <label>
+              <span>Dauer</span>
+              <input type="text" id="route-duration" value="{{ $routeDuration }}" placeholder="z.B. 3–4 Stunden" />
+            </label>
+          </div>
+          <button type="button" id="route-stats-save" class="btn btn-save"
+                  data-entry-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}"
+                  data-desc-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                  data-desc-update-url="{{ $routeDescBlock ? route('admin.pages.blocks.update', [$page, $entry, $routeDescBlock]) : '' }}"
+                  data-desc-has-block="{{ $routeDescBlock ? '1' : '0' }}"
+                  data-stats-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                  data-stats-update-url="{{ $routeStatsBlock ? route('admin.pages.blocks.update', [$page, $entry, $routeStatsBlock]) : '' }}"
+                  data-stats-has-block="{{ $routeStatsBlock ? '1' : '0' }}">
+            Speichern
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  @endif
+
   {{-- SEO --}}
   <div class="table-card" style="margin-top:1.5rem">
     <div class="table-card__header"><h2>SEO</h2></div>
@@ -572,6 +685,89 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // ── Route: Alles auf einmal speichern ───────────────────────────────────────
+  const routeStatsBtn = document.getElementById('route-stats-save');
+  if (routeStatsBtn) {
+    routeStatsBtn.addEventListener('click', async () => {
+      const title    = document.getElementById('route-title')?.value.trim() ?? '';
+      const desc     = document.getElementById('route-desc')?.value.trim() ?? '';
+      const length   = document.getElementById('route-length')?.value.trim() ?? '';
+      const diff     = document.getElementById('route-diff')?.value ?? 'leicht';
+      const duration = document.getElementById('route-duration')?.value.trim() ?? '';
+
+      const parts = [];
+      if (length)   parts.push(`Gesamtlänge: ${length}`);
+      parts.push(`Schwierigkeit: ${diff}`);
+      if (duration) parts.push(`Dauer: ${duration}`);
+      const statsStr = parts.join(' · ');
+
+      routeStatsBtn.disabled = true;
+
+      async function saveBlock(hasBlock, updateUrl, storeUrl, content) {
+        const body = new FormData();
+        body.append('_token', csrfToken);
+        body.append('content', content);
+        if (hasBlock && updateUrl) {
+          body.append('_method', 'PUT');
+          return fetch(updateUrl, { method: 'POST', body });
+        } else {
+          body.append('type', 'text');
+          return fetch(storeUrl, { method: 'POST', body });
+        }
+      }
+
+      try {
+        // 1. Titel speichern
+        const titleBody = new FormData();
+        titleBody.append('_method', 'PUT');
+        titleBody.append('_token', csrfToken);
+        titleBody.append('title', title);
+        const r1 = await fetch(routeStatsBtn.dataset.entryUrl, { method: 'POST', body: titleBody });
+
+        // 2. Beschreibungsblock speichern
+        const r2 = await saveBlock(
+          routeStatsBtn.dataset.descHasBlock === '1',
+          routeStatsBtn.dataset.descUpdateUrl,
+          routeStatsBtn.dataset.descStoreUrl,
+          desc
+        );
+
+        // 3. Streckendaten-Block speichern
+        const r3 = await saveBlock(
+          routeStatsBtn.dataset.statsHasBlock === '1',
+          routeStatsBtn.dataset.statsUpdateUrl,
+          routeStatsBtn.dataset.statsStoreUrl,
+          statsStr
+        );
+
+        const allOk = r1.ok && r2.ok && r3.ok;
+        if (allOk) {
+          routeStatsBtn.textContent = 'Gespeichert ✓';
+          routeStatsBtn.classList.add('btn-save--saved');
+          // Seite neu laden wenn neue Blöcke erstellt wurden (damit Update-URLs gesetzt werden)
+          const needsReload = routeStatsBtn.dataset.descHasBlock === '0' || routeStatsBtn.dataset.statsHasBlock === '0';
+          setTimeout(() => {
+            if (needsReload) {
+              location.reload();
+            } else {
+              routeStatsBtn.textContent = 'Speichern';
+              routeStatsBtn.classList.remove('btn-save--saved');
+              routeStatsBtn.disabled = false;
+            }
+          }, 1200);
+        } else {
+          routeStatsBtn.textContent = 'Fehler – erneut versuchen';
+          routeStatsBtn.disabled = false;
+          setTimeout(() => { routeStatsBtn.textContent = 'Speichern'; }, 2000);
+        }
+      } catch {
+        routeStatsBtn.textContent = 'Fehler – erneut versuchen';
+        routeStatsBtn.disabled = false;
+        setTimeout(() => { routeStatsBtn.textContent = 'Speichern'; }, 2000);
+      }
+    });
+  }
 
 });
 </script>

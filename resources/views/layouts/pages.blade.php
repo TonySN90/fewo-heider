@@ -66,7 +66,7 @@
   @yield('content')
 </main>
 
-<footer>
+<footer class="footer__bottom">
   @yield('footer')
 </footer>
 

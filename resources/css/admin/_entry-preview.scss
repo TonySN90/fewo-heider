@@ -198,6 +198,133 @@
     }
   }
 
+  // ── Route-Layout Vorschau ─────────────────────────────────────────────────
+  .route--edit {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto auto;
+    gap: $space-4;
+    align-items: start;
+    margin: 0 auto;
+    background: $color-white;
+    border: 1px solid $color-border;
+    border-radius: $border-radius;
+    padding: $space-6;
+  }
+
+  .route__img {
+    grid-row: 1 / 3;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: $border-radius-sm;
+    position: relative;
+    background: #f0f0ee;
+
+    img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    &--clickable {
+      cursor: pointer;
+
+      .card__img-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity .2s;
+        color: #fff;
+        .material-symbols-rounded { font-size: 2rem; }
+      }
+
+      &:hover .card__img-overlay { opacity: 1; }
+    }
+  }
+
+  .route__body {
+    .route-edit-fields {
+      display: flex;
+      flex-direction: column;
+      gap: $space-4;
+
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: $space-1;
+        font-size: $font-size-sm;
+        color: $color-text-light;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+
+        input[type="text"],
+        textarea {
+          font-size: $font-size-base;
+          font-family: $font-body;
+          font-weight: 400;
+          color: $color-dark;
+          text-transform: none;
+          letter-spacing: 0;
+          padding: $space-2 $space-3;
+          border: 1px solid $color-border;
+          border-radius: $border-radius-sm;
+          background: $color-white;
+          resize: vertical;
+
+          &:focus { outline: 2px solid $color-primary; border-color: $color-primary; }
+        }
+
+        #route-desc {
+          height: 180px;
+        }
+      }
+    }
+  }
+
+  .route__stats-edit {
+    padding-top: $space-4;
+    border-top: 1px solid $color-border;
+
+    .route-stats-fields {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $space-4;
+      margin-bottom: $space-4;
+
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: $space-1;
+        font-size: $font-size-sm;
+        color: $color-text-light;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+
+        input[type="text"],
+        select {
+          font-size: $font-size-base;
+          font-weight: 400;
+          color: $color-dark;
+          text-transform: none;
+          letter-spacing: 0;
+          padding: $space-1 $space-2;
+          border: 1px solid $color-border;
+          border-radius: $border-radius-sm;
+          background: $color-white;
+          min-width: 130px;
+
+          &:focus { outline: 2px solid $color-primary; border-color: $color-primary; }
+        }
+      }
+    }
+
+    .btn-save--saved {
+      background: #4caf50;
+    }
+  }
+
   // Inline-editierbare Elemente
   .preview-editable {
     border-radius: 3px;
