@@ -358,6 +358,7 @@ class PageController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:200'],
             'cover_image' => ['nullable', 'image', 'max:4096'],
+            'image_position' => ['nullable', 'in:left,right'],
         ]);
 
         $coverPath = $entry->cover_image;
@@ -368,6 +369,7 @@ class PageController extends Controller
         $entry->update([
             'title' => $data['title'],
             'cover_image' => $coverPath,
+            'image_position' => $data['image_position'] ?? $entry->image_position,
         ]);
 
         return back()->with('success', 'Eintrag gespeichert.');

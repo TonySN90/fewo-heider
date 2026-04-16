@@ -14,7 +14,7 @@ class PageEntry extends Model
 {
     use HasSEO;
 
-    protected $fillable = ['page_id', 'title', 'slug', 'cover_image', 'sort_order'];
+    protected $fillable = ['page_id', 'title', 'slug', 'cover_image', 'image_position', 'sort_order'];
 
     protected static function booted(): void
     {

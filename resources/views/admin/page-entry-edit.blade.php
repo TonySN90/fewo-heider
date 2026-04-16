@@ -278,6 +278,100 @@
   </div>
   @endif
 
+  {{-- Place-List-Vorschau mit Inline-Editing --}}
+  @if ($page->layout === 'place-list')
+  @php
+    $placeTextBlocks = $entry->blocks->where('type', 'text')->values();
+    $placeDescBlock  = $placeTextBlocks->first();
+    $placeDistBlock  = $placeTextBlocks->count() > 1 ? $placeTextBlocks->last() : null;
+    $placeDist = '';
+    if ($placeDistBlock) {
+      preg_match('/Entfernung:\s*(.+)/i', $placeDistBlock->content, $m);
+      $placeDist = $m[1] ?? $placeDistBlock->content;
+    }
+  @endphp
+  <div class="alert alert--cards">
+    <span class="material-symbols-rounded alert__icon--cards">location_on</span>
+    <div>
+      <strong>Ort bearbeiten</strong>
+      <ul class="alert__list">
+        <li><b>Bild</b> — Klick auf das Vorschaubild</li>
+        <li><b>Titel &amp; Beschreibung</b> — direkt in der Vorschau anklicken</li>
+        <li><b>Entfernung</b> — direkt in der Vorschau anklicken</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="table-card" style="margin-top:1.5rem">
+    <div class="table-card__header">
+      <h2>Vorschau</h2>
+      <span style="font-size:.8rem;color:#aaa">
+        <span class="material-symbols-rounded" style="font-size:.9rem;vertical-align:middle">edit</span>
+        Klicke direkt in die Vorschau zum Bearbeiten
+      </span>
+    </div>
+    <div class="entry-preview entry-preview--place">
+
+      <div class="place place--edit">
+        <div class="place__img place__img--clickable" id="preview-img-wrap"
+             onclick="document.getElementById('preview-img-upload').click()"
+             title="Klicken um Bild zu ändern">
+          @if ($entry->cover_image)
+            <img id="preview-img" src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" />
+          @else
+            <div id="preview-img-placeholder" class="card__img-placeholder">
+              <span class="material-symbols-rounded">add_photo_alternate</span>
+              <span>Bild hochladen</span>
+            </div>
+          @endif
+          <div class="card__img-overlay">
+            <span class="material-symbols-rounded">photo_camera</span>
+          </div>
+        </div>
+        <input type="file" id="preview-img-upload" accept="image/*" style="display:none"
+               data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}" />
+
+        <div class="place__body">
+          <p class="place__dist">
+            <span class="material-symbols-rounded" style="font-size:.9rem">location_on</span>
+            <span contenteditable="true" id="place-dist">{{ $placeDist ?: '' }}</span>
+          </p>
+
+          <h2 class="place__title"
+              contenteditable="true"
+              id="place-title">{{ $entry->title }}</h2>
+
+          <p class="place__text"
+             contenteditable="true"
+             id="place-desc">{{ $placeDescBlock?->content ?? '' }}</p>
+        </div>
+      </div>
+
+      <div class="place-edit-actions">
+        <label class="place-img-position-label">
+          <span class="material-symbols-rounded" style="font-size:1rem;vertical-align:middle">swap_horiz</span>
+          Bildseite
+          <select id="place-img-position">
+            <option value="left"  @selected(($entry->image_position ?? 'left') === 'left')>Links</option>
+            <option value="right" @selected(($entry->image_position ?? 'left') === 'right')>Rechts</option>
+          </select>
+        </label>
+        <button type="button" id="place-save" class="btn btn-save"
+                data-entry-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}"
+                data-desc-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                data-desc-update-url="{{ $placeDescBlock ? route('admin.pages.blocks.update', [$page, $entry, $placeDescBlock]) : '' }}"
+                data-desc-has-block="{{ $placeDescBlock ? '1' : '0' }}"
+                data-dist-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                data-dist-update-url="{{ $placeDistBlock ? route('admin.pages.blocks.update', [$page, $entry, $placeDistBlock]) : '' }}"
+                data-dist-has-block="{{ $placeDistBlock ? '1' : '0' }}">
+          Speichern
+        </button>
+      </div>
+
+    </div>
+  </div>
+  @endif
+
   {{-- SEO --}}
   <div class="table-card" style="margin-top:1.5rem">
     <div class="table-card__header"><h2>SEO</h2></div>
@@ -682,6 +776,92 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // ── Place-List: Speichern ────────────────────────────────────────────────────
+  ['place-title', 'place-dist'].forEach(id => {
+    document.getElementById(id)?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); e.target.blur(); }
+    });
+  });
+
+  // ── Place: Bildseite live umschalten ─────────────────────────────────────────
+  const placeImgPos = document.getElementById('place-img-position');
+  const placeCard   = document.querySelector('.place--edit');
+  placeImgPos?.addEventListener('change', () => {
+    placeCard?.classList.toggle('place--img-right', placeImgPos.value === 'right');
+  });
+
+  const placeSaveBtn = document.getElementById('place-save');
+  if (placeSaveBtn) {
+    placeSaveBtn.addEventListener('click', async () => {
+      const title        = document.getElementById('place-title')?.innerText.trim() ?? '';
+      const desc         = document.getElementById('place-desc')?.innerText.trim() ?? '';
+      const dist         = document.getElementById('place-dist')?.innerText.trim() ?? '';
+      const imagePosition = document.getElementById('place-img-position')?.value ?? 'left';
+      const distStr = dist ? `Entfernung: ${dist}` : '';
+
+      placeSaveBtn.disabled = true;
+
+      async function savePlaceBlock(hasBlock, updateUrl, storeUrl, content) {
+        const body = new FormData();
+        body.append('_token', csrfToken);
+        body.append('content', content);
+        if (hasBlock && updateUrl) {
+          body.append('_method', 'PUT');
+          return fetch(updateUrl, { method: 'POST', body });
+        }
+        body.append('type', 'text');
+        return fetch(storeUrl, { method: 'POST', body });
+      }
+
+      try {
+        const titleBody = new FormData();
+        titleBody.append('_method', 'PUT');
+        titleBody.append('_token', csrfToken);
+        titleBody.append('title', title);
+        titleBody.append('image_position', imagePosition);
+        const r1 = await fetch(placeSaveBtn.dataset.entryUrl, { method: 'POST', body: titleBody });
+
+        const r2 = await savePlaceBlock(
+          placeSaveBtn.dataset.descHasBlock === '1',
+          placeSaveBtn.dataset.descUpdateUrl,
+          placeSaveBtn.dataset.descStoreUrl,
+          desc
+        );
+
+        const r3 = await savePlaceBlock(
+          placeSaveBtn.dataset.distHasBlock === '1',
+          placeSaveBtn.dataset.distUpdateUrl,
+          placeSaveBtn.dataset.distStoreUrl,
+          distStr
+        );
+
+        const allOk = r1.ok && r2.ok && r3.ok;
+        if (allOk) {
+          placeSaveBtn.textContent = 'Gespeichert ✓';
+          placeSaveBtn.classList.add('btn-save--saved');
+          const needsReload = placeSaveBtn.dataset.descHasBlock === '0' || placeSaveBtn.dataset.distHasBlock === '0';
+          setTimeout(() => {
+            if (needsReload) {
+              location.reload();
+            } else {
+              placeSaveBtn.textContent = 'Speichern';
+              placeSaveBtn.classList.remove('btn-save--saved');
+              placeSaveBtn.disabled = false;
+            }
+          }, 1200);
+        } else {
+          placeSaveBtn.textContent = 'Fehler – erneut versuchen';
+          placeSaveBtn.disabled = false;
+          setTimeout(() => { placeSaveBtn.textContent = 'Speichern'; }, 2000);
+        }
+      } catch {
+        placeSaveBtn.textContent = 'Fehler – erneut versuchen';
+        placeSaveBtn.disabled = false;
+        setTimeout(() => { placeSaveBtn.textContent = 'Speichern'; }, 2000);
+      }
+    });
+  }
 
   // ── Route: Diff-Select live einfärben ───────────────────────────────────────
   const routeDiffSelect = document.getElementById('route-diff');

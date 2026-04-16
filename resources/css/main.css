@@ -2986,20 +2986,20 @@ p:last-child {
   display: grid;
   grid-template-columns: 320px 1fr;
 }
-.place:nth-child(even) {
+.place--img-right {
   grid-template-columns: 1fr 320px;
 }
-.place:nth-child(even) .place__img {
+.place--img-right .place__img {
   order: 2;
 }
-.place:nth-child(even) .place__body {
+.place--img-right .place__body {
   order: 1;
 }
 @media (max-width: 800px) {
-  .place, .place:nth-child(even) {
+  .place, .place--img-right {
     grid-template-columns: 1fr;
   }
-  .place:nth-child(even) .place__img, .place:nth-child(even) .place__body {
+  .place--img-right .place__img, .place--img-right .place__body {
     order: unset;
   }
 }

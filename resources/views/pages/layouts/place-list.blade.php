@@ -27,7 +27,7 @@
               $dist = null;
           }
         @endphp
-        <div class="place">
+        <div class="place {{ $entry->image_position === 'right' ? 'place--img-right' : '' }}">
           @if ($entry->cover_image)
             <div class="place__img">
               <img src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" loading="lazy" />

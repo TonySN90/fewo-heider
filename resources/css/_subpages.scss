@@ -825,26 +825,21 @@ p {
   display: grid;
   grid-template-columns: 320px 1fr;
 
-  &:nth-child(even) {
+  &--img-right {
     grid-template-columns: 1fr 320px;
 
-    .place__img {
-      order: 2;
-    }
-
-    .place__body {
-      order: 1;
-    }
+    .place__img { order: 2; }
+    .place__body { order: 1; }
   }
 
   @media (max-width: 800px) {
     &,
-    &:nth-child(even) {
+    &--img-right {
       grid-template-columns: 1fr;
     }
 
-    &:nth-child(even) .place__img,
-    &:nth-child(even) .place__body {
+    &--img-right .place__img,
+    &--img-right .place__body {
       order: unset;
     }
   }
