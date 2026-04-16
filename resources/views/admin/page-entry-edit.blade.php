@@ -171,18 +171,24 @@
   {{-- Route-Vorschau mit Inline-Editing (nur bei route-Layout) --}}
   @if ($page->layout === 'route')
   @php
-    $routeTextBlocks = $entry->blocks->where('type', 'text')->values();
-    $routeDescBlock  = $routeTextBlocks->first();
-    $routeStatsBlock = $routeTextBlocks->skip(1)->first();
-    $routeLength = ''; $routeDiff = ''; $routeDuration = '';
+    $routeTextBlocks  = $entry->blocks->where('type', 'text')->values();
+    $routeDescBlock   = $routeTextBlocks->first();
+    $routeStatsBlock  = $routeTextBlocks->skip(1)->first();
+    $routeLengthVal   = ''; $routeLengthLabel   = 'Gesamtlänge';
+    $routeDiff        = 'leicht';
+    $routeDurationVal = ''; $routeDurationLabel = 'Dauer';
     if ($routeStatsBlock) {
       foreach (array_map('trim', explode('·', $routeStatsBlock->content)) as $part) {
-        if (str_contains(strtolower($part), 'schwierigkeit')) {
-          $routeDiff = trim(explode(':', $part, 2)[1] ?? '');
-        } elseif (str_contains(strtolower($part), 'nge') || str_contains(strtolower($part), 'gesamtl')) {
-          $routeLength = trim(explode(':', $part, 2)[1] ?? '');
-        } elseif (str_contains(strtolower($part), 'dauer')) {
-          $routeDuration = trim(explode(':', $part, 2)[1] ?? '');
+        if (!str_contains($part, ':')) continue;
+        [$lbl, $val] = array_map('trim', explode(':', $part, 2));
+        if (str_contains(strtolower($lbl), 'schwierigkeit')) {
+          $routeDiff = $val;
+        } elseif (str_contains(strtolower($lbl), 'nge') || str_contains(strtolower($lbl), 'gesamtl')) {
+          $routeLengthVal   = $val;
+          $routeLengthLabel = $lbl;
+        } else {
+          $routeDurationVal   = $val;
+          $routeDurationLabel = $lbl;
         }
       }
     }
@@ -192,9 +198,9 @@
     <div>
       <strong>Route bearbeiten</strong>
       <ul class="alert__list">
-        <li><b>Titel</b> — direkt in der Vorschau anklicken</li>
-        <li><b>Beschreibung</b> — direkt in der Vorschau anklicken</li>
-        <li><b>Streckendaten</b> — Felder ausfüllen und speichern</li>
+        <li><b>Titel &amp; Beschreibung</b> — direkt in der Vorschau anklicken</li>
+        <li><b>Länge &amp; Dauer</b> — Stat-Kacheln rechts anklicken</li>
+        <li><b>Schwierigkeit</b> — Dropdown unter der Beschreibung</li>
       </ul>
     </div>
   </div>
@@ -207,56 +213,67 @@
         Klicke direkt in die Vorschau zum Bearbeiten
       </span>
     </div>
-    <div class="entry-preview">
+    <div class="entry-preview entry-preview--route">
+
       <div class="route route--edit">
-
         <div class="route__body">
-          {{-- Alle Felder als klassisches Formular --}}
-          <div class="route-edit-fields">
-            <label>
-              <span>Titel</span>
-              <input type="text" id="route-title" value="{{ $entry->title }}" maxlength="200" />
-            </label>
-            <label>
-              <span>Beschreibung</span>
-              <textarea id="route-desc" rows="4">{{ $routeDescBlock?->content }}</textarea>
-            </label>
+          <h2 class="route__title"
+              contenteditable="true"
+              id="route-title">{{ $entry->title }}</h2>
+
+          <p class="route__text"
+             contenteditable="true"
+             id="route-desc">{{ $routeDescBlock?->content ?? '' }}</p>
+
+          @php
+            $diffClass = match($routeDiff) {
+              'moderat' => 'diff--medium',
+              'schwer'  => 'diff--hard',
+              default   => 'diff--easy',
+            };
+          @endphp
+          <div class="route__diff-edit">
+            <select id="route-diff">
+              <option value="leicht"  @selected($routeDiff === 'leicht')>leicht</option>
+              <option value="moderat" @selected($routeDiff === 'moderat')>moderat</option>
+              <option value="schwer"  @selected($routeDiff === 'schwer')>schwer</option>
+            </select>
           </div>
         </div>
 
-        {{-- Streckendaten + Speichern --}}
-        <div class="route__stats-edit">
-          <div class="route-stats-fields">
-            <label>
-              <span>Gesamtlänge</span>
-              <input type="text" id="route-length" value="{{ $routeLength }}" placeholder="z.B. 38 km" />
-            </label>
-            <label>
-              <span>Schwierigkeit</span>
-              <select id="route-diff">
-                <option value="leicht"  @selected($routeDiff === 'leicht')>leicht</option>
-                <option value="moderat" @selected($routeDiff === 'moderat')>moderat</option>
-                <option value="schwer"  @selected($routeDiff === 'schwer')>schwer</option>
-              </select>
-            </label>
-            <label>
-              <span>Dauer</span>
-              <input type="text" id="route-duration" value="{{ $routeDuration }}" placeholder="z.B. 3–4 Stunden" />
-            </label>
+        <div class="route__stats">
+          <div class="stat">
+            <p class="stat__value"
+               contenteditable="true"
+               id="route-length-val">{{ $routeLengthVal ?: '–' }}</p>
+            <p class="stat__label"
+               contenteditable="true"
+               id="route-length-label">{{ $routeLengthLabel }}</p>
           </div>
-          <button type="button" id="route-stats-save" class="btn btn-save"
-                  data-entry-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}"
-                  data-desc-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
-                  data-desc-update-url="{{ $routeDescBlock ? route('admin.pages.blocks.update', [$page, $entry, $routeDescBlock]) : '' }}"
-                  data-desc-has-block="{{ $routeDescBlock ? '1' : '0' }}"
-                  data-stats-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
-                  data-stats-update-url="{{ $routeStatsBlock ? route('admin.pages.blocks.update', [$page, $entry, $routeStatsBlock]) : '' }}"
-                  data-stats-has-block="{{ $routeStatsBlock ? '1' : '0' }}">
-            Speichern
-          </button>
+          <div class="stat">
+            <p class="stat__value"
+               contenteditable="true"
+               id="route-duration-val">{{ $routeDurationVal ?: '–' }}</p>
+            <p class="stat__label"
+               contenteditable="true"
+               id="route-duration-label">{{ $routeDurationLabel }}</p>
+          </div>
         </div>
-
       </div>
+
+      <div class="route-edit-actions">
+        <button type="button" id="route-stats-save" class="btn btn-save"
+                data-entry-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}"
+                data-desc-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                data-desc-update-url="{{ $routeDescBlock ? route('admin.pages.blocks.update', [$page, $entry, $routeDescBlock]) : '' }}"
+                data-desc-has-block="{{ $routeDescBlock ? '1' : '0' }}"
+                data-stats-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                data-stats-update-url="{{ $routeStatsBlock ? route('admin.pages.blocks.update', [$page, $entry, $routeStatsBlock]) : '' }}"
+                data-stats-has-block="{{ $routeStatsBlock ? '1' : '0' }}">
+          Speichern
+        </button>
+      </div>
+
     </div>
   </div>
   @endif
@@ -666,20 +683,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ── Route: Enter-Taste auf einzeiligen contenteditable-Elementen ────────────
+  ['route-title', 'route-length-val', 'route-length-label', 'route-duration-val', 'route-duration-label'].forEach(id => {
+    document.getElementById(id)?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); e.target.blur(); }
+    });
+  });
+
   // ── Route: Alles auf einmal speichern ───────────────────────────────────────
   const routeStatsBtn = document.getElementById('route-stats-save');
   if (routeStatsBtn) {
     routeStatsBtn.addEventListener('click', async () => {
-      const title    = document.getElementById('route-title')?.value.trim() ?? '';
-      const desc     = document.getElementById('route-desc')?.value.trim() ?? '';
-      const length   = document.getElementById('route-length')?.value.trim() ?? '';
-      const diff     = document.getElementById('route-diff')?.value ?? 'leicht';
-      const duration = document.getElementById('route-duration')?.value.trim() ?? '';
+      const title         = document.getElementById('route-title')?.innerText.trim() ?? '';
+      const desc          = document.getElementById('route-desc')?.innerText.trim() ?? '';
+      const lengthVal     = document.getElementById('route-length-val')?.innerText.trim() ?? '';
+      const lengthLabel   = document.getElementById('route-length-label')?.innerText.trim() || 'Gesamtlänge';
+      const diff          = document.getElementById('route-diff')?.value ?? 'leicht';
+      const durationVal   = document.getElementById('route-duration-val')?.innerText.trim() ?? '';
+      const durationLabel = document.getElementById('route-duration-label')?.innerText.trim() || 'Dauer';
 
       const parts = [];
-      if (length)   parts.push(`Gesamtlänge: ${length}`);
+      if (lengthVal)   parts.push(`${lengthLabel}: ${lengthVal}`);
       parts.push(`Schwierigkeit: ${diff}`);
-      if (duration) parts.push(`Dauer: ${duration}`);
+      if (durationVal) parts.push(`${durationLabel}: ${durationVal}`);
       const statsStr = parts.join(' · ');
 
       routeStatsBtn.disabled = true;
