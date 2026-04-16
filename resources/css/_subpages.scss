@@ -17,8 +17,8 @@ body {
   font-family: $font-body;
   font-size: $font-size-base;
   line-height: $line-height-loose;
-  color: $color-text;
-  background: $color-bg;
+  color: var(--color-text);
+  background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -33,7 +33,7 @@ img {
 }
 
 p {
-  color: $color-border;
+  color: var(--color-border);
 
   &:last-child {
     margin-bottom: 0;
@@ -68,7 +68,7 @@ p {
   line-height: $line-height-tight;
 
   span {
-    color: $color-secondary;
+    color: var(--color-secondary);
   }
 }
 
@@ -91,7 +91,7 @@ p {
 
     &:hover,
     &.active {
-      color: $color-secondary;
+      color: var(--color-secondary);
     }
   }
 }
@@ -136,7 +136,7 @@ p {
     right: -100%;
     width: min(320px, 85vw);
     height: 100vh;
-    background-color: $color-bg;
+    background-color: var(--color-bg);
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
     padding: 100px $space-8 $space-8;
     transition: right $transition-normal;
@@ -153,16 +153,16 @@ p {
 
     a {
       display: block;
-      color: $color-dark !important;
+      color: var(--color-dark) !important;
       padding: $space-4 0;
       font-size: $font-size-base;
-      border-bottom: 1px solid $color-border;
+      border-bottom: 1px solid var(--color-border);
       width: 100%;
       letter-spacing: 0.04em;
 
       &:hover,
       &.active {
-        color: $color-primary !important;
+        color: var(--color-primary) !important;
         padding-left: $space-3;
       }
     }
@@ -193,7 +193,7 @@ p {
     line-height: $line-height-tight;
 
     em {
-      color: $color-secondary;
+      color: var(--color-secondary);
       font-style: italic;
     }
   }
@@ -220,6 +220,10 @@ p {
   padding: 0 $container-pad;
   max-width: $max-width;
   margin: 0 auto;
+
+  p {
+    color: rgba(255, 255, 255, 0.85);
+  }
 }
 
 .breadcrumb {
@@ -235,7 +239,7 @@ p {
     transition: color $transition-fast;
 
     &:hover {
-      color: $color-secondary;
+      color: var(--color-secondary);
     }
   }
 }
@@ -263,12 +267,12 @@ p {
   h2 {
     font-family: $font-heading;
     font-size: $font-size-2xl;
-    color: $color-dark;
+    color: var(--color-dark);
     margin-bottom: $space-3;
   }
 
   p {
-    color: $color-text-light;
+    color: var(--color-text-light);
     font-size: 1.05rem;
   }
 }
@@ -276,7 +280,7 @@ p {
 .divider {
   width: 50px;
   height: 3px;
-  background: $color-primary;
+  background: var(--color-primary);
   border-radius: 2px;
   margin: 0 auto $space-6;
 }
@@ -290,6 +294,10 @@ p {
   color: $color-white;
   padding: $space-20 $container-pad;
   text-align: center;
+
+  p {
+    color: rgba(255, 255, 255, 0.8);
+  }
 
   a {
     color: rgba(255, 255, 255, 0.7);
@@ -350,7 +358,7 @@ p {
   padding-bottom: $space-16;
 
   p {
-    color: $color-text;
+    color: var(--color-text);
     line-height: $line-height-loose;
     margin-bottom: 0;
 
@@ -363,7 +371,7 @@ p {
   h2 {
     font-family: $font-heading;
     font-size: $font-size-2xl;
-    color: $color-dark;
+    color: var(--color-dark);
     margin: $space-10 0 $space-3;
     padding-bottom: $space-2;
 
@@ -375,13 +383,13 @@ p {
   h3 {
     font-family: $font-heading;
     font-size: $font-size-lg;
-    color: $color-dark;
+    color: var(--color-dark);
     margin: $space-6 0 $space-2;
   }
 
   ul,
   ol {
-    color: $color-text;
+    color: var(--color-text);
     line-height: $line-height-loose;
     margin-bottom: $space-4;
     padding-left: $space-6;
@@ -401,7 +409,7 @@ p {
 
   strong {
     font-weight: 700;
-    color: $color-dark;
+    color: var(--color-dark);
     margin-top: $space-2;
   }
 
@@ -410,18 +418,18 @@ p {
   }
 
   a {
-    color: $color-primary-dark;
+    color: var(--color-primary-dark);
     text-decoration: underline;
     text-underline-offset: 2px;
 
     &:hover {
-      color: $color-primary;
+      color: var(--color-primary);
     }
   }
 
   hr {
     border: none;
-    border-top: 1px solid $color-border;
+    border-top: 1px solid var(--color-border);
     margin: $space-8 0;
   }
 }
@@ -450,7 +458,7 @@ p {
 
 .category-card {
   @include card;
-  border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
   transition: transform $transition-normal, box-shadow $transition-normal;
   display: flex;
   flex-direction: column;
@@ -464,7 +472,7 @@ p {
 .category-card__img {
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  background: $color-bg-alt;
+  background: var(--color-bg-alt);
 
   img {
     width: 100%;
@@ -487,7 +495,7 @@ p {
 
 .category-card__icon {
   font-size: 1.8rem;
-  color: $color-primary;
+  color: var(--color-primary);
   margin-bottom: $space-3;
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
@@ -495,13 +503,13 @@ p {
 .category-card__title {
   font-family: $font-heading;
   font-size: $font-size-xl;
-  color: $color-dark;
+  color: var(--color-dark);
   margin-bottom: $space-2;
 }
 
 .category-card__desc {
   font-size: $font-size-sm;
-  color: $color-text-light;
+  color: var(--color-text-light);
   line-height: 1.65;
   flex: 1;
   margin-bottom: $space-5;
@@ -515,11 +523,11 @@ p {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: $color-primary;
+  color: var(--color-primary);
   transition: gap $transition-fast, color $transition-fast;
 
   &:hover {
-    color: $color-primary-dark;
+    color: var(--color-primary-dark);
     gap: $space-3;
   }
 }
@@ -541,8 +549,8 @@ p {
   justify-content: space-between;
   gap: $space-4;
   padding: $space-6;
-  background: $color-white;
-  border: 1px solid rgba($color-text, 0.1);
+  background: var(--color-surface);
+  border: 1px solid rgba(61, 79, 82, 0.1);
   border-radius: $border-radius;
   box-shadow: $shadow-sm;
   transition: transform $transition-fast, box-shadow $transition-fast;
@@ -555,7 +563,7 @@ p {
   &__title {
     font-size: $font-size-lg;
     font-weight: 600;
-    color: $color-text;
+    color: var(--color-text);
     line-height: $line-height-tight;
   }
 
@@ -567,7 +575,7 @@ p {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    color: $color-primary;
+    color: var(--color-primary);
     transition: gap $transition-fast;
 
     &:hover {
@@ -581,7 +589,7 @@ p {
 // ============================================================
 
 .teaser {
-  background: $color-primary;
+  background: var(--color-footer-top);
   padding: 3.5rem $container-pad;
   text-align: center;
 
@@ -593,7 +601,7 @@ p {
   }
 
   p {
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.75);
     margin-bottom: $space-6;
     max-width: 480px;
     margin-left: auto;
@@ -631,7 +639,7 @@ p {
 
 .card {
   @include card;
-  border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
   transition: transform $transition-normal, box-shadow $transition-normal;
 
   &:hover {
@@ -677,20 +685,20 @@ p {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: $color-primary;
+  color: var(--color-primary);
   margin-bottom: $space-1;
 }
 
 .card__title {
   font-family: $font-heading;
   font-size: $font-size-xl;
-  color: $color-dark;
+  color: var(--color-dark);
   margin-bottom: $space-2;
 }
 
 .card__text {
   font-size: 0.9rem;
-  color: $color-text;
+  color: var(--color-text);
   line-height: $line-height-loose;
 
   & + & {
@@ -707,7 +715,7 @@ p {
 
   li {
     font-size: 0.9rem;
-    color: $color-text;
+    color: var(--color-text);
     line-height: $line-height-loose;
     display: flex;
     align-items: center;
@@ -718,7 +726,7 @@ p {
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: $color-primary;
+      background: var(--color-primary);
       flex-shrink: 0;
     }
   }
@@ -727,14 +735,14 @@ p {
 .card__highlights {
   margin-top: $space-4;
   padding-top: $space-4;
-  border-top: 1px solid $color-border;
+  border-top: 1px solid var(--color-border);
 
   h4 {
     font-size: $font-size-xs;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    color: $color-text-light;
+    color: var(--color-text-light);
     margin-bottom: $space-2;
   }
 
@@ -747,7 +755,7 @@ p {
 
   li {
     font-size: 0.85rem;
-    color: $color-text;
+    color: var(--color-text);
     display: flex;
     align-items: center;
     gap: $space-2;
@@ -757,7 +765,7 @@ p {
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: $color-primary;
+      background: var(--color-primary);
       flex-shrink: 0;
     }
   }
@@ -781,13 +789,13 @@ p {
 
 .badge--green {
   background: rgba(61, 122, 110, 0.12);
-  color: $color-primary-dark;
+  color: var(--color-primary-dark);
 }
 
 .badge--blue {
   background: rgba(61, 122, 110, 0.06);
-  color: $color-text-light;
-  border: 1px solid $color-border;
+  color: var(--color-text-light);
+  border: 1px solid var(--color-border);
 }
 
 .badge--orange {
@@ -798,7 +806,7 @@ p {
 .badge--gray {
   background: rgba(100, 100, 100, 0.10);
   color: #555;
-  border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
 }
 
 // ============================================================
@@ -813,7 +821,7 @@ p {
 
 .place {
   @include card;
-  border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
   display: grid;
   grid-template-columns: 320px 1fr;
 
@@ -873,20 +881,20 @@ p {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: $color-primary;
+  color: var(--color-primary);
   margin-bottom: $space-2;
 }
 
 .place__title {
   font-family: $font-heading;
   font-size: 1.4rem;
-  color: $color-dark;
+  color: var(--color-dark);
   margin-bottom: $space-3;
 }
 
 .place__text {
   font-size: 0.925rem;
-  color: $color-text;
+  color: var(--color-text);
   line-height: 1.75;
 }
 
@@ -906,9 +914,9 @@ p {
   font-weight: 600;
   padding: 0.2rem 0.6rem;
   border-radius: $border-radius-pill;
-  background: $color-bg-alt;
-  color: $color-text-light;
-  border: 1px solid $color-border;
+  background: var(--color-bg-alt);
+  color: var(--color-text-light);
+  border: 1px solid var(--color-border);
 }
 
 // ============================================================
@@ -923,7 +931,7 @@ p {
 
 .feature {
   @include card;
-  border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
   display: grid;
   grid-template-columns: 380px 1fr;
   margin-bottom: $space-8;
@@ -1001,21 +1009,21 @@ p {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: $color-primary;
+  color: var(--color-primary);
   margin-bottom: $space-2;
 }
 
 .feature__title {
   font-family: $font-heading;
   font-size: 1.4rem;
-  color: $color-dark;
+  color: var(--color-dark);
   margin-bottom: $space-3;
   line-height: $line-height-tight;
 }
 
 .feature__text {
   font-size: 0.925rem;
-  color: $color-text;
+  color: var(--color-text);
   line-height: 1.75;
 }
 
@@ -1038,11 +1046,11 @@ p {
   align-items: center;
   gap: $space-1;
   font-size: 0.8rem;
-  color: $color-text-light;
+  color: var(--color-text-light);
 
   .material-symbols-rounded {
     font-size: 0.95rem;
-    color: $color-primary;
+    color: var(--color-primary);
   }
 }
 
@@ -1056,7 +1064,7 @@ p {
   h2 {
     font-family: $font-heading;
     font-size: 1.4rem;
-    color: $color-dark;
+    color: var(--color-dark);
     margin-bottom: $space-5;
     text-align: center;
   }
@@ -1074,19 +1082,19 @@ p {
 
 .beach-card {
   @include card;
-  border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
   display: flex;
 }
 
 .beach-card__icon {
   width: 60px;
   @include flex-center;
-  background: $color-bg-alt;
+  background: var(--color-bg-alt);
   flex-shrink: 0;
 
   .material-symbols-rounded {
     font-size: 1.75rem;
-    color: $color-primary;
+    color: var(--color-primary);
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   }
 }
@@ -1098,13 +1106,13 @@ p {
 .beach-card__title {
   font-weight: 700;
   font-size: 0.925rem;
-  color: $color-dark;
+  color: var(--color-dark);
   margin-bottom: $space-1;
 }
 
 .beach-card__text {
   font-size: 0.825rem;
-  color: $color-text-light;
+  color: var(--color-text-light);
   line-height: 1.55;
 }
 
@@ -1119,8 +1127,8 @@ p {
 }
 
 .route {
-  background: $color-white;
-  border: 1px solid $color-border;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: $border-radius;
   padding: 1.75rem $space-8;
   box-shadow: $shadow-md;
@@ -1139,20 +1147,20 @@ p {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: $color-primary;
+  color: var(--color-primary);
   margin-bottom: $space-2;
 }
 
 .route__title {
   font-family: $font-heading;
   font-size: 1.3rem;
-  color: $color-dark;
+  color: var(--color-dark);
   margin-bottom: $space-2;
 }
 
 .route__text {
   font-size: 0.925rem;
-  color: $color-text;
+  color: var(--color-text);
   line-height: 1.75;
 }
 
@@ -1172,8 +1180,8 @@ p {
 
 .stat {
   text-align: center;
-  background: $color-bg-alt;
-  border: 1px solid $color-border;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
   border-radius: $border-radius-sm;
   padding: $space-2 $space-3;
   min-width: 100px;
@@ -1183,7 +1191,7 @@ p {
   font-family: $font-heading;
   font-size: 1.3rem;
   font-weight: 700;
-  color: $color-primary;
+  color: var(--color-primary);
   line-height: 1;
 }
 
@@ -1192,7 +1200,7 @@ p {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: $color-text-light;
+  color: var(--color-text-light);
   margin-top: $space-1;
 }
 
@@ -1223,7 +1231,7 @@ p {
 
 .hero-feature {
   @include card;
-  border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
   display: grid;
   grid-template-columns: 1fr 1fr;
   box-shadow: $shadow-lg;
@@ -1255,7 +1263,7 @@ p {
   position: absolute;
   top: $space-4;
   left: $space-4;
-  background: $color-primary;
+  background: var(--color-primary);
   color: $color-white;
   font-size: $font-size-xs;
   font-weight: 700;
@@ -1277,21 +1285,21 @@ p {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: $color-primary;
+  color: var(--color-primary);
   margin-bottom: $space-2;
 }
 
 .hero-feature__title {
   font-family: $font-heading;
   font-size: 1.8rem;
-  color: $color-dark;
+  color: var(--color-dark);
   margin-bottom: $space-4;
   line-height: $line-height-tight;
 }
 
 .hero-feature__text {
   font-size: 0.95rem;
-  color: $color-text;
+  color: var(--color-text);
   line-height: 1.8;
 }
 
@@ -1303,10 +1311,10 @@ p {
 }
 
 .fact {
-  background: $color-bg-alt;
+  background: var(--color-bg-alt);
   border-radius: $border-radius-sm;
   padding: $space-3 $space-4;
-  border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
 }
 
 .fact__label {
@@ -1314,14 +1322,14 @@ p {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: $color-text-light;
+  color: var(--color-text-light);
   margin-bottom: $space-1;
 }
 
 .fact__value {
   font-size: 0.9rem;
   font-weight: 600;
-  color: $color-dark;
+  color: var(--color-dark);
   word-break: break-word;
 }
 
@@ -1345,8 +1353,8 @@ p {
 }
 
 .mini-card {
-  background: $color-white;
-  border: 1px solid $color-border;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: $border-radius;
   padding: $space-6;
   box-shadow: $shadow-md;
@@ -1354,7 +1362,7 @@ p {
 
 .mini-card__icon {
   font-size: 1.75rem;
-  color: $color-primary;
+  color: var(--color-primary);
   margin-bottom: $space-3;
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
@@ -1362,13 +1370,13 @@ p {
 .mini-card__title {
   font-family: $font-heading;
   font-size: 1.05rem;
-  color: $color-dark;
+  color: var(--color-dark);
   margin-bottom: $space-2;
 }
 
 .mini-card__text {
   font-size: 0.85rem;
-  color: $color-text-light;
+  color: var(--color-text-light);
   line-height: 1.65;
 }
 
@@ -1377,9 +1385,9 @@ p {
 // ============================================================
 
 .tip-box {
-  background: $color-bg-alt;
-  border: 1px solid $color-border;
-  border-left: 4px solid $color-primary;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
   border-radius: $border-radius;
   padding: $space-5 $space-6;
   margin-top: $space-12;
@@ -1387,7 +1395,7 @@ p {
 
 .tip-box__title {
   font-weight: 700;
-  color: $color-dark;
+  color: var(--color-dark);
   margin-bottom: $space-2;
   display: flex;
   align-items: center;
@@ -1399,7 +1407,7 @@ p {
 // ============================================================
 
 .cta-strip {
-  background: $color-primary;
+  background: var(--color-footer-top);
   padding: $space-12 $container-pad;
   text-align: center;
   margin-top: $section-padding;
@@ -1427,10 +1435,10 @@ p {
 
 .btn--white {
   background: $color-white;
-  color: $color-primary;
+  color: var(--color-primary);
 
   &:hover {
-    background: $color-bg-alt;
+    background: var(--color-bg-alt);
     transform: translateY(-1px);
   }
 }
@@ -1447,32 +1455,40 @@ p {
 }
 
 // ============================================================
-// FOOTER (vereinfacht für Unterseiten)
+// FOOTER (vereinfacht für Unterseiten – gleich wie .footer__bottom auf Startseite)
 // ============================================================
 
 footer {
-  background: $color-footer-top;
-  padding: $space-8 $container-pad;
-  text-align: center;
+  background: var(--color-footer-bot);
+  padding: $space-5 0;
 
-  p {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
+  .footer__bottom-inner {
+    @include flex-between;
+    gap: $space-4;
+    flex-wrap: wrap;
+    max-width: $max-width;
+    margin: 0 auto;
+    padding: 0 $container-pad;
   }
 
-  a {
-    color: rgba(255, 255, 255, 0.6);
-    transition: color $transition-fast;
-
-    &:hover {
-      color: $color-secondary;
-    }
+  p {
+    font-size: $font-size-xs;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 0;
   }
 }
 
 .footer__legal {
   display: flex;
   gap: $space-6;
-  justify-content: center;
-  margin-top: $space-2;
+
+  a {
+    font-size: $font-size-xs;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
 }
