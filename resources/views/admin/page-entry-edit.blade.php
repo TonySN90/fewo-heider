@@ -210,26 +210,6 @@
     <div class="entry-preview">
       <div class="route route--edit">
 
-        {{-- Bild-Upload --}}
-        <div class="route__img route__img--clickable" id="preview-img-wrap"
-             onclick="document.getElementById('preview-img-upload').click()"
-             title="Klicken um Bild zu ändern">
-          @if ($entry->cover_image)
-            <img id="preview-img" src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" />
-          @else
-            <div id="preview-img-placeholder" class="card__img-placeholder">
-              <span class="material-symbols-rounded">add_photo_alternate</span>
-              <span>Bild hochladen</span>
-            </div>
-          @endif
-          <div class="card__img-overlay">
-            <span class="material-symbols-rounded">photo_camera</span>
-          </div>
-        </div>
-        <input type="file" id="preview-img-upload"
-               accept="image/*" style="display:none"
-               data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}" />
-
         <div class="route__body">
           {{-- Alle Felder als klassisches Formular --}}
           <div class="route-edit-fields">

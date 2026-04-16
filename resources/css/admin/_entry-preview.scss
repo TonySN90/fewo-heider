@@ -200,46 +200,14 @@
 
   // ── Route-Layout Vorschau ─────────────────────────────────────────────────
   .route--edit {
-    display: grid;
-    grid-template-columns: 260px 1fr;
-    grid-template-rows: auto auto;
+    display: flex;
+    flex-direction: column;
     gap: $space-4;
-    align-items: start;
     margin: 0 auto;
     background: $color-white;
     border: 1px solid $color-border;
     border-radius: $border-radius;
     padding: $space-6;
-  }
-
-  .route__img {
-    grid-row: 1 / 3;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-    border-radius: $border-radius-sm;
-    position: relative;
-    background: #f0f0ee;
-
-    img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    &--clickable {
-      cursor: pointer;
-
-      .card__img-overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,.35);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity .2s;
-        color: #fff;
-        .material-symbols-rounded { font-size: 2rem; }
-      }
-
-      &:hover .card__img-overlay { opacity: 1; }
-    }
   }
 
   .route__body {
