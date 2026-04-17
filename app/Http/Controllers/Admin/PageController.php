@@ -133,7 +133,7 @@ class PageController extends Controller
             'description' => ['nullable', 'string', 'max:500'],
             'cover_image' => ['nullable', 'image', 'max:4096'],
             'is_visible' => ['boolean'],
-            'layout' => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
+            'layout' => ['nullable', 'in:cards,feature,route,hero-feature'],
         ]);
 
         $slug = Str::slug($data['title']);
@@ -177,7 +177,7 @@ class PageController extends Controller
             'description_en'   => ['nullable', 'string', 'max:500'],
             'cover_image'      => ['nullable', 'image', 'max:4096'],
             'is_visible'       => ['nullable', 'boolean'],
-            'layout'           => ['nullable', 'in:cards,place-list,feature,route,hero-feature'],
+            'layout'           => ['nullable', 'in:cards,feature,route,hero-feature'],
             'intro_heading'    => ['nullable', 'string', 'max:200'],
             'intro_text'       => ['nullable', 'string', 'max:2000'],
             'intro_heading_en' => ['nullable', 'string', 'max:200'],
@@ -403,9 +403,10 @@ class PageController extends Controller
         abort_if($entry->page_id !== $page->id, 403);
 
         $data = $request->validate([
-            'type' => ['required', 'in:text,heading,image,badge'],
+            'type' => ['required', 'in:text,heading,image,badge,info'],
             'content' => ['nullable', 'string', 'max:2000'],
             'color' => ['nullable', 'in:green,blue,orange,gray'],
+            'icon' => ['nullable', 'string', 'max:100'],
         ]);
 
         $nextOrder = PageEntryBlock::where('page_entry_id', $entry->id)->max('sort_order') ?? 0;
@@ -415,6 +416,7 @@ class PageController extends Controller
             'type' => $data['type'],
             'content' => $data['content'] ?? '',
             'color' => $data['color'] ?? null,
+            'icon' => $data['icon'] ?? null,
             'sort_order' => $nextOrder + 1,
         ]);
 
@@ -429,7 +431,7 @@ class PageController extends Controller
         return back()->with('success', 'Block hinzugefügt.');
     }
 
-    public function updateBlock(Request $request, Page $page, PageEntry $entry, PageEntryBlock $block): RedirectResponse
+    public function updateBlock(Request $request, Page $page, PageEntry $entry, PageEntryBlock $block)
     {
         $this->authorizePage($page);
         abort_if($block->page_entry_id !== $entry->id, 403);
@@ -437,21 +439,31 @@ class PageController extends Controller
         $data = $request->validate([
             'content' => ['nullable', 'string', 'max:2000'],
             'color' => ['nullable', 'in:green,blue,orange,gray'],
+            'icon' => ['nullable', 'string', 'max:100'],
         ]);
 
         $block->update([
             'content' => $data['content'] ?? '',
             'color' => $data['color'] ?? null,
+            'icon' => array_key_exists('icon', $data) ? $data['icon'] : $block->icon,
         ]);
+
+        if ($request->expectsJson() || $request->wantsJson() || $request->ajax()) {
+            return response()->json(['ok' => true]);
+        }
 
         return back()->with('success', 'Block gespeichert.');
     }
 
-    public function destroyBlock(Page $page, PageEntry $entry, PageEntryBlock $block): RedirectResponse
+    public function destroyBlock(Request $request, Page $page, PageEntry $entry, PageEntryBlock $block)
     {
         $this->authorizePage($page);
         abort_if($block->page_entry_id !== $entry->id, 403);
         $block->delete();
+
+        if ($request->expectsJson() || $request->wantsJson() || $request->ajax()) {
+            return response()->json(['ok' => true]);
+        }
 
         return back()->with('success', 'Block gelöscht.');
     }

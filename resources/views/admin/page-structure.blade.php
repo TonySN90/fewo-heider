@@ -328,7 +328,6 @@
                           <label>Layout</label>
                           <select data-field="layout">
                             <option value="cards"        {{ $page->layout === 'cards'        ? 'selected' : '' }}>Karten-Grid</option>
-                            <option value="place-list"   {{ $page->layout === 'place-list'   ? 'selected' : '' }}>Orte / alternierend</option>
                             <option value="feature"      {{ $page->layout === 'feature'      ? 'selected' : '' }}>Feature-Blöcke</option>
                             <option value="route"        {{ $page->layout === 'route'        ? 'selected' : '' }}>Routen-Liste</option>
                             <option value="hero-feature" {{ $page->layout === 'hero-feature' ? 'selected' : '' }}>Hero + Karten-Grid</option>
@@ -517,7 +516,6 @@
                 <label>Layout</label>
                 <select name="layout">
                   <option value="cards">Karten-Grid</option>
-                  <option value="place-list">Orte / alternierend</option>
                   <option value="feature">Feature-Blöcke</option>
                   <option value="route">Routen-Liste</option>
                   <option value="hero-feature">Hero + Karten-Grid</option>

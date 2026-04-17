@@ -47,9 +47,6 @@
   </div>
 @else
   @switch($page->layout)
-    @case('place-list')
-      @include('pages.layouts.place-list', ['entries' => $page->entries])
-      @break
     @case('route')
       @include('pages.layouts.route', ['entries' => $page->entries])
       @break

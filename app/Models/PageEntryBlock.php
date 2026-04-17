@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PageEntryBlock extends Model
 {
-    protected $fillable = ['page_entry_id', 'type', 'content', 'color', 'sort_order'];
+    protected $fillable = ['page_entry_id', 'type', 'content', 'color', 'icon', 'sort_order'];
 
     public function entry(): BelongsTo
     {

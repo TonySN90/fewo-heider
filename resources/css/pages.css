@@ -1022,10 +1022,12 @@ p:last-child {
 }
 
 .feature__info {
-  margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+}
+.feature__info--top {
+  margin-bottom: 1rem;
 }
 
 .info-item {

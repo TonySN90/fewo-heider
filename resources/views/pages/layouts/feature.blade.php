@@ -13,19 +13,19 @@
     <div class="features">
       @foreach ($entries as $i => $entry)
         @php
-          $isRev      = $i % 2 !== 0;
-          $blocks     = $entry->blocks;
+          $isRev      = ($entry->image_position ?? 'left') === 'right';
+          $blocks     = $entry->blocks->sortBy('sort_order');
           $headings   = $blocks->where('type', 'heading')->values();
           $textBlocks = $blocks->where('type', 'text')->values();
+          $infoBlocks = $blocks->where('type', 'info')->values();
 
-          // Kategorie-Label = zweiter Heading-Block (erster ist oft der Seiten-Intro)
           $category = $headings->skip(1)->first()?->content ?? $headings->first()?->content;
-          // Ersten und zweiten Text als Beschreibung
-          $desc1    = $textBlocks->first()?->content;
-          $desc2    = $textBlocks->skip(1)->first()?->content;
-          // Letzter Block oft Info-Zeilen (Öffnungszeiten etc.)
-          $infoLine = $textBlocks->last()?->content;
-          $isInfoLine = $infoLine && ($infoLine !== $desc1) && ($infoLine !== $desc2);
+          $desc1 = $textBlocks->first()?->content;
+          $desc2 = $textBlocks->skip(1)->first()?->content;
+
+          // Info-Items vor oder nach Text? Vergleich der sort_order
+          $infoFirst = $infoBlocks->isNotEmpty() && $textBlocks->isNotEmpty()
+              && $infoBlocks->min('sort_order') < $textBlocks->min('sort_order');
         @endphp
         <div class="feature {{ $isRev ? 'feature--rev' : '' }}">
           @if ($entry->cover_image)
@@ -37,19 +37,29 @@
             @if ($category && $category !== ($introHeading?->content))
               <p class="feature__category">{{ $category }}</p>
             @endif
+            @if ($infoFirst && $infoBlocks->isNotEmpty())
+              <div class="feature__info feature__info--top">
+                @foreach ($infoBlocks as $item)
+                  <span class="info-item">
+                    <span class="material-symbols-rounded">{{ $item->icon ?? 'info' }}</span>
+                    {{ $item->content }}
+                  </span>
+                @endforeach
+              </div>
+            @endif
             <h2 class="feature__title">{{ $entry->title }}</h2>
             @if ($desc1)
               <p class="feature__text">{{ $desc1 }}</p>
             @endif
-            @if ($desc2 && $desc2 !== $desc1 && ! $isInfoLine)
-              <p class="feature__text" style="margin-top:.75rem">{{ $desc2 }}</p>
+            @if ($desc2 && $desc2 !== $desc1)
+              <p class="feature__text">{{ $desc2 }}</p>
             @endif
-            @if ($isInfoLine)
+            @if (!$infoFirst && $infoBlocks->isNotEmpty())
               <div class="feature__info">
-                @foreach (array_filter(array_map('trim', explode('·', $infoLine))) as $item)
+                @foreach ($infoBlocks as $item)
                   <span class="info-item">
-                    <span class="material-symbols-rounded">info</span>
-                    {{ $item }}
+                    <span class="material-symbols-rounded">{{ $item->icon ?? 'info' }}</span>
+                    {{ $item->content }}
                   </span>
                 @endforeach
               </div>

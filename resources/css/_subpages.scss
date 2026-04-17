@@ -1029,11 +1029,13 @@ p {
   gap: $space-2;
 }
 
+
 .feature__info {
-  margin-top: $space-4;
   display: flex;
   flex-wrap: wrap;
   gap: $space-3;
+
+  &--top { margin-bottom: $space-4; }
 }
 
 .info-item {

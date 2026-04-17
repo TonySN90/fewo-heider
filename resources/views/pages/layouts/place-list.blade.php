@@ -15,17 +15,8 @@
         @php
           $blocks     = $entry->blocks;
           $textBlocks = $blocks->where('type', 'text')->values();
+          $infoBlocks = $blocks->where('type', 'info')->values();
           $desc       = $textBlocks->first()?->content;
-          $distLine   = $textBlocks->last()?->content; // "Entfernung: ca. X km"
-          // Tags aus dem letzten Block parsen wenn er Tags enthält
-          $tags = [];
-          if ($distLine && str_contains($distLine, 'Entfernung')) {
-              // Distanz aus "Entfernung: ca. X km" extrahieren
-              preg_match('/Entfernung:\s*(.+)/i', $distLine, $m);
-              $dist = $m[1] ?? null;
-          } else {
-              $dist = null;
-          }
         @endphp
         <div class="place {{ $entry->image_position === 'right' ? 'place--img-right' : '' }}">
           @if ($entry->cover_image)
@@ -34,11 +25,15 @@
             </div>
           @endif
           <div class="place__body">
-            @if ($dist)
-              <p class="place__dist">
-                <span class="material-symbols-rounded" style="font-size:0.9rem">location_on</span>
-                {{ $dist }}
-              </p>
+            @if ($infoBlocks->isNotEmpty())
+              <div class="place__info">
+                @foreach ($infoBlocks as $item)
+                  <span class="info-item">
+                    <span class="material-symbols-rounded">{{ $item->icon ?? 'location_on' }}</span>
+                    {{ $item->content }}
+                  </span>
+                @endforeach
+              </div>
             @endif
             <h2 class="place__title">{{ $entry->title }}</h2>
             @if ($desc)

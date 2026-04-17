@@ -279,25 +279,34 @@
   @endif
 
   {{-- Place-List-Vorschau mit Inline-Editing --}}
-  @if ($page->layout === 'place-list')
+  {{-- Feature-Blöcke Editor --}}
+  @if ($page->layout === 'feature')
   @php
-    $placeTextBlocks = $entry->blocks->where('type', 'text')->values();
-    $placeDescBlock  = $placeTextBlocks->first();
-    $placeDistBlock  = $placeTextBlocks->count() > 1 ? $placeTextBlocks->last() : null;
-    $placeDist = '';
-    if ($placeDistBlock) {
-      preg_match('/Entfernung:\s*(.+)/i', $placeDistBlock->content, $m);
-      $placeDist = $m[1] ?? $placeDistBlock->content;
-    }
+    $editTextBlocks  = $entry->blocks->where('type', 'text')->values();
+    $descBlock       = $editTextBlocks->first();
+    $desc2Block      = $editTextBlocks->skip(1)->first();
+    $infoBlocks      = $entry->blocks->where('type', 'info')->values();
+    $icons           = \App\Models\Icon::forSelect();
+    $defaultIcon     = 'info';
+    $infoFirst       = $infoBlocks->isNotEmpty() && $editTextBlocks->isNotEmpty()
+                         ? ($infoBlocks->min('sort_order') < $editTextBlocks->min('sort_order'))
+                         : false;
+    $textBlockIds    = collect([$descBlock, $desc2Block])->filter()->pluck('id')->join(',');
+    $imgClass        = 'feature__img';
+    $bodyClass       = 'feature__body';
+    $cardClass       = 'feature feature--edit';
+    $previewClass    = 'entry-preview--feature';
+    $titleClass      = 'feature__title';
+    $textClass       = 'feature__text';
   @endphp
   <div class="alert alert--cards">
-    <span class="material-symbols-rounded alert__icon--cards">location_on</span>
+    <span class="material-symbols-rounded alert__icon--cards">star</span>
     <div>
-      <strong>Ort bearbeiten</strong>
+      <strong>Feature bearbeiten</strong>
       <ul class="alert__list">
         <li><b>Bild</b> — Klick auf das Vorschaubild</li>
         <li><b>Titel &amp; Beschreibung</b> — direkt in der Vorschau anklicken</li>
-        <li><b>Entfernung</b> — direkt in der Vorschau anklicken</li>
+        <li><b>Info-Items</b> — Icon wählen, Text bearbeiten; Abschnitt per ⠿ verschieben</li>
       </ul>
     </div>
   </div>
@@ -310,60 +319,90 @@
         Klicke direkt in die Vorschau zum Bearbeiten
       </span>
     </div>
-    <div class="entry-preview entry-preview--place">
+    <div class="entry-preview {{ $previewClass }}">
 
-      <div class="place place--edit">
-        <div class="place__img place__img--clickable" id="preview-img-wrap"
-             onclick="document.getElementById('preview-img-upload').click()"
-             title="Klicken um Bild zu ändern">
-          @if ($entry->cover_image)
-            <img id="preview-img" src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" />
-          @else
-            <div id="preview-img-placeholder" class="card__img-placeholder">
-              <span class="material-symbols-rounded">add_photo_alternate</span>
-              <span>Bild hochladen</span>
+      <div class="{{ $cardClass }}" id="place-card">
+        <div class="{{ $imgClass }} feature__img--draggable" id="preview-img-wrap"
+             data-position="{{ $entry->image_position ?? 'left' }}"
+             data-entry-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">
+          <div class="feature__img-drag-hint">
+            <span class="material-symbols-rounded">swap_horiz</span>
+          </div>
+          <div class="feature__img-click" onclick="document.getElementById('preview-img-upload').click()" title="Klicken um Bild zu ändern">
+            @if ($entry->cover_image)
+              <img id="preview-img" src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" />
+            @else
+              <div id="preview-img-placeholder" class="card__img-placeholder">
+                <span class="material-symbols-rounded">add_photo_alternate</span>
+                <span>Bild hochladen</span>
+              </div>
+            @endif
+            <div class="card__img-overlay">
+              <span class="material-symbols-rounded">photo_camera</span>
             </div>
-          @endif
-          <div class="card__img-overlay">
-            <span class="material-symbols-rounded">photo_camera</span>
           </div>
         </div>
         <input type="file" id="preview-img-upload" accept="image/*" style="display:none"
                data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}" />
 
-        <div class="place__body">
-          <p class="place__dist">
-            <span class="material-symbols-rounded" style="font-size:.9rem">location_on</span>
-            <span contenteditable="true" id="place-dist">{{ $placeDist ?: '' }}</span>
-          </p>
+        <div class="{{ $bodyClass }}">
 
-          <h2 class="place__title"
-              contenteditable="true"
-              id="place-title">{{ $entry->title }}</h2>
+          {{-- Draggable Body-Blocks: Info-Section & Text-Section --}}
+          <div class="body-blocks" id="body-blocks"
+               data-reorder-url="{{ route('admin.pages.blocks.reorder', [$page, $entry]) }}">
 
-          <p class="place__text"
-             contenteditable="true"
-             id="place-desc">{{ $placeDescBlock?->content ?? '' }}</p>
+            {{-- Info-Section --}}
+            @if ($infoFirst)
+              @include('admin.partials.entry-info-section', ['infoBlocks' => $infoBlocks, 'icons' => $icons, 'defaultIcon' => $defaultIcon, 'page' => $page, 'entry' => $entry])
+            @endif
+
+            {{-- Text-Section --}}
+            <div class="body-block" data-type="text-section" id="body-block-text"
+                 data-block-ids="{{ $textBlockIds }}">
+              <div class="body-block__header">
+                <span class="body-block__drag-handle" title="Abschnitt verschieben">⠿</span>
+                <span class="body-block__label">Text</span>
+                <button type="button" class="img-side-toggle" id="img-side-toggle"
+                        title="Bildseite wechseln"
+                        data-entry-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}"
+                        data-position="{{ $entry->image_position ?? 'left' }}">
+                  <span class="material-symbols-rounded">swap_horiz</span>
+                  <span class="img-side-toggle__label">Bild {{ ($entry->image_position ?? 'left') === 'right' ? 'links' : 'rechts' }}</span>
+                </button>
+              </div>
+              <h2 class="{{ $titleClass }}"
+                  contenteditable="true"
+                  id="place-title">{{ $entry->title }}</h2>
+              <p class="{{ $textClass }}"
+                 contenteditable="true"
+                 id="place-desc">{{ $descBlock?->content ?? '' }}</p>
+              @if ($desc2Block)
+              <p class="{{ $textClass }}"
+                 contenteditable="true"
+                 id="place-desc2"
+                 style="margin-top:.75rem">{{ $desc2Block->content }}</p>
+              @endif
+            </div>
+
+            {{-- Info-Section (falls nach Text) --}}
+            @if (!$infoFirst)
+              @include('admin.partials.entry-info-section', ['infoBlocks' => $infoBlocks, 'icons' => $icons, 'defaultIcon' => $defaultIcon, 'page' => $page, 'entry' => $entry])
+            @endif
+
+          </div>
+
         </div>
       </div>
 
       <div class="place-edit-actions">
-        <label class="place-img-position-label">
-          <span class="material-symbols-rounded" style="font-size:1rem;vertical-align:middle">swap_horiz</span>
-          Bildseite
-          <select id="place-img-position">
-            <option value="left"  @selected(($entry->image_position ?? 'left') === 'left')>Links</option>
-            <option value="right" @selected(($entry->image_position ?? 'left') === 'right')>Rechts</option>
-          </select>
-        </label>
         <button type="button" id="place-save" class="btn btn-save"
                 data-entry-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}"
                 data-desc-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
-                data-desc-update-url="{{ $placeDescBlock ? route('admin.pages.blocks.update', [$page, $entry, $placeDescBlock]) : '' }}"
-                data-desc-has-block="{{ $placeDescBlock ? '1' : '0' }}"
-                data-dist-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
-                data-dist-update-url="{{ $placeDistBlock ? route('admin.pages.blocks.update', [$page, $entry, $placeDistBlock]) : '' }}"
-                data-dist-has-block="{{ $placeDistBlock ? '1' : '0' }}">
+                data-desc-update-url="{{ $descBlock ? route('admin.pages.blocks.update', [$page, $entry, $descBlock]) : '' }}"
+                data-desc-has-block="{{ $descBlock ? '1' : '0' }}"
+                data-desc2-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                data-desc2-update-url="{{ $desc2Block ? route('admin.pages.blocks.update', [$page, $entry, $desc2Block]) : '' }}"
+                data-desc2-has-block="{{ $desc2Block ? '1' : '0' }}">
           Speichern
         </button>
       </div>
@@ -777,32 +816,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ── Place-List: Speichern ────────────────────────────────────────────────────
-  ['place-title', 'place-dist'].forEach(id => {
-    document.getElementById(id)?.addEventListener('keydown', e => {
-      if (e.key === 'Enter') { e.preventDefault(); e.target.blur(); }
+  // ── Feature: Bildseite per Button wechseln ──────────────────────────────────
+  const imgSideToggle = document.getElementById('img-side-toggle');
+  if (imgSideToggle) {
+    imgSideToggle.addEventListener('click', async () => {
+      const card   = document.getElementById('place-card');
+      const newPos = imgSideToggle.dataset.position === 'right' ? 'left' : 'right';
+      imgSideToggle.dataset.position = newPos;
+      card?.classList.toggle('feature--rev', newPos === 'right');
+      imgSideToggle.querySelector('.img-side-toggle__label').textContent = 'Bild ' + (newPos === 'right' ? 'links' : 'rechts');
+
+      const body = new FormData();
+      body.append('_method', 'PUT');
+      body.append('_token', csrfToken);
+      body.append('title', document.getElementById('place-title')?.innerText.trim() ?? '');
+      body.append('image_position', newPos);
+      const res = await fetch(imgSideToggle.dataset.entryUrl, { method: 'POST', body });
+      if (res.ok) {
+        imgSideToggle.classList.add('btn-save--saved');
+        setTimeout(() => imgSideToggle.classList.remove('btn-save--saved'), 1000);
+      }
     });
-  });
+  }
 
-  // ── Place: Bildseite live umschalten ─────────────────────────────────────────
-  const placeImgPos = document.getElementById('place-img-position');
-  const placeCard   = document.querySelector('.place--edit');
-  placeImgPos?.addEventListener('change', () => {
-    placeCard?.classList.toggle('place--img-right', placeImgPos.value === 'right');
-  });
+  // ── Place/Feature: Speichern (Titel, Beschreibung 1+2, Bildseite) ─────────────
+  const placeSaveBtn2 = document.getElementById('place-save');
+  if (placeSaveBtn2) {
+    placeSaveBtn2.addEventListener('click', async () => {
+      const title         = document.getElementById('place-title')?.innerText.trim() ?? '';
+      const desc          = document.getElementById('place-desc')?.innerText.trim() ?? '';
+      const desc2         = document.getElementById('place-desc2')?.innerText.trim() ?? '';
+      const imagePosition = document.getElementById('place-img-position')?.value ?? null;
 
-  const placeSaveBtn = document.getElementById('place-save');
-  if (placeSaveBtn) {
-    placeSaveBtn.addEventListener('click', async () => {
-      const title        = document.getElementById('place-title')?.innerText.trim() ?? '';
-      const desc         = document.getElementById('place-desc')?.innerText.trim() ?? '';
-      const dist         = document.getElementById('place-dist')?.innerText.trim() ?? '';
-      const imagePosition = document.getElementById('place-img-position')?.value ?? 'left';
-      const distStr = dist ? `Entfernung: ${dist}` : '';
+      placeSaveBtn2.disabled = true;
 
-      placeSaveBtn.disabled = true;
-
-      async function savePlaceBlock(hasBlock, updateUrl, storeUrl, content) {
+      async function saveTextBlock(hasBlock, updateUrl, storeUrl, content) {
         const body = new FormData();
         body.append('_token', csrfToken);
         body.append('content', content);
@@ -819,49 +867,264 @@ document.addEventListener('DOMContentLoaded', () => {
         titleBody.append('_method', 'PUT');
         titleBody.append('_token', csrfToken);
         titleBody.append('title', title);
-        titleBody.append('image_position', imagePosition);
-        const r1 = await fetch(placeSaveBtn.dataset.entryUrl, { method: 'POST', body: titleBody });
+        if (imagePosition) titleBody.append('image_position', imagePosition);
+        const r1 = await fetch(placeSaveBtn2.dataset.entryUrl, { method: 'POST', body: titleBody });
 
-        const r2 = await savePlaceBlock(
-          placeSaveBtn.dataset.descHasBlock === '1',
-          placeSaveBtn.dataset.descUpdateUrl,
-          placeSaveBtn.dataset.descStoreUrl,
+        const r2 = await saveTextBlock(
+          placeSaveBtn2.dataset.descHasBlock === '1',
+          placeSaveBtn2.dataset.descUpdateUrl,
+          placeSaveBtn2.dataset.descStoreUrl,
           desc
         );
 
-        const r3 = await savePlaceBlock(
-          placeSaveBtn.dataset.distHasBlock === '1',
-          placeSaveBtn.dataset.distUpdateUrl,
-          placeSaveBtn.dataset.distStoreUrl,
-          distStr
-        );
+        const results = [r1, r2];
 
-        const allOk = r1.ok && r2.ok && r3.ok;
+        if (desc2 || placeSaveBtn2.dataset.desc2HasBlock === '1') {
+          const r3 = await saveTextBlock(
+            placeSaveBtn2.dataset.desc2HasBlock === '1',
+            placeSaveBtn2.dataset.desc2UpdateUrl,
+            placeSaveBtn2.dataset.desc2StoreUrl,
+            desc2
+          );
+          results.push(r3);
+        }
+
+        const allOk = results.every(r => r.ok);
         if (allOk) {
-          placeSaveBtn.textContent = 'Gespeichert ✓';
-          placeSaveBtn.classList.add('btn-save--saved');
-          const needsReload = placeSaveBtn.dataset.descHasBlock === '0' || placeSaveBtn.dataset.distHasBlock === '0';
+          placeSaveBtn2.textContent = 'Gespeichert ✓';
+          placeSaveBtn2.classList.add('btn-save--saved');
+          const needsReload = placeSaveBtn2.dataset.descHasBlock === '0';
           setTimeout(() => {
             if (needsReload) {
               location.reload();
             } else {
-              placeSaveBtn.textContent = 'Speichern';
-              placeSaveBtn.classList.remove('btn-save--saved');
-              placeSaveBtn.disabled = false;
+              placeSaveBtn2.textContent = 'Speichern';
+              placeSaveBtn2.classList.remove('btn-save--saved');
+              placeSaveBtn2.disabled = false;
             }
           }, 1200);
         } else {
-          placeSaveBtn.textContent = 'Fehler – erneut versuchen';
-          placeSaveBtn.disabled = false;
-          setTimeout(() => { placeSaveBtn.textContent = 'Speichern'; }, 2000);
+          placeSaveBtn2.textContent = 'Fehler – erneut versuchen';
+          placeSaveBtn2.disabled = false;
+          setTimeout(() => { placeSaveBtn2.textContent = 'Speichern'; }, 2000);
         }
       } catch {
-        placeSaveBtn.textContent = 'Fehler – erneut versuchen';
-        placeSaveBtn.disabled = false;
-        setTimeout(() => { placeSaveBtn.textContent = 'Speichern'; }, 2000);
+        placeSaveBtn2.textContent = 'Fehler – erneut versuchen';
+        placeSaveBtn2.disabled = false;
+        setTimeout(() => { placeSaveBtn2.textContent = 'Speichern'; }, 2000);
       }
     });
   }
+
+  // ── Body-Block Drag (Info-Section ↔ Text-Section) ────────────────────────────
+  (function initBodyBlocks() {
+    const container = document.getElementById('body-blocks');
+    if (!container) return;
+    let dragBlock = null;
+
+    container.querySelectorAll('.body-block').forEach(block => {
+      const handle = block.querySelector('.body-block__drag-handle');
+      handle?.addEventListener('mousedown', () => block.setAttribute('draggable', 'true'));
+      handle?.addEventListener('mouseup',   () => block.setAttribute('draggable', 'false'));
+
+      block.addEventListener('dragstart', e => {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', '');
+        block.classList.add('body-block--dragging');
+        dragBlock = block;
+      });
+
+      block.addEventListener('dragend', () => {
+        block.classList.remove('body-block--dragging');
+        block.setAttribute('draggable', 'false');
+        container.querySelectorAll('.body-block--over').forEach(el => el.classList.remove('body-block--over'));
+        dragBlock = null;
+        saveBodyBlockOrder();
+      });
+
+      block.addEventListener('dragover', e => {
+        e.preventDefault();
+        if (!dragBlock || dragBlock === block) return;
+        const rect   = block.getBoundingClientRect();
+        const before = e.clientY < rect.top + rect.height / 2;
+        block.classList.add('body-block--over');
+        if (before) container.insertBefore(dragBlock, block);
+        else block.after(dragBlock);
+      });
+
+      block.addEventListener('dragleave', () => block.classList.remove('body-block--over'));
+    });
+
+    async function saveBodyBlockOrder() {
+      const reorderUrl = container.dataset.reorderUrl;
+      if (!reorderUrl) return;
+      const ids = [];
+      container.querySelectorAll('.body-block').forEach(block => {
+        if (block.dataset.type === 'info-section') {
+          block.querySelectorAll('.info-chip[data-block-id]').forEach(chip => {
+            ids.push(Number(chip.dataset.blockId));
+          });
+        } else if (block.dataset.type === 'text-section') {
+          const textIds = block.dataset.blockIds?.split(',').map(Number).filter(Boolean) ?? [];
+          ids.push(...textIds);
+        }
+      });
+      if (!ids.length) return;
+      const body = new FormData();
+      body.append('_token', csrfToken);
+      ids.forEach(id => body.append('ids[]', id));
+      await fetch(reorderUrl, { method: 'POST', body });
+    }
+  })();
+
+  // ── Info-Chips: Drag, Icon, Text, Add, Delete ─────────────────────────────────
+  (function initInfoChips() {
+    const infoList = document.getElementById('info-items-list');
+    if (!infoList) return;
+
+    const infoStoreUrl   = infoList.dataset.storeUrl;
+    const infoReorderUrl = infoList.dataset.reorderUrl;
+    const defaultIcon    = infoList.dataset.defaultIcon ?? 'info';
+    let   dragChip       = null;
+
+    function initChip(chip) {
+      chip.setAttribute('draggable', 'false');
+      const handle = chip.querySelector('.info-chip__drag-handle');
+
+      handle?.addEventListener('mousedown', () => chip.setAttribute('draggable', 'true'));
+      handle?.addEventListener('mouseup',   () => chip.setAttribute('draggable', 'false'));
+      chip.addEventListener('dragend',      () => chip.setAttribute('draggable', 'false'));
+
+      chip.addEventListener('dragstart', e => {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', '');
+        chip.classList.add('info-chip--dragging');
+        dragChip = chip;
+      });
+
+      chip.addEventListener('dragend', () => {
+        chip.classList.remove('info-chip--dragging');
+        infoList.querySelectorAll('.info-chip--over').forEach(el => el.classList.remove('info-chip--over'));
+        dragChip = null;
+        saveChipOrder();
+      });
+
+      chip.addEventListener('dragover', e => {
+        e.preventDefault();
+        if (!dragChip || dragChip === chip) return;
+        const rect   = chip.getBoundingClientRect();
+        const before = e.clientX < rect.left + rect.width / 2;
+        chip.classList.add('info-chip--over');
+        if (before) infoList.insertBefore(dragChip, chip);
+        else chip.after(dragChip);
+      });
+
+      chip.addEventListener('dragleave', () => chip.classList.remove('info-chip--over'));
+
+      // Icon-Select: AJAX + live Vorschau
+      const iconSelect  = chip.querySelector('.info-chip__icon-select');
+      const iconPreview = chip.querySelector('.info-chip__icon-preview');
+      iconSelect?.addEventListener('change', async () => {
+        const icon    = iconSelect.value;
+        const content = chip.querySelector('.info-chip__text')?.innerText.trim() ?? '';
+        if (iconPreview) iconPreview.textContent = icon;
+        const body = new FormData();
+        body.append('_method', 'PUT');
+        body.append('_token', csrfToken);
+        body.append('icon', icon);
+        body.append('content', content);
+        await fetch(iconSelect.dataset.updateUrl, { method: 'POST', body, headers: { 'Accept': 'application/json' } });
+      });
+
+      // Text: AJAX blur-save
+      const textEl = chip.querySelector('.info-chip__text');
+      textEl?.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); textEl.blur(); }
+      });
+      textEl?.addEventListener('blur', async () => {
+        const content = textEl.innerText.trim();
+        const icon    = chip.querySelector('.info-chip__icon-select')?.value ?? '';
+        const body = new FormData();
+        body.append('_method', 'PUT');
+        body.append('_token', csrfToken);
+        body.append('content', content);
+        body.append('icon', icon);
+        const res = await fetch(textEl.dataset.updateUrl, { method: 'POST', body, headers: { 'Accept': 'application/json' } });
+        if (res.ok) {
+          textEl.classList.add('preview-editable--saved');
+          setTimeout(() => textEl.classList.remove('preview-editable--saved'), 1200);
+        }
+      });
+
+      // Delete
+      const delBtn = chip.querySelector('.info-chip__delete');
+      delBtn?.addEventListener('click', async () => {
+        const body = new FormData();
+        body.append('_method', 'DELETE');
+        body.append('_token', csrfToken);
+        chip.style.opacity = '.4';
+        const res = await fetch(delBtn.dataset.deleteUrl, { method: 'POST', body, headers: { 'Accept': 'application/json' } });
+        if (res.ok) chip.remove();
+        else chip.style.opacity = '';
+      });
+    }
+
+    async function saveChipOrder() {
+      const ids = [...infoList.querySelectorAll('.info-chip[data-block-id]')]
+        .map(c => Number(c.dataset.blockId))
+        .filter(Boolean);
+      if (!ids.length) return;
+      const body = new FormData();
+      body.append('_token', csrfToken);
+      ids.forEach(id => body.append('ids[]', id));
+      await fetch(infoReorderUrl, { method: 'POST', body });
+    }
+
+    // Bestehende Chips initialisieren
+    infoList.querySelectorAll('.info-chip').forEach(initChip);
+
+    // Chip hinzufügen
+    document.getElementById('info-item-add-btn')?.addEventListener('click', async () => {
+      const body = new FormData();
+      body.append('_token', csrfToken);
+      body.append('type', 'info');
+      body.append('content', '');
+      body.append('icon', defaultIcon);
+
+      const res  = await fetch(infoStoreUrl, { method: 'POST', body, headers: { 'Accept': 'application/json' } });
+      const data = await res.json();
+      if (!res.ok || !data.id) return;
+
+      const existingSelect = infoList.querySelector('.info-chip__icon-select');
+      const optionsHtml = existingSelect
+        ? existingSelect.innerHTML
+        : `<option value="${defaultIcon}">${defaultIcon}</option>`;
+
+      const addBtn = document.getElementById('info-item-add-btn');
+      const chip   = document.createElement('div');
+      chip.className       = 'info-chip';
+      chip.dataset.blockId = data.id;
+      chip.innerHTML = `
+        <span class="info-chip__drag-handle" title="Verschieben">⠿</span>
+        <span class="info-chip__icon-wrapper" title="Icon ändern">
+          <span class="material-symbols-rounded info-chip__icon-preview">${defaultIcon}</span>
+          <select class="info-chip__icon-select"
+                  data-block-id="${data.id}"
+                  data-update-url="${data.url}">${optionsHtml}</select>
+        </span>
+        <span class="info-chip__text"
+              contenteditable="true"
+              data-block-id="${data.id}"
+              data-update-url="${data.url}"></span>
+        <button type="button" class="info-chip__delete" title="Löschen"
+                data-delete-url="${data.deleteUrl ?? ''}">×</button>
+      `;
+      chip.querySelector('.info-chip__icon-select').value = defaultIcon;
+      infoList.insertBefore(chip, addBtn);
+      initChip(chip);
+      chip.querySelector('.info-chip__text')?.focus();
+    });
+  })();
 
   // ── Route: Diff-Select live einfärben ───────────────────────────────────────
   const routeDiffSelect = document.getElementById('route-diff');

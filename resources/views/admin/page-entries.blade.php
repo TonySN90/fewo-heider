@@ -20,14 +20,13 @@
   @php
     $layoutLabels = [
       'cards'        => ['label' => 'Karten-Grid', 'icon' => 'grid_view',    'color' => '#3d7a6e'],
-      'place-list'   => ['label' => 'Orte / alternierend', 'icon' => 'location_on', 'color' => '#5a6e9a'],
       'feature'      => ['label' => 'Feature-Blöcke', 'icon' => 'view_agenda', 'color' => '#7a5e18'],
       'route'        => ['label' => 'Routen-Liste', 'icon' => 'directions_bike', 'color' => '#2e6644'],
       'hero-feature' => ['label' => 'Hero + Karten-Grid', 'icon' => 'star', 'color' => '#8b3a3a'],
     ];
     $lInfo = $layoutLabels[$page->layout] ?? $layoutLabels['cards'];
   @endphp
-  @php $alertMod = ['cards'=>'cards','place-list'=>'place-list','feature'=>'feature','route'=>'route','hero-feature'=>'hero'][$page->layout] ?? 'cards'; @endphp
+  @php $alertMod = ['cards'=>'cards','feature'=>'feature','route'=>'route','hero-feature'=>'hero'][$page->layout] ?? 'cards'; @endphp
   <div class="alert alert--{{ $alertMod }}">
     <span class="material-symbols-rounded alert__icon--{{ $alertMod }}">{{ $lInfo['icon'] }}</span>
     <div>
@@ -38,10 +37,6 @@
             <li><b>1. Text</b> — Beschreibung · <code>- Punkt</code> = Listenpunkt · Leerzeile = Abstand</li>
             <li><b>2. Text</b> — Highlights (<code>- Punkt</code> = Listenpunkt, 1. Zeile = Überschrift)</li>
             <li><b>Badges</b> — farbige Labels (Schwierigkeit, Distanz …)</li>
-            @break
-          @case('place-list')
-            <li><b>1. Text</b> — Beschreibung des Ortes</li>
-            <li><b>Letzter Text</b> — „Entfernung: ca. X km"</li>
             @break
           @case('feature')
             <li><b>1. Heading</b> — Kategorie-Label (klein, farbig)</li>
