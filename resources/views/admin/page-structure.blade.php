@@ -206,6 +206,7 @@
               <table>
                 <thead>
                   <tr>
+                    <th></th>
                     <th>Titel</th>
                     <th>URL</th>
                     <th>Sichtbar</th>
@@ -215,6 +216,15 @@
                 <tbody>
                   @foreach ($group->pages as $page)
                     <tr>
+                      <td class="entry-list__img-cell">
+                        @if ($page->cover_image)
+                          <img src="{{ Storage::url($page->cover_image) }}" alt="" class="entry-list__thumb" />
+                        @else
+                          <div class="entry-list__thumb-placeholder">
+                            <span class="material-symbols-rounded">image</span>
+                          </div>
+                        @endif
+                      </td>
                       <td>{{ $page->title }}</td>
                       <td><code>/{{ $group->slug }}/{{ $page->slug }}</code></td>
                       <td>
