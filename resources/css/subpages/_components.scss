@@ -1,0 +1,178 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+// ── Badges ───────────────────────────────────────────────────────────────────
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.6rem;
+  border-radius: $border-radius-pill;
+}
+
+.badge--green {
+  background: rgba(61, 122, 110, 0.12);
+  color: var(--color-primary-dark);
+}
+
+.badge--blue {
+  background: rgba(61, 122, 110, 0.06);
+  color: var(--color-text-light);
+  border: 1px solid var(--color-border);
+}
+
+.badge--orange {
+  background: rgba(201, 120, 40, 0.12);
+  color: #7a3e10;
+}
+
+.badge--gray {
+  background: rgba(100, 100, 100, 0.10);
+  color: #555;
+  border: 1px solid var(--color-border);
+}
+
+// ── Tag ──────────────────────────────────────────────────────────────────────
+
+.tag {
+  font-size: $font-size-xs;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: $border-radius-pill;
+  background: var(--color-bg-alt);
+  color: var(--color-text-light);
+  border: 1px solid var(--color-border);
+}
+
+// ── Teaser ───────────────────────────────────────────────────────────────────
+
+.teaser {
+  background: var(--color-footer-top);
+  padding: 3.5rem $container-pad;
+  text-align: center;
+
+  h2 {
+    font-family: $font-heading;
+    font-size: 1.8rem;
+    color: $color-white;
+    margin-bottom: $space-3;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: $space-6;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+// ── Tip Box ──────────────────────────────────────────────────────────────────
+
+.tip-box {
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  border-radius: $border-radius;
+  padding: $space-5 $space-6;
+  margin-top: $space-12;
+}
+
+.tip-box__title {
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: $space-2;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+// ── CTA Strip ────────────────────────────────────────────────────────────────
+
+.cta-strip {
+  background: var(--color-footer-top);
+  padding: $space-12 $container-pad;
+  text-align: center;
+  margin-top: $section-padding;
+
+  h2 {
+    font-family: $font-heading;
+    font-size: $font-size-2xl;
+    color: $color-white;
+    margin-bottom: $space-2;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: $space-5;
+  }
+}
+
+// ── Buttons ──────────────────────────────────────────────────────────────────
+
+.btn {
+  @include btn-base;
+}
+
+.btn--white {
+  background: $color-white;
+  color: var(--color-primary);
+
+  &:hover {
+    background: var(--color-bg-alt);
+    transform: translateY(-1px);
+  }
+}
+
+.btn--outline {
+  background: transparent;
+  color: $color-white;
+  border-color: rgba(255, 255, 255, 0.5);
+  margin-left: $space-3;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// ── Footer ───────────────────────────────────────────────────────────────────
+
+footer {
+  background: var(--color-footer-bot);
+  padding: $space-5 0;
+
+  .footer__bottom-inner {
+    @include flex-between;
+    gap: $space-4;
+    flex-wrap: wrap;
+    max-width: $max-width;
+    margin: 0 auto;
+    padding: 0 $container-pad;
+  }
+
+  p {
+    font-size: $font-size-xs;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 0;
+  }
+}
+
+.footer__legal {
+  display: flex;
+  gap: $space-6;
+
+  a {
+    font-size: $font-size-xs;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+}

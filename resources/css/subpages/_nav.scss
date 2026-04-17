@@ -1,0 +1,126 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.site-nav {
+  background: rgba(38, 50, 56, 0.97);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-nav__inner {
+  @include flex-between;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $container-pad;
+  height: 64px;
+  gap: $space-4;
+}
+
+.site-nav__logo {
+  font-family: $font-heading;
+  color: $color-white;
+  font-size: $font-size-base;
+  line-height: $line-height-tight;
+
+  span {
+    color: var(--color-secondary);
+  }
+}
+
+.site-nav__links {
+  position: absolute;
+  right: $container-pad;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: $space-6;
+
+  a {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.75);
+    transition: color $transition-fast;
+
+    &:hover,
+    &.active {
+      color: var(--color-secondary);
+    }
+  }
+}
+
+.site-nav__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  z-index: 1001;
+
+  span {
+    display: block;
+    height: 2px;
+    background: $color-white;
+    border-radius: 2px;
+    transition: transform $transition-normal, opacity $transition-normal;
+    transform-origin: left center;
+  }
+
+  &.open {
+    span:nth-child(1) { transform: rotate(45deg) translate(1px, -1px); }
+    span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    span:nth-child(3) { transform: rotate(-45deg) translate(1px, 1px); }
+  }
+
+  @include respond-to('nav') {
+    display: flex;
+  }
+}
+
+@include respond-to('nav') {
+  .site-nav__links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: min(320px, 85vw);
+    height: 100vh;
+    background-color: var(--color-bg);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
+    padding: 100px $space-8 $space-8;
+    transition: right $transition-normal;
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    z-index: 1000;
+    transform: none;
+
+    &.open {
+      right: 0;
+    }
+
+    a {
+      display: block;
+      color: var(--color-dark) !important;
+      padding: $space-4 0;
+      font-size: $font-size-base;
+      border-bottom: 1px solid var(--color-border);
+      width: 100%;
+      letter-spacing: 0.04em;
+
+      &:hover,
+      &.active {
+        color: var(--color-primary) !important;
+        padding-left: $space-3;
+      }
+    }
+  }
+}
