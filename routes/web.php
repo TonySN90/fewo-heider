@@ -177,6 +177,7 @@ Route::middleware(['auth', 'resolve.tenant'])->prefix('admin')->group(function (
         Route::put('/page-structure/pages/{page}/entries/{entry}', [App\Http\Controllers\Admin\PageController::class, 'updateEntry'])->name('admin.pages.entries.update');
         Route::put('/page-structure/pages/{page}/entries/{entry}/seo', [App\Http\Controllers\Admin\PageController::class, 'updateEntrySeo'])->name('admin.pages.entries.seo.update');
         Route::delete('/page-structure/pages/{page}/entries/{entry}', [App\Http\Controllers\Admin\PageController::class, 'destroyEntry'])->name('admin.pages.entries.destroy');
+        Route::post('/page-structure/pages/{page}/entries/reorder', [App\Http\Controllers\Admin\PageController::class, 'reorderEntries'])->name('admin.pages.entries.reorder');
         Route::post('/page-structure/pages/{page}/entries/{entry}/blocks', [App\Http\Controllers\Admin\PageController::class, 'storeBlock'])->name('admin.pages.blocks.store');
         Route::post('/page-structure/pages/{page}/entries/{entry}/blocks/reorder', [App\Http\Controllers\Admin\PageController::class, 'reorderBlocks'])->name('admin.pages.blocks.reorder');
         Route::put('/page-structure/pages/{page}/entries/{entry}/blocks/{block}', [App\Http\Controllers\Admin\PageController::class, 'updateBlock'])->name('admin.pages.blocks.update');

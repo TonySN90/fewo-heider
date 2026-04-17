@@ -594,6 +594,10 @@ tr:last-child td {
   .material-symbols-rounded { font-size: 1.2rem; }
 }
 
+tr[data-fixed] td {
+  border-bottom: 2px solid $color-border;
+}
+
 tr.row--dragging td {
   opacity: 0.35;
   background: #f5f5f5;

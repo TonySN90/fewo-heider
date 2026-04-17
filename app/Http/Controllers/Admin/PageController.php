@@ -490,6 +490,21 @@ class PageController extends Controller
         return back()->with('success', 'Block gelöscht.');
     }
 
+    public function reorderEntries(Request $request, Page $page)
+    {
+        $this->authorizePage($page);
+
+        $ids = $request->validate(['ids' => ['required', 'array'], 'ids.*' => ['integer']])['ids'];
+
+        foreach ($ids as $order => $id) {
+            PageEntry::where('id', $id)
+                ->where('page_id', $page->id)
+                ->update(['sort_order' => $order + 1]);
+        }
+
+        return response()->json(['ok' => true]);
+    }
+
     public function reorderBlocks(Request $request, Page $page, PageEntry $entry)
     {
         $this->authorizePage($page);
