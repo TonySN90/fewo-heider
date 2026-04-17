@@ -127,6 +127,7 @@
           {{-- Titel: inline editierbar --}}
           <h3 class="card__title preview-editable"
               contenteditable="true"
+              id="card-title"
               data-type="entry-title"
               data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">{{ $entry->title }}</h3>
 
@@ -134,6 +135,7 @@
           @if ($previewDescBlock)
             <p class="card__text preview-editable preview-editable--multiline"
                contenteditable="true"
+               id="card-desc"
                data-type="block"
                data-block-id="{{ $previewDescBlock->id }}"
                data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $previewDescBlock]) }}">{{ $previewDesc }}</p>
@@ -150,11 +152,13 @@
             <div class="card__highlights">
               <h4 class="preview-editable"
                   contenteditable="true"
+                  id="card-hl-title"
                   data-type="hl-title"
                   data-block-id="{{ $previewHlBlock->id }}"
                   data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $previewHlBlock]) }}">{{ $hlHeading }}</h4>
               <pre class="preview-editable preview-editable--multiline"
                    contenteditable="true"
+                   id="card-hl-body"
                    data-type="hl-body"
                    data-block-id="{{ $previewHlBlock->id }}"
                    data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $previewHlBlock]) }}">{{ $hlBody }}</pre>
@@ -163,6 +167,19 @@
 
         </div>
       </div>
+    </div>
+
+    <div class="hero-edit-actions">
+      <button type="button" id="card-save" class="btn btn-save"
+              data-entry-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}"
+              data-desc-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+              data-desc-update-url="{{ $previewDescBlock ? route('admin.pages.blocks.update', [$page, $entry, $previewDescBlock]) : '' }}"
+              data-desc-has-block="{{ $previewDescBlock ? '1' : '0' }}"
+              data-hl-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+              data-hl-update-url="{{ $previewHlBlock ? route('admin.pages.blocks.update', [$page, $entry, $previewHlBlock]) : '' }}"
+              data-hl-has-block="{{ $previewHlBlock ? '1' : '0' }}">
+        Speichern
+      </button>
     </div>
 
   </div>
@@ -597,12 +614,14 @@
 
           <h3 class="card__title preview-editable"
               contenteditable="true"
+              id="hf-card-title"
               data-type="entry-title"
               data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">{{ $entry->title }}</h3>
 
           @if ($hfDescBlock)
             <p class="card__text preview-editable preview-editable--multiline"
                contenteditable="true"
+               id="hf-card-desc"
                data-type="block"
                data-block-id="{{ $hfDescBlock->id }}"
                data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $hfDescBlock]) }}">{{ $hfDescBlock->content }}</p>
@@ -618,11 +637,13 @@
             <div class="card__highlights">
               <h4 class="preview-editable"
                   contenteditable="true"
+                  id="hf-card-hl-title"
                   data-type="hl-title"
                   data-block-id="{{ $hfHlBlock->id }}"
                   data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $hfHlBlock]) }}">{{ $hfHlHeading }}</h4>
               <pre class="preview-editable preview-editable--multiline"
                    contenteditable="true"
+                   id="hf-card-hl-body"
                    data-type="hl-body"
                    data-block-id="{{ $hfHlBlock->id }}"
                    data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $hfHlBlock]) }}">{{ $hfHlBody }}</pre>
@@ -632,6 +653,20 @@
         </div>
       </div>
     </div>
+
+    <div class="hero-edit-actions">
+      <button type="button" id="hf-card-save" class="btn btn-save"
+              data-entry-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}"
+              data-desc-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+              data-desc-update-url="{{ $hfDescBlock ? route('admin.pages.blocks.update', [$page, $entry, $hfDescBlock]) : '' }}"
+              data-desc-has-block="{{ $hfDescBlock ? '1' : '0' }}"
+              data-hl-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+              data-hl-update-url="{{ $hfHlBlock ? route('admin.pages.blocks.update', [$page, $entry, $hfHlBlock]) : '' }}"
+              data-hl-has-block="{{ $hfHlBlock ? '1' : '0' }}">
+        Speichern
+      </button>
+    </div>
+
   </div>
   @endif
   @endif
@@ -982,8 +1017,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.querySelectorAll('.preview-editable').forEach(el => {
-    // Badge: Picker bei Focus zeigen
-    if (el.dataset.type === 'block' && el.classList.contains('badge')) {
+    const isBadge = el.dataset.type === 'block' && el.classList.contains('badge');
+
+    // Badge: Picker bei Focus zeigen + auto-save on blur
+    if (isBadge) {
       el.addEventListener('focus', () => showPicker(el));
       el.addEventListener('blur',  () => setTimeout(hidePicker, 150));
     }
@@ -996,40 +1033,24 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Blur-save nur noch für Badges — alles andere läuft über Speichern-Button
+    if (!isBadge) return;
+
     el.addEventListener('blur', async () => {
       const text = el.innerText.replace(/\n{3,}/g, '\n\n').trim();
       const url  = el.dataset.url;
-      const type = el.dataset.type;
 
       const body = new FormData();
       body.append('_method', 'PUT');
       body.append('_token', csrfToken);
-
-      if (type === 'entry-title') {
-        body.append('title', text);
-      } else if (type === 'hl-title' || type === 'hl-body') {
-        // Titel + Body zusammensetzen
-        const titleEl = document.querySelector('[data-type="hl-title"]');
-        const bodyEl  = document.querySelector('[data-type="hl-body"]');
-        const title   = titleEl?.innerText.trim() ?? '';
-        const hlBody  = bodyEl?.innerText.trim() ?? '';
-        body.append('content', title ? title + '\n' + hlBody : hlBody);
-      } else {
-        body.append('content', text);
-        if (el.dataset.color) body.append('color', el.dataset.color);
-      }
+      body.append('content', text);
+      if (el.dataset.color) body.append('color', el.dataset.color);
 
       try {
         const res = await fetch(url, { method: 'POST', body });
         if (res.ok) {
-          // Grüner Flash
           el.classList.add('preview-editable--saved');
           setTimeout(() => el.classList.remove('preview-editable--saved'), 1200);
-          // Titel-Input synchronisieren
-          if (type === 'entry-title') {
-            const titleInput = document.querySelector('input[name="title"]');
-            if (titleInput) titleInput.value = text;
-          }
         } else {
           el.classList.add('preview-editable--error');
           setTimeout(() => el.classList.remove('preview-editable--error'), 2000);
@@ -1040,6 +1061,150 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // ── Cards: Speichern-Button ──────────────────────────────────────────────────
+  const cardSaveBtn = document.getElementById('card-save');
+  if (cardSaveBtn) {
+    cardSaveBtn.addEventListener('click', async () => {
+      const title   = document.getElementById('card-title')?.innerText.trim() ?? '';
+      const desc    = document.getElementById('card-desc')?.innerText.replace(/\n{3,}/g, '\n\n').trim() ?? '';
+      const hlTitle = document.getElementById('card-hl-title')?.innerText.trim() ?? '';
+      const hlBody  = document.getElementById('card-hl-body')?.innerText.trim() ?? '';
+      const hl      = hlTitle ? hlTitle + '\n' + hlBody : hlBody;
+
+      cardSaveBtn.disabled = true;
+
+      async function saveBlock(hasBlock, updateUrl, storeUrl, content) {
+        const body = new FormData();
+        body.append('_token', csrfToken);
+        body.append('content', content);
+        if (hasBlock && updateUrl) {
+          body.append('_method', 'PUT');
+          return fetch(updateUrl, { method: 'POST', body });
+        }
+        body.append('type', 'text');
+        return fetch(storeUrl, { method: 'POST', body });
+      }
+
+      try {
+        const titleBody = new FormData();
+        titleBody.append('_method', 'PUT');
+        titleBody.append('_token', csrfToken);
+        titleBody.append('title', title);
+        const r1 = await fetch(cardSaveBtn.dataset.entryUrl, { method: 'POST', body: titleBody });
+
+        const r2 = await saveBlock(
+          cardSaveBtn.dataset.descHasBlock === '1',
+          cardSaveBtn.dataset.descUpdateUrl,
+          cardSaveBtn.dataset.descStoreUrl,
+          desc
+        );
+
+        const r3 = await saveBlock(
+          cardSaveBtn.dataset.hlHasBlock === '1',
+          cardSaveBtn.dataset.hlUpdateUrl,
+          cardSaveBtn.dataset.hlStoreUrl,
+          hl
+        );
+
+        const allOk = r1.ok && r2.ok && r3.ok;
+        if (allOk) {
+          cardSaveBtn.textContent = 'Gespeichert ✓';
+          cardSaveBtn.classList.add('btn-save--saved');
+          const needsReload = cardSaveBtn.dataset.descHasBlock === '0' || cardSaveBtn.dataset.hlHasBlock === '0';
+          setTimeout(() => {
+            if (needsReload) {
+              location.reload();
+            } else {
+              cardSaveBtn.textContent = 'Speichern';
+              cardSaveBtn.classList.remove('btn-save--saved');
+              cardSaveBtn.disabled = false;
+            }
+          }, 1200);
+        } else {
+          cardSaveBtn.textContent = 'Fehler – erneut versuchen';
+          cardSaveBtn.disabled = false;
+          setTimeout(() => { cardSaveBtn.textContent = 'Speichern'; }, 2000);
+        }
+      } catch {
+        cardSaveBtn.textContent = 'Fehler – erneut versuchen';
+        cardSaveBtn.disabled = false;
+        setTimeout(() => { cardSaveBtn.textContent = 'Speichern'; }, 2000);
+      }
+    });
+  }
+
+  // ── Hero-Feature Karte: Speichern-Button ─────────────────────────────────────
+  const hfCardSaveBtn = document.getElementById('hf-card-save');
+  if (hfCardSaveBtn) {
+    hfCardSaveBtn.addEventListener('click', async () => {
+      const title   = document.getElementById('hf-card-title')?.innerText.trim() ?? '';
+      const desc    = document.getElementById('hf-card-desc')?.innerText.replace(/\n{3,}/g, '\n\n').trim() ?? '';
+      const hlTitle = document.getElementById('hf-card-hl-title')?.innerText.trim() ?? '';
+      const hlBody  = document.getElementById('hf-card-hl-body')?.innerText.trim() ?? '';
+      const hl      = hlTitle ? hlTitle + '\n' + hlBody : hlBody;
+
+      hfCardSaveBtn.disabled = true;
+
+      async function saveHfBlock(hasBlock, updateUrl, storeUrl, content) {
+        const body = new FormData();
+        body.append('_token', csrfToken);
+        body.append('content', content);
+        if (hasBlock && updateUrl) {
+          body.append('_method', 'PUT');
+          return fetch(updateUrl, { method: 'POST', body });
+        }
+        body.append('type', 'text');
+        return fetch(storeUrl, { method: 'POST', body });
+      }
+
+      try {
+        const titleBody = new FormData();
+        titleBody.append('_method', 'PUT');
+        titleBody.append('_token', csrfToken);
+        titleBody.append('title', title);
+        const r1 = await fetch(hfCardSaveBtn.dataset.entryUrl, { method: 'POST', body: titleBody });
+
+        const r2 = await saveHfBlock(
+          hfCardSaveBtn.dataset.descHasBlock === '1',
+          hfCardSaveBtn.dataset.descUpdateUrl,
+          hfCardSaveBtn.dataset.descStoreUrl,
+          desc
+        );
+
+        const r3 = await saveHfBlock(
+          hfCardSaveBtn.dataset.hlHasBlock === '1',
+          hfCardSaveBtn.dataset.hlUpdateUrl,
+          hfCardSaveBtn.dataset.hlStoreUrl,
+          hl
+        );
+
+        const allOk = r1.ok && r2.ok && r3.ok;
+        if (allOk) {
+          hfCardSaveBtn.textContent = 'Gespeichert ✓';
+          hfCardSaveBtn.classList.add('btn-save--saved');
+          const needsReload = hfCardSaveBtn.dataset.descHasBlock === '0' || hfCardSaveBtn.dataset.hlHasBlock === '0';
+          setTimeout(() => {
+            if (needsReload) {
+              location.reload();
+            } else {
+              hfCardSaveBtn.textContent = 'Speichern';
+              hfCardSaveBtn.classList.remove('btn-save--saved');
+              hfCardSaveBtn.disabled = false;
+            }
+          }, 1200);
+        } else {
+          hfCardSaveBtn.textContent = 'Fehler – erneut versuchen';
+          hfCardSaveBtn.disabled = false;
+          setTimeout(() => { hfCardSaveBtn.textContent = 'Speichern'; }, 2000);
+        }
+      } catch {
+        hfCardSaveBtn.textContent = 'Fehler – erneut versuchen';
+        hfCardSaveBtn.disabled = false;
+        setTimeout(() => { hfCardSaveBtn.textContent = 'Speichern'; }, 2000);
+      }
+    });
+  }
 
   // ── Feature: Bildseite per Button wechseln ──────────────────────────────────
   const imgSideToggle = document.getElementById('img-side-toggle');
