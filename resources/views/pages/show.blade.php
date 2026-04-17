@@ -46,18 +46,29 @@
     Noch keine Einträge vorhanden.
   </div>
 @else
+  @php
+    // intro_heading ist im heading-Block des Eintrags gespeichert, der einen solchen besitzt.
+    // intro_text liegt als text-Block am selben Eintrag, kollidiert aber bei route/feature mit
+    // echten Eintragsblöcken. Daher: intro_text direkt aus Page->description lesen (eigenes Feld,
+    // stabil gegenüber Umsortierungen).
+    $introEntry   = $page->entries->first(fn($e) => $e->blocks->firstWhere('type', 'heading'));
+    $isEn         = app()->getLocale() === 'en';
+    $introHeading = $introEntry?->blocks->firstWhere('type', $isEn ? 'heading_en' : 'heading')?->content
+                 ?? $introEntry?->blocks->firstWhere('type', 'heading')?->content;
+    $introText    = $page->localizedDescription() ?: null;
+  @endphp
   @switch($page->layout)
     @case('route')
-      @include('pages.layouts.route', ['entries' => $page->entries])
+      @include('pages.layouts.route', ['entries' => $page->entries, 'introHeading' => $introHeading, 'introText' => $introText])
       @break
     @case('feature')
-      @include('pages.layouts.feature', ['entries' => $page->entries])
+      @include('pages.layouts.feature', ['entries' => $page->entries, 'introHeading' => $introHeading, 'introText' => $introText])
       @break
     @case('hero-feature')
-      @include('pages.layouts.hero-feature', ['entries' => $page->entries])
+      @include('pages.layouts.hero-feature', ['entries' => $page->entries, 'introHeading' => $introHeading, 'introText' => $introText])
       @break
     @default
-      @include('pages.layouts.cards', ['entries' => $page->entries])
+      @include('pages.layouts.cards', ['entries' => $page->entries, 'introHeading' => $introHeading, 'introText' => $introText])
   @endswitch
 @endif
 

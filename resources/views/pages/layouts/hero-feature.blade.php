@@ -2,6 +2,16 @@
 <section class="content">
   <div class="container">
 
+    @if (!empty($introHeading))
+      <div class="section-intro">
+        <h2>{{ $introHeading }}</h2>
+        <div class="divider"></div>
+        @if (!empty($introText))
+          <p>{{ $introText }}</p>
+        @endif
+      </div>
+    @endif
+
     @php $hero = $entries->first(); @endphp
     @if ($hero)
       @php

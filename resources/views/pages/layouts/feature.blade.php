@@ -2,11 +2,13 @@
 <section class="content">
   <div class="container">
 
-    @php $introHeading = $entries->first()?->blocks->firstWhere('type', 'heading'); @endphp
-    @if ($introHeading)
+    @if (!empty($introHeading))
       <div class="section-intro">
-        <h2>{{ $introHeading->content }}</h2>
+        <h2>{{ $introHeading }}</h2>
         <div class="divider"></div>
+        @if (!empty($introText))
+          <p>{{ $introText }}</p>
+        @endif
       </div>
     @endif
 
@@ -34,7 +36,7 @@
             </div>
           @endif
           <div class="feature__body">
-            @if ($category && $category !== ($introHeading?->content))
+            @if ($category && $category !== $introHeading)
               <p class="feature__category">{{ $category }}</p>
             @endif
             @if ($infoFirst && $infoBlocks->isNotEmpty())

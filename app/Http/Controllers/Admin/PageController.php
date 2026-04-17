@@ -198,6 +198,11 @@ class PageController extends Controller
 
         // Intro-Blöcke nur updaten wenn die Felder gesendet wurden
         if ($request->has('intro_heading') || $request->has('intro_text') || $request->has('intro_heading_en') || $request->has('intro_text_en')) {
+            // intro_text/intro_text_en in Page.description/description_en spiegeln
+            $descUpdate = [];
+            if ($request->has('intro_text'))    $descUpdate['description']    = $data['intro_text']    ?? null;
+            if ($request->has('intro_text_en')) $descUpdate['description_en'] = $data['intro_text_en'] ?? null;
+            if ($descUpdate) $page->update($descUpdate);
             $introEntry = $page->entries()->orderBy('sort_order')->first();
             if ($introEntry) {
                 if ($request->has('intro_heading')) {

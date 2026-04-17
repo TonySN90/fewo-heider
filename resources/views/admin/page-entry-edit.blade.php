@@ -196,17 +196,6 @@
       }
     }
   @endphp
-  <div class="alert alert--cards">
-    <span class="material-symbols-rounded alert__icon--cards">route</span>
-    <div>
-      <strong>Route bearbeiten</strong>
-      <ul class="alert__list">
-        <li><b>Titel &amp; Beschreibung</b> — direkt in der Vorschau anklicken</li>
-        <li><b>Länge &amp; Dauer</b> — Stat-Kacheln rechts anklicken</li>
-        <li><b>Schwierigkeit</b> — Dropdown unter der Beschreibung</li>
-      </ul>
-    </div>
-  </div>
 
   <div class="table-card" style="margin-top:1.5rem">
     <div class="table-card__header">
@@ -302,17 +291,6 @@
     $titleClass      = 'feature__title';
     $textClass       = 'feature__text';
   @endphp
-  <div class="alert alert--cards">
-    <span class="material-symbols-rounded alert__icon--cards">star</span>
-    <div>
-      <strong>Feature bearbeiten</strong>
-      <ul class="alert__list">
-        <li><b>Bild</b> — Klick auf das Vorschaubild</li>
-        <li><b>Titel &amp; Beschreibung</b> — direkt in der Vorschau anklicken</li>
-        <li><b>Info-Items</b> — Icon wählen, Text bearbeiten; Abschnitt per ⠿ verschieben</li>
-      </ul>
-    </div>
-  </div>
 
   <div class="table-card" style="margin-top:1.5rem">
     <div class="table-card__header">

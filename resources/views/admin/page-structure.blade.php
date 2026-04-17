@@ -252,9 +252,9 @@
                     {{-- Modal: Kategorie bearbeiten --}}
                     <template id="edit-page-tpl-{{ $page->id }}">
                       @php
-                        $introEntry      = $page->entries->first();
+                        $introEntry      = $page->entries->first(fn($e) => $e->blocks->firstWhere('type', 'heading'));
                         $introHeading    = $introEntry?->blocks->firstWhere('type', 'heading')?->content ?? '';
-                        $introText       = $introEntry?->blocks->firstWhere('type', 'text')?->content ?? '';
+                        $introText       = $page->description ?? '';
                         $introHeadingEn  = $introEntry?->blocks->firstWhere('type', 'heading_en')?->content ?? '';
                         $introTextEn     = $introEntry?->blocks->firstWhere('type', 'text_en')?->content ?? '';
                         $updateUrl       = route('admin.pages.update', $page);

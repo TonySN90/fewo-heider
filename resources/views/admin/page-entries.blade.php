@@ -25,7 +25,7 @@
       <table>
         <thead>
           <tr>
-            @if ($page->layout === 'hero-feature') <th></th> @endif
+            <th></th>
             <th></th>
             <th>#</th>
             <th>Titel</th>
@@ -34,23 +34,19 @@
           </tr>
         </thead>
         <tbody id="entries-tbody"
-               @if ($page->layout === 'hero-feature')
-                 data-reorder-url="{{ route('admin.pages.entries.reorder', $page) }}"
-               @endif>
+               data-reorder-url="{{ route('admin.pages.entries.reorder', $page) }}">
           @foreach ($page->entries as $entry)
             @php $isHero = $page->layout === 'hero-feature' && $loop->first; @endphp
             <tr data-id="{{ $entry->id }}" @if ($isHero) data-fixed="true" @endif>
-              @if ($page->layout === 'hero-feature')
-                <td class="entry-list__drag-cell">
-                  @if (!$isHero)
-                    <span class="drag-handle" title="Verschieben">
-                      <span class="material-symbols-rounded">drag_indicator</span>
-                    </span>
-                  @else
-                    <span class="entry-list__hero-icon" title="Hero – fest">★</span>
-                  @endif
-                </td>
-              @endif
+              <td class="entry-list__drag-cell">
+                @if (!$isHero)
+                  <span class="drag-handle" title="Verschieben">
+                    <span class="material-symbols-rounded">drag_indicator</span>
+                  </span>
+                @else
+                  <span class="entry-list__hero-icon" title="Hero – fest">★</span>
+                @endif
+              </td>
               <td class="entry-list__img-cell">
                 @if ($entry->cover_image)
                   <img src="{{ Storage::url($entry->cover_image) }}" alt="" class="entry-list__thumb" />
@@ -94,7 +90,6 @@
         </tbody>
       </table>
 
-      @if ($page->layout === 'hero-feature')
       <script>
       (function () {
         const tbody = document.getElementById('entries-tbody');
@@ -143,7 +138,6 @@
             const prev = target.previousElementSibling;
             if (prev && prev !== dragRow && !prev.dataset.fixed) prev.classList.add('row--drop-after');
             else target.classList.add('row--drop-before');
-            // Nicht vor den Hero-Eintrag schieben
             const heroRow = tbody.querySelector('tr[data-fixed]');
             if (heroRow && target.previousElementSibling === heroRow) return;
             tbody.insertBefore(dragRow, target);
@@ -166,7 +160,6 @@
         }
       })();
       </script>
-      @endif
     @endif
   </div>
 
