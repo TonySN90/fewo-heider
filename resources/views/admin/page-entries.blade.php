@@ -17,47 +17,6 @@
     </button>
   </div>
 
-  @php
-    $layoutLabels = [
-      'cards'        => ['label' => 'Karten-Grid', 'icon' => 'grid_view',    'color' => '#3d7a6e'],
-      'feature'      => ['label' => 'Feature-Blöcke', 'icon' => 'view_agenda', 'color' => '#7a5e18'],
-      'route'        => ['label' => 'Routen-Liste', 'icon' => 'directions_bike', 'color' => '#2e6644'],
-      'hero-feature' => ['label' => 'Hero + Karten-Grid', 'icon' => 'star', 'color' => '#8b3a3a'],
-    ];
-    $lInfo = $layoutLabels[$page->layout] ?? $layoutLabels['cards'];
-  @endphp
-  @php $alertMod = ['cards'=>'cards','feature'=>'feature','route'=>'route','hero-feature'=>'hero'][$page->layout] ?? 'cards'; @endphp
-  <div class="alert alert--{{ $alertMod }}">
-    <span class="material-symbols-rounded alert__icon--{{ $alertMod }}">{{ $lInfo['icon'] }}</span>
-    <div>
-      <strong>Layout: {{ $lInfo['label'] }}</strong>
-      <ul class="alert__list">
-        @switch($page->layout)
-          @case('cards')
-            <li><b>1. Text</b> — Beschreibung · <code>- Punkt</code> = Listenpunkt · Leerzeile = Abstand</li>
-            <li><b>2. Text</b> — Highlights (<code>- Punkt</code> = Listenpunkt, 1. Zeile = Überschrift)</li>
-            <li><b>Badges</b> — farbige Labels (Schwierigkeit, Distanz …)</li>
-            @break
-          @case('feature')
-            <li><b>1. Heading</b> — Kategorie-Label (klein, farbig)</li>
-            <li><b>1. Text</b> — Hauptbeschreibung</li>
-            <li><b>Letzter Text</b> — Info-Zeilen, getrennt mit ·</li>
-            @break
-          @case('route')
-            <li><b>1. Heading</b> — Routen-Label (z.B. „Mehrtages-Tour")</li>
-            <li><b>1. Text</b> — Streckenbeschreibung</li>
-            <li><b>Letzter Text</b> — Stats, getrennt mit · (z.B. „Länge: 275 km · Etappen: 5")</li>
-            @break
-          @case('hero-feature')
-            <li><b>1. Eintrag</b> — großer Hero-Block (Bild, Titel, Haupttext + Fakten-Zeile z.B. <code>Fläche: 200 m² · Zimmer: 4</code>)</li>
-            <li><b>Weitere Einträge</b> — 3-spaltiges Karten-Grid (Badges, Titel, Beschreibung, Highlights)</li>
-            @break
-          @default
-            <li>Jeder Eintrag wird als Karte gerendert.</li>
-        @endswitch
-      </ul>
-    </div>
-  </div>
 
   <div class="table-card">
     @if ($page->entries->isEmpty())

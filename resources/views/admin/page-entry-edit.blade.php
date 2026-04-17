@@ -13,20 +13,6 @@
     </div>
   </div>
 
-  @if ($page->layout === 'cards')
-  <div class="alert alert--cards">
-    <span class="material-symbols-rounded alert__icon--cards">tips_and_updates</span>
-    <div>
-      <strong>Karte bearbeiten</strong>
-      <ul class="alert__list">
-        <li><b>Bild</b> — Klick auf das Vorschaubild</li>
-        <li><b>Badges</b> — Farbe wählbar, verschiebbar, löschbar</li>
-        <li><b>Titel &amp; Texte</b> — direkt in der Karte anklicken</li>
-        <li><b>Highlights</b> — <code>- Text</code> = Listenpunkt, 1. Zeile = Überschrift</li>
-      </ul>
-    </div>
-  </div>
-  @endif
 
   {{-- URL-Info --}}
   @php
