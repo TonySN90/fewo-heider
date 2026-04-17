@@ -620,3 +620,52 @@ tr.row--drop-before td {
 tr.row--drop-after td {
   border-bottom: 2px solid var(--color-primary, #4f6ef7);
 }
+
+// ── Entry-List: Bild- und Drag-Spalten ───────────────────────────────────────
+.entry-list__drag-cell {
+  width: 2rem;
+  padding: 0 0.5rem;
+}
+
+.entry-list__hero-icon {
+  color: #ccc;
+  font-size: 0.7rem;
+  line-height: 1;
+  display: block;
+  text-align: center;
+}
+
+.entry-list__img-cell {
+  width: 56px;
+  padding: 0.25rem 0.5rem;
+}
+
+.entry-list__thumb {
+  width: 48px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
+.entry-list__thumb-placeholder {
+  width: 48px;
+  height: 36px;
+  border-radius: 4px;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .material-symbols-rounded {
+    font-size: 1rem;
+    color: #bbb;
+  }
+}
+
+.entry-list__hero-badge {
+  font-size: 0.7rem;
+  color: #8b3a3a;
+  font-weight: 700;
+  margin-left: 0.4rem;
+}

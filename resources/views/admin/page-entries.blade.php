@@ -9,7 +9,7 @@
         <span class="material-symbols-rounded">arrow_back</span>
         Zurück zur Seitenstruktur
       </a>
-      <h1>{{ $page->title }} <span style="font-weight:400;color:#888">– Einträge</span></h1>
+      <h1>{{ $page->title }} <span class="page-header__sub">– Einträge</span></h1>
     </div>
     <button class="btn btn-add" onclick="openModal('Neuer Eintrag', 'new-entry-tpl')">
       <span class="material-symbols-rounded">add</span>
@@ -20,7 +20,7 @@
 
   <div class="table-card">
     @if ($page->entries->isEmpty())
-      <p style="padding:1.75rem;color:#aaa">Noch keine Einträge vorhanden.</p>
+      <p class="table-empty">Noch keine Einträge vorhanden.</p>
     @else
       <table>
         <thead>
@@ -41,30 +41,29 @@
             @php $isHero = $page->layout === 'hero-feature' && $loop->first; @endphp
             <tr data-id="{{ $entry->id }}" @if ($isHero) data-fixed="true" @endif>
               @if ($page->layout === 'hero-feature')
-                <td style="width:2rem;padding:0 .5rem">
+                <td class="entry-list__drag-cell">
                   @if (!$isHero)
                     <span class="drag-handle" title="Verschieben">
                       <span class="material-symbols-rounded">drag_indicator</span>
                     </span>
                   @else
-                    <span style="color:#ccc;font-size:.7rem;line-height:1;display:block;text-align:center" title="Hero – fest">★</span>
+                    <span class="entry-list__hero-icon" title="Hero – fest">★</span>
                   @endif
                 </td>
               @endif
-              <td style="width:56px;padding:0.25rem 0.5rem">
+              <td class="entry-list__img-cell">
                 @if ($entry->cover_image)
-                  <img src="{{ Storage::url($entry->cover_image) }}" alt=""
-                       style="width:48px;height:36px;object-fit:cover;border-radius:4px;display:block" />
+                  <img src="{{ Storage::url($entry->cover_image) }}" alt="" class="entry-list__thumb" />
                 @else
-                  <div style="width:48px;height:36px;border-radius:4px;background:#eee;display:flex;align-items:center;justify-content:center">
-                    <span class="material-symbols-rounded" style="font-size:1rem;color:#bbb">image</span>
+                  <div class="entry-list__thumb-placeholder">
+                    <span class="material-symbols-rounded">image</span>
                   </div>
                 @endif
               </td>
               <td>{{ $entry->sort_order }}</td>
               <td>
                 {{ $entry->title }}
-                @if ($isHero) <span style="font-size:.7rem;color:#8b3a3a;font-weight:700;margin-left:.4rem">Hero</span> @endif
+                @if ($isHero) <span class="entry-list__hero-badge">Hero</span> @endif
               </td>
               <td><code>/ruegen/{{ $page->slug }}/{{ $entry->slug }}</code></td>
               <td class="table__actions">
