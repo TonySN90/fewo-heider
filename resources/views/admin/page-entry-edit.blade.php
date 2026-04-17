@@ -411,6 +411,231 @@
   </div>
   @endif
 
+  {{-- Hero + Karten-Grid Editor --}}
+  @if ($page->layout === 'hero-feature')
+  @php
+    $isHeroEntry = $page->entries->first()?->id === $entry->id;
+  @endphp
+
+  @if ($isHeroEntry)
+  {{-- Hero-Eintrag --}}
+  @php
+    $heroTextBlocks = $entry->blocks->where('type', 'text')->values();
+    $heroTextBlock  = $heroTextBlocks->first();
+    $heroFactsBlock = $heroTextBlocks->skip(1)->first();
+  @endphp
+  <div class="table-card" style="margin-top:1.5rem">
+    <div class="table-card__header">
+      <h2>Vorschau</h2>
+      <span style="font-size:.8rem;color:#aaa">
+        <span class="material-symbols-rounded" style="font-size:.9rem;vertical-align:middle">edit</span>
+        Klicke direkt in die Vorschau zum Bearbeiten
+      </span>
+    </div>
+    <div class="entry-preview entry-preview--hero">
+      <div class="hero-feature--edit" id="hero-card">
+
+        <div class="hero-feature__img hero-feature__img--clickable" id="preview-img-wrap"
+             onclick="document.getElementById('preview-img-upload').click()"
+             title="Klicken um Bild zu ändern">
+          @if ($entry->cover_image)
+            <img id="preview-img" src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" />
+          @else
+            <div id="preview-img-placeholder" class="card__img-placeholder">
+              <span class="material-symbols-rounded">add_photo_alternate</span>
+              <span>Bild hochladen</span>
+            </div>
+          @endif
+          <div class="card__img-overlay">
+            <span class="material-symbols-rounded">photo_camera</span>
+          </div>
+        </div>
+        <input type="file" id="preview-img-upload"
+               accept="image/*" style="display:none"
+               data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}" />
+
+        <div class="hero-feature__body">
+          <h2 class="hero-feature__title preview-editable"
+              contenteditable="true"
+              id="hero-title"
+              data-type="entry-title"
+              data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">{{ $entry->title }}</h2>
+
+          <p class="hero-feature__text preview-editable preview-editable--multiline"
+             contenteditable="true"
+             id="hero-text">{{ $heroTextBlock?->content ?? '' }}</p>
+
+          @php
+            $factsRaw     = $heroFactsBlock?->content ?? '';
+            $factsPreview = [];
+            foreach (array_filter(array_map('trim', explode('·', $factsRaw))) as $part) {
+              if (str_contains($part, ':')) {
+                [$fl, $fv] = array_map('trim', explode(':', $part, 2));
+                $factsPreview[] = ['label' => $fl, 'value' => $fv];
+              }
+            }
+          @endphp
+          <div class="hero-feature__facts" id="hero-facts-grid">
+            @foreach ($factsPreview as $i => $f)
+              <div class="fact hero-fact">
+                <p class="fact__label"
+                   contenteditable="true"
+                   id="hero-fact-label-{{ $i }}">{{ $f['label'] }}</p>
+                <p class="fact__value"
+                   contenteditable="true"
+                   id="hero-fact-value-{{ $i }}">{{ $f['value'] }}</p>
+              </div>
+            @endforeach
+            <div class="fact hero-fact hero-fact--add">
+              <p class="fact__label"
+                 contenteditable="true"
+                 id="hero-fact-label-new"
+                 data-placeholder="Bezeichnung"></p>
+              <p class="fact__value"
+                 contenteditable="true"
+                 id="hero-fact-value-new"
+                 data-placeholder="Wert"></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="hero-edit-actions">
+        <button type="button" id="hero-save" class="btn btn-save"
+                data-entry-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}"
+                data-text-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                data-text-update-url="{{ $heroTextBlock ? route('admin.pages.blocks.update', [$page, $entry, $heroTextBlock]) : '' }}"
+                data-text-has-block="{{ $heroTextBlock ? '1' : '0' }}"
+                data-facts-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                data-facts-update-url="{{ $heroFactsBlock ? route('admin.pages.blocks.update', [$page, $entry, $heroFactsBlock]) : '' }}"
+                data-facts-has-block="{{ $heroFactsBlock ? '1' : '0' }}">
+          Speichern
+        </button>
+      </div>
+    </div>
+  </div>
+
+  @else
+  {{-- Karten-Eintrag im hero-feature-Grid --}}
+  @php
+    $hfTextBlocks = $entry->blocks->where('type', 'text')->values();
+    $hfDescBlock  = $hfTextBlocks->first();
+    $hfHlBlock    = $hfTextBlocks->skip(1)->first();
+  @endphp
+  <div class="table-card" style="margin-top:1.5rem">
+    <div class="table-card__header">
+      <h2>Vorschau</h2>
+      <span style="font-size:.8rem;color:#aaa">
+        <span class="material-symbols-rounded" style="font-size:.9rem;vertical-align:middle">edit</span>
+        Klicke direkt in die Vorschau zum Bearbeiten
+      </span>
+    </div>
+    <div class="entry-preview">
+      <div class="card">
+        <div class="card__img card__img--clickable" id="preview-img-wrap"
+             onclick="document.getElementById('preview-img-upload').click()"
+             title="Klicken um Bild zu ändern">
+          @if ($entry->cover_image)
+            <img id="preview-img" src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" />
+          @else
+            <div id="preview-img-placeholder" class="card__img-placeholder">
+              <span class="material-symbols-rounded">add_photo_alternate</span>
+              <span>Bild hochladen</span>
+            </div>
+          @endif
+          <div class="card__img-overlay">
+            <span class="material-symbols-rounded">photo_camera</span>
+          </div>
+        </div>
+        <input type="file" id="preview-img-upload"
+               accept="image/*" style="display:none"
+               data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}" />
+        <div class="card__body">
+
+          <div class="card__meta" id="preview-badges">
+            @foreach ($entry->blocks->where('type', 'badge') as $b)
+              <span class="badge-wrap">
+                <span class="badge-drag-handle" title="Verschieben">⠿</span>
+                <span class="badge badge--{{ $b->color ?? 'gray' }} preview-editable"
+                      contenteditable="true"
+                      draggable="false"
+                      data-type="block"
+                      data-block-id="{{ $b->id }}"
+                      data-color="{{ $b->color ?? 'gray' }}"
+                      data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $b]) }}">{{ $b->content }}</span>
+                <button type="button" class="badge-delete-btn"
+                        data-delete-url="{{ route('admin.pages.blocks.destroy', [$page, $entry, $b]) }}"
+                        title="Badge löschen">×</button>
+              </span>
+            @endforeach
+            <button type="button" id="badge-add-btn" class="badge-add-btn" title="Badge hinzufügen">
+              <span class="material-symbols-rounded">add</span>
+            </button>
+          </div>
+
+          <div id="badge-color-picker" class="badge-color-picker" style="display:none">
+            <button type="button" data-color="green"  class="badge badge--green">Grün</button>
+            <button type="button" data-color="blue"   class="badge badge--blue">Blau</button>
+            <button type="button" data-color="orange" class="badge badge--orange">Orange</button>
+            <button type="button" data-color="gray"   class="badge badge--gray">Grau</button>
+          </div>
+
+          <div id="badge-new-form" class="badge-new-form" style="display:none">
+            <input type="text" id="badge-new-input" placeholder="Badge-Text" maxlength="60" />
+            <div class="badge-new-form__colors">
+              <button type="button" data-color="green"  class="badge badge--green">Grün</button>
+              <button type="button" data-color="blue"   class="badge badge--blue">Blau</button>
+              <button type="button" data-color="orange" class="badge badge--orange">Orange</button>
+              <button type="button" data-color="gray"   class="badge badge--gray">Grau</button>
+            </div>
+            <div class="badge-new-form__actions">
+              <button type="button" id="badge-new-save" class="btn btn-save btn-save--sm">Hinzufügen</button>
+              <button type="button" id="badge-new-cancel" class="btn btn-cancel">Abbrechen</button>
+            </div>
+          </div>
+
+          <h3 class="card__title preview-editable"
+              contenteditable="true"
+              data-type="entry-title"
+              data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">{{ $entry->title }}</h3>
+
+          @if ($hfDescBlock)
+            <p class="card__text preview-editable preview-editable--multiline"
+               contenteditable="true"
+               data-type="block"
+               data-block-id="{{ $hfDescBlock->id }}"
+               data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $hfDescBlock]) }}">{{ $hfDescBlock->content }}</p>
+          @endif
+
+          @if ($hfHlBlock)
+            @php
+              $hfHlLines   = explode("\n", $hfHlBlock->content);
+              $hfFirstLine = trim($hfHlLines[0] ?? '');
+              $hfHlHeading = (!str_starts_with($hfFirstLine, '- ') && $hfFirstLine !== '') ? $hfFirstLine : 'Highlights';
+              $hfHlBody    = implode("\n", array_slice($hfHlLines, $hfHlHeading !== 'Highlights' || count($hfHlLines) > 1 ? 1 : 0));
+            @endphp
+            <div class="card__highlights">
+              <h4 class="preview-editable"
+                  contenteditable="true"
+                  data-type="hl-title"
+                  data-block-id="{{ $hfHlBlock->id }}"
+                  data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $hfHlBlock]) }}">{{ $hfHlHeading }}</h4>
+              <pre class="preview-editable preview-editable--multiline"
+                   contenteditable="true"
+                   data-type="hl-body"
+                   data-block-id="{{ $hfHlBlock->id }}"
+                   data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $hfHlBlock]) }}">{{ $hfHlBody }}</pre>
+            </div>
+          @endif
+
+        </div>
+      </div>
+    </div>
+  </div>
+  @endif
+  @endif
+
   {{-- SEO --}}
   <div class="table-card" style="margin-top:1.5rem">
     <div class="table-card__header"><h2>SEO</h2></div>
@@ -1125,6 +1350,87 @@ document.addEventListener('DOMContentLoaded', () => {
       chip.querySelector('.info-chip__text')?.focus();
     });
   })();
+
+  // ── Hero-Feature: Hero-Eintrag speichern ────────────────────────────────────
+  const heroSaveBtn = document.getElementById('hero-save');
+  if (heroSaveBtn) {
+    heroSaveBtn.addEventListener('click', async () => {
+      const title = document.getElementById('hero-title')?.innerText.trim() ?? '';
+      const text  = document.getElementById('hero-text')?.innerText.trim() ?? '';
+
+      const factParts = [];
+      document.querySelectorAll('#hero-facts-grid .hero-fact:not(.hero-fact--add)').forEach(el => {
+        const label = el.querySelector('.fact__label')?.innerText.trim();
+        const value = el.querySelector('.fact__value')?.innerText.trim();
+        if (label && value) factParts.push(`${label}: ${value}`);
+      });
+      const newLabel = document.getElementById('hero-fact-label-new')?.innerText.trim();
+      const newValue = document.getElementById('hero-fact-value-new')?.innerText.trim();
+      if (newLabel && newValue) factParts.push(`${newLabel}: ${newValue}`);
+      const facts = factParts.join(' · ');
+
+      heroSaveBtn.disabled = true;
+
+      async function saveBlock(hasBlock, updateUrl, storeUrl, content) {
+        const body = new FormData();
+        body.append('_token', csrfToken);
+        body.append('content', content);
+        if (hasBlock && updateUrl) {
+          body.append('_method', 'PUT');
+          return fetch(updateUrl, { method: 'POST', body });
+        }
+        body.append('type', 'text');
+        return fetch(storeUrl, { method: 'POST', body });
+      }
+
+      try {
+        const titleBody = new FormData();
+        titleBody.append('_method', 'PUT');
+        titleBody.append('_token', csrfToken);
+        titleBody.append('title', title);
+        const r1 = await fetch(heroSaveBtn.dataset.entryUrl, { method: 'POST', body: titleBody });
+
+        const r2 = await saveBlock(
+          heroSaveBtn.dataset.textHasBlock === '1',
+          heroSaveBtn.dataset.textUpdateUrl,
+          heroSaveBtn.dataset.textStoreUrl,
+          text
+        );
+
+        const r3 = await saveBlock(
+          heroSaveBtn.dataset.factsHasBlock === '1',
+          heroSaveBtn.dataset.factsUpdateUrl,
+          heroSaveBtn.dataset.factsStoreUrl,
+          facts
+        );
+
+        const allOk = r1.ok && r2.ok && r3.ok;
+        if (allOk) {
+          heroSaveBtn.textContent = 'Gespeichert ✓';
+          heroSaveBtn.classList.add('btn-save--saved');
+          const newFactAdded = !!(newLabel && newValue);
+          const needsReload = heroSaveBtn.dataset.textHasBlock === '0' || heroSaveBtn.dataset.factsHasBlock === '0' || newFactAdded;
+          setTimeout(() => {
+            if (needsReload) {
+              location.reload();
+            } else {
+              heroSaveBtn.textContent = 'Speichern';
+              heroSaveBtn.classList.remove('btn-save--saved');
+              heroSaveBtn.disabled = false;
+            }
+          }, 1200);
+        } else {
+          heroSaveBtn.textContent = 'Fehler – erneut versuchen';
+          heroSaveBtn.disabled = false;
+          setTimeout(() => { heroSaveBtn.textContent = 'Speichern'; }, 2000);
+        }
+      } catch {
+        heroSaveBtn.textContent = 'Fehler – erneut versuchen';
+        heroSaveBtn.disabled = false;
+        setTimeout(() => { heroSaveBtn.textContent = 'Speichern'; }, 2000);
+      }
+    });
+  }
 
   // ── Route: Diff-Select live einfärben ───────────────────────────────────────
   const routeDiffSelect = document.getElementById('route-diff');

@@ -1,30 +1,15 @@
-{{-- Layout: hero-feature (schloesser-parks) --}}
+{{-- Layout: hero-feature --}}
 <section class="content">
   <div class="container">
-
-    @php $introHeading = $entries->first()?->blocks->firstWhere('type', 'heading'); @endphp
-    @if ($introHeading)
-      <div class="section-intro">
-        <h2>{{ $introHeading->content }}</h2>
-        <div class="divider"></div>
-        @php $introText = $entries->first()?->blocks->firstWhere('type', 'text'); @endphp
-        @if ($introText)
-          <p>{{ $introText->content }}</p>
-        @endif
-      </div>
-    @endif
 
     @php $hero = $entries->first(); @endphp
     @if ($hero)
       @php
-        $heroBlocks = $hero->blocks;
-        $heroTexts  = $heroBlocks->where('type', 'text')->values();
-        $heroDesc1  = $heroTexts->first()?->content;
-        $heroDesc2  = $heroTexts->skip(1)->first()?->content;
-        // Facts aus letztem Block (Entfernung: X · Turmhöhe: Y etc.)
-        $factsLine  = $heroTexts->last()?->content;
+        $heroTexts  = $hero->blocks->where('type', 'text')->values();
+        $heroDesc   = $heroTexts->first()?->content;
+        $factsLine  = $heroTexts->skip(1)->first()?->content;
         $facts = [];
-        if ($factsLine && $factsLine !== $heroDesc1) {
+        if ($factsLine) {
             foreach (array_filter(array_map('trim', explode('·', $factsLine))) as $part) {
                 if (str_contains($part, ':')) {
                     [$label, $value] = array_map('trim', explode(':', $part, 2));
@@ -41,11 +26,8 @@
         @endif
         <div class="hero-feature__body">
           <h2 class="hero-feature__title">{{ $hero->title }}</h2>
-          @if ($heroDesc1)
-            <p class="hero-feature__text">{{ $heroDesc1 }}</p>
-          @endif
-          @if ($heroDesc2 && $heroDesc2 !== $factsLine)
-            <p class="hero-feature__text" style="margin-top:.75rem">{{ $heroDesc2 }}</p>
+          @if ($heroDesc)
+            <p class="hero-feature__text">{{ $heroDesc }}</p>
           @endif
           @if (count($facts) > 0)
             <div class="hero-feature__facts">
@@ -66,13 +48,11 @@
       <div class="cards cards--three">
         @foreach ($entries->skip(1) as $entry)
           @php
-            $blocks   = $entry->blocks;
-            $texts    = $blocks->where('type', 'text')->values();
-            $desc     = $texts->first()?->content;
-            $yearLine = $texts->last()?->content;
-            $year     = ($yearLine && str_contains($yearLine, ':')) ? null : $yearLine;
-            // Jahr aus Heading holen
-            $headings = $blocks->where('type', 'heading')->values();
+            $blocks      = $entry->blocks;
+            $badgeBlocks = $blocks->where('type', 'badge');
+            $textBlocks  = $blocks->where('type', 'text')->values();
+            $desc        = $textBlocks->first()?->content;
+            $highlights  = $textBlocks->skip(1)->first()?->content;
           @endphp
           <div class="card">
             @if ($entry->cover_image)
@@ -81,12 +61,71 @@
               </div>
             @endif
             <div class="card__body">
-              @if ($year)
-                <p class="card__year">{{ $year }}</p>
+              @if ($badgeBlocks->isNotEmpty())
+                <div class="card__meta">
+                  @foreach ($badgeBlocks as $badge)
+                    <span class="badge badge--{{ $badge->color ?? 'gray' }}">{{ $badge->content }}</span>
+                  @endforeach
+                </div>
               @endif
               <h3 class="card__title">{{ $entry->title }}</h3>
               @if ($desc)
-                <p class="card__text">{{ $desc }}</p>
+                @php
+                  $descNorm  = preg_replace('/\n{3,}/', "\n\n", str_replace(["\r\n", "\r"], "\n", $desc));
+                  $descLines = explode("\n", $descNorm);
+                  $inList    = false;
+                  $lastEmpty = false;
+                @endphp
+                @foreach ($descLines as $line)
+                  @php $line = trim($line); @endphp
+                  @if (str_starts_with($line, '- '))
+                    @if (!$inList) <ul class="card__text-list"> @php $inList = true; @endphp @endif
+                    <li>{{ substr($line, 2) }}</li>
+                  @else
+                    @if ($inList) </ul> @php $inList = false; @endphp @endif
+                    @if ($line !== '')
+                      @php $lastEmpty = false; @endphp
+                      <p class="card__text">{{ $line }}</p>
+                    @elseif (!$lastEmpty)
+                      @php $lastEmpty = true; @endphp
+                      <br>
+                    @endif
+                  @endif
+                @endforeach
+                @if ($inList) </ul> @endif
+              @endif
+              @if ($highlights)
+                @php
+                  $hlLines   = explode("\n", $highlights);
+                  $firstLine = trim($hlLines[0] ?? '');
+                  $hlHeading = (!str_starts_with($firstLine, '- ') && $firstLine !== '') ? $firstLine : null;
+                  $hlBody    = $hlHeading ? array_slice($hlLines, 1) : $hlLines;
+                @endphp
+                <div class="card__highlights">
+                  @if ($hlHeading)
+                    <h4>{{ $hlHeading }}</h4>
+                  @endif
+                  @php $listItems = array_filter($hlBody, fn($l) => str_starts_with(trim($l), '- ')); @endphp
+                  @if (count($listItems))
+                    <ul>
+                      @foreach ($hlBody as $line)
+                        @php $line = trim($line); @endphp
+                        @if (str_starts_with($line, '- '))
+                          <li>{{ substr($line, 2) }}</li>
+                        @elseif ($line !== '')
+                          </ul><p>{{ $line }}</p><ul>
+                        @endif
+                      @endforeach
+                    </ul>
+                  @else
+                    @foreach ($hlBody as $line)
+                      @php $line = trim($line); @endphp
+                      @if ($line !== '')
+                        <p>{{ $line }}</p>
+                      @endif
+                    @endforeach
+                  @endif
+                </div>
               @endif
             </div>
           </div>

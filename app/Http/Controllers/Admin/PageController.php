@@ -326,6 +326,28 @@ class PageController extends Controller
                     'sort_order' => $p['sort_order'],
                 ]);
             }
+        } elseif ($page->layout === 'hero-feature') {
+            $isHero = $entry->sort_order === 1;
+            if ($isHero) {
+                $placeholders = [
+                    ['type' => 'text', 'content' => 'Beschreibung des Highlights – was macht diesen Ort oder dieses Thema besonders?', 'sort_order' => 1],
+                    ['type' => 'text', 'content' => 'Fläche: 200 m² · Zimmer: 4 · Baujahr: 1890', 'sort_order' => 2],
+                ];
+            } else {
+                $placeholders = [
+                    ['type' => 'badge',  'content' => 'Neu',  'color' => 'green', 'sort_order' => 1],
+                    ['type' => 'text',   'content' => 'Kurze Beschreibung dieser Karte.', 'sort_order' => 2],
+                ];
+            }
+            foreach ($placeholders as $p) {
+                PageEntryBlock::create([
+                    'page_entry_id' => $entry->id,
+                    'type'          => $p['type'],
+                    'content'       => $p['content'],
+                    'color'         => $p['color'] ?? null,
+                    'sort_order'    => $p['sort_order'],
+                ]);
+            }
         }
 
         return redirect()->route('admin.pages.entry.edit', [$page, $entry])

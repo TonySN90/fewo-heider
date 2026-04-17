@@ -49,8 +49,8 @@
             <li><b>Letzter Text</b> — Stats, getrennt mit · (z.B. „Länge: 275 km · Etappen: 5")</li>
             @break
           @case('hero-feature')
-            <li><b>1. Eintrag</b> — großer Hero-Block (1. Text = Haupttext, Letzter Text = Fakten)</li>
-            <li><b>Weitere Einträge</b> — 3-spaltiges Karten-Grid</li>
+            <li><b>1. Eintrag</b> — großer Hero-Block (Bild, Titel, Haupttext + Fakten-Zeile z.B. <code>Fläche: 200 m² · Zimmer: 4</code>)</li>
+            <li><b>Weitere Einträge</b> — 3-spaltiges Karten-Grid (Badges, Titel, Beschreibung, Highlights)</li>
             @break
           @default
             <li>Jeder Eintrag wird als Karte gerendert.</li>
