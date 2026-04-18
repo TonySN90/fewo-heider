@@ -12,18 +12,20 @@
       </div>
     @endif
 
+    @php $isEn = app()->getLocale() === 'en'; @endphp
     <div class="place-list">
       @foreach ($entries as $entry)
         @php
           $blocks     = $entry->blocks;
           $textBlocks = $blocks->where('type', 'text')->values();
+          $textEnBlock = $blocks->firstWhere('type', 'text_en');
           $infoBlocks = $blocks->where('type', 'info')->values();
-          $desc       = $textBlocks->first()?->content;
+          $desc       = ($isEn && $textEnBlock) ? $textEnBlock->content : $textBlocks->first()?->content;
         @endphp
         <div class="place {{ $entry->image_position === 'right' ? 'place--img-right' : '' }}">
           @if ($entry->cover_image)
             <div class="place__img">
-              <img src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" loading="lazy" />
+              <img src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->localizedTitle() }}" loading="lazy" />
             </div>
           @endif
           <div class="place__body">
@@ -37,7 +39,7 @@
                 @endforeach
               </div>
             @endif
-            <h2 class="place__title">{{ $entry->title }}</h2>
+            <h2 class="place__title">{{ $entry->localizedTitle() }}</h2>
             @if ($desc)
               <p class="place__text">{{ $desc }}</p>
             @endif

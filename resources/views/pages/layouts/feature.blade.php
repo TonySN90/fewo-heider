@@ -12,6 +12,7 @@
       </div>
     @endif
 
+    @php $isEn = app()->getLocale() === 'en'; @endphp
     <div class="features">
       @foreach ($entries as $i => $entry)
         @php
@@ -19,11 +20,12 @@
           $blocks     = $entry->blocks->sortBy('sort_order');
           $headings   = $blocks->where('type', 'heading')->values();
           $textBlocks = $blocks->where('type', 'text')->values();
+          $textEnBlocks = $blocks->where('type', 'text_en')->values();
           $infoBlocks = $blocks->where('type', 'info')->values();
 
           $category = $headings->skip(1)->first()?->content ?? $headings->first()?->content;
-          $desc1 = $textBlocks->first()?->content;
-          $desc2 = $textBlocks->skip(1)->first()?->content;
+          $desc1 = ($isEn && $textEnBlocks->isNotEmpty()) ? $textEnBlocks->first()->content : $textBlocks->first()?->content;
+          $desc2 = ($isEn && $textEnBlocks->count() > 1) ? $textEnBlocks->skip(1)->first()->content : $textBlocks->skip(1)->first()?->content;
 
           // Info-Items vor oder nach Text? Vergleich der sort_order
           $infoFirst = $infoBlocks->isNotEmpty() && $textBlocks->isNotEmpty()
@@ -49,7 +51,7 @@
                 @endforeach
               </div>
             @endif
-            <h2 class="feature__title">{{ $entry->title }}</h2>
+            <h2 class="feature__title">{{ $entry->localizedTitle() }}</h2>
             @if ($desc1)
               <p class="feature__text">{{ $desc1 }}</p>
             @endif

@@ -12,11 +12,15 @@
       </div>
     @endif
 
-    @php $hero = $entries->first(); @endphp
+    @php
+      $isEn = app()->getLocale() === 'en';
+      $hero = $entries->first();
+    @endphp
     @if ($hero)
       @php
         $heroTexts  = $hero->blocks->where('type', 'text')->values();
-        $heroDesc   = $heroTexts->first()?->content;
+        $heroTextEn = $hero->blocks->firstWhere('type', 'text_en');
+        $heroDesc   = ($isEn && $heroTextEn) ? $heroTextEn->content : $heroTexts->first()?->content;
         $factsLine  = $heroTexts->skip(1)->first()?->content;
         $facts = [];
         if ($factsLine) {
@@ -35,7 +39,7 @@
           </div>
         @endif
         <div class="hero-feature__body">
-          <h2 class="hero-feature__title">{{ $hero->title }}</h2>
+          <h2 class="hero-feature__title">{{ $hero->localizedTitle() }}</h2>
           @if ($heroDesc)
             <p class="hero-feature__text">{{ $heroDesc }}</p>
           @endif
@@ -61,8 +65,9 @@
             $blocks      = $entry->blocks;
             $badgeBlocks = $blocks->where('type', 'badge');
             $textBlocks  = $blocks->where('type', 'text')->values();
-            $desc        = $textBlocks->first()?->content;
-            $highlights  = $textBlocks->skip(1)->first()?->content;
+            $textEnBlocks = $blocks->where('type', 'text_en')->values();
+            $desc        = ($isEn && $textEnBlocks->isNotEmpty()) ? $textEnBlocks->first()->content : $textBlocks->first()?->content;
+            $highlights  = ($isEn && $textEnBlocks->count() > 1) ? $textEnBlocks->skip(1)->first()->content : $textBlocks->skip(1)->first()?->content;
           @endphp
           <div class="card">
             @if ($entry->cover_image)
@@ -78,7 +83,7 @@
                   @endforeach
                 </div>
               @endif
-              <h3 class="card__title">{{ $entry->title }}</h3>
+              <h3 class="card__title">{{ $entry->localizedTitle() }}</h3>
               @if ($desc)
                 @php
                   $descNorm  = preg_replace('/\n{3,}/', "\n\n", str_replace(["\r\n", "\r"], "\n", $desc));

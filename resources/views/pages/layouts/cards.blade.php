@@ -12,19 +12,23 @@
       </div>
     @endif
 
+    @php $isEn = app()->getLocale() === 'en'; @endphp
     <div class="cards">
       @foreach ($entries as $entry)
         @php
           $blocks      = $entry->blocks;
           $badgeBlocks = $blocks->where('type', 'badge');
-          $textBlocks  = $blocks->where('type', 'text')->values();
+          $textBlocks  = $blocks->where('type', $isEn ? 'text_en' : 'text')->values();
+          if ($isEn && $textBlocks->isEmpty()) {
+              $textBlocks = $blocks->where('type', 'text')->values();
+          }
           $desc        = $textBlocks->first()?->content;
           $highlights  = $textBlocks->skip(1)->first()?->content;
         @endphp
         <div class="card">
           @if ($entry->cover_image)
             <div class="card__img">
-              <img src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->title }}" loading="lazy" />
+              <img src="{{ Storage::url($entry->cover_image) }}" alt="{{ $entry->localizedTitle() }}" loading="lazy" />
             </div>
           @endif
           <div class="card__body">
@@ -35,7 +39,7 @@
                 @endforeach
               </div>
             @endif
-            <h3 class="card__title">{{ $entry->title }}</h3>
+            <h3 class="card__title">{{ $entry->localizedTitle() }}</h3>
             @if ($desc)
               @php
                 $descNorm  = preg_replace('/\n{3,}/', "\n\n", str_replace(["\r\n", "\r"], "\n", $desc));

@@ -368,10 +368,12 @@
         });
 
         // ── SEO-Felder mitsenden (falls vorhanden) ──
-        const seoForm   = modalBody.querySelector('[data-ajax-seo]');
-        const seoUrl    = seoForm?.action ?? null;
-        const seoTitle  = seoForm?.querySelector('[name="seo_title"]')?.value ?? null;
-        const seoDesc   = seoForm?.querySelector('[name="seo_description"]')?.value ?? null;
+        const seoForm    = modalBody.querySelector('[data-ajax-seo]');
+        const seoUrl     = seoForm?.action ?? null;
+        const seoTitle   = seoForm?.querySelector('[name="seo_title"]')?.value ?? null;
+        const seoDesc    = seoForm?.querySelector('[name="seo_description"]')?.value ?? null;
+        const seoTitleEn = seoForm?.querySelector('[name="seo_title_en"]')?.value ?? null;
+        const seoDescEn  = seoForm?.querySelector('[name="seo_description_en"]')?.value ?? null;
 
         // Summary in der Listenansicht live aktualisieren
         if (templateId) {
@@ -404,8 +406,10 @@
             const seoBody = new FormData();
             seoBody.append('_method', 'PUT');
             seoBody.append('_token', csrfToken);
-            if (seoTitle !== null) seoBody.append('seo_title', seoTitle);
-            if (seoDesc  !== null) seoBody.append('seo_description', seoDesc);
+            if (seoTitle   !== null) seoBody.append('seo_title',          seoTitle);
+            if (seoDesc    !== null) seoBody.append('seo_description',    seoDesc);
+            if (seoTitleEn !== null) seoBody.append('seo_title_en',       seoTitleEn);
+            if (seoDescEn  !== null) seoBody.append('seo_description_en', seoDescEn);
             fetch(seoUrl, { method: 'POST', body: seoBody, headers: { 'Accept': 'application/json' } })
               .catch(() => {});
           }

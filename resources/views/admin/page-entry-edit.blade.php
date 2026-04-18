@@ -11,6 +11,10 @@
       </a>
       <h1>{{ $entry->title }}</h1>
     </div>
+    <div class="modal-lang-toggle" id="global-lang-toggle">
+      <button type="button" class="lang-toggle-btn lang-toggle-btn--active" data-lang="de">DE</button>
+      <button type="button" class="lang-toggle-btn" data-lang="en">EN</button>
+    </div>
   </div>
 
 
@@ -34,6 +38,8 @@
     $previewHighlights  = $previewTextBlocks->skip(1)->first()?->content;
     $previewDescBlock   = $previewTextBlocks->first();
     $previewHlBlock     = $previewTextBlocks->skip(1)->first();
+    $previewDescEnBlock = $entry->blocks->firstWhere('type', 'text_en');
+    $previewHlEnBlock   = $entry->blocks->where('type', 'text_en')->values()->skip(1)->first();
   @endphp
   <div class="table-card" style="margin-top:1.5rem">
     <div class="table-card__header">
@@ -110,24 +116,44 @@
             </div>
           </div>
 
-          {{-- Titel: inline editierbar --}}
+          {{-- Titel: inline editierbar (DE) --}}
           <h3 class="card__title preview-editable"
               contenteditable="true"
               id="card-title"
+              data-lang="de"
               data-type="entry-title"
               data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">{{ $entry->title }}</h3>
 
-          {{-- Beschreibung: inline editierbar --}}
+          {{-- Titel EN --}}
+          <h3 class="card__title preview-editable"
+              contenteditable="true"
+              id="card-title-en"
+              data-lang="en"
+              data-field="title_en"
+              style="display:none"
+              data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">{{ $entry->title_en ?? '' }}</h3>
+
+          {{-- Beschreibung DE: inline editierbar --}}
           @if ($previewDescBlock)
             <p class="card__text preview-editable preview-editable--multiline"
                contenteditable="true"
                id="card-desc"
+               data-lang="de"
                data-type="block"
                data-block-id="{{ $previewDescBlock->id }}"
                data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $previewDescBlock]) }}">{{ $previewDesc }}</p>
           @endif
 
-          {{-- Highlights: Titel + Body jeweils eigenes contenteditable --}}
+          {{-- Beschreibung EN --}}
+          <p class="card__text preview-editable preview-editable--multiline"
+             contenteditable="true"
+             id="card-desc-en"
+             data-lang="en"
+             data-field="text_en"
+             style="display:none"
+             data-url="{{ $previewDescEnBlock ? route('admin.pages.blocks.update', [$page, $entry, $previewDescEnBlock]) : '' }}">{{ $previewDescEnBlock?->content ?? '' }}</p>
+
+          {{-- Highlights DE: Titel + Body jeweils eigenes contenteditable --}}
           @if ($previewHlBlock)
             @php
               $hlLines   = explode("\n", $previewHlBlock->content);
@@ -135,7 +161,7 @@
               $hlHeading = (!str_starts_with($firstLine, '- ') && $firstLine !== '') ? $firstLine : 'Highlights';
               $hlBody    = implode("\n", array_slice($hlLines, $hlHeading !== 'Highlights' || count($hlLines) > 1 ? 1 : 0));
             @endphp
-            <div class="card__highlights">
+            <div class="card__highlights" data-lang="de">
               <h4 class="preview-editable"
                   contenteditable="true"
                   id="card-hl-title"
@@ -151,6 +177,26 @@
             </div>
           @endif
 
+          {{-- Highlights EN --}}
+          @php
+            $hlEnLines   = explode("\n", $previewHlEnBlock?->content ?? '');
+            $hlEnFirst   = trim($hlEnLines[0] ?? '');
+            $hlEnHeading = (!str_starts_with($hlEnFirst, '- ') && $hlEnFirst !== '') ? $hlEnFirst : 'Highlights';
+            $hlEnBody    = implode("\n", array_slice($hlEnLines, $hlEnHeading !== 'Highlights' || count($hlEnLines) > 1 ? 1 : 0));
+          @endphp
+          <div class="card__highlights" data-lang="en" style="display:none">
+            <h4 class="preview-editable"
+                contenteditable="true"
+                id="card-hl-title-en"
+                data-field="hl-title-en"
+                data-url="{{ $previewHlEnBlock ? route('admin.pages.blocks.update', [$page, $entry, $previewHlEnBlock]) : '' }}">{{ $hlEnHeading }}</h4>
+            <pre class="preview-editable preview-editable--multiline"
+                 contenteditable="true"
+                 id="card-hl-body-en"
+                 data-field="hl-body-en"
+                 data-url="{{ $previewHlEnBlock ? route('admin.pages.blocks.update', [$page, $entry, $previewHlEnBlock]) : '' }}">{{ $hlEnBody }}</pre>
+          </div>
+
         </div>
       </div>
     </div>
@@ -163,7 +209,13 @@
               data-desc-has-block="{{ $previewDescBlock ? '1' : '0' }}"
               data-hl-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
               data-hl-update-url="{{ $previewHlBlock ? route('admin.pages.blocks.update', [$page, $entry, $previewHlBlock]) : '' }}"
-              data-hl-has-block="{{ $previewHlBlock ? '1' : '0' }}">
+              data-hl-has-block="{{ $previewHlBlock ? '1' : '0' }}"
+              data-desc-en-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+              data-desc-en-update-url="{{ $previewDescEnBlock ? route('admin.pages.blocks.update', [$page, $entry, $previewDescEnBlock]) : '' }}"
+              data-desc-en-has-block="{{ $previewDescEnBlock ? '1' : '0' }}"
+              data-hl-en-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+              data-hl-en-update-url="{{ $previewHlEnBlock ? route('admin.pages.blocks.update', [$page, $entry, $previewHlEnBlock]) : '' }}"
+              data-hl-en-has-block="{{ $previewHlEnBlock ? '1' : '0' }}">
         Speichern
       </button>
     </div>
@@ -177,6 +229,7 @@
     $routeTextBlocks  = $entry->blocks->where('type', 'text')->values();
     $routeDescBlock   = $routeTextBlocks->first();
     $routeStatsBlock  = $routeTextBlocks->skip(1)->first();
+    $routeDescEnBlock = $entry->blocks->firstWhere('type', 'text_en');
     $routeLengthVal   = ''; $routeLengthLabel   = 'Gesamtlänge';
     $routeDiff        = 'leicht';
     $routeDurationVal = ''; $routeDurationLabel = 'Dauer';
@@ -211,11 +264,27 @@
         <div class="route__body">
           <h2 class="route__title"
               contenteditable="true"
-              id="route-title">{{ $entry->title }}</h2>
+              id="route-title"
+              data-lang="de">{{ $entry->title }}</h2>
+
+          <h2 class="route__title"
+              contenteditable="true"
+              id="route-title-en"
+              data-lang="en"
+              data-field="title_en"
+              style="display:none">{{ $entry->title_en ?? '' }}</h2>
 
           <p class="route__text"
              contenteditable="true"
-             id="route-desc">{{ $routeDescBlock?->content ?? '' }}</p>
+             id="route-desc"
+             data-lang="de">{{ $routeDescBlock?->content ?? '' }}</p>
+
+          <p class="route__text"
+             contenteditable="true"
+             id="route-desc-en"
+             data-lang="en"
+             data-field="text_en"
+             style="display:none">{{ $routeDescEnBlock?->content ?? '' }}</p>
 
           @php
             $diffClass = match($routeDiff) {
@@ -261,7 +330,10 @@
                 data-desc-has-block="{{ $routeDescBlock ? '1' : '0' }}"
                 data-stats-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
                 data-stats-update-url="{{ $routeStatsBlock ? route('admin.pages.blocks.update', [$page, $entry, $routeStatsBlock]) : '' }}"
-                data-stats-has-block="{{ $routeStatsBlock ? '1' : '0' }}">
+                data-stats-has-block="{{ $routeStatsBlock ? '1' : '0' }}"
+                data-desc-en-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                data-desc-en-update-url="{{ $routeDescEnBlock ? route('admin.pages.blocks.update', [$page, $entry, $routeDescEnBlock]) : '' }}"
+                data-desc-en-has-block="{{ $routeDescEnBlock ? '1' : '0' }}">
           Speichern
         </button>
       </div>
@@ -277,6 +349,8 @@
     $editTextBlocks  = $entry->blocks->where('type', 'text')->values();
     $descBlock       = $editTextBlocks->first();
     $desc2Block      = $editTextBlocks->skip(1)->first();
+    $descEnBlock     = $entry->blocks->firstWhere('type', 'text_en');
+    $desc2EnBlock    = $entry->blocks->where('type', 'text_en')->values()->skip(1)->first();
     $infoBlocks      = $entry->blocks->where('type', 'info')->values();
     $icons           = \App\Models\Icon::forSelect();
     $defaultIcon     = 'info';
@@ -353,16 +427,37 @@
               </div>
               <h2 class="{{ $titleClass }}"
                   contenteditable="true"
-                  id="place-title">{{ $entry->title }}</h2>
+                  id="place-title"
+                  data-lang="de">{{ $entry->title }}</h2>
+              <h2 class="{{ $titleClass }}"
+                  contenteditable="true"
+                  id="place-title-en"
+                  data-lang="en"
+                  data-field="title_en"
+                  style="display:none">{{ $entry->title_en ?? '' }}</h2>
               <p class="{{ $textClass }}"
                  contenteditable="true"
-                 id="place-desc">{{ $descBlock?->content ?? '' }}</p>
+                 id="place-desc"
+                 data-lang="de">{{ $descBlock?->content ?? '' }}</p>
+              <p class="{{ $textClass }}"
+                 contenteditable="true"
+                 id="place-desc-en"
+                 data-lang="en"
+                 data-field="text_en"
+                 style="display:none">{{ $descEnBlock?->content ?? '' }}</p>
               @if ($desc2Block)
               <p class="{{ $textClass }}"
                  contenteditable="true"
                  id="place-desc2"
+                 data-lang="de"
                  style="margin-top:.75rem">{{ $desc2Block->content }}</p>
               @endif
+              <p class="{{ $textClass }}"
+                 contenteditable="true"
+                 id="place-desc2-en"
+                 data-lang="en"
+                 data-field="text_en_2"
+                 style="display:none;margin-top:.75rem">{{ $desc2EnBlock?->content ?? '' }}</p>
             </div>
 
             {{-- Info-Section (falls nach Text) --}}
@@ -383,7 +478,13 @@
                 data-desc-has-block="{{ $descBlock ? '1' : '0' }}"
                 data-desc2-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
                 data-desc2-update-url="{{ $desc2Block ? route('admin.pages.blocks.update', [$page, $entry, $desc2Block]) : '' }}"
-                data-desc2-has-block="{{ $desc2Block ? '1' : '0' }}">
+                data-desc2-has-block="{{ $desc2Block ? '1' : '0' }}"
+                data-desc-en-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                data-desc-en-update-url="{{ $descEnBlock ? route('admin.pages.blocks.update', [$page, $entry, $descEnBlock]) : '' }}"
+                data-desc-en-has-block="{{ $descEnBlock ? '1' : '0' }}"
+                data-desc2-en-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                data-desc2-en-update-url="{{ $desc2EnBlock ? route('admin.pages.blocks.update', [$page, $entry, $desc2EnBlock]) : '' }}"
+                data-desc2-en-has-block="{{ $desc2EnBlock ? '1' : '0' }}">
           Speichern
         </button>
       </div>
@@ -401,9 +502,10 @@
   @if ($isHeroEntry)
   {{-- Hero-Eintrag --}}
   @php
-    $heroTextBlocks = $entry->blocks->where('type', 'text')->values();
-    $heroTextBlock  = $heroTextBlocks->first();
-    $heroFactsBlock = $heroTextBlocks->skip(1)->first();
+    $heroTextBlocks   = $entry->blocks->where('type', 'text')->values();
+    $heroTextBlock    = $heroTextBlocks->first();
+    $heroFactsBlock   = $heroTextBlocks->skip(1)->first();
+    $heroTextEnBlock  = $entry->blocks->firstWhere('type', 'text_en');
   @endphp
   <div class="table-card" style="margin-top:1.5rem">
     <div class="table-card__header">
@@ -439,12 +541,29 @@
           <h2 class="hero-feature__title preview-editable"
               contenteditable="true"
               id="hero-title"
+              data-lang="de"
               data-type="entry-title"
               data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">{{ $entry->title }}</h2>
 
+          <h2 class="hero-feature__title preview-editable"
+              contenteditable="true"
+              id="hero-title-en"
+              data-lang="en"
+              data-field="title_en"
+              style="display:none"
+              data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">{{ $entry->title_en ?? '' }}</h2>
+
           <p class="hero-feature__text preview-editable preview-editable--multiline"
              contenteditable="true"
-             id="hero-text">{{ $heroTextBlock?->content ?? '' }}</p>
+             id="hero-text"
+             data-lang="de">{{ $heroTextBlock?->content ?? '' }}</p>
+
+          <p class="hero-feature__text preview-editable preview-editable--multiline"
+             contenteditable="true"
+             id="hero-text-en"
+             data-lang="en"
+             data-field="text_en"
+             style="display:none">{{ $heroTextEnBlock?->content ?? '' }}</p>
 
           @php
             $factsRaw     = $heroFactsBlock?->content ?? '';
@@ -490,7 +609,10 @@
                 data-text-has-block="{{ $heroTextBlock ? '1' : '0' }}"
                 data-facts-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
                 data-facts-update-url="{{ $heroFactsBlock ? route('admin.pages.blocks.update', [$page, $entry, $heroFactsBlock]) : '' }}"
-                data-facts-has-block="{{ $heroFactsBlock ? '1' : '0' }}">
+                data-facts-has-block="{{ $heroFactsBlock ? '1' : '0' }}"
+                data-text-en-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+                data-text-en-update-url="{{ $heroTextEnBlock ? route('admin.pages.blocks.update', [$page, $entry, $heroTextEnBlock]) : '' }}"
+                data-text-en-has-block="{{ $heroTextEnBlock ? '1' : '0' }}">
           Speichern
         </button>
       </div>
@@ -500,9 +622,11 @@
   @else
   {{-- Karten-Eintrag im hero-feature-Grid --}}
   @php
-    $hfTextBlocks = $entry->blocks->where('type', 'text')->values();
-    $hfDescBlock  = $hfTextBlocks->first();
-    $hfHlBlock    = $hfTextBlocks->skip(1)->first();
+    $hfTextBlocks   = $entry->blocks->where('type', 'text')->values();
+    $hfDescBlock    = $hfTextBlocks->first();
+    $hfHlBlock      = $hfTextBlocks->skip(1)->first();
+    $hfDescEnBlock  = $entry->blocks->firstWhere('type', 'text_en');
+    $hfHlEnBlock    = $entry->blocks->where('type', 'text_en')->values()->skip(1)->first();
   @endphp
   <div class="table-card" style="margin-top:1.5rem">
     <div class="table-card__header">
@@ -579,17 +703,34 @@
           <h3 class="card__title preview-editable"
               contenteditable="true"
               id="hf-card-title"
+              data-lang="de"
               data-type="entry-title"
               data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">{{ $entry->title }}</h3>
+
+          <h3 class="card__title preview-editable"
+              contenteditable="true"
+              id="hf-card-title-en"
+              data-lang="en"
+              data-field="title_en"
+              style="display:none"
+              data-url="{{ route('admin.pages.entries.update', [$page, $entry]) }}">{{ $entry->title_en ?? '' }}</h3>
 
           @if ($hfDescBlock)
             <p class="card__text preview-editable preview-editable--multiline"
                contenteditable="true"
                id="hf-card-desc"
+               data-lang="de"
                data-type="block"
                data-block-id="{{ $hfDescBlock->id }}"
                data-url="{{ route('admin.pages.blocks.update', [$page, $entry, $hfDescBlock]) }}">{{ $hfDescBlock->content }}</p>
           @endif
+
+          <p class="card__text preview-editable preview-editable--multiline"
+             contenteditable="true"
+             id="hf-card-desc-en"
+             data-lang="en"
+             data-field="text_en"
+             style="display:none">{{ $hfDescEnBlock?->content ?? '' }}</p>
 
           @if ($hfHlBlock)
             @php
@@ -598,7 +739,7 @@
               $hfHlHeading = (!str_starts_with($hfFirstLine, '- ') && $hfFirstLine !== '') ? $hfFirstLine : 'Highlights';
               $hfHlBody    = implode("\n", array_slice($hfHlLines, $hfHlHeading !== 'Highlights' || count($hfHlLines) > 1 ? 1 : 0));
             @endphp
-            <div class="card__highlights">
+            <div class="card__highlights" data-lang="de">
               <h4 class="preview-editable"
                   contenteditable="true"
                   id="hf-card-hl-title"
@@ -614,6 +755,23 @@
             </div>
           @endif
 
+          @php
+            $hfHlEnLines   = explode("\n", $hfHlEnBlock?->content ?? '');
+            $hfHlEnFirst   = trim($hfHlEnLines[0] ?? '');
+            $hfHlEnHeading = (!str_starts_with($hfHlEnFirst, '- ') && $hfHlEnFirst !== '') ? $hfHlEnFirst : 'Highlights';
+            $hfHlEnBody    = implode("\n", array_slice($hfHlEnLines, $hfHlEnHeading !== 'Highlights' || count($hfHlEnLines) > 1 ? 1 : 0));
+          @endphp
+          <div class="card__highlights" data-lang="en" style="display:none">
+            <h4 class="preview-editable"
+                contenteditable="true"
+                id="hf-card-hl-title-en"
+                data-field="hl-title-en">{{ $hfHlEnHeading }}</h4>
+            <pre class="preview-editable preview-editable--multiline"
+                 contenteditable="true"
+                 id="hf-card-hl-body-en"
+                 data-field="hl-body-en">{{ $hfHlEnBody }}</pre>
+          </div>
+
         </div>
       </div>
     </div>
@@ -626,7 +784,13 @@
               data-desc-has-block="{{ $hfDescBlock ? '1' : '0' }}"
               data-hl-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
               data-hl-update-url="{{ $hfHlBlock ? route('admin.pages.blocks.update', [$page, $entry, $hfHlBlock]) : '' }}"
-              data-hl-has-block="{{ $hfHlBlock ? '1' : '0' }}">
+              data-hl-has-block="{{ $hfHlBlock ? '1' : '0' }}"
+              data-desc-en-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+              data-desc-en-update-url="{{ $hfDescEnBlock ? route('admin.pages.blocks.update', [$page, $entry, $hfDescEnBlock]) : '' }}"
+              data-desc-en-has-block="{{ $hfDescEnBlock ? '1' : '0' }}"
+              data-hl-en-store-url="{{ route('admin.pages.blocks.store', [$page, $entry]) }}"
+              data-hl-en-update-url="{{ $hfHlEnBlock ? route('admin.pages.blocks.update', [$page, $entry, $hfHlEnBlock]) : '' }}"
+              data-hl-en-has-block="{{ $hfHlEnBlock ? '1' : '0' }}">
         Speichern
       </button>
     </div>
@@ -635,35 +799,6 @@
   @endif
   @endif
 
-  {{-- SEO --}}
-  <div class="table-card" style="margin-top:1.5rem">
-    <div class="table-card__header"><h2>SEO</h2></div>
-    <form method="POST"
-          action="{{ route('admin.pages.entries.seo.update', [$page, $entry]) }}"
-          style="padding:1.5rem">
-      @csrf @method('PUT')
-      @if (session('success') && str_contains(session('success'), 'SEO'))
-        <div class="alert alert--success" style="margin-bottom:1rem">{{ session('success') }}</div>
-      @endif
-      <div class="modal-form-grid">
-        <div class="modal-form-grid__full">
-          <label>SEO-Titel <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(leer = Eintragstitel, max. 70 Zeichen)</span></label>
-          <input type="text" name="seo_title"
-                 value="{{ old('seo_title', $entry->seo?->title ?? '') }}"
-                 maxlength="70"
-                 placeholder="{{ $entry->title }}" />
-        </div>
-        <div class="modal-form-grid__full">
-          <label>SEO-Beschreibung <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(leer = erster Textblock, max. 160 Zeichen)</span></label>
-          <textarea name="seo_description" rows="3" maxlength="160"
-                    placeholder="Automatisch aus erstem Textblock">{{ old('seo_description', $entry->seo?->description ?? '') }}</textarea>
-        </div>
-      </div>
-      <div style="margin-top:1rem">
-        <button type="submit" class="btn btn-save">SEO speichern</button>
-      </div>
-    </form>
-  </div>
 
 @endsection
 
@@ -1030,15 +1165,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const cardSaveBtn = document.getElementById('card-save');
   if (cardSaveBtn) {
     cardSaveBtn.addEventListener('click', async () => {
-      const title   = document.getElementById('card-title')?.innerText.trim() ?? '';
-      const desc    = document.getElementById('card-desc')?.innerText.replace(/\n{3,}/g, '\n\n').trim() ?? '';
-      const hlTitle = document.getElementById('card-hl-title')?.innerText.trim() ?? '';
-      const hlBody  = document.getElementById('card-hl-body')?.innerText.trim() ?? '';
-      const hl      = hlTitle ? hlTitle + '\n' + hlBody : hlBody;
+      const title      = document.getElementById('card-title')?.innerText.trim() ?? '';
+      const titleEn    = document.getElementById('card-title-en')?.innerText.trim() ?? '';
+      const desc       = document.getElementById('card-desc')?.innerText.replace(/\n{3,}/g, '\n\n').trim() ?? '';
+      const descEn     = document.getElementById('card-desc-en')?.innerText.replace(/\n{3,}/g, '\n\n').trim() ?? '';
+      const hlTitle    = document.getElementById('card-hl-title')?.innerText.trim() ?? '';
+      const hlBody     = document.getElementById('card-hl-body')?.innerText.trim() ?? '';
+      const hlTitleEn  = document.getElementById('card-hl-title-en')?.innerText.trim() ?? '';
+      const hlBodyEn   = document.getElementById('card-hl-body-en')?.innerText.trim() ?? '';
+      const hl         = hlTitle ? hlTitle + '\n' + hlBody : hlBody;
+      const hlEn       = hlTitleEn ? hlTitleEn + '\n' + hlBodyEn : hlBodyEn;
 
       cardSaveBtn.disabled = true;
 
-      async function saveBlock(hasBlock, updateUrl, storeUrl, content) {
+      async function saveBlock(hasBlock, updateUrl, storeUrl, content, type = 'text') {
         const body = new FormData();
         body.append('_token', csrfToken);
         body.append('content', content);
@@ -1046,7 +1186,7 @@ document.addEventListener('DOMContentLoaded', () => {
           body.append('_method', 'PUT');
           return fetch(updateUrl, { method: 'POST', body });
         }
-        body.append('type', 'text');
+        body.append('type', type);
         return fetch(storeUrl, { method: 'POST', body });
       }
 
@@ -1055,6 +1195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         titleBody.append('_method', 'PUT');
         titleBody.append('_token', csrfToken);
         titleBody.append('title', title);
+        titleBody.append('title_en', titleEn);
         const r1 = await fetch(cardSaveBtn.dataset.entryUrl, { method: 'POST', body: titleBody });
 
         const r2 = await saveBlock(
@@ -1071,11 +1212,26 @@ document.addEventListener('DOMContentLoaded', () => {
           hl
         );
 
-        const allOk = r1.ok && r2.ok && r3.ok;
+        const r4 = await saveBlock(
+          cardSaveBtn.dataset.descEnHasBlock === '1',
+          cardSaveBtn.dataset.descEnUpdateUrl,
+          cardSaveBtn.dataset.descEnStoreUrl,
+          descEn, 'text_en'
+        );
+
+        const r5 = await saveBlock(
+          cardSaveBtn.dataset.hlEnHasBlock === '1',
+          cardSaveBtn.dataset.hlEnUpdateUrl,
+          cardSaveBtn.dataset.hlEnStoreUrl,
+          hlEn, 'text_en'
+        );
+
+        const allOk = r1.ok && r2.ok && r3.ok && r4.ok && r5.ok;
         if (allOk) {
           cardSaveBtn.textContent = 'Gespeichert ✓';
           cardSaveBtn.classList.add('btn-save--saved');
-          const needsReload = cardSaveBtn.dataset.descHasBlock === '0' || cardSaveBtn.dataset.hlHasBlock === '0';
+          const needsReload = cardSaveBtn.dataset.descHasBlock === '0' || cardSaveBtn.dataset.hlHasBlock === '0'
+            || cardSaveBtn.dataset.descEnHasBlock === '0' || cardSaveBtn.dataset.hlEnHasBlock === '0';
           setTimeout(() => {
             if (needsReload) {
               location.reload();
@@ -1102,15 +1258,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const hfCardSaveBtn = document.getElementById('hf-card-save');
   if (hfCardSaveBtn) {
     hfCardSaveBtn.addEventListener('click', async () => {
-      const title   = document.getElementById('hf-card-title')?.innerText.trim() ?? '';
-      const desc    = document.getElementById('hf-card-desc')?.innerText.replace(/\n{3,}/g, '\n\n').trim() ?? '';
-      const hlTitle = document.getElementById('hf-card-hl-title')?.innerText.trim() ?? '';
-      const hlBody  = document.getElementById('hf-card-hl-body')?.innerText.trim() ?? '';
-      const hl      = hlTitle ? hlTitle + '\n' + hlBody : hlBody;
+      const title      = document.getElementById('hf-card-title')?.innerText.trim() ?? '';
+      const titleEn    = document.getElementById('hf-card-title-en')?.innerText.trim() ?? '';
+      const desc       = document.getElementById('hf-card-desc')?.innerText.replace(/\n{3,}/g, '\n\n').trim() ?? '';
+      const descEn     = document.getElementById('hf-card-desc-en')?.innerText.replace(/\n{3,}/g, '\n\n').trim() ?? '';
+      const hlTitle    = document.getElementById('hf-card-hl-title')?.innerText.trim() ?? '';
+      const hlBody     = document.getElementById('hf-card-hl-body')?.innerText.trim() ?? '';
+      const hlTitleEn  = document.getElementById('hf-card-hl-title-en')?.innerText.trim() ?? '';
+      const hlBodyEn   = document.getElementById('hf-card-hl-body-en')?.innerText.trim() ?? '';
+      const hl         = hlTitle ? hlTitle + '\n' + hlBody : hlBody;
+      const hlEn       = hlTitleEn ? hlTitleEn + '\n' + hlBodyEn : hlBodyEn;
 
       hfCardSaveBtn.disabled = true;
 
-      async function saveHfBlock(hasBlock, updateUrl, storeUrl, content) {
+      async function saveHfBlock(hasBlock, updateUrl, storeUrl, content, type = 'text') {
         const body = new FormData();
         body.append('_token', csrfToken);
         body.append('content', content);
@@ -1118,7 +1279,7 @@ document.addEventListener('DOMContentLoaded', () => {
           body.append('_method', 'PUT');
           return fetch(updateUrl, { method: 'POST', body });
         }
-        body.append('type', 'text');
+        body.append('type', type);
         return fetch(storeUrl, { method: 'POST', body });
       }
 
@@ -1127,6 +1288,7 @@ document.addEventListener('DOMContentLoaded', () => {
         titleBody.append('_method', 'PUT');
         titleBody.append('_token', csrfToken);
         titleBody.append('title', title);
+        titleBody.append('title_en', titleEn);
         const r1 = await fetch(hfCardSaveBtn.dataset.entryUrl, { method: 'POST', body: titleBody });
 
         const r2 = await saveHfBlock(
@@ -1143,11 +1305,26 @@ document.addEventListener('DOMContentLoaded', () => {
           hl
         );
 
-        const allOk = r1.ok && r2.ok && r3.ok;
+        const r4 = await saveHfBlock(
+          hfCardSaveBtn.dataset.descEnHasBlock === '1',
+          hfCardSaveBtn.dataset.descEnUpdateUrl,
+          hfCardSaveBtn.dataset.descEnStoreUrl,
+          descEn, 'text_en'
+        );
+
+        const r5 = await saveHfBlock(
+          hfCardSaveBtn.dataset.hlEnHasBlock === '1',
+          hfCardSaveBtn.dataset.hlEnUpdateUrl,
+          hfCardSaveBtn.dataset.hlEnStoreUrl,
+          hlEn, 'text_en'
+        );
+
+        const allOk = r1.ok && r2.ok && r3.ok && r4.ok && r5.ok;
         if (allOk) {
           hfCardSaveBtn.textContent = 'Gespeichert ✓';
           hfCardSaveBtn.classList.add('btn-save--saved');
-          const needsReload = hfCardSaveBtn.dataset.descHasBlock === '0' || hfCardSaveBtn.dataset.hlHasBlock === '0';
+          const needsReload = hfCardSaveBtn.dataset.descHasBlock === '0' || hfCardSaveBtn.dataset.hlHasBlock === '0'
+            || hfCardSaveBtn.dataset.descEnHasBlock === '0' || hfCardSaveBtn.dataset.hlEnHasBlock === '0';
           setTimeout(() => {
             if (needsReload) {
               location.reload();
@@ -1198,13 +1375,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (placeSaveBtn2) {
     placeSaveBtn2.addEventListener('click', async () => {
       const title         = document.getElementById('place-title')?.innerText.trim() ?? '';
+      const titleEn       = document.getElementById('place-title-en')?.innerText.trim() ?? '';
       const desc          = document.getElementById('place-desc')?.innerText.trim() ?? '';
+      const descEn        = document.getElementById('place-desc-en')?.innerText.trim() ?? '';
       const desc2         = document.getElementById('place-desc2')?.innerText.trim() ?? '';
+      const desc2En       = document.getElementById('place-desc2-en')?.innerText.trim() ?? '';
       const imagePosition = document.getElementById('place-img-position')?.value ?? null;
 
       placeSaveBtn2.disabled = true;
 
-      async function saveTextBlock(hasBlock, updateUrl, storeUrl, content) {
+      async function saveTextBlock(hasBlock, updateUrl, storeUrl, content, type = 'text') {
         const body = new FormData();
         body.append('_token', csrfToken);
         body.append('content', content);
@@ -1212,7 +1392,7 @@ document.addEventListener('DOMContentLoaded', () => {
           body.append('_method', 'PUT');
           return fetch(updateUrl, { method: 'POST', body });
         }
-        body.append('type', 'text');
+        body.append('type', type);
         return fetch(storeUrl, { method: 'POST', body });
       }
 
@@ -1221,6 +1401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         titleBody.append('_method', 'PUT');
         titleBody.append('_token', csrfToken);
         titleBody.append('title', title);
+        titleBody.append('title_en', titleEn);
         if (imagePosition) titleBody.append('image_position', imagePosition);
         const r1 = await fetch(placeSaveBtn2.dataset.entryUrl, { method: 'POST', body: titleBody });
 
@@ -1243,11 +1424,29 @@ document.addEventListener('DOMContentLoaded', () => {
           results.push(r3);
         }
 
+        const r4 = await saveTextBlock(
+          placeSaveBtn2.dataset.descEnHasBlock === '1',
+          placeSaveBtn2.dataset.descEnUpdateUrl,
+          placeSaveBtn2.dataset.descEnStoreUrl,
+          descEn, 'text_en'
+        );
+        results.push(r4);
+
+        if (desc2En || placeSaveBtn2.dataset.desc2EnHasBlock === '1') {
+          const r5 = await saveTextBlock(
+            placeSaveBtn2.dataset.desc2EnHasBlock === '1',
+            placeSaveBtn2.dataset.desc2EnUpdateUrl,
+            placeSaveBtn2.dataset.desc2EnStoreUrl,
+            desc2En, 'text_en'
+          );
+          results.push(r5);
+        }
+
         const allOk = results.every(r => r.ok);
         if (allOk) {
           placeSaveBtn2.textContent = 'Gespeichert ✓';
           placeSaveBtn2.classList.add('btn-save--saved');
-          const needsReload = placeSaveBtn2.dataset.descHasBlock === '0';
+          const needsReload = placeSaveBtn2.dataset.descHasBlock === '0' || placeSaveBtn2.dataset.descEnHasBlock === '0';
           setTimeout(() => {
             if (needsReload) {
               location.reload();
@@ -1484,8 +1683,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroSaveBtn = document.getElementById('hero-save');
   if (heroSaveBtn) {
     heroSaveBtn.addEventListener('click', async () => {
-      const title = document.getElementById('hero-title')?.innerText.trim() ?? '';
-      const text  = document.getElementById('hero-text')?.innerText.trim() ?? '';
+      const title   = document.getElementById('hero-title')?.innerText.trim() ?? '';
+      const titleEn = document.getElementById('hero-title-en')?.innerText.trim() ?? '';
+      const text    = document.getElementById('hero-text')?.innerText.trim() ?? '';
+      const textEn  = document.getElementById('hero-text-en')?.innerText.trim() ?? '';
 
       const factParts = [];
       document.querySelectorAll('#hero-facts-grid .hero-fact:not(.hero-fact--add)').forEach(el => {
@@ -1500,7 +1701,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       heroSaveBtn.disabled = true;
 
-      async function saveBlock(hasBlock, updateUrl, storeUrl, content) {
+      async function saveBlock(hasBlock, updateUrl, storeUrl, content, type = 'text') {
         const body = new FormData();
         body.append('_token', csrfToken);
         body.append('content', content);
@@ -1508,7 +1709,7 @@ document.addEventListener('DOMContentLoaded', () => {
           body.append('_method', 'PUT');
           return fetch(updateUrl, { method: 'POST', body });
         }
-        body.append('type', 'text');
+        body.append('type', type);
         return fetch(storeUrl, { method: 'POST', body });
       }
 
@@ -1517,6 +1718,7 @@ document.addEventListener('DOMContentLoaded', () => {
         titleBody.append('_method', 'PUT');
         titleBody.append('_token', csrfToken);
         titleBody.append('title', title);
+        titleBody.append('title_en', titleEn);
         const r1 = await fetch(heroSaveBtn.dataset.entryUrl, { method: 'POST', body: titleBody });
 
         const r2 = await saveBlock(
@@ -1533,12 +1735,20 @@ document.addEventListener('DOMContentLoaded', () => {
           facts
         );
 
-        const allOk = r1.ok && r2.ok && r3.ok;
+        const r4 = await saveBlock(
+          heroSaveBtn.dataset.textEnHasBlock === '1',
+          heroSaveBtn.dataset.textEnUpdateUrl,
+          heroSaveBtn.dataset.textEnStoreUrl,
+          textEn, 'text_en'
+        );
+
+        const allOk = r1.ok && r2.ok && r3.ok && r4.ok;
         if (allOk) {
           heroSaveBtn.textContent = 'Gespeichert ✓';
           heroSaveBtn.classList.add('btn-save--saved');
           const newFactAdded = !!(newLabel && newValue);
-          const needsReload = heroSaveBtn.dataset.textHasBlock === '0' || heroSaveBtn.dataset.factsHasBlock === '0' || newFactAdded;
+          const needsReload = heroSaveBtn.dataset.textHasBlock === '0' || heroSaveBtn.dataset.factsHasBlock === '0'
+            || heroSaveBtn.dataset.textEnHasBlock === '0' || newFactAdded;
           setTimeout(() => {
             if (needsReload) {
               location.reload();
@@ -1561,6 +1771,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ── Lang-Toggle (DE/EN) — globaler Toggle im page-header ───────────────────
+  const globalLangToggle = document.getElementById('global-lang-toggle');
+  if (globalLangToggle) {
+    globalLangToggle.querySelectorAll('.lang-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        globalLangToggle.querySelectorAll('.lang-toggle-btn').forEach(b => b.classList.toggle('lang-toggle-btn--active', b === btn));
+        document.querySelectorAll('[data-lang]:not(.lang-toggle-btn)').forEach(el => {
+          el.style.display = el.dataset.lang === lang ? '' : 'none';
+        });
+      });
+    });
+  }
+
   // ── Route: Diff-Select live einfärben ───────────────────────────────────────
   const routeDiffSelect = document.getElementById('route-diff');
   const diffClassMap = { leicht: 'diff--easy', moderat: 'diff--medium', schwer: 'diff--hard' };
@@ -1580,7 +1804,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (routeStatsBtn) {
     routeStatsBtn.addEventListener('click', async () => {
       const title         = document.getElementById('route-title')?.innerText.trim() ?? '';
+      const titleEn       = document.getElementById('route-title-en')?.innerText.trim() ?? '';
       const desc          = document.getElementById('route-desc')?.innerText.trim() ?? '';
+      const descEn        = document.getElementById('route-desc-en')?.innerText.trim() ?? '';
       const lengthVal     = document.getElementById('route-length-val')?.innerText.trim() ?? '';
       const lengthLabel   = document.getElementById('route-length-label')?.innerText.trim() || 'Gesamtlänge';
       const diff          = document.getElementById('route-diff')?.value ?? 'leicht';
@@ -1595,7 +1821,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       routeStatsBtn.disabled = true;
 
-      async function saveBlock(hasBlock, updateUrl, storeUrl, content) {
+      async function saveBlock(hasBlock, updateUrl, storeUrl, content, type = 'text') {
         const body = new FormData();
         body.append('_token', csrfToken);
         body.append('content', content);
@@ -1603,7 +1829,7 @@ document.addEventListener('DOMContentLoaded', () => {
           body.append('_method', 'PUT');
           return fetch(updateUrl, { method: 'POST', body });
         } else {
-          body.append('type', 'text');
+          body.append('type', type);
           return fetch(storeUrl, { method: 'POST', body });
         }
       }
@@ -1614,6 +1840,7 @@ document.addEventListener('DOMContentLoaded', () => {
         titleBody.append('_method', 'PUT');
         titleBody.append('_token', csrfToken);
         titleBody.append('title', title);
+        titleBody.append('title_en', titleEn);
         const r1 = await fetch(routeStatsBtn.dataset.entryUrl, { method: 'POST', body: titleBody });
 
         // 2. Beschreibungsblock speichern
@@ -1632,12 +1859,21 @@ document.addEventListener('DOMContentLoaded', () => {
           statsStr
         );
 
-        const allOk = r1.ok && r2.ok && r3.ok;
+        // 4. Beschreibung EN speichern
+        const r4 = await saveBlock(
+          routeStatsBtn.dataset.descEnHasBlock === '1',
+          routeStatsBtn.dataset.descEnUpdateUrl,
+          routeStatsBtn.dataset.descEnStoreUrl,
+          descEn, 'text_en'
+        );
+
+        const allOk = r1.ok && r2.ok && r3.ok && r4.ok;
         if (allOk) {
           routeStatsBtn.textContent = 'Gespeichert ✓';
           routeStatsBtn.classList.add('btn-save--saved');
           // Seite neu laden wenn neue Blöcke erstellt wurden (damit Update-URLs gesetzt werden)
-          const needsReload = routeStatsBtn.dataset.descHasBlock === '0' || routeStatsBtn.dataset.statsHasBlock === '0';
+          const needsReload = routeStatsBtn.dataset.descHasBlock === '0' || routeStatsBtn.dataset.statsHasBlock === '0'
+            || routeStatsBtn.dataset.descEnHasBlock === '0';
           setTimeout(() => {
             if (needsReload) {
               location.reload();

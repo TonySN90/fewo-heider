@@ -361,18 +361,32 @@
                             data-ajax-seo>
                         @csrf @method('PUT')
                         <p class="modal-seo-section__label">SEO <span>(optional)</span></p>
-                        <div class="modal-form-grid">
+                        <div class="modal-form-grid" data-lang="de">
                           <div class="modal-form-grid__full">
                             <label>SEO-Titel <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(leer = Seitenname, max. 70 Zeichen)</span></label>
                             <input type="text" name="seo_title"
                                    value="{{ $page->seo?->title ?? '' }}"
                                    maxlength="70"
-                                   placeholder="{{ $page->title }}" />
+                                   placeholder="" />
                           </div>
                           <div class="modal-form-grid__full">
                             <label>SEO-Beschreibung <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(max. 160 Zeichen)</span></label>
                             <textarea name="seo_description" rows="2" maxlength="160"
-                                      placeholder="{{ $page->description ?? '' }}">{{ $page->seo?->description ?? '' }}</textarea>
+                                      >{{ $page->seo?->description ?? '' }}</textarea>
+                          </div>
+                        </div>
+                        <div class="modal-form-grid" data-lang="en" style="display:none">
+                          <div class="modal-form-grid__full">
+                            <label>SEO-Titel (EN) <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(leer = EN-Seitenname, max. 70 Zeichen)</span></label>
+                            <input type="text" name="seo_title_en"
+                                   value="{{ $page->seo?->title_en ?? '' }}"
+                                   maxlength="70"
+                                   placeholder="" />
+                          </div>
+                          <div class="modal-form-grid__full">
+                            <label>SEO-Beschreibung (EN) <span class="form-field__hint" style="font-size:.75rem;color:#aaa">(max. 160 Zeichen)</span></label>
+                            <textarea name="seo_description_en" rows="2" maxlength="160"
+                                      >{{ $page->seo?->description_en ?? '' }}</textarea>
                           </div>
                         </div>
                       </form>
@@ -468,18 +482,32 @@
           <form class="modal-seo-section" data-ajax-seo
                 action="{{ route('admin.pages.groups.seo.update', $group) }}">
             @csrf @method('PUT')
-            <div class="modal-form-grid">
+            <div class="modal-form-grid" data-lang="de">
               <div class="modal-form-grid__full">
                 <label>SEO-Titel <span class="form-field__hint">(leer = Seitenname, max. 70 Zeichen)</span></label>
                 <input type="text" name="seo_title"
                        value="{{ $group->seo?->title ?? '' }}"
                        maxlength="70"
-                       placeholder="{{ $group->title }}" />
+                       placeholder="" />
               </div>
               <div class="modal-form-grid__full">
                 <label>SEO-Beschreibung <span class="form-field__hint">(max. 160 Zeichen)</span></label>
                 <textarea name="seo_description" rows="2" maxlength="160"
-                          placeholder="{{ $group->description ?? '' }}">{{ $group->seo?->description ?? '' }}</textarea>
+                          >{{ $group->seo?->description ?? '' }}</textarea>
+              </div>
+            </div>
+            <div class="modal-form-grid" data-lang="en" style="display:none">
+              <div class="modal-form-grid__full">
+                <label>SEO-Titel (EN) <span class="form-field__hint">(leer = EN-Seitenname, max. 70 Zeichen)</span></label>
+                <input type="text" name="seo_title_en"
+                       value="{{ $group->seo?->title_en ?? '' }}"
+                       maxlength="70"
+                       placeholder="" />
+              </div>
+              <div class="modal-form-grid__full">
+                <label>SEO-Beschreibung (EN) <span class="form-field__hint">(max. 160 Zeichen)</span></label>
+                <textarea name="seo_description_en" rows="2" maxlength="160"
+                          >{{ $group->seo?->description_en ?? '' }}</textarea>
               </div>
             </div>
           </form>

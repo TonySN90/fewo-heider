@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PageGroup;
 use Illuminate\View\View;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class PageController extends Controller
 {
@@ -17,7 +18,7 @@ class PageController extends Controller
 
         $pages = $group->pages()->where('is_visible', true)->get();
 
-        seo()->for($group);
+        $this->applySeo($group);
 
         return view('pages.group', compact('group', 'pages'));
     }
@@ -37,7 +38,7 @@ class PageController extends Controller
 
         $page->load('entries.blocks');
 
-        seo()->for($page);
+        $this->applySeo($page);
 
         return view('pages.show', compact('group', 'page'));
     }
@@ -58,8 +59,26 @@ class PageController extends Controller
         $entry = $page->entries()->where('slug', $entrySlug)->firstOrFail();
         $entry->load('blocks');
 
-        seo()->for($entry);
+        $this->applySeo($entry);
 
         return view('pages.entry', compact('group', 'page', 'entry'));
+    }
+
+    private function applySeo(mixed $model): void
+    {
+        $dynamic  = $model->getDynamicSEOData();
+        $isEn     = app()->getLocale() === 'en';
+        $seoTitle = $isEn
+            ? ($model->seo?->title_en ?: $model->seo?->title ?: $dynamic->title)
+            : ($model->seo?->title ?: $dynamic->title);
+        $seoDesc  = $isEn
+            ? ($model->seo?->description_en ?: $model->seo?->description ?: $dynamic->description)
+            : ($model->seo?->description ?: $dynamic->description);
+
+        seo()->for(new SEOData(
+            title: $seoTitle,
+            description: $seoDesc,
+            image: $dynamic->image,
+        ));
     }
 }

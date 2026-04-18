@@ -12,12 +12,14 @@
       </div>
     @endif
 
+    @php $isEn = app()->getLocale() === 'en'; @endphp
     <div class="route-list">
       @foreach ($entries as $entry)
         @php
           $blocks     = $entry->blocks;
+          $textEnBlock = $blocks->firstWhere('type', 'text_en');
           $textBlocks = $blocks->where('type', 'text')->values();
-          $desc       = $textBlocks->first()?->content;
+          $desc       = ($isEn && $textEnBlock) ? $textEnBlock->content : $textBlocks->first()?->content;
           $stats      = $textBlocks->last()?->content; // "Gesamtlänge: X km · Y Etappen · Schwierigkeit: ..."
 
           // Stats und Label aus dem letzten Textblock extrahieren
@@ -45,7 +47,7 @@
             @if ($routeLabel && $routeLabel !== $entry->title)
               <p class="route__label">{{ $routeLabel }}</p>
             @endif
-            <h2 class="route__title">{{ $entry->title }}</h2>
+            <h2 class="route__title">{{ $entry->localizedTitle() }}</h2>
             @if ($desc)
               <p class="route__text">{{ $desc }}</p>
             @endif

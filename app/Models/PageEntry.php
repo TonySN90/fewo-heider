@@ -14,7 +14,14 @@ class PageEntry extends Model
 {
     use HasSEO;
 
-    protected $fillable = ['page_id', 'title', 'slug', 'cover_image', 'image_position', 'sort_order'];
+    protected $fillable = ['page_id', 'title', 'title_en', 'slug', 'cover_image', 'image_position', 'sort_order'];
+
+    public function localizedTitle(): string
+    {
+        return app()->getLocale() === 'en' && $this->title_en
+            ? $this->title_en
+            : $this->title;
+    }
 
     protected static function booted(): void
     {

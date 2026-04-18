@@ -108,13 +108,17 @@ class PageController extends Controller
         $this->authorizeGroup($group);
 
         $data = $request->validate([
-            'seo_title'       => ['nullable', 'string', 'max:70'],
-            'seo_description' => ['nullable', 'string', 'max:160'],
+            'seo_title'          => ['nullable', 'string', 'max:70'],
+            'seo_description'    => ['nullable', 'string', 'max:160'],
+            'seo_title_en'       => ['nullable', 'string', 'max:70'],
+            'seo_description_en' => ['nullable', 'string', 'max:160'],
         ]);
 
-        $group->seo()->update([
-            'title'       => $data['seo_title'] ?: null,
-            'description' => $data['seo_description'] ?: null,
+        $group->seo()->updateOrCreate([], [
+            'title'          => $data['seo_title'] ?: null,
+            'description'    => $data['seo_description'] ?: null,
+            'title_en'       => $data['seo_title_en'] ?: null,
+            'description_en' => $data['seo_description_en'] ?: null,
         ]);
 
         return response()->json(['ok' => true]);
@@ -262,13 +266,17 @@ class PageController extends Controller
         $this->authorizePage($page);
 
         $data = $request->validate([
-            'seo_title'       => ['nullable', 'string', 'max:70'],
-            'seo_description' => ['nullable', 'string', 'max:160'],
+            'seo_title'          => ['nullable', 'string', 'max:70'],
+            'seo_description'    => ['nullable', 'string', 'max:160'],
+            'seo_title_en'       => ['nullable', 'string', 'max:70'],
+            'seo_description_en' => ['nullable', 'string', 'max:160'],
         ]);
 
-        $page->seo()->update([
-            'title'       => $data['seo_title'] ?: null,
-            'description' => $data['seo_description'] ?: null,
+        $page->seo()->updateOrCreate([], [
+            'title'          => $data['seo_title'] ?: null,
+            'description'    => $data['seo_description'] ?: null,
+            'title_en'       => $data['seo_title_en'] ?: null,
+            'description_en' => $data['seo_description_en'] ?: null,
         ]);
 
         return response()->json(['ok' => true]);
@@ -369,7 +377,7 @@ class PageController extends Controller
             'seo_description' => ['nullable', 'string', 'max:160'],
         ]);
 
-        $entry->seo()->update([
+        $entry->seo()->updateOrCreate([], [
             'title'       => $data['seo_title'] ?: null,
             'description' => $data['seo_description'] ?: null,
         ]);
@@ -383,8 +391,9 @@ class PageController extends Controller
         abort_if($entry->page_id !== $page->id, 403);
 
         $data = $request->validate([
-            'title' => ['required', 'string', 'max:200'],
-            'cover_image' => ['nullable', 'image', 'max:4096'],
+            'title'          => ['required', 'string', 'max:200'],
+            'title_en'       => ['nullable', 'string', 'max:200'],
+            'cover_image'    => ['nullable', 'image', 'max:4096'],
             'image_position' => ['nullable', 'in:left,right'],
         ]);
 
@@ -393,11 +402,14 @@ class PageController extends Controller
             $coverPath = $request->file('cover_image')->store('pages', 'public');
         }
 
-        $entry->update([
-            'title' => $data['title'],
-            'cover_image' => $coverPath,
+        $update = [
+            'title'          => $data['title'],
+            'cover_image'    => $coverPath,
             'image_position' => $data['image_position'] ?? $entry->image_position,
-        ]);
+        ];
+        if ($request->has('title_en')) $update['title_en'] = $data['title_en'] ?? null;
+
+        $entry->update($update);
 
         return back()->with('success', 'Eintrag gespeichert.');
     }
@@ -430,7 +442,7 @@ class PageController extends Controller
         abort_if($entry->page_id !== $page->id, 403);
 
         $data = $request->validate([
-            'type' => ['required', 'in:text,heading,image,badge,info'],
+            'type' => ['required', 'in:text,text_en,heading,heading_en,image,badge,info'],
             'content' => ['nullable', 'string', 'max:2000'],
             'color' => ['nullable', 'in:green,blue,orange,gray'],
             'icon' => ['nullable', 'string', 'max:100'],
